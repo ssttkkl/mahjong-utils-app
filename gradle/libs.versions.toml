@@ -15,7 +15,7 @@ compose-compiler = "1.5.5"
 compose-plugin = "1.6.0-alpha01"
 junit = "4.13.2"
 kotlin = "1.9.21"
-mahjongUtils = "0.6.0"
+mahjongUtils = "0.6.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
