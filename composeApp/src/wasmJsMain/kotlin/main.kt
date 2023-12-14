@@ -1,6 +1,6 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.CanvasBasedWindow
-import ui.App
+import io.ssttkkl.mahjongutils.app.App
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {

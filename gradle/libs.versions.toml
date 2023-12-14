@@ -15,7 +15,10 @@ compose-compiler = "1.5.5"
 compose-plugin = "1.6.0-alpha01"
 junit = "4.13.2"
 kotlin = "1.9.21"
+kotlinx-serialization = "1.6.2"
 mahjongUtils = "0.6.1"
+precompose = "1.5.8"
+libres = "1.2.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -33,10 +36,17 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+kotlinx-serialization-json = {module="org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
 mahjong-utils = { module = "io.github.ssttkkl:mahjong-utils", version.ref = "mahjongUtils" }
+precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
+precompose-viewmodel = { module = "moe.tlaster:precompose-viewmodel", version.ref = "precompose" }
+libres-compose = { module = "io.github.skeptick.libres:libres-compose", version.ref = "libres" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+libres = { id = "io.github.skeptick.libres", version.ref = "libres" }

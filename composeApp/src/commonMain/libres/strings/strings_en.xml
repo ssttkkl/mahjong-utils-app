@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_shanten">Shanten</string>
+    <string name="title_shanten_result">Shanten Result</string>
+    <string name="title_furo_shanten">Furo Shanten</string>
+    <string name="title_furo_shanten_result">Furo Shanten Result</string>
+</resources>
