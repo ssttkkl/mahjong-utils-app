@@ -1,5 +1,7 @@
 package io.ssttkkl.mahjongutils.app
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -9,9 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import io.ssttkkl.mahjongutils.app.components.appbar.AppTopBar
-import io.ssttkkl.mahjongutils.app.screens.furoshanten.furoShantenScene
+import io.ssttkkl.mahjongutils.app.components.drawer.AppDrawer
+import io.ssttkkl.mahjongutils.app.components.navigator.scene
+import io.ssttkkl.mahjongutils.app.screens.RouteInfoContainer
 import io.ssttkkl.mahjongutils.app.screens.shanten.RouteShanten
-import io.ssttkkl.mahjongutils.app.screens.shanten.shantenScene
 import moe.tlaster.precompose.PreComposeApp
 import moe.tlaster.precompose.navigation.NavHost
 
@@ -31,11 +34,13 @@ fun App() {
 fun AppContent(appState: AppState) {
     MaterialTheme {
         Scaffold(
+            modifier = Modifier.safeDrawingPadding(),
             scaffoldState = appState.scaffoldState,
             topBar = {
                 AppTopBar(appState)
             },
             drawerContent = {
+                AppDrawer(appState)
             },
             snackbarHost = {
                 SnackbarHost(
@@ -49,8 +54,9 @@ fun AppContent(appState: AppState) {
                 navigator = appState.navigator,
                 initialRoute = RouteShanten.route
             ) {
-                shantenScene()
-                furoShantenScene()
+                RouteInfoContainer.values.forEach {
+                    scene(it)
+                }
             }
         }
     }

@@ -7,16 +7,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import io.ssttkkl.mahjongutils.app.LocalAppState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import mahjongutils.shanten.UnionShantenResult
+import mahjongutils.shanten.CommonShantenResult
 
 @Composable
 fun ShantenResultScreen(args: ShantenArgs) {
-    var result by remember { mutableStateOf<UnionShantenResult?>(null) }
+    val appState = LocalAppState.current
+    var result by remember { mutableStateOf<CommonShantenResult<*>?>(null) }
     LaunchedEffect(args) {
-        result = withContext(Dispatchers.Default) {
-            args.calc()
+        try {
+            result = withContext(Dispatchers.Default) {
+                args.calc()
+            }
+        } catch (e: Exception) {
+            appState.scaffoldState.snackbarHostState.showSnackbar(
+                e.message ?: e::class.simpleName ?: "ERROR"
+            )
         }
     }
     if (result != null) {

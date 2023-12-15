@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.screens.shanten
+package io.ssttkkl.mahjongutils.app.screens.furoshanten
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -11,12 +11,12 @@ import kotlinx.coroutines.launch
 import kotlin.reflect.KType
 
 
-object RouteShanten : RouteInfo {
+object RouteFuroShanten : RouteInfo {
     override val title: String
-        get() = Res.string.title_shanten
+        get() = Res.string.title_furo_shanten
 
     override val route: String
-        get() = "/shanten"
+        get() = "/furo_shanten"
 
     override val paramsType: Map<String, KType> = emptyMap()
 
@@ -24,9 +24,12 @@ object RouteShanten : RouteInfo {
     override fun content(params: Map<String, Any?>) {
         val navigator = LocalAppState.current.navigator
         val scope = rememberCoroutineScope()
-        ShantenScreen { args ->
+        FuroShantenScreen { args ->
             scope.launch {
-                navigator.navigate(RouteShantenResult.route, mapOf("args" to TypedValue.of(args)))
+                navigator.navigate(
+                    RouteFuroShantenResult.route,
+                    mapOf("args" to TypedValue.of(args))
+                )
             }
         }
     }

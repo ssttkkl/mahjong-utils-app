@@ -4,4 +4,10 @@
     <string name="title_shanten_result">Shanten Result</string>
     <string name="title_furo_shanten">Furo Shanten</string>
     <string name="title_furo_shanten_result">Furo Shanten Result</string>
+    <string name="label_tiles_input">Tiles</string>
+    <string name="label_shanten_mode">Shanten Mode</string>
+    <string name="label_union_shanten">Union</string>
+    <string name="label_union_shanten_desc">Union Shanten</string>
+    <string name="label_regular_shanten">Regular</string>
+    <string name="label_regular_shanten_desc">Regular Shanten</string>
 </resources>
