@@ -1,6 +1,5 @@
 package io.ssttkkl.mahjongutils.app
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.MaterialTheme
@@ -13,6 +12,7 @@ import androidx.compose.ui.Modifier
 import io.ssttkkl.mahjongutils.app.components.appbar.AppTopBar
 import io.ssttkkl.mahjongutils.app.components.drawer.AppDrawer
 import io.ssttkkl.mahjongutils.app.components.navigator.scene
+import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
 import io.ssttkkl.mahjongutils.app.screens.RouteInfoContainer
 import io.ssttkkl.mahjongutils.app.screens.shanten.RouteShanten
 import moe.tlaster.precompose.PreComposeApp
@@ -25,7 +25,9 @@ fun App() {
         CompositionLocalProvider(
             LocalAppState provides appState,
         ) {
-            AppContent(appState)
+            TileImeHost(appState.tileImeHostState) {
+                AppContent(appState)
+            }
         }
     }
 }

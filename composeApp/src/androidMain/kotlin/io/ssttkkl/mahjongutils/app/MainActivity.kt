@@ -1,6 +1,7 @@
 package io.ssttkkl.mahjongutils.app
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
@@ -13,6 +14,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             App()
         }
+
+        val systemLocale = resources.configuration.locales.get(0)
+        Toast.makeText(this, systemLocale.toLanguageTag(), Toast.LENGTH_LONG)
+            .show()
     }
 }
 

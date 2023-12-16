@@ -27,9 +27,10 @@ data class RatioOption<T>(
 fun <T> RatioGroups(
     items: List<RatioOption<T>>,
     value: T,
-    onValueChanged: (T) -> Unit
+    onValueChanged: (T) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column(Modifier.selectableGroup()) {
+    Column(modifier.selectableGroup()) {
         items.forEach {
             val selected = (value == it.value)
             Row(

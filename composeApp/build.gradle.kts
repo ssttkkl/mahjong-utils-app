@@ -1,5 +1,4 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -20,7 +19,7 @@ kotlin {
 //        }
 //        binaries.executable()
 //    }
-    
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -39,9 +38,9 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
-        
+
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
@@ -56,12 +55,12 @@ kotlin {
 
             implementation(libs.kotlinx.serialization.json)
 
-            implementation(libs.mahjong.utils)
-
             implementation(libs.precompose)
             implementation(libs.precompose.viewmodel)
 
             implementation(libs.libres.compose)
+
+            implementation(libs.mahjong.utils)
         }
     }
 }

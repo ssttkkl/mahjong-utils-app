@@ -9,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +23,7 @@ import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.ratiogroups.RatioGroups
 import io.ssttkkl.mahjongutils.app.components.ratiogroups.RatioOption
+import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import mahjongutils.models.Tile
 
@@ -50,7 +50,7 @@ fun ShantenModeRatioGroups(
 
 @Composable
 fun ShantenScreen(onSubmit: (ShantenArgs) -> Unit) {
-    var tiles by remember { mutableStateOf("") }
+    var tiles by remember { mutableStateOf(emptyList<Tile>()) }
     var shantenMode by remember { mutableStateOf(ShantenMode.Union) }
 
     Column(
@@ -59,7 +59,7 @@ fun ShantenScreen(onSubmit: (ShantenArgs) -> Unit) {
         Spacer(Modifier.fillMaxWidth().height(Spacing.large))
 
         Panel(Res.string.label_tiles_input) {
-            TextField(
+            TileField(
                 value = tiles,
                 onValueChange = { tiles = it },
                 modifier = Modifier.fillMaxWidth().padding(Spacing.medium, 0.dp),
@@ -79,7 +79,7 @@ fun ShantenScreen(onSubmit: (ShantenArgs) -> Unit) {
             modifier = Modifier.padding(Spacing.medium, 0.dp),
             content = { Text("Submit") },
             onClick = {
-                onSubmit(ShantenArgs(Tile.parseTiles(tiles), shantenMode))
+                onSubmit(ShantenArgs(tiles, shantenMode))
             }
         )
 

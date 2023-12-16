@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_shanten">牌理</string>
+    <string name="title_shanten_result">牌理计算结果</string>
+    <string name="title_furo_shanten">副露牌理</string>
+    <string name="title_furo_shanten_result">副露牌理计算</string>
+    <string name="label_tiles_input">手牌</string>
+    <string name="label_shanten_mode">计算模式</string>
+    <string name="label_union_shanten">一般形</string>
+    <string name="label_union_shanten_desc">除四面子+一雀头的标准形外，还考虑七对子与国士无双合牌的情况</string>
+    <string name="label_regular_shanten">标准形</string>
+    <string name="label_regular_shanten_desc">只考虑四面子+一雀头和牌的情况</string>
+    <string name="label_keyboard_collapse">收起</string>
+</resources>
