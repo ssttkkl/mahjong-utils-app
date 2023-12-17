@@ -22,7 +22,8 @@ object RouteFuroShanten : RouteInfo {
 
     @Composable
     override fun content(params: Map<String, Any?>) {
-        val navigator = LocalAppState.current.navigator
+        val appState = LocalAppState.current
+        val navigator = appState.subPaneNavigator ?: appState.mainPaneNavigator
         val scope = rememberCoroutineScope()
         FuroShantenScreen { args ->
             scope.launch {

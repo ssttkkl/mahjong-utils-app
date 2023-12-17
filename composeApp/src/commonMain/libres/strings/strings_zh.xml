@@ -10,7 +10,7 @@
     <string name="label_tiles_in_hand">手牌</string>
     <string name="label_shanten_mode">计算模式</string>
     <string name="label_union_shanten">一般形</string>
-    <string name="text_union_shanten_desc">除四面子+一雀头的标准形外，还考虑七对子与国士无双合牌的情况</string>
+    <string name="text_union_shanten_desc">除四面子+一雀头的标准形外，还考虑七对子与国士无双和牌的情况</string>
     <string name="label_regular_shanten">标准形</string>
     <string name="text_regular_shanten_desc">只考虑四面子+一雀头和牌的情况</string>
     <string name="label_shanten_num">向听数</string>
@@ -30,5 +30,6 @@
     <string name="text_shanten_action_ankan">暗杠</string>
     <string name="text_good_shape_advance_tiles_num">{}枚（{}%）</string>
     <string name="label_tile_discarded_by_other">他家打</string>
+    <string name="label_other_options">选项</string>
     <string name="label_allow_chi">允许吃</string>
 </resources>

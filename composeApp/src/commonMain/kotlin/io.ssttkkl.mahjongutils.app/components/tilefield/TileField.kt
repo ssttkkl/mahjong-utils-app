@@ -1,10 +1,11 @@
 package io.ssttkkl.mahjongutils.app.components.tilefield
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,12 +41,10 @@ fun TileField(
 ) {
     var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
 
-    LaunchedEffect(value) {
-        val tilesText = value.joinToString("") { it.emoji }
-        if (tilesText != textFieldValue.text) {
-            // 保证选择的边界是两个emoji之间
-            textFieldValue = TextFieldValue(tilesText)
-        }
+    val tilesText = value.joinToString("") { it.emoji }
+    if (tilesText != textFieldValue.text) {
+        // 保证选择的边界是两个emoji之间
+        textFieldValue = TextFieldValue(tilesText)
     }
 
     UseTileIme(
@@ -86,7 +85,7 @@ fun TileField(
             trailingIcon = {
                 Text(
                     Res.string.text_tiles_num.format(value.size),
-                    style = MaterialTheme.typography.body2
+                    style = MaterialTheme.typography.labelMedium
                 )
             }
         )

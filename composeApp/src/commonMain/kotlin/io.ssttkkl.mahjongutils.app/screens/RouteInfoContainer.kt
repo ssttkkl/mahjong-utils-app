@@ -5,9 +5,20 @@ import io.ssttkkl.mahjongutils.app.screens.furoshanten.RouteFuroShantenResult
 import io.ssttkkl.mahjongutils.app.screens.shanten.RouteShanten
 import io.ssttkkl.mahjongutils.app.screens.shanten.RouteShantenResult
 
-val RouteInfoContainer = mapOf(
+private val CalcFormRouteInfo = mapOf(
     RouteShanten.route to RouteShanten,
-    RouteShantenResult.route to RouteShantenResult,
     RouteFuroShanten.route to RouteFuroShanten,
+)
+
+private val CalcResultRouteInfo = mapOf(
+    RouteShantenResult.route to RouteShantenResult,
     RouteFuroShantenResult.route to RouteFuroShantenResult
 )
+
+val NavigationRouteInfo = CalcFormRouteInfo
+
+val AllRouteInfo = CalcFormRouteInfo + CalcResultRouteInfo
+
+val MainPaneRouteInfo = CalcFormRouteInfo
+
+val SubPaneRouteInfo = CalcResultRouteInfo

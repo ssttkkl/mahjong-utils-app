@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +20,6 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.Res
-import io.ssttkkl.mahjongutils.app.utils.Spacing
 
 interface KeyboardKeyItem {
     val weightOfRow: Float
@@ -39,7 +38,7 @@ fun <T : KeyboardKeyItem> KeyboardScreen(
     Column(
         modifier = Modifier.fillMaxWidth()
             .background(Color.LightGray.copy(alpha = 0.4f))
-            .padding(bottom = Spacing.large)
+            .padding(bottom = 8.dp)
     ) {
         Image(
             Icons.Filled.KeyboardArrowDown,
@@ -47,15 +46,15 @@ fun <T : KeyboardKeyItem> KeyboardScreen(
             Modifier.clickable {
                 onCollapse()
             }.fillMaxWidth()
-                .padding(Spacing.small)
+                .padding(4.dp)
                 .height(24.dp),
             alignment = Alignment.Center,
         )
 
-        Divider(Modifier.padding(bottom = Spacing.medium))
+        Divider(Modifier.padding(bottom = 8.dp))
 
         keysMatrix.forEach { row ->
-            Row(modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.medium)) {
+            Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
                 row.forEach { key ->
                     KeyboardKey(
                         Modifier.weight(key.weightOfRow).height(56.dp),

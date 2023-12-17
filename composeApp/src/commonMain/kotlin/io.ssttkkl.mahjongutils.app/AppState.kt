@@ -1,36 +1,37 @@
 package io.ssttkkl.mahjongutils.app
 
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
-import kotlinx.coroutines.CoroutineScope
 import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.rememberNavigator
 
-@Stable
-class AppState(
-    val scaffoldState: ScaffoldState,
-    val coroutineScope: CoroutineScope,
-    val navigator: Navigator,
-    val tileImeHostState: TileImeHostState
+data class AppState(
+    val windowSizeClass: WindowSizeClass,
+    val mainPaneNavigator: Navigator,
+    val subPaneNavigator: Navigator?
 )
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun rememberAppState(): AppState {
-    val scaffoldState = rememberScaffoldState()
-    val coroutineScope = rememberCoroutineScope()
-    val navigator = rememberNavigator()
-    val tileImeHostState = remember { TileImeHostState() }
+    val windowSizeClass = calculateWindowSizeClass()
+    val mainPaneNavigator = rememberNavigator()
+    val subPaneNavigator = if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
+        rememberNavigator()
+    } else {
+        null
+    }
 
-    return remember(scaffoldState, coroutineScope, navigator, tileImeHostState) {
-        AppState(scaffoldState, coroutineScope, navigator, tileImeHostState)
+    return remember(windowSizeClass, mainPaneNavigator, subPaneNavigator) {
+        AppState(windowSizeClass, mainPaneNavigator, subPaneNavigator)
     }
 }
 
-val LocalAppState =
-    compositionLocalOf<AppState> { error("Cannot get LocalNavigator outside of App") }
+val LocalAppState = compositionLocalOf<AppState> {
+    error("No LocalAppState provided!")
+}

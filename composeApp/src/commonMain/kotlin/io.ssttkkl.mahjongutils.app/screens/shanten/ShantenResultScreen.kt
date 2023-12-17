@@ -4,11 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -17,6 +16,7 @@ import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowMessageOnFailure
 import io.ssttkkl.mahjongutils.app.components.panel.CardPanel
+import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.table.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.table.ShantenActionTable
 import io.ssttkkl.mahjongutils.app.components.table.ShantenActionTableType
@@ -29,8 +29,6 @@ import mahjongutils.shanten.ShantenWithoutGot
 import mahjongutils.shanten.asWithGot
 import mahjongutils.shanten.asWithoutGot
 
-private val contentModifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.medium)
-
 @Composable
 private fun ShantenNumCard(shantenNum: Int) {
     val text = when (shantenNum) {
@@ -39,11 +37,8 @@ private fun ShantenNumCard(shantenNum: Int) {
         else -> Res.string.text_shanten_num.format(shantenNum)
     }
 
-    CardPanel(Res.string.label_shanten_num, modifier = contentModifier) {
-        Text(
-            text,
-            Modifier.then(contentModifier)
-        )
+    TopCardPanel(Res.string.label_shanten_num) {
+        Text(text)
     }
 }
 
@@ -54,18 +49,16 @@ private fun TilesCard(
     caption: String,
     tileModifier: Modifier = Modifier.height(30.dp)
 ) {
-    CardPanel(label, modifier = contentModifier) {
+    TopCardPanel(label) {
         Column {
             Tiles(
                 tiles,
-                contentModifier,
                 tileModifier
             )
+            Spacer(Modifier.height(8.dp))
             Text(
                 caption,
-                Modifier.padding(top = Spacing.medium)
-                    .then(contentModifier),
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.labelMedium
             )
         }
     }
@@ -98,32 +91,34 @@ private fun TilesWithNumCard(
 fun ShantenResultScreen(tiles: List<Tile>, shanten: ShantenWithoutGot) {
     val scrollState = rememberScrollState()
 
-    Column(Modifier.fillMaxWidth().verticalScroll(scrollState)) {
-        Spacer(Modifier.height(Spacing.large))
+    with(Spacing.current) {
+        Column(Modifier.fillMaxWidth().verticalScroll(scrollState)) {
+            VerticalSpacerBetweenPanels()
 
-        TilesInHandCard(tiles, false)
+            TilesInHandCard(tiles, false)
 
-        Spacer(Modifier.height(Spacing.medium))
+            VerticalSpacerBetweenPanels()
 
-        ShantenNumCard(shanten.shantenNum)
+            ShantenNumCard(shanten.shantenNum)
 
-        Spacer(Modifier.height(Spacing.medium))
+            VerticalSpacerBetweenPanels()
 
-        TilesWithNumCard(
-            Res.string.label_advance_tiles,
-            shanten.advance,
-            shanten.advanceNum
-        )
+            TilesWithNumCard(
+                Res.string.label_advance_tiles,
+                shanten.advance,
+                shanten.advanceNum
+            )
 
-        Spacer(Modifier.height(Spacing.medium))
+            VerticalSpacerBetweenPanels()
 
-        shanten.goodShapeAdvance?.let { goodShapeAdvance ->
-            shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
-                TilesWithNumCard(
-                    Res.string.label_good_shape_advance_tiles,
-                    goodShapeAdvance,
-                    goodShapeAdvanceNum
-                )
+            shanten.goodShapeAdvance?.let { goodShapeAdvance ->
+                shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
+                    TilesWithNumCard(
+                        Res.string.label_good_shape_advance_tiles,
+                        goodShapeAdvance,
+                        goodShapeAdvanceNum
+                    )
+                }
             }
         }
     }
@@ -133,52 +128,54 @@ fun ShantenResultScreen(tiles: List<Tile>, shanten: ShantenWithoutGot) {
 fun ShantenResultScreen(tiles: List<Tile>, shanten: ShantenWithGot) {
     val scrollState = rememberScrollState()
 
-    Column(Modifier.fillMaxWidth().verticalScroll(scrollState)) {
-        Spacer(Modifier.height(Spacing.large))
+    with(Spacing.current) {
+        Column(Modifier.fillMaxWidth().verticalScroll(scrollState)) {
+            VerticalSpacerBetweenPanels()
 
-        TilesInHandCard(tiles, false)
+            TilesInHandCard(tiles, true)
 
-        Spacer(Modifier.height(Spacing.medium))
+            VerticalSpacerBetweenPanels()
 
-        ShantenNumCard(shanten.shantenNum)
+            ShantenNumCard(shanten.shantenNum)
 
-        Spacer(Modifier.height(Spacing.medium))
+            VerticalSpacerBetweenPanels()
 
-        // shanten to actions (asc sorted)
-        val groups: List<Pair<Int, List<ShantenAction>>> = remember(shanten) {
-            val groupedShanten = mutableMapOf<Int, MutableList<ShantenAction>>()
-            shanten.discardToAdvance.forEach { (discard, shantenAfterDiscard) ->
-                val group =
-                    groupedShanten.getOrPut(shantenAfterDiscard.shantenNum) { mutableListOf() }
-                group.add(ShantenAction.Discard(discard, shantenAfterDiscard))
-            }
-
-            shanten.ankanToAdvance.forEach { (ankan, shantenAfterAnkan) ->
-                val group =
-                    groupedShanten.getOrPut(shantenAfterAnkan.shantenNum) { mutableListOf() }
-                group.add(ShantenAction.Ankan(ankan, shantenAfterAnkan))
-            }
-
-            groupedShanten.toList().sortedBy { it.first }
-        }
-
-        if (shanten.shantenNum != -1) {
-            groups.forEach { (shantenNum, actions) ->
-                val label = if (shantenNum == shanten.shantenNum)
-                    Res.string.label_shanten_action.format(shantenNum)
-                else
-                    Res.string.label_shanten_action_backwards.format(shantenNum)
-
-                CardPanel(label, contentModifier) {
-                    val type = when (shantenNum) {
-                        0 -> ShantenActionTableType.WithGoodShapeImprovement
-                        1 -> ShantenActionTableType.WithGoodShapeAdvance
-                        else -> ShantenActionTableType.Normal
-                    }
-                    ShantenActionTable(actions, type, contentModifier)
+            // shanten to actions (asc sorted)
+            val groups: List<Pair<Int, List<ShantenAction>>> = remember(shanten) {
+                val groupedShanten = mutableMapOf<Int, MutableList<ShantenAction>>()
+                shanten.discardToAdvance.forEach { (discard, shantenAfterDiscard) ->
+                    val group =
+                        groupedShanten.getOrPut(shantenAfterDiscard.shantenNum) { mutableListOf() }
+                    group.add(ShantenAction.Discard(discard, shantenAfterDiscard))
                 }
 
-                Spacer(Modifier.height(Spacing.medium))
+                shanten.ankanToAdvance.forEach { (ankan, shantenAfterAnkan) ->
+                    val group =
+                        groupedShanten.getOrPut(shantenAfterAnkan.shantenNum) { mutableListOf() }
+                    group.add(ShantenAction.Ankan(ankan, shantenAfterAnkan))
+                }
+
+                groupedShanten.toList().sortedBy { it.first }
+            }
+
+            if (shanten.shantenNum != -1) {
+                groups.forEach { (shantenNum, actions) ->
+                    val label = if (shantenNum == shanten.shantenNum)
+                        Res.string.label_shanten_action.format(shantenNum)
+                    else
+                        Res.string.label_shanten_action_backwards.format(shantenNum)
+
+                    CardPanel(label, Modifier.windowHorizontalMargin()) {
+                        val type = when (shantenNum) {
+                            0 -> ShantenActionTableType.WithGoodShapeImprovement
+                            1 -> ShantenActionTableType.WithGoodShapeAdvance
+                            else -> ShantenActionTableType.Normal
+                        }
+                        ShantenActionTable(actions, type, Modifier.windowHorizontalMargin())
+                    }
+
+                    VerticalSpacerBetweenPanels()
+                }
             }
         }
     }

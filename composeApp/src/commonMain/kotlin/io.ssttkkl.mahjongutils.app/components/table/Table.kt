@@ -4,17 +4,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 
 data class TableColumn<T>(
@@ -36,9 +36,9 @@ fun <T> Table(
                     col.title,
                     modifier = Modifier.weight(col.weight)
                         .fillMaxWidth()
-                        .padding(Spacing.medium),
+                        .padding(8.dp),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
                 )
             }
         }
@@ -50,7 +50,7 @@ fun <T> Table(
                 columns.forEach { col ->
                     Box(
                         Modifier.weight(col.weight)
-                            .padding(Spacing.medium)
+                            .padding(8.dp)
                     ) {
                         col.content(item, index)
                     }

@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -72,7 +72,7 @@ private val columns: List<TableColumn<ShantenAction>> = listOf(
             )
             Text(
                 Res.string.text_tiles_num.format(record.shantenAfterAction.advanceNum),
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.labelMedium
             )
         }
     }
@@ -100,7 +100,7 @@ private val columnsWithGoodShapeAdvance: List<TableColumn<ShantenAction>> =
                                 goodShapeAdvanceNum,
                                 (goodShapeAdvanceNum.toDouble() / record.shantenAfterAction.advanceNum).percentile()
                             ),
-                            style = MaterialTheme.typography.caption
+                            style = MaterialTheme.typography.labelMedium
                         )
                     }
                 }
@@ -130,7 +130,7 @@ private val columnsWithGoodShapeImprovement: List<TableColumn<ShantenAction>> =
                                 goodShapeAdvanceNum,
                                 (goodShapeAdvanceNum.toDouble() / record.shantenAfterAction.advanceNum).percentile()
                             ),
-                            style = MaterialTheme.typography.caption
+                            style = MaterialTheme.typography.labelMedium
                         )
                     }
                 }

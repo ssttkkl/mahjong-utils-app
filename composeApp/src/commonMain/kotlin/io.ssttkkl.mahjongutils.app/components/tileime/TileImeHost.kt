@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,7 +26,6 @@ import androidx.compose.ui.text.input.ImeOptions
 import androidx.compose.ui.text.input.PlatformTextInputService
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.TextInputService
-import io.ssttkkl.mahjongutils.app.LocalAppState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -46,26 +46,30 @@ class TileImeHostState {
 
 @Composable
 fun TileImeHost(
-    state: TileImeHostState,
     content: @Composable () -> Unit
 ) {
+    val state = remember { TileImeHostState() }
     val scope = rememberCoroutineScope()
 
-    Column {
-        Row(Modifier.weight(1f)) {
-            content()
-        }
+    CompositionLocalProvider(
+        LocalTileImeHostState provides state,
+    ) {
+        Column {
+            Row(Modifier.weight(1f)) {
+                content()
+            }
 
-        AnimatedVisibility(
-            state.visible,
-            enter = slideInVertically { it } + fadeIn(),
-            exit = slideOutVertically { it } + fadeOut()
-        ) {
-            TileIme(
-                { scope.launch { state.pendingTile.emit(it) } },
-                { scope.launch { state.editCommand.emit(listOf(BackspaceCommand())) } },
-                { scope.launch { state.action.emit(ImeAction.Done) } }
-            )
+            AnimatedVisibility(
+                state.visible,
+                enter = slideInVertically { it } + fadeIn(),
+                exit = slideOutVertically { it } + fadeOut()
+            ) {
+                TileIme(
+                    { scope.launch { state.pendingTile.emit(it) } },
+                    { scope.launch { state.editCommand.emit(listOf(BackspaceCommand())) } },
+                    { scope.launch { state.action.emit(ImeAction.Done) } }
+                )
+            }
         }
     }
 }
@@ -76,7 +80,7 @@ fun UseTileIme(
     content: @Composable () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val state = LocalAppState.current.tileImeHostState
+    val state = LocalTileImeHostState.current
 
     val service = remember(scope, state) {
         var pendingTileCollector: Job? = null
@@ -139,4 +143,8 @@ fun UseTileIme(
     CompositionLocalProvider(LocalTextInputService provides service) {
         content()
     }
+}
+
+val LocalTileImeHostState = compositionLocalOf<TileImeHostState> {
+    error("CompositionLocal LocalTileImeHostState not present")
 }

@@ -8,14 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -35,7 +36,7 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
                 tile.emoji,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(Spacing.small)
+                    .padding(4.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color.White)
                     .clickable {
@@ -58,9 +59,9 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
             Box(
                 Modifier
                     .fillMaxSize()
-                    .padding(Spacing.small)
+                    .padding(4.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colors.secondary)
+                    .background(MaterialTheme.colorScheme.secondary)
                     .clickable {
                         onClick()
                     },
@@ -69,7 +70,8 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
                 Image(
                     Res.image.icon_backspace.painterResource(),
                     Res.string.label_keyboard_backspace,
-                    Modifier.size(with(density) { 36.sp.toDp() })
+                    Modifier.size(with(density) { 36.sp.toDp() }),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
                 )
             }
         }
