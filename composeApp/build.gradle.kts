@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.kotlinNativeCocoapods)
     alias(libs.plugins.libres)
 }
 
@@ -28,14 +29,24 @@ kotlin {
         }
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
+    cocoapods {
+        version = "1.0.0"
+        summary = "Compose App"
+        homepage = "https://github.com/JetBrains/kotlin"
+        source = "{ :git => 'git@github.com:vkormushkin/kmmpodlibrary.git', :tag => '$version' }"
+        license = "Private"
+        ios.deploymentTarget = "13.0"
+        podfile = project.file("../iosApp/Podfile")
+
+        framework {
+            baseName = project.name
             isStatic = true
+            @Suppress("OPT_IN_USAGE")
+            transitiveExport = false
         }
     }
 
@@ -57,7 +68,6 @@ kotlin {
 
             implementation(libs.precompose)
             implementation(libs.precompose.viewmodel)
-
             implementation(libs.libres.compose)
 
             implementation(libs.mahjong.utils)

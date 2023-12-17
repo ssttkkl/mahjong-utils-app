@@ -1,6 +1,8 @@
 package io.ssttkkl.mahjongutils.app.components.tilefield
 
-import androidx.compose.material.TextField
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -11,22 +13,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.unit.sp
+import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.tileime.UseTileIme
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import io.ssttkkl.mahjongutils.app.utils.emojiToTile
+import io.ssttkkl.mahjongutils.app.utils.format
 import mahjongutils.models.Tile
 import kotlin.math.max
 
+val TilesTextStyle = TextStyle.Default.copy(
+    fontWeight = FontWeight.Normal,
+    fontSize = 30.sp,
+    letterSpacing = 0.sp
+)
 
 @Composable
 fun TileField(
     value: List<Tile>,
     onValueChange: (List<Tile>) -> Unit,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = TextStyle.Default.copy(fontSize = TextUnit(36f, TextUnitType.Sp))
+    label: String? = null,
+    textStyle: TextStyle = TilesTextStyle
 ) {
     var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -45,7 +55,7 @@ fun TileField(
             }
         }
     ) {
-        TextField(
+        OutlinedTextField(
             value = textFieldValue,
             onValueChange = { raw ->
                 // 保证选择的边界在两个emoji之间（每个emoji占两个字符）
@@ -68,6 +78,17 @@ fun TileField(
             },
             modifier = modifier,
             textStyle = textStyle,
+            label = {
+                label?.let {
+                    Text(it)
+                }
+            },
+            trailingIcon = {
+                Text(
+                    Res.string.text_tiles_num.format(value.size),
+                    style = MaterialTheme.typography.body2
+                )
+            }
         )
     }
 }

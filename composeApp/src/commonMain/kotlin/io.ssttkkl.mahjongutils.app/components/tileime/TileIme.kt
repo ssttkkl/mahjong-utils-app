@@ -1,20 +1,27 @@
 package io.ssttkkl.mahjongutils.app.components.tileime
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.skeptick.libres.compose.painterResource
+import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.models.Tile
@@ -46,9 +53,10 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
 
         @Composable
         override fun display(onClick: () -> Unit) {
-            Text(
-                "<",
-                modifier = Modifier
+            val density = LocalDensity.current
+
+            Box(
+                Modifier
                     .fillMaxSize()
                     .padding(Spacing.small)
                     .clip(RoundedCornerShape(8.dp))
@@ -56,9 +64,14 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
                     .clickable {
                         onClick()
                     },
-                textAlign = TextAlign.Center,
-                fontSize = 36.sp
-            )
+                Alignment.Center
+            ) {
+                Image(
+                    Res.image.icon_backspace.painterResource(),
+                    Res.string.label_keyboard_backspace,
+                    Modifier.size(with(density) { 36.sp.toDp() })
+                )
+            }
         }
     }
 }

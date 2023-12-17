@@ -12,12 +12,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType.Companion.Sp
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
@@ -36,12 +33,12 @@ fun ShantenModeRatioGroups(
         RatioOption(
             ShantenMode.Union,
             Res.string.label_union_shanten,
-            Res.string.label_union_shanten_desc
+            Res.string.text_union_shanten_desc
         ),
         RatioOption(
             ShantenMode.Regular,
             Res.string.label_regular_shanten,
-            Res.string.label_regular_shanten_desc
+            Res.string.text_regular_shanten_desc
         ),
     )
 
@@ -50,39 +47,34 @@ fun ShantenModeRatioGroups(
 
 @Composable
 fun ShantenScreen(onSubmit: (ShantenArgs) -> Unit) {
-    var tiles by remember { mutableStateOf(emptyList<Tile>()) }
-    var shantenMode by remember { mutableStateOf(ShantenMode.Union) }
+    var tiles by rememberSaveable { mutableStateOf(emptyList<Tile>()) }
+    var shantenMode by rememberSaveable { mutableStateOf(ShantenMode.Union) }
 
     Column(
         Modifier.verticalScroll(rememberScrollState())
     ) {
-        Spacer(Modifier.fillMaxWidth().height(Spacing.large))
+        Spacer(Modifier.height(Spacing.large))
 
-        Panel(Res.string.label_tiles_input) {
+        Panel(Res.string.label_tiles_in_hand) {
             TileField(
                 value = tiles,
                 onValueChange = { tiles = it },
-                modifier = Modifier.fillMaxWidth().padding(Spacing.medium, 0.dp),
-                textStyle = TextStyle.Default.copy(fontSize = TextUnit(36f, Sp)),
+                modifier = Modifier.fillMaxWidth().padding(Spacing.medium, 0.dp)
             )
         }
-
-        Spacer(Modifier.fillMaxWidth().height(Spacing.medium))
 
         Panel(Res.string.label_shanten_mode) {
             ShantenModeRatioGroups(shantenMode) { shantenMode = it }
         }
 
-        Spacer(Modifier.fillMaxWidth().height(Spacing.medium))
-
         Button(
             modifier = Modifier.padding(Spacing.medium, 0.dp),
-            content = { Text("Submit") },
+            content = { Text(Res.string.text_calc) },
             onClick = {
                 onSubmit(ShantenArgs(tiles, shantenMode))
             }
         )
 
-        Spacer(Modifier.fillMaxWidth().height(Spacing.large))
+        Spacer(Modifier.height(Spacing.large))
     }
 }

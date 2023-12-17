@@ -16,6 +16,7 @@ compose-plugin = "1.6.0-alpha01"
 junit = "4.13.2"
 kotlin = "1.9.21"
 kotlinx-serialization = "1.6.2"
+logging = "1.3.0"
 mahjongUtils = "0.6.1"
 precompose = "1.5.8"
 libres = "1.2.2"
@@ -48,5 +49,6 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinNativeCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 libres = { id = "io.github.skeptick.libres", version.ref = "libres" }

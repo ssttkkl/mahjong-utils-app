@@ -1,0 +1,13 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '13.0'
+
+target 'iosApp' do
+  use_frameworks! :linkage => :static
+
+  pre_install do |installer|
+    FileUtils.mkdir_p(installer.sandbox.root.to_s + '/../../composeApp/build/generated/libres/apple/libres-bundles')
+  end
+
+  # Pods for iosApp
+  pod 'composeApp', :path => '../composeApp'
+end

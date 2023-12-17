@@ -1,5 +1,9 @@
 package io.ssttkkl.mahjongutils.app.utils
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.painter.Painter
+import io.github.skeptick.libres.compose.painterResource
+import io.ssttkkl.mahjongutils.app.Res
 import mahjongutils.models.Tile
 import mahjongutils.models.TileType
 import mahjongutils.models.isWind
@@ -36,3 +40,47 @@ fun emojiToTile(emoji: String): Tile {
     return emojiToTileMapping[emoji]
         ?: throw IllegalArgumentException("$emoji is not a tile emoji")
 }
+
+private val tileToImgResMapping = buildMap {
+    this[Tile["1m"]] = Res.image.tile_1m
+    this[Tile["2m"]] = Res.image.tile_2m
+    this[Tile["3m"]] = Res.image.tile_3m
+    this[Tile["4m"]] = Res.image.tile_4m
+    this[Tile["5m"]] = Res.image.tile_5m
+    this[Tile["6m"]] = Res.image.tile_6m
+    this[Tile["7m"]] = Res.image.tile_7m
+    this[Tile["8m"]] = Res.image.tile_8m
+    this[Tile["9m"]] = Res.image.tile_9m
+
+    this[Tile["1p"]] = Res.image.tile_1p
+    this[Tile["2p"]] = Res.image.tile_2p
+    this[Tile["3p"]] = Res.image.tile_3p
+    this[Tile["4p"]] = Res.image.tile_4p
+    this[Tile["5p"]] = Res.image.tile_5p
+    this[Tile["6p"]] = Res.image.tile_6p
+    this[Tile["7p"]] = Res.image.tile_7p
+    this[Tile["8p"]] = Res.image.tile_8p
+    this[Tile["9p"]] = Res.image.tile_9p
+
+    this[Tile["1s"]] = Res.image.tile_1s
+    this[Tile["2s"]] = Res.image.tile_2s
+    this[Tile["3s"]] = Res.image.tile_3s
+    this[Tile["4s"]] = Res.image.tile_4s
+    this[Tile["5s"]] = Res.image.tile_5s
+    this[Tile["6s"]] = Res.image.tile_6s
+    this[Tile["7s"]] = Res.image.tile_7s
+    this[Tile["8s"]] = Res.image.tile_8s
+    this[Tile["9s"]] = Res.image.tile_9s
+
+    this[Tile["1z"]] = Res.image.tile_1z
+    this[Tile["2z"]] = Res.image.tile_2z
+    this[Tile["3z"]] = Res.image.tile_3z
+    this[Tile["4z"]] = Res.image.tile_4z
+    this[Tile["5z"]] = Res.image.tile_5z
+    this[Tile["6z"]] = Res.image.tile_6z
+    this[Tile["7z"]] = Res.image.tile_7z
+}
+
+val Tile.painterResource: Painter
+    @Composable
+    get() = (tileToImgResMapping[this] ?: Res.image.tile_back).painterResource()

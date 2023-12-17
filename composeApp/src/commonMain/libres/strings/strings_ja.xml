@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_shanten">牌理</string>
+    <string name="title_shanten_result">牌理結果</string>
+    <string name="title_furo_shanten">鳴き牌理</string>
+    <string name="title_furo_shanten_result">鳴き牌理結果</string>
+    <string name="message_unknown_error">未知のエラー</string>
+    <string name="label_keyboard_collapse">閉じる</string>
+    <string name="label_keyboard_backspace">バックスペース</string>
+    <string name="label_tiles_in_hand">手牌</string>
+    <string name="label_shanten_mode">計算モード</string>
+    <string name="label_union_shanten">一般形</string>
+    <string name="text_union_shanten_desc">標準形（４面子１雀頭の形）だけではなく、七対形や国士形も含めて考えます。</string>
+    <string name="label_regular_shanten">標準形</string>
+    <string name="text_regular_shanten_desc">４面子１雀頭の形だけを考えます。</string>
+    <string name="label_shanten_num">向聴数</string>
+    <string name="label_advance_tiles">受け入れ</string>
+    <string name="label_improvement_tiles">好形変化</string>
+    <string name="text_calc">計算</string>
+    <string name="text_shanten_num">{}向聴</string>
+    <string name="text_tiles_num">{}枚</string>
+    <string name="text_tenpai">聴牌</string>
+    <string name="text_hora">和了</string>
+    <string name="text_tiles_without_got">まだツモしない</string>
+    <string name="text_tiles_with_got">ツモ済み</string>
+    <string name="label_shanten_action">{}向聴の打牌</string>
+    <string name="label_shanten_action_backwards">{}向聴の打牌（向聴戻し）</string>
+</resources>
