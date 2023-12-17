@@ -17,6 +17,7 @@ import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.tiles.Tile
 import io.ssttkkl.mahjongutils.app.components.tiles.Tiles
 import io.ssttkkl.mahjongutils.app.utils.format
+import io.ssttkkl.mahjongutils.app.utils.percentile
 import mahjongutils.models.Tile
 import mahjongutils.shanten.ShantenWithoutGot
 
@@ -35,6 +36,10 @@ sealed class ShantenAction {
     // chi, pon, kan, pass
 }
 
+enum class ShantenActionTableType {
+    Normal, WithGoodShapeAdvance, WithGoodShapeImprovement
+}
+
 @OptIn(ExperimentalLayoutApi::class)
 private val columns: List<TableColumn<ShantenAction>> = listOf(
     TableColumn("", 3f) { record, index ->
@@ -44,12 +49,12 @@ private val columns: List<TableColumn<ShantenAction>> = listOf(
         ) {
             when (record) {
                 is ShantenAction.Discard -> {
-                    Text("打")
+                    Text(Res.string.text_shanten_action_discard)
                     Tile(record.tile)
                 }
 
                 is ShantenAction.Ankan -> {
-                    Text("暗杠")
+                    Text(Res.string.text_shanten_action_ankan)
                     Tile(record.tile)
                 }
             }
@@ -73,10 +78,76 @@ private val columns: List<TableColumn<ShantenAction>> = listOf(
     }
 )
 
+private val columnsWithGoodShapeAdvance: List<TableColumn<ShantenAction>> =
+    listOf(
+        columns[0],
+        columns[1].copy(weight = 5f),
+        TableColumn(Res.string.label_good_shape_advance_tiles, 4f) { record, index ->
+            Column(
+                Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                record.shantenAfterAction.goodShapeAdvance?.let { goodShapeAdvance ->
+                    record.shantenAfterAction.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
+
+                        Tiles(
+                            goodShapeAdvance.sorted(),
+                            modifier = Modifier.padding(2.dp),
+                            tileModifier = Modifier.padding(2.dp).height(30.dp)
+                        )
+                        Text(
+                            Res.string.text_good_shape_advance_tiles_num.format(
+                                goodShapeAdvanceNum,
+                                (goodShapeAdvanceNum.toDouble() / record.shantenAfterAction.advanceNum).percentile()
+                            ),
+                            style = MaterialTheme.typography.caption
+                        )
+                    }
+                }
+            }
+        }
+    )
+
+private val columnsWithGoodShapeImprovement: List<TableColumn<ShantenAction>> =
+    listOf(
+        columns[0],
+        columns[1].copy(weight = 5f),
+        TableColumn(Res.string.label_good_shape_advance_tiles, 4f) { record, index ->
+            Column(
+                Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                record.shantenAfterAction.goodShapeAdvance?.let { goodShapeAdvance ->
+                    record.shantenAfterAction.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
+
+                        Tiles(
+                            goodShapeAdvance.sorted(),
+                            modifier = Modifier.padding(2.dp),
+                            tileModifier = Modifier.padding(2.dp).height(30.dp)
+                        )
+                        Text(
+                            Res.string.text_good_shape_advance_tiles_num.format(
+                                goodShapeAdvanceNum,
+                                (goodShapeAdvanceNum.toDouble() / record.shantenAfterAction.advanceNum).percentile()
+                            ),
+                            style = MaterialTheme.typography.caption
+                        )
+                    }
+                }
+            }
+        }
+    )
+
 @Composable
 fun ShantenActionTable(
     actions: List<ShantenAction>,
+    type: ShantenActionTableType,
     modifier: Modifier = Modifier,
 ) {
-    Table(columns, actions, modifier)
+    val col = when (type) {
+        ShantenActionTableType.Normal -> columns
+        ShantenActionTableType.WithGoodShapeAdvance -> columnsWithGoodShapeAdvance
+        ShantenActionTableType.WithGoodShapeImprovement -> columnsWithGoodShapeImprovement
+    }
+    Table(col, actions, modifier)
 }

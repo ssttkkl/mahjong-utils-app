@@ -26,4 +26,7 @@
     <string name="text_tiles_with_got">已摸牌</string>
     <string name="label_shanten_action">{}向听打法</string>
     <string name="label_shanten_action_backwards">{}向听打法（退向）</string>
+    <string name="text_shanten_action_discard">打</string>
+    <string name="text_shanten_action_ankan">暗杠</string>
+    <string name="text_good_shape_advance_tiles_num">{}枚（{}%）</string>
 </resources>

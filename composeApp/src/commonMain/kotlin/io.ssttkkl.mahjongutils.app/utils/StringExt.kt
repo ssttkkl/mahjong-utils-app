@@ -1,5 +1,7 @@
 package io.ssttkkl.mahjongutils.app.utils
 
+expect fun String.cformat(vararg args: Any?): String
+
 fun String.format(vararg args: Any?): String {
     if (args.isEmpty()) {
         return this

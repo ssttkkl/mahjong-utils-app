@@ -16,6 +16,7 @@
     <string name="label_shanten_num">向聴数</string>
     <string name="label_advance_tiles">受け入れ</string>
     <string name="label_improvement_tiles">好形変化</string>
+    <string name="label_good_shape_advance_tiles">好形受け入れ</string>
     <string name="text_calc">計算</string>
     <string name="text_shanten_num">{}向聴</string>
     <string name="text_tiles_num">{}枚</string>
@@ -25,4 +26,7 @@
     <string name="text_tiles_with_got">ツモ済み</string>
     <string name="label_shanten_action">{}向聴の打牌</string>
     <string name="label_shanten_action_backwards">{}向聴の打牌（向聴戻し）</string>
+    <string name="text_shanten_action_discard">打</string>
+    <string name="text_shanten_action_ankan">暗槓</string>
+    <string name="text_good_shape_advance_tiles_num">{}枚（{}%）</string>
 </resources>

@@ -26,4 +26,7 @@
     <string name="text_tiles_with_got">With got</string>
     <string name="label_shanten_action">{} Shanten</string>
     <string name="label_shanten_action_backwards">{} Shanten (Backwards)</string>
+    <string name="text_shanten_action_discard">Discard</string>
+    <string name="text_shanten_action_ankan">Ankan</string>
+    <string name="text_good_shape_advance_tiles_num">{} ({}% of all)</string>
 </resources>

@@ -19,6 +19,7 @@ import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowMessageOnFai
 import io.ssttkkl.mahjongutils.app.components.panel.CardPanel
 import io.ssttkkl.mahjongutils.app.components.table.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.table.ShantenActionTable
+import io.ssttkkl.mahjongutils.app.components.table.ShantenActionTableType
 import io.ssttkkl.mahjongutils.app.components.tiles.Tiles
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.format
@@ -161,17 +162,24 @@ fun ShantenResultScreen(tiles: List<Tile>, shanten: ShantenWithGot) {
             groupedShanten.toList().sortedBy { it.first }
         }
 
-        groups.forEach { (shantenNum, actions) ->
-            val label = if (shantenNum == shanten.shantenNum)
-                Res.string.label_shanten_action.format(shantenNum)
-            else
-                Res.string.label_shanten_action_backwards.format(shantenNum)
+        if (shanten.shantenNum != -1) {
+            groups.forEach { (shantenNum, actions) ->
+                val label = if (shantenNum == shanten.shantenNum)
+                    Res.string.label_shanten_action.format(shantenNum)
+                else
+                    Res.string.label_shanten_action_backwards.format(shantenNum)
 
-            CardPanel(label, contentModifier) {
-                ShantenActionTable(actions, contentModifier)
+                CardPanel(label, contentModifier) {
+                    val type = when (shantenNum) {
+                        0 -> ShantenActionTableType.WithGoodShapeImprovement
+                        1 -> ShantenActionTableType.WithGoodShapeAdvance
+                        else -> ShantenActionTableType.Normal
+                    }
+                    ShantenActionTable(actions, type, contentModifier)
+                }
+
+                Spacer(Modifier.height(Spacing.medium))
             }
-
-            Spacer(Modifier.height(Spacing.medium))
         }
     }
 
