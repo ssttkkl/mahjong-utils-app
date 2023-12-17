@@ -29,4 +29,8 @@
     <string name="text_shanten_action_discard">Discard</string>
     <string name="text_shanten_action_ankan">Ankan</string>
     <string name="text_good_shape_advance_tiles_num">{} ({}% of all)</string>
+    <string name="label_tile_discarded_by_other">Tile Discarded by Other</string>
+    <string name="label_other_options">Other Options</string>
+    <string name="label_allow_chi">Allow Chi</string>
+
 </resources>

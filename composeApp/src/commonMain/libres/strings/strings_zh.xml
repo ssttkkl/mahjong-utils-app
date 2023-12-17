@@ -29,4 +29,6 @@
     <string name="text_shanten_action_discard">打</string>
     <string name="text_shanten_action_ankan">暗杠</string>
     <string name="text_good_shape_advance_tiles_num">{}枚（{}%）</string>
+    <string name="label_tile_discarded_by_other">他家打</string>
+    <string name="label_allow_chi">允许吃</string>
 </resources>

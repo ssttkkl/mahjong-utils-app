@@ -11,11 +11,9 @@ import mahjongutils.shanten.furoChanceShanten
 data class FuroChanceShantenArgs(
     val tiles: List<Tile>,
     val chanceTile: Tile,
-    val allowChi: Boolean = true,
-    val bestShantenOnly: Boolean = false,
-    val allowKuikae: Boolean = false
+    val allowChi: Boolean = true
 ) {
     fun calc(): FuroChanceShantenResult {
-        return furoChanceShanten(tiles, chanceTile, allowChi, bestShantenOnly, allowKuikae)
+        return furoChanceShanten(tiles, chanceTile, allowChi)
     }
 }
