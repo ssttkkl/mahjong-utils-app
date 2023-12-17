@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.skeptick.libres.compose.painterResource
 import io.ssttkkl.mahjongutils.app.Res
-import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.models.Tile
 

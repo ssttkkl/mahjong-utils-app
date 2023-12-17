@@ -67,8 +67,8 @@ kotlin {
 
             implementation(libs.kotlinx.serialization.json)
 
-            implementation(libs.precompose)
-            implementation(libs.precompose.viewmodel)
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.screenmodel)
             implementation(libs.libres.compose)
 
             implementation(libs.mahjong.utils)

@@ -7,22 +7,22 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import cafe.adriel.voyager.core.model.rememberScreenModel
+import io.ssttkkl.mahjongutils.app.LocalAppState
 import io.ssttkkl.mahjongutils.app.Res
-import io.ssttkkl.mahjongutils.app.components.panel.Panel
+import io.ssttkkl.mahjongutils.app.components.basepane.LocalSnackbarHostState
+import io.ssttkkl.mahjongutils.app.components.navigator.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.ratio.RatioGroups
 import io.ssttkkl.mahjongutils.app.components.ratio.RatioOption
 import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
 import io.ssttkkl.mahjongutils.app.utils.Spacing
-import mahjongutils.models.Tile
 
 @Composable
-fun ShantenModeRatioGroups(
+private fun ShantenModeRatioGroups(
     value: ShantenMode,
     onValueChanged: (ShantenMode) -> Unit,
     modifier: Modifier = Modifier
@@ -43,48 +43,57 @@ fun ShantenModeRatioGroups(
     RatioGroups(radioOptions, value, onValueChanged, modifier)
 }
 
-@Composable
-fun ShantenScreen(onSubmit: (ShantenArgs) -> Unit) {
-    var tiles by rememberSaveable { mutableStateOf(emptyList<Tile>()) }
-    var shantenMode by rememberSaveable { mutableStateOf(ShantenMode.Union) }
+object ShantenScreen : NavigationScreen {
+    override val title: String
+        get() = Res.string.title_shanten
 
-    with(Spacing.current) {
-        Column(
-            Modifier.verticalScroll(rememberScrollState())
-        ) {
-            VerticalSpacerBetweenPanels()
+    @Composable
+    override fun Content() {
+        val appState = LocalAppState.current
+        val snackbarHostState = LocalSnackbarHostState.current
+        val model = rememberScreenModel { ShantenScreenModel() }
 
-            TopPanel(Res.string.label_tiles_in_hand) {
-                TileField(
-                    value = tiles,
-                    onValueChange = { tiles = it },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+        val tilesState by model.tiles.collectAsState()
+        val shantenModeState by model.shantenMode.collectAsState()
 
-            VerticalSpacerBetweenPanels()
-
-            TopPanel(
-                Res.string.label_shanten_mode,
-                noPaddingContent = true
+        with(Spacing.current) {
+            Column(
+                Modifier.verticalScroll(rememberScrollState())
             ) {
-                ShantenModeRatioGroups(
-                    shantenMode,
-                    { shantenMode = it }
-                )
-            }
+                VerticalSpacerBetweenPanels()
 
-            VerticalSpacerBetweenPanels()
-
-            Button(
-                modifier = Modifier.windowHorizontalMargin(),
-                content = { Text(Res.string.text_calc) },
-                onClick = {
-                    onSubmit(ShantenArgs(tiles, shantenMode))
+                TopPanel(Res.string.label_tiles_in_hand) {
+                    TileField(
+                        value = tilesState,
+                        onValueChange = { model.tiles.value = it },
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
-            )
 
-            VerticalSpacerBetweenPanels()
+                VerticalSpacerBetweenPanels()
+
+                TopPanel(
+                    Res.string.label_shanten_mode,
+                    noPaddingContent = true
+                ) {
+                    ShantenModeRatioGroups(
+                        shantenModeState,
+                        { model.shantenMode.value = it }
+                    )
+                }
+
+                VerticalSpacerBetweenPanels()
+
+                Button(
+                    modifier = Modifier.windowHorizontalMargin(),
+                    content = { Text(Res.string.text_calc) },
+                    onClick = {
+                        model.onSubmit(appState, snackbarHostState)
+                    }
+                )
+
+                VerticalSpacerBetweenPanels()
+            }
         }
     }
 }

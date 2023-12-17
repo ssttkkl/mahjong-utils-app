@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowMessageOnFailure
+import io.ssttkkl.mahjongutils.app.components.navigator.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.panel.CardPanel
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.table.ShantenAction
@@ -29,174 +30,182 @@ import mahjongutils.shanten.ShantenWithoutGot
 import mahjongutils.shanten.asWithGot
 import mahjongutils.shanten.asWithoutGot
 
-@Composable
-private fun ShantenNumCard(shantenNum: Int) {
-    val text = when (shantenNum) {
-        -1 -> Res.string.text_hora
-        0 -> Res.string.text_tenpai
-        else -> Res.string.text_shanten_num.format(shantenNum)
-    }
+data class ShantenResultScreen(
+    val args: ShantenArgs
+) : NavigationScreen {
+    override val title: String
+        get() = Res.string.title_shanten_result
 
-    TopCardPanel(Res.string.label_shanten_num) {
-        Text(text)
-    }
-}
-
-@Composable
-private fun TilesCard(
-    label: String,
-    tiles: List<Tile>,
-    caption: String,
-    tileModifier: Modifier = Modifier.height(30.dp)
-) {
-    TopCardPanel(label) {
-        Column {
-            Tiles(
-                tiles,
-                tileModifier
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                caption,
-                style = MaterialTheme.typography.labelMedium
-            )
+    @Composable
+    override fun Content() {
+        Calculation(
+            args,
+            {
+                args.calc()
+            },
+            onFailure = {
+                PopAndShowMessageOnFailure(it)
+            }
+        ) {
+            if (it.shantenInfo is ShantenWithoutGot) {
+                Content(args.tiles, it.shantenInfo.asWithoutGot)
+            } else {
+                Content(args.tiles, it.shantenInfo.asWithGot)
+            }
         }
     }
-}
 
-@Composable
-private fun TilesInHandCard(tiles: List<Tile>, withGot: Boolean) {
-    TilesCard(
-        Res.string.label_tiles_in_hand,
-        tiles,
-        if (withGot) Res.string.text_tiles_with_got else Res.string.text_tiles_without_got,
-        Modifier.height(36.dp)
-    )
-}
+    @Composable
+    fun Content(tiles: List<Tile>, shanten: ShantenWithoutGot) {
+        val scrollState = rememberScrollState()
 
-@Composable
-private fun TilesWithNumCard(
-    label: String,
-    tiles: Collection<Tile>,
-    tileNum: Int
-) {
-    TilesCard(
-        label,
-        tiles.sorted(),
-        Res.string.text_tiles_num.format(tileNum)
-    )
-}
+        with(Spacing.current) {
+            Column(Modifier.fillMaxWidth().verticalScroll(scrollState)) {
+                VerticalSpacerBetweenPanels()
 
-@Composable
-fun ShantenResultScreen(tiles: List<Tile>, shanten: ShantenWithoutGot) {
-    val scrollState = rememberScrollState()
+                TilesInHandCard(tiles, false)
 
-    with(Spacing.current) {
-        Column(Modifier.fillMaxWidth().verticalScroll(scrollState)) {
-            VerticalSpacerBetweenPanels()
+                VerticalSpacerBetweenPanels()
 
-            TilesInHandCard(tiles, false)
+                ShantenNumCard(shanten.shantenNum)
 
-            VerticalSpacerBetweenPanels()
+                VerticalSpacerBetweenPanels()
 
-            ShantenNumCard(shanten.shantenNum)
+                TilesWithNumCard(
+                    Res.string.label_advance_tiles,
+                    shanten.advance,
+                    shanten.advanceNum
+                )
 
-            VerticalSpacerBetweenPanels()
+                VerticalSpacerBetweenPanels()
 
-            TilesWithNumCard(
-                Res.string.label_advance_tiles,
-                shanten.advance,
-                shanten.advanceNum
-            )
-
-            VerticalSpacerBetweenPanels()
-
-            shanten.goodShapeAdvance?.let { goodShapeAdvance ->
-                shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
-                    TilesWithNumCard(
-                        Res.string.label_good_shape_advance_tiles,
-                        goodShapeAdvance,
-                        goodShapeAdvanceNum
-                    )
+                shanten.goodShapeAdvance?.let { goodShapeAdvance ->
+                    shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
+                        TilesWithNumCard(
+                            Res.string.label_good_shape_advance_tiles,
+                            goodShapeAdvance,
+                            goodShapeAdvanceNum
+                        )
+                    }
                 }
             }
         }
     }
-}
 
-@Composable
-fun ShantenResultScreen(tiles: List<Tile>, shanten: ShantenWithGot) {
-    val scrollState = rememberScrollState()
+    @Composable
+    fun Content(tiles: List<Tile>, shanten: ShantenWithGot) {
+        val scrollState = rememberScrollState()
 
-    with(Spacing.current) {
-        Column(Modifier.fillMaxWidth().verticalScroll(scrollState)) {
-            VerticalSpacerBetweenPanels()
+        with(Spacing.current) {
+            Column(Modifier.fillMaxWidth().verticalScroll(scrollState)) {
+                VerticalSpacerBetweenPanels()
 
-            TilesInHandCard(tiles, true)
+                TilesInHandCard(tiles, true)
 
-            VerticalSpacerBetweenPanels()
+                VerticalSpacerBetweenPanels()
 
-            ShantenNumCard(shanten.shantenNum)
+                ShantenNumCard(shanten.shantenNum)
 
-            VerticalSpacerBetweenPanels()
+                VerticalSpacerBetweenPanels()
 
-            // shanten to actions (asc sorted)
-            val groups: List<Pair<Int, List<ShantenAction>>> = remember(shanten) {
-                val groupedShanten = mutableMapOf<Int, MutableList<ShantenAction>>()
-                shanten.discardToAdvance.forEach { (discard, shantenAfterDiscard) ->
-                    val group =
-                        groupedShanten.getOrPut(shantenAfterDiscard.shantenNum) { mutableListOf() }
-                    group.add(ShantenAction.Discard(discard, shantenAfterDiscard))
-                }
-
-                shanten.ankanToAdvance.forEach { (ankan, shantenAfterAnkan) ->
-                    val group =
-                        groupedShanten.getOrPut(shantenAfterAnkan.shantenNum) { mutableListOf() }
-                    group.add(ShantenAction.Ankan(ankan, shantenAfterAnkan))
-                }
-
-                groupedShanten.toList().sortedBy { it.first }
-            }
-
-            if (shanten.shantenNum != -1) {
-                groups.forEach { (shantenNum, actions) ->
-                    val label = if (shantenNum == shanten.shantenNum)
-                        Res.string.label_shanten_action.format(shantenNum)
-                    else
-                        Res.string.label_shanten_action_backwards.format(shantenNum)
-
-                    CardPanel(label, Modifier.windowHorizontalMargin()) {
-                        val type = when (shantenNum) {
-                            0 -> ShantenActionTableType.WithGoodShapeImprovement
-                            1 -> ShantenActionTableType.WithGoodShapeAdvance
-                            else -> ShantenActionTableType.Normal
-                        }
-                        ShantenActionTable(actions, type, Modifier.windowHorizontalMargin())
+                // shanten to actions (asc sorted)
+                val groups: List<Pair<Int, List<ShantenAction>>> = remember(shanten) {
+                    val groupedShanten = mutableMapOf<Int, MutableList<ShantenAction>>()
+                    shanten.discardToAdvance.forEach { (discard, shantenAfterDiscard) ->
+                        val group =
+                            groupedShanten.getOrPut(shantenAfterDiscard.shantenNum) { mutableListOf() }
+                        group.add(ShantenAction.Discard(discard, shantenAfterDiscard))
                     }
 
-                    VerticalSpacerBetweenPanels()
+                    shanten.ankanToAdvance.forEach { (ankan, shantenAfterAnkan) ->
+                        val group =
+                            groupedShanten.getOrPut(shantenAfterAnkan.shantenNum) { mutableListOf() }
+                        group.add(ShantenAction.Ankan(ankan, shantenAfterAnkan))
+                    }
+
+                    groupedShanten.toList().sortedBy { it.first }
                 }
+
+                if (shanten.shantenNum != -1) {
+                    groups.forEach { (shantenNum, actions) ->
+                        val label = if (shantenNum == shanten.shantenNum)
+                            Res.string.label_shanten_action.format(shantenNum)
+                        else
+                            Res.string.label_shanten_action_backwards.format(shantenNum)
+
+                        CardPanel(label, Modifier.windowHorizontalMargin()) {
+                            val type = when (shantenNum) {
+                                0 -> ShantenActionTableType.WithGoodShapeImprovement
+                                1 -> ShantenActionTableType.WithGoodShapeAdvance
+                                else -> ShantenActionTableType.Normal
+                            }
+                            ShantenActionTable(actions, type, Modifier.windowHorizontalMargin())
+                        }
+
+                        VerticalSpacerBetweenPanels()
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    @Composable
+    private fun ShantenNumCard(shantenNum: Int) {
+        val text = when (shantenNum) {
+            -1 -> Res.string.text_hora
+            0 -> Res.string.text_tenpai
+            else -> Res.string.text_shanten_num.format(shantenNum)
+        }
+
+        TopCardPanel(Res.string.label_shanten_num) {
+            Text(text)
+        }
+    }
+
+    @Composable
+    private fun TilesCard(
+        label: String,
+        tiles: List<Tile>,
+        caption: String,
+        tileModifier: Modifier = Modifier.height(30.dp)
+    ) {
+        TopCardPanel(label) {
+            Column {
+                Tiles(
+                    tiles,
+                    tileModifier
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    caption,
+                    style = MaterialTheme.typography.labelMedium
+                )
             }
         }
     }
 
-}
+    @Composable
+    private fun TilesInHandCard(tiles: List<Tile>, withGot: Boolean) {
+        TilesCard(
+            Res.string.label_tiles_in_hand,
+            tiles,
+            if (withGot) Res.string.text_tiles_with_got else Res.string.text_tiles_without_got,
+            Modifier.height(36.dp)
+        )
+    }
 
-@Composable
-fun ShantenResultScreen(args: ShantenArgs) {
-    Calculation(
-        args,
-        {
-            args.calc()
-        },
-        onFailure = {
-            PopAndShowMessageOnFailure(it)
-        }
+    @Composable
+    private fun TilesWithNumCard(
+        label: String,
+        tiles: Collection<Tile>,
+        tileNum: Int
     ) {
-        if (it.shantenInfo is ShantenWithoutGot) {
-            ShantenResultScreen(args.tiles, it.shantenInfo.asWithoutGot)
-        } else {
-            ShantenResultScreen(args.tiles, it.shantenInfo.asWithGot)
-        }
+        TilesCard(
+            label,
+            tiles.sorted(),
+            Res.string.text_tiles_num.format(tileNum)
+        )
     }
 }

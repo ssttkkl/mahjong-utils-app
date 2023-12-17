@@ -12,93 +12,88 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import cafe.adriel.voyager.navigator.Navigator
 import io.ssttkkl.mahjongutils.app.components.basepane.BasePane
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
-import io.ssttkkl.mahjongutils.app.screens.AllRouteInfo
-import io.ssttkkl.mahjongutils.app.screens.NavigationRouteInfo
-import io.ssttkkl.mahjongutils.app.screens.shanten.RouteShanten
+import io.ssttkkl.mahjongutils.app.screens.furoshanten.FuroShantenScreen
+import io.ssttkkl.mahjongutils.app.screens.shanten.ShantenScreen
 import kotlinx.coroutines.launch
-import moe.tlaster.precompose.PreComposeApp
-import moe.tlaster.precompose.navigation.NavOptions
-import moe.tlaster.precompose.navigation.PopUpTo
+
+private val navigatableScreens = listOf(ShantenScreen, FuroShantenScreen)
 
 @Composable
 fun App() {
-    PreComposeApp {
-        MaterialTheme {
-            TileImeHost {
-                val appState = rememberAppState()
-                CompositionLocalProvider(LocalAppState provides appState) {
-                    AppContent(appState)
-                }
-            }
+    MaterialTheme {
+        TileImeHost {
+            AppContent()
         }
     }
 }
 
 @Composable
-fun CompactAppContent(appState: AppState) {
-    val coroutineScope = rememberCoroutineScope()
-    val currentEntry by appState.mainPaneNavigator.currentEntry.collectAsState(null)
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+fun CompactAppContent() {
+    Navigator(ShantenScreen) { navigator ->
+        val appState = rememberAppState(navigator, null)
+        val coroutineScope = rememberCoroutineScope()
+        val drawerState = rememberDrawerState(DrawerValue.Closed)
 
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            ModalDrawerSheet {
-                NavigationRouteInfo.values.forEach {
-                    NavigationDrawerItem(
-                        label = { Text(text = it.title) },
-                        selected = currentEntry?.route?.route == it.route,
-                        onClick = {
-                            appState.mainPaneNavigator.navigate(
-                                it.route,
-                                NavOptions(popUpTo = PopUpTo.First(true))
+        CompositionLocalProvider(LocalAppState provides appState) {
+            ModalNavigationDrawer(
+                drawerState = drawerState,
+                drawerContent = {
+                    ModalDrawerSheet {
+                        navigatableScreens.forEach {
+                            NavigationDrawerItem(
+                                label = { Text(text = it.title) },
+                                selected = navigator.lastItem == it,
+                                onClick = {
+                                    navigator.replaceAll(it)
+                                    coroutineScope.launch {
+                                        drawerState.close()
+                                    }
+                                }
                             )
-                            coroutineScope.launch {
-                                drawerState.close()
-                            }
                         }
-                    )
+                    }
                 }
+            ) {
+                BasePane(
+                    appState.mainPaneNavigator,
+                    navigationIcon = { canGoBack ->
+                        if (!canGoBack) {
+                            Icon(Icons.Filled.Menu, "", Modifier.clickable {
+                                coroutineScope.launch {
+                                    if (drawerState.isClosed) {
+                                        drawerState.open()
+                                    } else {
+                                        drawerState.close()
+                                    }
+                                }
+                            })
+                        } else {
+                            Icon(Icons.Filled.ArrowBack, "", Modifier.clickable {
+                                navigator.pop()
+                            })
+                        }
+                    }
+                )
             }
         }
-    ) {
-        BasePane(
-            AllRouteInfo,
-            RouteShanten,
-            appState.mainPaneNavigator,
-            navigationIcon = { canGoBack ->
-                if (!canGoBack) {
-                    Icon(Icons.Filled.Menu, "", Modifier.clickable {
-                        coroutineScope.launch {
-                            if (drawerState.isClosed) {
-                                drawerState.open()
-                            } else {
-                                drawerState.close()
-                            }
-                        }
-                    })
-                } else {
-                    Icon(Icons.Filled.ArrowBack, "", Modifier.clickable {
-                        appState.mainPaneNavigator.goBack()
-                    })
-                }
-            }
-        )
     }
 }
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
-fun AppContent(appState: AppState) {
-    when (appState.windowSizeClass.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> CompactAppContent(appState)
+fun AppContent() {
+    val windowSizeClass = calculateWindowSizeClass()
+    when (windowSizeClass.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> CompactAppContent()
     }
 }

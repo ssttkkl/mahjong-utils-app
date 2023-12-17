@@ -2,13 +2,11 @@ package io.ssttkkl.mahjongutils.app
 
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
-import moe.tlaster.precompose.navigation.Navigator
-import moe.tlaster.precompose.navigation.rememberNavigator
+import cafe.adriel.voyager.navigator.Navigator
 
 data class AppState(
     val windowSizeClass: WindowSizeClass,
@@ -18,14 +16,8 @@ data class AppState(
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
-fun rememberAppState(): AppState {
+fun rememberAppState(mainPaneNavigator: Navigator, subPaneNavigator: Navigator?): AppState {
     val windowSizeClass = calculateWindowSizeClass()
-    val mainPaneNavigator = rememberNavigator()
-    val subPaneNavigator = if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
-        rememberNavigator()
-    } else {
-        null
-    }
 
     return remember(windowSizeClass, mainPaneNavigator, subPaneNavigator) {
         AppState(windowSizeClass, mainPaneNavigator, subPaneNavigator)
