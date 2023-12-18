@@ -11,16 +11,20 @@ import kotlinx.coroutines.Deferred
 data class ResultScreen<RES>(
     override val title: String,
     val result: Deferred<RES>,
+    val onResultMove: (Deferred<RES>) -> Unit,
     val resultContent: @Composable (RES) -> Unit
 ) : NavigationScreen {
+
     @Composable
     override fun Content() {
         val appState = LocalAppState.current
 
-        // 如果是双栏，直接弹出（在上一层界面展示结果）
-        LaunchedEffect(appState) {
+        // 如果是双栏，直接弹出
+        // 调用onResultMove将result移动回去，从而能在上层展示
+        LaunchedEffect(appState.windowSizeClass) {
             if (isTwoPanes(appState.windowSizeClass)) {
                 appState.navigator.pop()
+                onResultMove(result)
             }
         }
 

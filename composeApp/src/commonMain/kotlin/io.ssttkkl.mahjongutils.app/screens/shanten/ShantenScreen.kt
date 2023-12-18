@@ -7,9 +7,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import io.ssttkkl.mahjongutils.app.Res
@@ -21,7 +21,7 @@ import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.launch
 import mahjongutils.shanten.ShantenWithoutGot
 import mahjongutils.shanten.asWithGot
 import mahjongutils.shanten.asWithoutGot
@@ -62,17 +62,12 @@ object ShantenScreen : FormAndResultScreen<ShantenScreenModel, ShantenCalcResult
     }
 
     @Composable
-    override fun resultState(model: ShantenScreenModel): State<Deferred<ShantenCalcResult>?> {
-        return model.result.collectAsState()
-    }
-
-    @Composable
     override fun FormContent(
         appState: AppState,
         model: ShantenScreenModel,
         modifier: Modifier
     ) {
-        val snackbarHostState = appState.snackbarHostState
+        val coroutineScope = rememberCoroutineScope()
 
         val tilesState by model.tiles.collectAsState()
         val shantenModeState by model.shantenMode.collectAsState()
@@ -109,7 +104,9 @@ object ShantenScreen : FormAndResultScreen<ShantenScreenModel, ShantenCalcResult
                     modifier = Modifier.windowHorizontalMargin(),
                     content = { Text(Res.string.text_calc) },
                     onClick = {
-                        model.onSubmit(snackbarHostState)
+                        coroutineScope.launch {
+                            model.onSubmit(appState)
+                        }
                     }
                 )
 

@@ -8,35 +8,32 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowMessageOnFailure
 import io.ssttkkl.mahjongutils.app.utils.Spacing
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-abstract class FormAndResultScreen<M : ScreenModel, RES> : Screen {
+abstract class FormAndResultScreen<M : ResultScreenModel<RES>, RES> : NavigationScreen {
     companion object {
         fun isTwoPanes(windowSizeClass: WindowSizeClass): Boolean {
             return windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
                     && windowSizeClass.heightSizeClass != WindowHeightSizeClass.Compact
         }
-
     }
 
     abstract val resultTitle: String
 
     @Composable
     abstract fun getScreenModel(): M
-
-    @Composable
-    abstract fun resultState(model: M): State<Deferred<RES>?>
 
     @Composable
     abstract fun FormContent(appState: AppState, model: M, modifier: Modifier)
@@ -58,13 +55,29 @@ abstract class FormAndResultScreen<M : ScreenModel, RES> : Screen {
 
     @Composable
     private fun OnePaneContent(appState: AppState, model: M) {
-        val result by resultState(model)
+        val coroutineScope = rememberCoroutineScope()
 
-        LaunchedEffect(appState, result) {
-            result?.let { result ->
-                appState.navigator.push(ResultScreen(resultTitle, result) {
-                    ResultContent(appState, it, Modifier)
-                })
+        DisposableEffect(appState, model, coroutineScope) {
+            val job = coroutineScope.launch {
+                model.result.collectLatest { result ->
+                    result?.let { result ->
+                        // 将result移动至ResultScreen
+                        // 保证从ResultScreen返回后不会重复跳转
+                        // 除非调用了onResultMove将result再次移动回来（发生在旋转后由单栏变成双栏的场合）
+                        appState.navigator.push(
+                            ResultScreen(
+                                title = resultTitle,
+                                result = result,
+                                onResultMove = { model.result.value = it }) {
+                                ResultContent(appState, it, Modifier)
+                            })
+                        model.result.value = null
+                    }
+                }
+            }
+
+            onDispose {
+                job.cancel()
             }
         }
 
@@ -73,7 +86,7 @@ abstract class FormAndResultScreen<M : ScreenModel, RES> : Screen {
 
     @Composable
     private fun TwoPaneContent(appState: AppState, model: M) {
-        val result by resultState(model)
+        val result by model.result.collectAsState()
 
         with(Spacing.current) {
             Row {
