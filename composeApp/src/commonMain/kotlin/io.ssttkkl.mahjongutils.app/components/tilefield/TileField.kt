@@ -35,7 +35,8 @@ fun TileField(
     onValueChange: (List<Tile>) -> Unit,
     modifier: Modifier = Modifier,
     label: String? = null,
-    textStyle: TextStyle = TilesTextStyle
+    textStyle: TextStyle = TilesTextStyle,
+    isError: Boolean = false,
 ) {
     var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -85,7 +86,8 @@ fun TileField(
                     Res.string.text_tiles_num_short.format(value.size),
                     style = MaterialTheme.typography.labelMedium
                 )
-            }
+            },
+            isError = isError
         )
     }
 }

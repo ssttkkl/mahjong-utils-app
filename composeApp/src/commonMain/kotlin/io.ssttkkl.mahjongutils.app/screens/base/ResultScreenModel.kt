@@ -15,12 +15,12 @@ abstract class ResultScreenModel<RES> : ScreenModel {
         result.value = null
     }
 
-    open suspend fun onCheck(appState: AppState): Boolean = true
+    open suspend fun onCheck(): Boolean = true
 
     abstract suspend fun onCalc(appState: AppState): RES
 
     suspend fun onSubmit(appState: AppState) {
-        if (!onCheck(appState)) {
+        if (!onCheck()) {
             return
         }
 

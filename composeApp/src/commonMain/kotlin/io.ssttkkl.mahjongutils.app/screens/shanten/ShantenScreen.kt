@@ -18,6 +18,7 @@ import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.ratio.RatioGroups
 import io.ssttkkl.mahjongutils.app.components.ratio.RatioOption
 import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
+import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
@@ -48,7 +49,8 @@ private fun ShantenModeRatioGroups(
     RatioGroups(radioOptions, value, onValueChanged, modifier)
 }
 
-object ShantenScreen : FormAndResultScreen<ShantenScreenModel, ShantenCalcResult>(),
+object ShantenScreen :
+    FormAndResultScreen<ShantenScreenModel, ShantenCalcResult>(),
     NavigationScreen {
     override val title: String
         get() = Res.string.title_shanten
@@ -72,6 +74,8 @@ object ShantenScreen : FormAndResultScreen<ShantenScreenModel, ShantenCalcResult
         val tilesState by model.tiles.collectAsState()
         val shantenModeState by model.shantenMode.collectAsState()
 
+        val tilesErrMsg by model.tilesErrMsg.collectAsState()
+
         with(Spacing.current) {
             Column(
                 modifier.verticalScroll(rememberScrollState())
@@ -79,11 +83,14 @@ object ShantenScreen : FormAndResultScreen<ShantenScreenModel, ShantenCalcResult
                 VerticalSpacerBetweenPanels()
 
                 TopPanel(Res.string.label_tiles_in_hand) {
-                    TileField(
-                        value = tilesState,
-                        onValueChange = { model.tiles.value = it },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    ValidationField(tilesErrMsg) { isError ->
+                        TileField(
+                            value = tilesState,
+                            onValueChange = { model.tiles.value = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            isError = isError
+                        )
+                    }
                 }
 
                 VerticalSpacerBetweenPanels()

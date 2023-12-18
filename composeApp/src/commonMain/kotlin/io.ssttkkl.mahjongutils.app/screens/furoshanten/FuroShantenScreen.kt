@@ -17,6 +17,7 @@ import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.switch.SwitchItem
 import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
+import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
@@ -49,28 +50,37 @@ object FuroShantenScreen :
         val chanceTileState by model.chanceTile.collectAsState()
         val allowChiState by model.allowChi.collectAsState()
 
+        val tilesErrMsg by model.tilesErrMsg.collectAsState()
+        val chanceTileErrMsg by model.chanceTileErrMsg.collectAsState()
+
         with(Spacing.current) {
             Column(
-                Modifier.verticalScroll(rememberScrollState())
+                modifier.verticalScroll(rememberScrollState())
             ) {
                 VerticalSpacerBetweenPanels()
 
                 TopPanel(Res.string.label_tiles_in_hand) {
-                    TileField(
-                        value = tilesState,
-                        onValueChange = { model.tiles.value = it },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    ValidationField(tilesErrMsg) { isError ->
+                        TileField(
+                            value = tilesState,
+                            onValueChange = { model.tiles.value = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            isError = isError
+                        )
+                    }
                 }
 
                 VerticalSpacerBetweenPanels()
 
                 TopPanel(Res.string.label_tile_discarded_by_other) {
-                    TileField(
-                        value = chanceTileState?.let { listOf(it) } ?: emptyList(),
-                        onValueChange = { model.chanceTile.value = it.firstOrNull() },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    ValidationField(chanceTileErrMsg) { isError ->
+                        TileField(
+                            value = chanceTileState?.let { listOf(it) } ?: emptyList(),
+                            onValueChange = { model.chanceTile.value = it.firstOrNull() },
+                            modifier = Modifier.fillMaxWidth(),
+                            isError = isError
+                        )
+                    }
                 }
 
                 VerticalSpacerBetweenPanels()

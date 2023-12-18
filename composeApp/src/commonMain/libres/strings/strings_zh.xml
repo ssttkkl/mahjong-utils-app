@@ -42,4 +42,11 @@
     <string name="label_tile_discarded_by_other">他家打</string>
     <string name="label_other_options">选项</string>
     <string name="label_allow_chi">允许吃</string>
+
+    <string name="text_must_enter_tiles">请输入手牌。</string>
+    <string name="text_must_enter_chance_tile">请输入他家打的牌。</string>
+    <string name="text_cannot_have_more_than_14_tiles">手牌数量不能超过14枚。</string>
+    <string name="text_tiles_must_not_be_divided_into_3">手牌数量不能为3的倍数。</string>
+    <string name="text_any_tile_must_not_be_more_than_4">每种牌的数量不能超过4枚。</string>
+    <string name="text_tiles_are_not_without_got">手牌必须为未摸牌的状态。（4、7、10或13张）</string>
 </resources>

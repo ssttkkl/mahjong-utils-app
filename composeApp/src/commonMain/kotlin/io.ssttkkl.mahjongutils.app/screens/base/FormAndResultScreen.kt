@@ -13,7 +13,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.core.screen.Screen
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
@@ -91,9 +90,7 @@ abstract class FormAndResultScreen<M : ResultScreenModel<RES>, RES> : Navigation
         with(Spacing.current) {
             Row {
                 FormContent(appState, model, Modifier.weight(2f))
-
                 Spacer(Modifier.width(panesHorizontalSpacing))
-
                 Box(Modifier.weight(3f)) {
                     result?.let { result ->
                         Calculation(
