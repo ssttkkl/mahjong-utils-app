@@ -13,7 +13,13 @@ data class FuroChanceShantenArgs(
     val chanceTile: Tile,
     val allowChi: Boolean = true
 ) {
-    fun calc(): FuroChanceShantenResult {
-        return furoChanceShanten(tiles, chanceTile, allowChi)
+    fun calc(): FuroChanceShantenCalcResult {
+        val result = furoChanceShanten(tiles, chanceTile, allowChi)
+        return FuroChanceShantenCalcResult(this, result)
     }
 }
+
+data class FuroChanceShantenCalcResult(
+    val args: FuroChanceShantenArgs,
+    val result: FuroChanceShantenResult
+)

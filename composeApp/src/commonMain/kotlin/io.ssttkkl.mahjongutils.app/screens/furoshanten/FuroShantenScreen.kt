@@ -7,11 +7,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
 import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
@@ -20,26 +20,26 @@ import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
+import kotlinx.coroutines.Deferred
 
 
-object FuroShantenScreen : FormAndResultScreen<FuroShantenScreenModel, FuroChanceShantenArgs>(),
+object FuroShantenScreen :
+    FormAndResultScreen<FuroShantenScreenModel, FuroChanceShantenCalcResult>(),
     NavigationScreen {
     override val title: String
         get() = Res.string.title_furo_shanten
 
+    override val resultTitle: String
+        get() = Res.string.title_furo_shanten_result
+
     @Composable
-    override fun produceScreenModel(): FuroShantenScreenModel {
+    override fun getScreenModel(): FuroShantenScreenModel {
         return rememberScreenModel { FuroShantenScreenModel() }
     }
 
     @Composable
-    override fun latestEmittedArgs(model: FuroShantenScreenModel): FuroChanceShantenArgs? {
-        val args by model.produceArgs.collectAsState(null)
-        return args
-    }
-
-    override fun produceResultScreen(args: FuroChanceShantenArgs): Screen {
-        return FuroShantenResultScreen(args)
+    override fun resultState(model: FuroShantenScreenModel): State<Deferred<FuroChanceShantenCalcResult>?> {
+        return model.result.collectAsState()
     }
 
     @Composable
@@ -102,6 +102,15 @@ object FuroShantenScreen : FormAndResultScreen<FuroShantenScreenModel, FuroChanc
                 VerticalSpacerBetweenPanels()
             }
         }
+    }
+
+    @Composable
+    override fun ResultContent(
+        appState: AppState,
+        result: FuroChanceShantenCalcResult,
+        modifier: Modifier
+    ) {
+        FuroShantenResultContent(result.args, result.result.shantenInfo)
     }
 }
 

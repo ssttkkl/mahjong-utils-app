@@ -17,10 +17,16 @@ data class ShantenArgs(
     val tiles: List<Tile>,
     val mode: ShantenMode
 ) {
-    fun calc(): CommonShantenResult<*> {
-        return when (mode) {
+    fun calc(): ShantenCalcResult {
+        val result = when (mode) {
             ShantenMode.Union -> shanten(tiles)
             ShantenMode.Regular -> regularShanten(tiles)
         }
+        return ShantenCalcResult(this, result)
     }
 }
+
+data class ShantenCalcResult(
+    val args: ShantenArgs,
+    val result: CommonShantenResult<*>
+)
