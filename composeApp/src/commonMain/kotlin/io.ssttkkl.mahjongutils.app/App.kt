@@ -17,11 +17,15 @@ import cafe.adriel.voyager.navigator.Navigator
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppScaffold
 import io.ssttkkl.mahjongutils.app.components.appscaffold.rememberAppState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
+import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.screens.furoshanten.FuroShantenScreen
 import io.ssttkkl.mahjongutils.app.screens.shanten.ShantenScreen
 import kotlinx.coroutines.launch
 
-private val navigatableScreens = listOf(ShantenScreen, FuroShantenScreen)
+private val navigatableScreens: List<NavigationScreen> = listOf(
+    ShantenScreen,
+    FuroShantenScreen
+)
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable

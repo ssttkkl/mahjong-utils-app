@@ -11,24 +11,43 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.rememberScreenModel
+import cafe.adriel.voyager.core.screen.Screen
 import io.ssttkkl.mahjongutils.app.Res
-import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
-import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
+import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.switch.SwitchItem
 import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
+import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
+import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 
 
-object FuroShantenScreen : NavigationScreen {
+object FuroShantenScreen : FormAndResultScreen<FuroShantenScreenModel, FuroChanceShantenArgs>(),
+    NavigationScreen {
     override val title: String
         get() = Res.string.title_furo_shanten
 
     @Composable
-    override fun Content() {
-        val appState = LocalAppState.current
-        val model = rememberScreenModel { FuroShantenScreenModel() }
+    override fun produceScreenModel(): FuroShantenScreenModel {
+        return rememberScreenModel { FuroShantenScreenModel() }
+    }
 
+    @Composable
+    override fun latestEmittedArgs(model: FuroShantenScreenModel): FuroChanceShantenArgs? {
+        val args by model.produceArgs.collectAsState(null)
+        return args
+    }
+
+    override fun produceResultScreen(args: FuroChanceShantenArgs): Screen {
+        return FuroShantenResultScreen(args)
+    }
+
+    @Composable
+    override fun FormContent(
+        appState: AppState,
+        model: FuroShantenScreenModel,
+        modifier: Modifier
+    ) {
         val tilesState by model.tiles.collectAsState()
         val chanceTileState by model.chanceTile.collectAsState()
         val allowChiState by model.allowChi.collectAsState()

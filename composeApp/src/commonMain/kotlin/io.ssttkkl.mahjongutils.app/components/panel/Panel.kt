@@ -1,7 +1,10 @@
 package io.ssttkkl.mahjongutils.app.components.panel
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -10,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.utils.Spacing
@@ -19,7 +23,7 @@ fun Panel(
     header: String,
     modifier: Modifier = Modifier,
     titleModifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable ColumnScope.() -> Unit
 ) {
     Column(modifier) {
         Text(
@@ -28,7 +32,7 @@ fun Panel(
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
             maxLines = 1,
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
         content()
     }
 }
@@ -56,13 +60,22 @@ fun TopPanel(
 fun CardPanel(
     header: String,
     modifier: Modifier = Modifier,
+    cardModifier: Modifier = Modifier,
     titleModifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    vararg content: @Composable () -> Unit
 ) {
     with(Spacing.current) {
-        Card(modifier) {
-            Panel(header, Modifier.padding(cardInnerPadding), titleModifier) {
-                content()
+        Panel(header, modifier, titleModifier) {
+            content.forEachIndexed { index, it ->
+                Card(Modifier.fillMaxWidth().then(cardModifier)) {
+                    Box(Modifier.padding(cardInnerPadding)) {
+                        it()
+                    }
+                }
+
+                if (index != content.size) {
+                    Spacer(Modifier.height(4.dp))
+                }
             }
         }
     }
@@ -71,16 +84,18 @@ fun CardPanel(
 @Composable
 fun TopCardPanel(
     header: String,
-    modifier: Modifier = Modifier,
-    titleModifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    vararg content: @Composable () -> Unit
 ) {
     with(Spacing.current) {
         CardPanel(
             header,
-            modifier.fillMaxWidth().windowHorizontalMargin(),
-            titleModifier,
-            content
+            Modifier.fillMaxWidth().windowHorizontalMargin(),
+            titleModifier = Modifier.padding(
+                start = cardInnerPadding.calculateStartPadding(
+                    LocalLayoutDirection.current
+                )
+            ),
+            content = content
         )
     }
 }

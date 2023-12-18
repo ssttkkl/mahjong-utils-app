@@ -84,3 +84,11 @@ private val tileToImgResMapping = buildMap {
 val Tile.painterResource: Painter
     @Composable
     get() = (tileToImgResMapping[this] ?: Res.image.tile_back).painterResource()
+
+fun shantenNumText(shantenNum: Int): String {
+    return when (shantenNum) {
+        -1 -> Res.string.text_hora
+        0 -> Res.string.text_tenpai
+        else -> Res.string.text_shanten_num.format(shantenNum)
+    }
+}
