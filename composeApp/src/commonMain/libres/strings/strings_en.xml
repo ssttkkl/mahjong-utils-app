@@ -4,6 +4,8 @@
     <string name="title_shanten_result">Shanten Result</string>
     <string name="title_furo_shanten">Furo Shanten</string>
     <string name="title_furo_shanten_result">Furo Shanten Result</string>
+    <string name="title_hora">Hora Analyses</string>
+    <string name="title_hora_result">Hora Analyses Result</string>
     <string name="message_unknown_error">Unknown error</string>
     <string name="label_keyboard_collapse">Collapse</string>
     <string name="label_keyboard_backspace">Backspace</string>
@@ -42,6 +44,20 @@
     <string name="label_tile_discarded_by_other">Tile Discarded by Other</string>
     <string name="label_other_options">Other Options</string>
     <string name="label_allow_chi">Allow Chi</string>
+    <string name="label_furo">Furo</string>
+    <string name="label_ankan">Ankan</string>
+    <string name="label_minkan">Minkan</string>
+    <string name="label_agari">Agari</string>
+    <string name="label_tsumo">Tsumo</string>
+    <string name="label_dora">Dora</string>
+    <string name="label_self_wind">Self Wind</string>
+    <string name="label_round_wind">Round Wind</string>
+    <string name="label_extra_yaku">Extra Yaku</string>
+    <string name="label_wind_unspecified">None</string>
+    <string name="label_wind_east">East</string>
+    <string name="label_wind_south">South</string>
+    <string name="label_wind_west">West</string>
+    <string name="label_wind_north">North</string>
 
     <string name="text_must_enter_tiles">Enter your tiles in hand please.</string>
     <string name="text_must_enter_chance_tile">Enter your chance tile please.</string>

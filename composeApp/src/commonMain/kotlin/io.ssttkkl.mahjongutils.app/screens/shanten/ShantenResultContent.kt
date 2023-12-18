@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.screens.shanten
 
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -113,10 +114,10 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithGot) {
                     shantenNumText(shantenNum)
                 )
 
-                val content: Array<@Composable () -> Unit> = Array(actions.size) {
+                val content: Array<@Composable BoxScope.() -> Unit> = Array(actions.size) {
                     @Composable { ShantenActionCardContent(actions[it]) }
                 }
-                TopCardPanel(label, *content)
+                TopCardPanel(label, content = content)
 
                 VerticalSpacerBetweenPanels()
             }

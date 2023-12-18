@@ -1,8 +1,10 @@
 package io.ssttkkl.mahjongutils.app.components.panel
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,15 +25,22 @@ fun Panel(
     header: String,
     modifier: Modifier = Modifier,
     titleModifier: Modifier = Modifier,
+    titleTrailingContent: (@Composable () -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(modifier) {
-        Text(
-            header,
-            titleModifier,
-            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-            maxLines = 1,
-        )
+        Row(titleModifier) {
+            Text(
+                header,
+                Modifier.weight(1f),
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                maxLines = 1,
+            )
+            titleTrailingContent?.let {
+                Spacer(Modifier.padding(start = 8.dp))
+                titleTrailingContent()
+            }
+        }
         Spacer(Modifier.height(8.dp))
         content()
     }
@@ -40,17 +49,26 @@ fun Panel(
 @Composable
 fun TopPanel(
     header: String,
+    modifier: Modifier = Modifier,
+    titleModifier: Modifier = Modifier,
     noPaddingContent: Boolean = false,
-    content: @Composable () -> Unit
+    titleTrailingContent: (@Composable () -> Unit)? = null,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     with(Spacing.current) {
         if (!noPaddingContent) {
-            Panel(header, Modifier.fillMaxWidth().windowHorizontalMargin()) { content() }
+            Panel(
+                header,
+                Modifier.fillMaxWidth().windowHorizontalMargin().then(modifier),
+                titleModifier,
+                titleTrailingContent = titleTrailingContent
+            ) { content() }
         } else {
             Panel(
                 header,
-                Modifier.fillMaxWidth(),
-                Modifier.windowHorizontalMargin()
+                Modifier.fillMaxWidth().then(modifier),
+                Modifier.windowHorizontalMargin().then(titleModifier),
+                titleTrailingContent = titleTrailingContent
             ) { content() }
         }
     }
@@ -62,10 +80,11 @@ fun CardPanel(
     modifier: Modifier = Modifier,
     cardModifier: Modifier = Modifier,
     titleModifier: Modifier = Modifier,
-    vararg content: @Composable () -> Unit
+    titleTrailingContent: (@Composable () -> Unit)? = null,
+    vararg content: @Composable BoxScope.() -> Unit
 ) {
     with(Spacing.current) {
-        Panel(header, modifier, titleModifier) {
+        Panel(header, modifier, titleModifier, titleTrailingContent) {
             content.forEachIndexed { index, it ->
                 Card(Modifier.fillMaxWidth().then(cardModifier)) {
                     Box(Modifier.padding(cardInnerPadding)) {
@@ -84,7 +103,8 @@ fun CardPanel(
 @Composable
 fun TopCardPanel(
     header: String,
-    vararg content: @Composable () -> Unit
+    titleTrailingContent: (@Composable () -> Unit)? = null,
+    vararg content: @Composable BoxScope.() -> Unit
 ) {
     with(Spacing.current) {
         CardPanel(
@@ -95,6 +115,7 @@ fun TopCardPanel(
                     LocalLayoutDirection.current
                 )
             ),
+            titleTrailingContent = titleTrailingContent,
             content = content
         )
     }

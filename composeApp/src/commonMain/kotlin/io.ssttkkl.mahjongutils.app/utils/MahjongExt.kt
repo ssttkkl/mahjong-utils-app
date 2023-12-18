@@ -6,6 +6,7 @@ import io.github.skeptick.libres.compose.painterResource
 import io.ssttkkl.mahjongutils.app.Res
 import mahjongutils.models.Tile
 import mahjongutils.models.TileType
+import mahjongutils.models.Wind
 import mahjongutils.models.isWind
 
 // https://en.wikipedia.org/wiki/Mahjong_Tiles_(Unicode_block)
@@ -92,3 +93,11 @@ fun shantenNumText(shantenNum: Int): String {
         else -> Res.string.text_shanten_num.format(shantenNum)
     }
 }
+
+val Wind.localizedName
+    get() = when (this) {
+        Wind.East -> Res.string.label_wind_east
+        Wind.South -> Res.string.label_wind_south
+        Wind.West -> Res.string.label_wind_west
+        Wind.North -> Res.string.label_wind_north
+    }

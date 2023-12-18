@@ -25,8 +25,7 @@ import kotlinx.coroutines.launch
 
 
 object FuroShantenScreen :
-    FormAndResultScreen<FuroShantenScreenModel, FuroChanceShantenCalcResult>(),
-    NavigationScreen {
+    FormAndResultScreen<FuroShantenScreenModel, FuroChanceShantenCalcResult>() {
     override val title: String
         get() = Res.string.title_furo_shanten
 

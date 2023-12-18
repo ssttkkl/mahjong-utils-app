@@ -19,12 +19,14 @@ import io.ssttkkl.mahjongutils.app.components.appscaffold.rememberAppState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.screens.furoshanten.FuroShantenScreen
+import io.ssttkkl.mahjongutils.app.screens.hora.HoraScreen
 import io.ssttkkl.mahjongutils.app.screens.shanten.ShantenScreen
 import kotlinx.coroutines.launch
 
 private val navigatableScreens: List<NavigationScreen> = listOf(
     ShantenScreen,
-    FuroShantenScreen
+    FuroShantenScreen,
+    HoraScreen
 )
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)

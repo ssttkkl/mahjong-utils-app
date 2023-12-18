@@ -4,6 +4,8 @@
     <string name="title_shanten_result">牌理计算结果</string>
     <string name="title_furo_shanten">副露牌理</string>
     <string name="title_furo_shanten_result">副露牌理计算</string>
+    <string name="title_hora">和牌分析</string>
+    <string name="title_hora_result">和牌分析结果</string>
     <string name="message_unknown_error">未知错误</string>
     <string name="label_keyboard_collapse">收起</string>
     <string name="label_keyboard_backspace">退格</string>
@@ -42,6 +44,20 @@
     <string name="label_tile_discarded_by_other">他家打</string>
     <string name="label_other_options">选项</string>
     <string name="label_allow_chi">允许吃</string>
+    <string name="label_furo">副露</string>
+    <string name="label_ankan">暗杠</string>
+    <string name="label_minkan">大明杠</string>
+    <string name="label_agari">所和的牌</string>
+    <string name="label_tsumo">自摸</string>
+    <string name="label_dora">宝牌</string>
+    <string name="label_self_wind">自风</string>
+    <string name="label_round_wind">场风</string>
+    <string name="label_extra_yaku">额外役</string>
+    <string name="label_wind_unspecified">未指定</string>
+    <string name="label_wind_east">东</string>
+    <string name="label_wind_south">南</string>
+    <string name="label_wind_west">西</string>
+    <string name="label_wind_north">北</string>
 
     <string name="text_must_enter_tiles">请输入手牌。</string>
     <string name="text_must_enter_chance_tile">请输入他家打的牌。</string>

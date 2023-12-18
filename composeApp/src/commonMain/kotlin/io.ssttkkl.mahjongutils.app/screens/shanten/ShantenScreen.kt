@@ -50,8 +50,7 @@ private fun ShantenModeRatioGroups(
 }
 
 object ShantenScreen :
-    FormAndResultScreen<ShantenScreenModel, ShantenCalcResult>(),
-    NavigationScreen {
+    FormAndResultScreen<ShantenScreenModel, ShantenCalcResult>() {
     override val title: String
         get() = Res.string.title_shanten
 
