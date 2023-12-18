@@ -9,9 +9,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Divider
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,16 +33,19 @@ interface KeyboardKeyItem {
     fun display(onClick: () -> Unit)
 }
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun <T : KeyboardKeyItem> KeyboardScreen(
     keysMatrix: List<List<T>>,
     onCollapse: () -> Unit,
     onCommit: (T) -> Unit,
 ) {
+    val windowSizeClass = calculateWindowSizeClass()
+
     Column(
-        modifier = Modifier.fillMaxWidth()
-            .background(Color.LightGray.copy(alpha = 0.4f))
-            .padding(bottom = 8.dp)
+        Modifier.fillMaxWidth()
+            .background(Color.LightGray.copy(alpha = 0.4f)),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             Icons.Filled.KeyboardArrowDown,
@@ -53,16 +60,28 @@ fun <T : KeyboardKeyItem> KeyboardScreen(
 
         Divider(Modifier.padding(bottom = 8.dp))
 
-        keysMatrix.forEach { row ->
-            Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
-                row.forEach { key ->
-                    KeyboardKey(
-                        Modifier.weight(key.weightOfRow).height(56.dp),
-                        {
-                            onCommit(key)
+        Column(
+            modifier = Modifier
+                .run {
+                    if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
+                        this.widthIn(0.dp, 500.dp)
+                    } else {
+                        this.fillMaxWidth()
+                    }
+                }
+                .padding(bottom = 8.dp)
+        ) {
+            keysMatrix.forEach { row ->
+                Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
+                    row.forEach { key ->
+                        KeyboardKey(
+                            Modifier.weight(key.weightOfRow).height(56.dp),
+                            {
+                                onCommit(key)
+                            }
+                        ) {
+                            key.display(it)
                         }
-                    ) {
-                        key.display(it)
                     }
                 }
             }
