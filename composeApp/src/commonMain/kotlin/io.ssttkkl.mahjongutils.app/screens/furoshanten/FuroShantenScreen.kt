@@ -9,21 +9,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import io.ssttkkl.mahjongutils.app.LocalAppState
 import io.ssttkkl.mahjongutils.app.Res
-import io.ssttkkl.mahjongutils.app.components.basepane.LocalSnackbarHostState
+import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.navigator.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.switch.SwitchItem
 import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
-import io.ssttkkl.mahjongutils.app.screens.shanten.ShantenScreenModel
 import io.ssttkkl.mahjongutils.app.utils.Spacing
-import mahjongutils.models.Tile
 
 
 object FuroShantenScreen : NavigationScreen {
@@ -33,7 +27,6 @@ object FuroShantenScreen : NavigationScreen {
     @Composable
     override fun Content() {
         val appState = LocalAppState.current
-        val snackbarHostState = LocalSnackbarHostState.current
         val model = rememberScreenModel { FuroShantenScreenModel() }
 
         val tilesState by model.tiles.collectAsState()
@@ -83,7 +76,7 @@ object FuroShantenScreen : NavigationScreen {
                     modifier = Modifier.windowHorizontalMargin(),
                     content = { Text(Res.string.text_calc) },
                     onClick = {
-                        model.onSubmit(appState, snackbarHostState)
+                        model.onSubmit(appState.snackbarHostState)
                     }
                 )
 

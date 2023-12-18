@@ -56,7 +56,7 @@ data class ShantenResultScreen(
     }
 
     @Composable
-    fun Content(tiles: List<Tile>, shanten: ShantenWithoutGot) {
+    private fun Content(tiles: List<Tile>, shanten: ShantenWithoutGot) {
         val scrollState = rememberScrollState()
 
         with(Spacing.current) {
@@ -93,7 +93,7 @@ data class ShantenResultScreen(
     }
 
     @Composable
-    fun Content(tiles: List<Tile>, shanten: ShantenWithGot) {
+    private fun Content(tiles: List<Tile>, shanten: ShantenWithGot) {
         val scrollState = rememberScrollState()
 
         with(Spacing.current) {

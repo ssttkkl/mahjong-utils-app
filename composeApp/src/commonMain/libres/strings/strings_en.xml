@@ -19,7 +19,8 @@
     <string name="label_good_shape_advance_tiles">Good-Shape Advance Tiles</string>
     <string name="text_calc">Calc</string>
     <string name="text_shanten_num">{} shanten</string>
-    <string name="text_tiles_num">{}</string>
+    <string name="text_tiles_num">Total: {}</string>
+    <string name="text_tiles_num_short">{}</string>
     <string name="text_tenpai">Tenpai</string>
     <string name="text_hora">Hora</string>
     <string name="text_tiles_without_got">Without got</string>
@@ -28,7 +29,7 @@
     <string name="label_shanten_action_backwards">{} Shanten (Backwards)</string>
     <string name="text_shanten_action_discard">Discard</string>
     <string name="text_shanten_action_ankan">Ankan</string>
-    <string name="text_good_shape_advance_tiles_num">{} ({}% of all)</string>
+    <string name="text_good_shape_advance_tiles_num">Total: {} ({}% of all)</string>
     <string name="label_tile_discarded_by_other">Tile Discarded by Other</string>
     <string name="label_other_options">Other Options</string>
     <string name="label_allow_chi">Allow Chi</string>

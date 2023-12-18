@@ -20,6 +20,7 @@
     <string name="text_calc">計算</string>
     <string name="text_shanten_num">{}向聴</string>
     <string name="text_tiles_num">{}枚</string>
+    <string name="text_tiles_num_short">{}枚</string>
     <string name="text_tenpai">聴牌</string>
     <string name="text_hora">和了</string>
     <string name="text_tiles_without_got">まだツモしない</string>

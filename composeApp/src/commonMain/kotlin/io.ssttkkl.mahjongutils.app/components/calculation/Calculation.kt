@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import io.ssttkkl.mahjongutils.app.Res
-import io.ssttkkl.mahjongutils.app.components.basepane.LocalSnackbarHostState
+import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
@@ -18,12 +18,12 @@ import kotlin.coroutines.CoroutineContext
 
 @Composable
 fun PopAndShowMessageOnFailure(throwable: Throwable) {
-    val snackbarHostState = LocalSnackbarHostState.current
+    val appState = LocalAppState.current
 
     LaunchedEffect(throwable) {
-//        appState.navigator.popBackStack()
+        appState.navigator.popUntilRoot()
         withContext(NonCancellable) {
-            snackbarHostState.showSnackbar(Res.string.message_unknown_error)
+            appState.snackbarHostState.showSnackbar(Res.string.message_unknown_error)
         }
     }
 }

@@ -11,14 +11,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import io.ssttkkl.mahjongutils.app.LocalAppState
+import cafe.adriel.voyager.core.screen.Screen
 import io.ssttkkl.mahjongutils.app.Res
-import io.ssttkkl.mahjongutils.app.components.basepane.LocalSnackbarHostState
+import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.navigator.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.ratio.RatioGroups
 import io.ssttkkl.mahjongutils.app.components.ratio.RatioOption
 import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
+import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 
 @Composable
@@ -43,22 +44,39 @@ private fun ShantenModeRatioGroups(
     RatioGroups(radioOptions, value, onValueChanged, modifier)
 }
 
-object ShantenScreen : NavigationScreen {
+object ShantenScreen : FormAndResultScreen<ShantenScreenModel, ShantenArgs>(), NavigationScreen {
     override val title: String
         get() = Res.string.title_shanten
 
     @Composable
-    override fun Content() {
-        val appState = LocalAppState.current
-        val snackbarHostState = LocalSnackbarHostState.current
-        val model = rememberScreenModel { ShantenScreenModel() }
+    override fun produceScreenModel(): ShantenScreenModel {
+        return rememberScreenModel { ShantenScreenModel() }
+    }
+
+    @Composable
+    override fun latestEmittedArgs(model: ShantenScreenModel): ShantenArgs? {
+        val args by model.produceArgs.collectAsState(null)
+        return args
+    }
+
+    override fun produceResultScreen(args: ShantenArgs): Screen {
+        return ShantenResultScreen(args)
+    }
+
+    @Composable
+    override fun FormContent(
+        appState: AppState,
+        model: ShantenScreenModel,
+        modifier: Modifier
+    ) {
+        val snackbarHostState = appState.snackbarHostState
 
         val tilesState by model.tiles.collectAsState()
         val shantenModeState by model.shantenMode.collectAsState()
 
         with(Spacing.current) {
             Column(
-                Modifier.verticalScroll(rememberScrollState())
+                modifier.verticalScroll(rememberScrollState())
             ) {
                 VerticalSpacerBetweenPanels()
 
@@ -88,7 +106,7 @@ object ShantenScreen : NavigationScreen {
                     modifier = Modifier.windowHorizontalMargin(),
                     content = { Text(Res.string.text_calc) },
                     onClick = {
-                        model.onSubmit(appState, snackbarHostState)
+                        model.onSubmit(snackbarHostState)
                     }
                 )
 

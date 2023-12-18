@@ -19,7 +19,8 @@
     <string name="label_good_shape_advance_tiles">好形进张</string>
     <string name="text_calc">计算</string>
     <string name="text_shanten_num">{}向听</string>
-    <string name="text_tiles_num">{}枚</string>
+    <string name="text_tiles_num">共{}枚</string>
+    <string name="text_tiles_num_short">{}枚</string>
     <string name="text_tenpai">听牌</string>
     <string name="text_hora">和了</string>
     <string name="text_tiles_without_got">未摸牌</string>
@@ -28,7 +29,7 @@
     <string name="label_shanten_action_backwards">{}向听打法（退向）</string>
     <string name="text_shanten_action_discard">打</string>
     <string name="text_shanten_action_ankan">暗杠</string>
-    <string name="text_good_shape_advance_tiles_num">{}枚（{}%）</string>
+    <string name="text_good_shape_advance_tiles_num">共{}枚（{}%）</string>
     <string name="label_tile_discarded_by_other">他家打</string>
     <string name="label_other_options">选项</string>
     <string name="label_allow_chi">允许吃</string>

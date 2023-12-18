@@ -2,17 +2,31 @@ package io.ssttkkl.mahjongutils.app.screens.shanten
 
 import androidx.compose.material3.SnackbarHostState
 import cafe.adriel.voyager.core.model.ScreenModel
-import io.ssttkkl.mahjongutils.app.AppState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
 
 class ShantenScreenModel : ScreenModel {
-    var tiles = MutableStateFlow<List<Tile>>(emptyList())
-    var shantenMode = MutableStateFlow(ShantenMode.Union)
+    val scope = CoroutineScope(Dispatchers.Main)
 
-    fun onSubmit(appState: AppState, snackbarHostState: SnackbarHostState) {
+    override fun onDispose() {
+        super.onDispose()
+        scope.cancel()
+    }
+
+    val tiles = MutableStateFlow<List<Tile>>(emptyList())
+    val shantenMode = MutableStateFlow(ShantenMode.Union)
+
+    val produceArgs = MutableSharedFlow<ShantenArgs>()
+
+    fun onSubmit(snackbarHostState: SnackbarHostState) {
         val args = ShantenArgs(tiles.value, shantenMode.value)
-        val navigator = appState.subPaneNavigator ?: appState.mainPaneNavigator
-        navigator.push(ShantenResultScreen(args))
+        scope.launch {
+            produceArgs.emit(args)
+        }
     }
 }

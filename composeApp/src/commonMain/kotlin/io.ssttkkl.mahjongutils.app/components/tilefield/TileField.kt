@@ -82,7 +82,7 @@ fun TileField(
             },
             trailingIcon = {
                 Text(
-                    Res.string.text_tiles_num.format(value.size),
+                    Res.string.text_tiles_num_short.format(value.size),
                     style = MaterialTheme.typography.labelMedium
                 )
             }
