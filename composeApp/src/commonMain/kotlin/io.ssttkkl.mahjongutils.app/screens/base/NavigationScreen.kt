@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.components.navigator
+package io.ssttkkl.mahjongutils.app.screens.base
 
 import cafe.adriel.voyager.core.screen.Screen
 

@@ -14,7 +14,7 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
-import io.ssttkkl.mahjongutils.app.components.navigator.NavigationScreen
+import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.ratio.RatioGroups
 import io.ssttkkl.mahjongutils.app.components.ratio.RatioOption

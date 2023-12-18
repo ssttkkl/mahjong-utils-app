@@ -33,7 +33,7 @@ abstract class FormAndResultScreen<M : ScreenModel, ARGS : Any> : Screen {
         val model = produceScreenModel()
 
         if (appState.windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
-            && appState.windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+            || appState.windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
         ) {
             OnePaneContent(appState, model)
         } else {

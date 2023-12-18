@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowMessageOnFailure
-import io.ssttkkl.mahjongutils.app.components.navigator.NavigationScreen
+import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.panel.CardPanel
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.table.ShantenAction

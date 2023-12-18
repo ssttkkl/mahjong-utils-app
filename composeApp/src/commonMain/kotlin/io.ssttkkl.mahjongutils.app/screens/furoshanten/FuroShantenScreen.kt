@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
-import io.ssttkkl.mahjongutils.app.components.navigator.NavigationScreen
+import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.switch.SwitchItem
 import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
