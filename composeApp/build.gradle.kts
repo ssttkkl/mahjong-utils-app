@@ -1,3 +1,4 @@
+import dev.icerock.gradle.MRVisibility
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
@@ -6,7 +7,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinNativeCocoapods)
-    alias(libs.plugins.libres)
+    alias(libs.plugins.mokoResources)
 }
 
 kotlin {
@@ -20,6 +21,8 @@ kotlin {
 //        }
 //        binaries.executable()
 //    }
+
+    applyDefaultHierarchyTemplate()
 
     androidTarget {
         compilations.all {
@@ -51,6 +54,10 @@ kotlin {
     }
 
     sourceSets {
+        getByName("androidMain").dependsOn(commonMain.get())
+        getByName("iosArm64Main").dependsOn(commonMain.get())
+        getByName("iosX64Main").dependsOn(commonMain.get())
+        getByName("iosSimulatorArm64Main").dependsOn(commonMain.get())
 
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
@@ -69,7 +76,9 @@ kotlin {
 
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.screenmodel)
-            implementation(libs.libres.compose)
+
+            implementation(libs.moko.resources)
+            implementation(libs.moko.resources.compose)
 
             implementation(libs.mahjong.utils)
         }
@@ -114,3 +123,9 @@ android {
 //compose.experimental {
 //    web.application {}
 //}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "io.ssttkkl.mahjongutils.app"
+    multiplatformResourcesVisibility = MRVisibility.Internal
+    iosBaseLocalizationRegion = "en"
+}

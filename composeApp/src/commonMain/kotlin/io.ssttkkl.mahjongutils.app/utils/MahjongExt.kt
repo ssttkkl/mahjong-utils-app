@@ -2,8 +2,9 @@ package io.ssttkkl.mahjongutils.app.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
-import io.github.skeptick.libres.compose.painterResource
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import mahjongutils.models.Tile
 import mahjongutils.models.TileType
 import mahjongutils.models.Wind
@@ -45,75 +46,78 @@ fun emojiToTile(emoji: String): Tile {
 }
 
 private val tileToImgResMapping = buildMap {
-    this[Tile["1m"]] = Res.image.tile_1m
-    this[Tile["2m"]] = Res.image.tile_2m
-    this[Tile["3m"]] = Res.image.tile_3m
-    this[Tile["4m"]] = Res.image.tile_4m
-    this[Tile["5m"]] = Res.image.tile_5m
-    this[Tile["6m"]] = Res.image.tile_6m
-    this[Tile["7m"]] = Res.image.tile_7m
-    this[Tile["8m"]] = Res.image.tile_8m
-    this[Tile["9m"]] = Res.image.tile_9m
+    this[Tile["1m"]] = MR.images.tile_1m
+    this[Tile["2m"]] = MR.images.tile_2m
+    this[Tile["3m"]] = MR.images.tile_3m
+    this[Tile["4m"]] = MR.images.tile_4m
+    this[Tile["5m"]] = MR.images.tile_5m
+    this[Tile["6m"]] = MR.images.tile_6m
+    this[Tile["7m"]] = MR.images.tile_7m
+    this[Tile["8m"]] = MR.images.tile_8m
+    this[Tile["9m"]] = MR.images.tile_9m
 
-    this[Tile["1p"]] = Res.image.tile_1p
-    this[Tile["2p"]] = Res.image.tile_2p
-    this[Tile["3p"]] = Res.image.tile_3p
-    this[Tile["4p"]] = Res.image.tile_4p
-    this[Tile["5p"]] = Res.image.tile_5p
-    this[Tile["6p"]] = Res.image.tile_6p
-    this[Tile["7p"]] = Res.image.tile_7p
-    this[Tile["8p"]] = Res.image.tile_8p
-    this[Tile["9p"]] = Res.image.tile_9p
+    this[Tile["1p"]] = MR.images.tile_1p
+    this[Tile["2p"]] = MR.images.tile_2p
+    this[Tile["3p"]] = MR.images.tile_3p
+    this[Tile["4p"]] = MR.images.tile_4p
+    this[Tile["5p"]] = MR.images.tile_5p
+    this[Tile["6p"]] = MR.images.tile_6p
+    this[Tile["7p"]] = MR.images.tile_7p
+    this[Tile["8p"]] = MR.images.tile_8p
+    this[Tile["9p"]] = MR.images.tile_9p
 
-    this[Tile["1s"]] = Res.image.tile_1s
-    this[Tile["2s"]] = Res.image.tile_2s
-    this[Tile["3s"]] = Res.image.tile_3s
-    this[Tile["4s"]] = Res.image.tile_4s
-    this[Tile["5s"]] = Res.image.tile_5s
-    this[Tile["6s"]] = Res.image.tile_6s
-    this[Tile["7s"]] = Res.image.tile_7s
-    this[Tile["8s"]] = Res.image.tile_8s
-    this[Tile["9s"]] = Res.image.tile_9s
+    this[Tile["1s"]] = MR.images.tile_1s
+    this[Tile["2s"]] = MR.images.tile_2s
+    this[Tile["3s"]] = MR.images.tile_3s
+    this[Tile["4s"]] = MR.images.tile_4s
+    this[Tile["5s"]] = MR.images.tile_5s
+    this[Tile["6s"]] = MR.images.tile_6s
+    this[Tile["7s"]] = MR.images.tile_7s
+    this[Tile["8s"]] = MR.images.tile_8s
+    this[Tile["9s"]] = MR.images.tile_9s
 
-    this[Tile["1z"]] = Res.image.tile_1z
-    this[Tile["2z"]] = Res.image.tile_2z
-    this[Tile["3z"]] = Res.image.tile_3z
-    this[Tile["4z"]] = Res.image.tile_4z
-    this[Tile["5z"]] = Res.image.tile_5z
-    this[Tile["6z"]] = Res.image.tile_6z
-    this[Tile["7z"]] = Res.image.tile_7z
+    this[Tile["1z"]] = MR.images.tile_1z
+    this[Tile["2z"]] = MR.images.tile_2z
+    this[Tile["3z"]] = MR.images.tile_3z
+    this[Tile["4z"]] = MR.images.tile_4z
+    this[Tile["5z"]] = MR.images.tile_5z
+    this[Tile["6z"]] = MR.images.tile_6z
+    this[Tile["7z"]] = MR.images.tile_7z
 }
 
 val Tile.painterResource: Painter
     @Composable
-    get() = (tileToImgResMapping[this] ?: Res.image.tile_back).painterResource()
+    get() = painterResource(tileToImgResMapping[this] ?: MR.images.tile_back)
 
+@Composable
 fun shantenNumText(shantenNum: Int): String {
     return when (shantenNum) {
-        -1 -> Res.string.text_hora
-        0 -> Res.string.text_tenpai
-        else -> Res.string.text_shanten_num.format(shantenNum)
+        -1 -> stringResource(MR.strings.text_hora)
+        0 -> stringResource(MR.strings.text_tenpai)
+        else -> stringResource(
+            MR.strings.text_shanten_num, shantenNum
+        )
     }
 }
 
 val Wind.localizedName
     get() = when (this) {
-        Wind.East -> Res.string.label_wind_east
-        Wind.South -> Res.string.label_wind_south
-        Wind.West -> Res.string.label_wind_west
-        Wind.North -> Res.string.label_wind_north
+        Wind.East -> MR.strings.label_wind_east
+        Wind.South -> MR.strings.label_wind_south
+        Wind.West -> MR.strings.label_wind_west
+        Wind.North -> MR.strings.label_wind_north
     }
 
 val Yaku.localizedName
     get() = when (this) {
-        Yakus.Tenhou -> Res.string.label_yaku_tenhou
-        Yakus.Chihou -> Res.string.label_yaku_chihou
-        Yakus.WRichi -> Res.string.label_yaku_wrichi
-        Yakus.Richi -> Res.string.label_yaku_richi
-        Yakus.Ippatsu -> Res.string.label_yaku_ippatsu
-        Yakus.Rinshan -> Res.string.label_yaku_rinshan
-        Yakus.Chankan -> Res.string.label_yaku_chankan
-        Yakus.Haitei -> Res.string.label_yaku_haitei
-        Yakus.Houtei -> Res.string.label_yaku_houtei
-        else -> ""
+        Yakus.Tenhou -> MR.strings.label_yaku_tenhou
+        Yakus.Chihou -> MR.strings.label_yaku_chihou
+        Yakus.WRichi -> MR.strings.label_yaku_wrichi
+        Yakus.Richi -> MR.strings.label_yaku_richi
+        Yakus.Ippatsu -> MR.strings.label_yaku_ippatsu
+        Yakus.Rinshan -> MR.strings.label_yaku_rinshan
+        Yakus.Chankan -> MR.strings.label_yaku_chankan
+        Yakus.Haitei -> MR.strings.label_yaku_haitei
+        Yakus.Houtei -> MR.strings.label_yaku_houtei
+        else -> error("unknown yaku: $this")
     }

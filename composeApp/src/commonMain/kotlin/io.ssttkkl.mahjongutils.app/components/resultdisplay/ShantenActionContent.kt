@@ -14,13 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.divider.VerticalDivider
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.tiles.Tile
 import io.ssttkkl.mahjongutils.app.components.tiles.Tiles
 import io.ssttkkl.mahjongutils.app.utils.Spacing
-import io.ssttkkl.mahjongutils.app.utils.format
 import mahjongutils.models.Tatsu
 import mahjongutils.models.Tile
 import mahjongutils.shanten.Improvement
@@ -77,10 +77,12 @@ fun ShantenActionCardContent(
 
             Column(Modifier.weight(1f)) {
                 TilesWithNumPanel(
-                    if (shanten.shantenNum == 0)
-                        Res.string.label_waiting_tiles
-                    else
-                        Res.string.label_advance_tiles,
+                    stringResource(
+                        if (shanten.shantenNum == 0)
+                            MR.strings.label_waiting_tiles
+                        else
+                            MR.strings.label_advance_tiles
+                    ),
                     shanten.advance.sorted(),
                     shanten.advanceNum
                 )
@@ -89,7 +91,7 @@ fun ShantenActionCardContent(
                     VerticalSpacerBetweenPanels()
 
                     TilesWithNumPanel(
-                        Res.string.label_good_shape_advance_tiles,
+                        stringResource(MR.strings.label_good_shape_advance_tiles),
                         goodShapeAdvance.sorted(),
                         shanten.goodShapeAdvanceNum ?: 0
                     )
@@ -99,7 +101,7 @@ fun ShantenActionCardContent(
                     VerticalSpacerBetweenPanels()
 
                     ImprovementsPanel(
-                        Res.string.label_good_shape_improvement_tiles,
+                        stringResource(MR.strings.label_good_shape_improvement_tiles),
                         goodShapeImprovement,
                         shanten.goodShapeImprovementNum ?: 0
                     )
@@ -119,41 +121,41 @@ private fun ShantenActionContent(
     Row(modifier, horizontalArrangement, verticalAlignment) {
         when (action) {
             is ShantenAction.Discard -> {
-                Text(Res.string.text_shanten_action_discard)
+                Text(stringResource(MR.strings.text_shanten_action_discard))
                 Tile(action.tile)
             }
 
             is ShantenAction.Ankan -> {
-                Text(Res.string.text_shanten_action_ankan)
+                Text(stringResource(MR.strings.text_shanten_action_ankan))
                 Tile(action.tile)
             }
 
             is ShantenAction.Chi -> {
                 Tiles(listOf(action.tatsu.first, action.tatsu.second))
                 Text(
-                    Res.string.text_shanten_action_chi
-                            + Res.string.text_shanten_action_and
-                            + Res.string.text_shanten_action_discard
+                    stringResource(MR.strings.text_shanten_action_chi)
+                            + stringResource(MR.strings.text_shanten_action_and)
+                            + stringResource(MR.strings.text_shanten_action_discard)
                 )
                 Tile(action.discard)
             }
 
             is ShantenAction.Pon -> {
                 Text(
-                    Res.string.text_shanten_action_pon
-                            + Res.string.text_shanten_action_and
-                            + Res.string.text_shanten_action_discard
+                    stringResource(MR.strings.text_shanten_action_pon)
+                            + stringResource(MR.strings.text_shanten_action_and)
+                            + stringResource(MR.strings.text_shanten_action_discard)
                 )
                 Tile(action.discard)
             }
 
             is ShantenAction.Minkan -> {
-                Text(Res.string.text_shanten_action_minkan)
+                Text(stringResource(MR.strings.text_shanten_action_minkan))
                 Tile(action.tile)
             }
 
             is ShantenAction.Pass -> {
-                Text(Res.string.text_shanten_action_pass)
+                Text(stringResource(MR.strings.text_shanten_action_pass))
             }
         }
     }
@@ -177,19 +179,22 @@ private fun ImprovementsPanel(
             )
         }.forEach { (tile, discardTiles, advanceNum) ->
             FlowRow {
-                Text(Res.string.text_draw)
+                Text(stringResource(MR.strings.text_draw))
                 Tiles(listOf(tile))
-                Text(Res.string.text_shanten_action_and + Res.string.text_shanten_action_discard)
+                Text(
+                    stringResource(MR.strings.text_shanten_action_and)
+                            + stringResource(MR.strings.text_shanten_action_discard)
+                )
                 Tiles(discardTiles)
                 Text(
-                    Res.string.text_comma
-                            + Res.string.text_waiting_tiles_num.format(advanceNum)
+                    stringResource(MR.strings.text_comma)
+                            + stringResource(MR.strings.text_waiting_tiles_num, advanceNum)
                 )
             }
             Spacer(Modifier.height(8.dp))
         }
         Text(
-            Res.string.text_tiles_num.format(improvementNum),
+            stringResource(MR.strings.text_tiles_num, improvementNum),
             style = MaterialTheme.typography.labelMedium
         )
     }

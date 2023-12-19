@@ -13,6 +13,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import dev.icerock.moko.resources.StringResource
+import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
@@ -29,7 +31,7 @@ abstract class FormAndResultScreen<M : ResultScreenModel<RES>, RES> : Navigation
         }
     }
 
-    abstract val resultTitle: String
+    abstract val resultTitle: StringResource
 
     @Composable
     abstract fun getScreenModel(): M

@@ -10,7 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionCardContent
@@ -18,7 +19,6 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesTopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesWithNumTopCardPanel
 import io.ssttkkl.mahjongutils.app.utils.Spacing
-import io.ssttkkl.mahjongutils.app.utils.format
 import io.ssttkkl.mahjongutils.app.utils.shantenNumText
 import mahjongutils.models.Tile
 import mahjongutils.shanten.ShantenWithGot
@@ -41,7 +41,7 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithoutGot) {
             VerticalSpacerBetweenPanels()
 
             TilesWithNumTopCardPanel(
-                Res.string.label_advance_tiles,
+                stringResource(MR.strings.label_advance_tiles),
                 shanten.advance,
                 shanten.advanceNum
             )
@@ -51,7 +51,7 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithoutGot) {
             shanten.goodShapeAdvance?.let { goodShapeAdvance ->
                 shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
                     TilesWithNumTopCardPanel(
-                        Res.string.label_good_shape_advance_tiles,
+                        stringResource(MR.strings.label_good_shape_advance_tiles),
                         goodShapeAdvance,
                         goodShapeAdvanceNum
                     )
@@ -105,12 +105,11 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithGot) {
             }
 
             groups.forEach { (shantenNum, actions) ->
-                val label_shanten_action = if (shantenNum == shanten.shantenNum)
-                    Res.string.label_shanten_action
-                else
-                    Res.string.label_shanten_action_backwards
-
-                val label = label_shanten_action.format(
+                val label = stringResource(
+                    if (shantenNum == shanten.shantenNum)
+                        MR.strings.label_shanten_action
+                    else
+                        MR.strings.label_shanten_action_backwards,
                     shantenNumText(shantenNum)
                 )
 
@@ -129,9 +128,14 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithGot) {
 @Composable
 private fun TilesInHandPanel(tiles: List<Tile>, withGot: Boolean) {
     TilesTopCardPanel(
-        Res.string.label_tiles_in_hand,
+        stringResource(MR.strings.label_tiles_in_hand),
         tiles,
-        caption = if (withGot) Res.string.text_tiles_with_got else Res.string.text_tiles_without_got,
+        caption = stringResource(
+            if (withGot)
+                MR.strings.text_tiles_with_got
+            else
+                MR.strings.text_tiles_without_got
+        ),
         tileModifier = Modifier.height(36.dp)
     )
 }

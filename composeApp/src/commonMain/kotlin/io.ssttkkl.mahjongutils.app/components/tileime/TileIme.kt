@@ -21,8 +21,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.skeptick.libres.compose.painterResource
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.models.Tile
 
@@ -67,8 +68,8 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
                 Alignment.Center
             ) {
                 Image(
-                    Res.image.icon_backspace.painterResource(),
-                    Res.string.label_keyboard_backspace,
+                    painterResource(MR.images.icon_backspace),
+                    "",
                     Modifier.size(with(density) { 36.sp.toDp() }),
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
                 )

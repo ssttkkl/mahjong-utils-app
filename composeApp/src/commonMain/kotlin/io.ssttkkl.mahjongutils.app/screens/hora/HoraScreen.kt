@@ -31,7 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.combobox.ChooseAction
 import io.ssttkkl.mahjongutils.app.components.combobox.ComboBox
@@ -49,39 +50,44 @@ import kotlinx.coroutines.launch
 import mahjongutils.models.Wind
 import mahjongutils.yaku.Yaku
 
-private val ankanOptions = listOf<ComboOption<Boolean>>(
-    ComboOption(Res.string.label_ankan, true),
-    ComboOption(Res.string.label_minkan, false)
-)
+@Composable
+private fun ankanOptions(): List<ComboOption<Boolean>> =
+    listOf<ComboOption<Boolean>>(
+        ComboOption(stringResource(MR.strings.label_ankan), true),
+        ComboOption(stringResource(MR.strings.label_minkan), false)
+    )
 
-private val windComboOptions = listOf<ComboOption<Wind?>>(
-    ComboOption(Res.string.label_wind_unspecified, null),
-    ComboOption(Wind.East.localizedName, Wind.East),
-    ComboOption(Wind.South.localizedName, Wind.South),
-    ComboOption(Wind.West.localizedName, Wind.West),
-    ComboOption(Wind.North.localizedName, Wind.North)
-)
+@Composable
+private fun windComboOptions(): List<ComboOption<Wind?>> =
+    listOf<ComboOption<Wind?>>(
+        ComboOption(stringResource(MR.strings.label_wind_unspecified), null),
+        ComboOption(stringResource(Wind.East.localizedName), Wind.East),
+        ComboOption(stringResource(Wind.South.localizedName), Wind.South),
+        ComboOption(stringResource(Wind.West.localizedName), Wind.West),
+        ComboOption(stringResource(Wind.North.localizedName), Wind.North)
+    )
 
-private fun yakuComboOptions(allExtraYaku: List<Pair<Yaku, Boolean>>): List<ComboOption<Yaku>> {
-    return allExtraYaku
+@Composable
+private fun yakuComboOptions(allExtraYaku: List<Pair<Yaku, Boolean>>) =
+    allExtraYaku
         .map {
-            ComboOption(it.first.localizedName, it.first, it.second)
+            ComboOption(stringResource(it.first.localizedName), it.first, it.second)
         }
-}
 
-private val tsumoOptions: List<SegmentedButtonOption<Boolean>> =
+@Composable
+private fun tsumoOptions(): List<SegmentedButtonOption<Boolean>> =
     listOf<SegmentedButtonOption<Boolean>>(
-        SegmentedButtonOption(Res.string.label_tsumo, true),
-        SegmentedButtonOption(Res.string.label_ron, false)
+        SegmentedButtonOption(stringResource(MR.strings.label_tsumo), true),
+        SegmentedButtonOption(stringResource(MR.strings.label_ron), false)
     )
 
 object HoraScreen :
     FormAndResultScreen<HoraScreenModel, HoraCalcResult>() {
-    override val title: String
-        get() = Res.string.title_hora
+    override val title
+        get() = MR.strings.title_hora
 
-    override val resultTitle: String
-        get() = Res.string.title_hora_result
+    override val resultTitle
+        get() = MR.strings.title_hora_result
 
     @Composable
     override fun getScreenModel(): HoraScreenModel {
@@ -103,7 +109,7 @@ object HoraScreen :
             ) {
                 VerticalSpacerBetweenPanels()
 
-                TopPanel(Res.string.label_tiles_in_hand) {
+                TopPanel(stringResource(MR.strings.label_tiles_in_hand)) {
                     ValidationField(model.tilesErrMsg) { isError ->
                         TileField(
                             value = model.tiles,
@@ -117,7 +123,7 @@ object HoraScreen :
                 VerticalSpacerBetweenPanels()
 
                 TopPanel(
-                    Res.string.label_furo,
+                    stringResource(MR.strings.label_furo),
                     noPaddingContent = true
                 ) {
                     Column(Modifier.fillMaxWidth()) {
@@ -147,7 +153,7 @@ object HoraScreen :
                                         ComboBox(
                                             furoModel.ankan,
                                             { furoModel.ankan = it },
-                                            ankanOptions,
+                                            ankanOptions(),
                                             Modifier.width(150.dp)
                                         )
                                     }
@@ -169,7 +175,7 @@ object HoraScreen :
                 VerticalSpacerBetweenPanels()
 
                 TopPanel(
-                    Res.string.label_agari,
+                    stringResource(MR.strings.label_agari),
                 ) {
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                         ValidationField(model.agariErrMsg, Modifier.weight(1f)) { isError ->
@@ -182,7 +188,7 @@ object HoraScreen :
                         }
 
                         SingleChoiceSegmentedButtonGroup(
-                            tsumoOptions, model.tsumo, { model.tsumo = it },
+                            tsumoOptions(), model.tsumo, { model.tsumo = it },
                             Modifier.padding(start = 16.dp)
                         )
                     }
@@ -192,22 +198,22 @@ object HoraScreen :
 
                 Row {
                     TopPanel(
-                        Res.string.label_self_wind,
+                        stringResource(MR.strings.label_self_wind),
                         Modifier.weight(1f)
                     ) {
                         ComboBox(
                             model.selfWind,
                             { model.selfWind = it },
-                            windComboOptions,
+                            windComboOptions(),
                             Modifier.fillMaxWidth()
                         )
                     }
                     TopPanel(
-                        Res.string.label_round_wind,
+                        stringResource(MR.strings.label_round_wind),
                         Modifier.weight(1f)
                     ) {
                         ComboBox(
-                            model.roundWind, { model.roundWind = it }, windComboOptions,
+                            model.roundWind, { model.roundWind = it }, windComboOptions(),
                             Modifier.fillMaxWidth()
                         )
                     }
@@ -217,7 +223,7 @@ object HoraScreen :
 
                 Row {
                     TopPanel(
-                        Res.string.label_dora_count,
+                        stringResource(MR.strings.label_dora_count),
                         Modifier.weight(1f)
                     ) {
                         ValidationField(model.doraErrMsg) { isError ->
@@ -232,7 +238,7 @@ object HoraScreen :
                     }
 
                     TopPanel(
-                        Res.string.label_extra_yaku,
+                        stringResource(MR.strings.label_extra_yaku),
                         Modifier.weight(1f)
                     ) {
                         val allExtraYaku = model.allExtraYaku()
@@ -255,7 +261,7 @@ object HoraScreen :
 
                 Button(
                     modifier = Modifier.windowHorizontalMargin(),
-                    content = { Text(Res.string.text_calc) },
+                    content = { Text(stringResource(MR.strings.text_calc)) },
                     onClick = {
                         coroutineScope.launch {
                             model.onSubmit(appState)

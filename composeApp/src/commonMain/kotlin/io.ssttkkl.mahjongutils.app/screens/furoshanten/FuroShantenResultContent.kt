@@ -10,7 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
@@ -19,7 +20,6 @@ import io.ssttkkl.mahjongutils.app.components.table.ShantenActionTable
 import io.ssttkkl.mahjongutils.app.components.table.ShantenActionTableType
 import io.ssttkkl.mahjongutils.app.components.tiles.Tiles
 import io.ssttkkl.mahjongutils.app.utils.Spacing
-import io.ssttkkl.mahjongutils.app.utils.format
 import io.ssttkkl.mahjongutils.app.utils.shantenNumText
 import mahjongutils.shanten.ShantenWithFuroChance
 
@@ -32,10 +32,10 @@ fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFu
             VerticalSpacerBetweenPanels()
 
             TilesTopCardPanel(
-                Res.string.label_tiles_in_hand,
+                stringResource(MR.strings.label_tiles_in_hand),
                 args.tiles,
                 tracingElement = {
-                    Text(Res.string.label_tile_discarded_by_other_short)
+                    Text(stringResource(MR.strings.label_tile_discarded_by_other_short))
                     Tiles(listOf(args.chanceTile), Modifier.height(36.dp))
                 }
             )
@@ -95,12 +95,11 @@ fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFu
             }
 
             groups.forEach { (shantenNum, actions) ->
-                val label_shanten_action = if (shantenNum == shanten.shantenNum)
-                    Res.string.label_shanten_action
-                else
-                    Res.string.label_shanten_action_backwards
-
-                val label = label_shanten_action.format(
+                val label = stringResource(
+                    if (shantenNum == shanten.shantenNum)
+                        MR.strings.label_shanten_action
+                    else
+                        MR.strings.label_shanten_action_backwards,
                     shantenNumText(shantenNum)
                 )
 

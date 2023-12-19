@@ -15,11 +15,11 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.sp
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.tileime.UseTileIme
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import io.ssttkkl.mahjongutils.app.utils.emojiToTile
-import io.ssttkkl.mahjongutils.app.utils.format
 import mahjongutils.models.Tile
 import kotlin.math.max
 
@@ -83,7 +83,7 @@ fun TileField(
             },
             trailingIcon = {
                 Text(
-                    Res.string.text_tiles_num_short.format(value.size),
+                    stringResource(MR.strings.text_tiles_num_short, value.size),
                     style = MaterialTheme.typography.labelMedium
                 )
             },

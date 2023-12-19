@@ -11,11 +11,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.tiles.Tiles
-import io.ssttkkl.mahjongutils.app.utils.format
 import mahjongutils.models.Tile
 
 @Composable
@@ -90,7 +90,7 @@ fun TilesWithNumTopCardPanel(
     TilesTopCardPanel(
         label,
         tiles.sorted(),
-        caption = Res.string.text_tiles_num.format(tileNum)
+        caption = stringResource(MR.strings.text_tiles_num, tileNum)
     )
 }
 
@@ -104,7 +104,7 @@ fun TilesWithNumPanel(
     TilesPanel(
         label,
         tiles.sorted(),
-        caption = Res.string.text_tiles_num.format(tileNum),
+        caption = stringResource(MR.strings.text_tiles_num, tileNum),
         tileModifier = tileModifier
     )
 }

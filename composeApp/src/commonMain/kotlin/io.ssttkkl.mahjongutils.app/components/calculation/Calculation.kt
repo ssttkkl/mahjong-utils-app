@@ -9,7 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -19,11 +20,12 @@ import kotlin.coroutines.CoroutineContext
 @Composable
 fun PopAndShowMessageOnFailure(throwable: Throwable) {
     val appState = LocalAppState.current
+    val unknownError = stringResource(MR.strings.message_unknown_error)
 
     LaunchedEffect(throwable) {
         appState.navigator.popUntilRoot()
         withContext(NonCancellable) {
-            appState.snackbarHostState.showSnackbar(Res.string.message_unknown_error)
+            appState.snackbarHostState.showSnackbar(unknownError)
         }
     }
 }

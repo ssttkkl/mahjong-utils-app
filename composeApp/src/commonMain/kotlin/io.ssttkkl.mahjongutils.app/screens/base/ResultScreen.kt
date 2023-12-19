@@ -2,6 +2,7 @@ package io.ssttkkl.mahjongutils.app.screens.base
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowMessageOnFailure
@@ -9,7 +10,7 @@ import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen.Companion.is
 import kotlinx.coroutines.Deferred
 
 data class ResultScreen<RES>(
-    override val title: String,
+    override val title: StringResource,
     val result: Deferred<RES>,
     val onResultMove: (Deferred<RES>) -> Unit,
     val resultContent: @Composable (RES) -> Unit

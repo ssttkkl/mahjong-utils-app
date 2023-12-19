@@ -14,11 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.tiles.Tile
 import io.ssttkkl.mahjongutils.app.components.tiles.Tiles
-import io.ssttkkl.mahjongutils.app.utils.format
 import io.ssttkkl.mahjongutils.app.utils.percentile
 
 
@@ -27,7 +27,8 @@ enum class ShantenActionTableType {
 }
 
 @OptIn(ExperimentalLayoutApi::class)
-private val columns: List<TableColumn<ShantenAction>> = listOf(
+@Composable
+private fun columns(): List<TableColumn<ShantenAction>> = listOf(
     TableColumn("", 3f) { record, index ->
         FlowRow(
             Modifier.fillMaxWidth(),
@@ -35,46 +36,46 @@ private val columns: List<TableColumn<ShantenAction>> = listOf(
         ) {
             when (record) {
                 is ShantenAction.Discard -> {
-                    Text(Res.string.text_shanten_action_discard)
+                    Text(stringResource(MR.strings.text_shanten_action_discard))
                     Tile(record.tile)
                 }
 
                 is ShantenAction.Ankan -> {
-                    Text(Res.string.text_shanten_action_ankan)
+                    Text(stringResource(MR.strings.text_shanten_action_ankan))
                     Tile(record.tile)
                 }
 
                 is ShantenAction.Chi -> {
                     Tiles(listOf(record.tatsu.first, record.tatsu.second))
                     Text(
-                        Res.string.text_shanten_action_chi
-                                + Res.string.text_shanten_action_and
-                                + Res.string.text_shanten_action_discard
+                        stringResource(MR.strings.text_shanten_action_chi)
+                                + stringResource(MR.strings.text_shanten_action_and)
+                                + stringResource(MR.strings.text_shanten_action_discard)
                     )
                     Tile(record.discard)
                 }
 
                 is ShantenAction.Pon -> {
                     Text(
-                        Res.string.text_shanten_action_pon
-                                + Res.string.text_shanten_action_and
-                                + Res.string.text_shanten_action_discard
+                        stringResource(MR.strings.text_shanten_action_pon)
+                                + stringResource(MR.strings.text_shanten_action_and)
+                                + stringResource(MR.strings.text_shanten_action_discard)
                     )
                     Tile(record.discard)
                 }
 
                 is ShantenAction.Minkan -> {
-                    Text(Res.string.text_shanten_action_minkan)
+                    Text(stringResource(MR.strings.text_shanten_action_minkan))
                     Tile(record.tile)
                 }
 
                 is ShantenAction.Pass -> {
-                    Text(Res.string.text_shanten_action_pass)
+                    Text(stringResource(MR.strings.text_shanten_action_pass))
                 }
             }
         }
     },
-    TableColumn(Res.string.label_advance_tiles, 9f) { record, index ->
+    TableColumn(stringResource(MR.strings.label_advance_tiles), 9f) { record, index ->
         Column(
             Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -85,18 +86,23 @@ private val columns: List<TableColumn<ShantenAction>> = listOf(
                 tileModifier = Modifier.padding(2.dp).height(30.dp)
             )
             Text(
-                Res.string.text_tiles_num.format(record.shantenAfterAction.advanceNum),
+                stringResource(MR.strings.text_tiles_num, record.shantenAfterAction.advanceNum),
                 style = MaterialTheme.typography.labelMedium
             )
         }
     }
 )
 
-private val columnsWithGoodShapeAdvance: List<TableColumn<ShantenAction>> =
-    listOf(
+@Composable
+private fun columnsWithGoodShapeAdvance(): List<TableColumn<ShantenAction>> {
+    val columns = columns()
+    return listOf(
         columns[0],
         columns[1].copy(weight = 5f),
-        TableColumn(Res.string.label_good_shape_advance_tiles, 4f) { record, index ->
+        TableColumn(
+            stringResource(MR.strings.label_good_shape_advance_tiles),
+            4f
+        ) { record, index ->
             Column(
                 Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -109,7 +115,8 @@ private val columnsWithGoodShapeAdvance: List<TableColumn<ShantenAction>> =
                             tileModifier = Modifier.padding(2.dp).height(30.dp)
                         )
                         Text(
-                            Res.string.text_good_shape_advance_tiles_num.format(
+                            stringResource(
+                                MR.strings.text_good_shape_advance_tiles_num,
                                 goodShapeAdvanceNum,
                                 (goodShapeAdvanceNum.toDouble() / record.shantenAfterAction.advanceNum).percentile()
                             ),
@@ -120,13 +127,19 @@ private val columnsWithGoodShapeAdvance: List<TableColumn<ShantenAction>> =
             }
         }
     )
+}
 
 @OptIn(ExperimentalLayoutApi::class)
-private val columnsWithGoodShapeImprovement: List<TableColumn<ShantenAction>> =
-    listOf(
+@Composable
+private fun columnsWithGoodShapeImprovement(): List<TableColumn<ShantenAction>> {
+    val columns = columns()
+    return listOf(
         columns[0],
         columns[1].copy(weight = 5f),
-        TableColumn(Res.string.label_good_shape_improvement_tiles, 4f) { record, index ->
+        TableColumn(
+            stringResource(MR.strings.label_good_shape_improvement_tiles),
+            4f
+        ) { record, index ->
             Column(
                 Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -148,17 +161,17 @@ private val columnsWithGoodShapeImprovement: List<TableColumn<ShantenAction>> =
                                     modifier = Modifier.padding(2.dp),
                                     tileModifier = Modifier.padding(2.dp).height(30.dp)
                                 )
-                                Text(Res.string.text_shanten_action_discard)
+                                Text(stringResource(MR.strings.text_shanten_action_discard))
                                 Tiles(
                                     discardTiles, modifier = Modifier.padding(2.dp),
                                     tileModifier = Modifier.padding(2.dp).height(24.dp)
                                 )
-                                Text(Res.string.text_waiting_tiles_num.format(advanceNum))
+                                Text(stringResource(MR.strings.text_waiting_tiles_num, advanceNum))
                             }
                             Spacer(Modifier.height(8.dp))
                         }
                         Text(
-                            Res.string.text_tiles_num.format(goodShapeImprovementNum),
+                            stringResource(MR.strings.text_tiles_num, goodShapeImprovementNum),
                             style = MaterialTheme.typography.labelMedium
                         )
                     }
@@ -166,6 +179,7 @@ private val columnsWithGoodShapeImprovement: List<TableColumn<ShantenAction>> =
             }
         }
     )
+}
 
 @Composable
 fun ShantenActionTable(
@@ -174,9 +188,9 @@ fun ShantenActionTable(
     modifier: Modifier = Modifier,
 ) {
     val col = when (type) {
-        ShantenActionTableType.Normal -> columns
-        ShantenActionTableType.WithGoodShapeAdvance -> columnsWithGoodShapeAdvance
-        ShantenActionTableType.WithGoodShapeImprovement -> columnsWithGoodShapeImprovement
+        ShantenActionTableType.Normal -> columns()
+        ShantenActionTableType.WithGoodShapeAdvance -> columnsWithGoodShapeAdvance()
+        ShantenActionTableType.WithGoodShapeImprovement -> columnsWithGoodShapeImprovement()
     }
     Table(col, actions, modifier)
 }

@@ -97,10 +97,10 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "${PODS_ROOT}/../../composeApp/build/generated/libres/apple/libres-bundles"
+  install_resource "${PODS_ROOT}/../../composeApp/build/compose/ios/composeApp/compose-resources"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "${PODS_ROOT}/../../composeApp/build/generated/libres/apple/libres-bundles"
+  install_resource "${PODS_ROOT}/../../composeApp/build/compose/ios/composeApp/compose-resources"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

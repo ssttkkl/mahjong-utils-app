@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
+import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import kotlinx.coroutines.launch
@@ -40,7 +41,7 @@ fun ColumnScope.NavigationItems(
 
     navigatableScreens.forEach {
         NavigationDrawerItem(
-            label = { Text(text = it.title) },
+            label = { Text(stringResource(it.title)) },
             selected = navigator.lastItem == it,
             onClick = {
                 navigator.replaceAll(it)
@@ -68,7 +69,9 @@ fun AppScaffold(
                 TopAppBar(
                     title = {
                         Text(
-                            (appState.navigator.lastItem as? NavigationScreen)?.title ?: ""
+                            (appState.navigator.lastItem as? NavigationScreen)
+                                ?.title
+                                ?.let { stringResource(it) } ?: ""
                         )
                     },
                     navigationIcon = {
@@ -107,7 +110,11 @@ fun AppScaffold(
                 drawerState = appState.drawerState,
                 drawerContent = {
                     ModalDrawerSheet {
-                        NavigationItems(appState.navigator, navigatableScreens, appState.drawerState)
+                        NavigationItems(
+                            appState.navigator,
+                            navigatableScreens,
+                            appState.drawerState
+                        )
                     }
                 }
             ) {

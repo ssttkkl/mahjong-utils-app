@@ -12,25 +12,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.switch.SwitchItem
 import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
-import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import kotlinx.coroutines.launch
 
 
 object FuroShantenScreen :
     FormAndResultScreen<FuroShantenScreenModel, FuroChanceShantenCalcResult>() {
-    override val title: String
-        get() = Res.string.title_furo_shanten
+    override val title
+        get() = MR.strings.title_furo_shanten
 
-    override val resultTitle: String
-        get() = Res.string.title_furo_shanten_result
+    override val resultTitle
+        get() = MR.strings.title_furo_shanten_result
 
     @Composable
     override fun getScreenModel(): FuroShantenScreenModel {
@@ -58,8 +58,8 @@ object FuroShantenScreen :
             ) {
                 VerticalSpacerBetweenPanels()
 
-                TopPanel(Res.string.label_tiles_in_hand) {
-                    ValidationField(tilesErrMsg) { isError ->
+                TopPanel(stringResource(MR.strings.label_tiles_in_hand)) {
+                    ValidationField(tilesErrMsg?.let { stringResource(it) }) { isError ->
                         TileField(
                             value = tilesState,
                             onValueChange = { model.tiles.value = it },
@@ -71,8 +71,8 @@ object FuroShantenScreen :
 
                 VerticalSpacerBetweenPanels()
 
-                TopPanel(Res.string.label_tile_discarded_by_other) {
-                    ValidationField(chanceTileErrMsg) { isError ->
+                TopPanel(stringResource(MR.strings.label_tile_discarded_by_other)) {
+                    ValidationField(chanceTileErrMsg?.let { stringResource(it) }) { isError ->
                         TileField(
                             value = chanceTileState?.let { listOf(it) } ?: emptyList(),
                             onValueChange = { model.chanceTile.value = it.firstOrNull() },
@@ -85,13 +85,13 @@ object FuroShantenScreen :
                 VerticalSpacerBetweenPanels()
 
                 TopPanel(
-                    Res.string.label_other_options,
+                    stringResource(MR.strings.label_other_options),
                     noPaddingContent = true
                 ) {
                     SwitchItem(
                         allowChiState,
                         { model.allowChi.value = !allowChiState },
-                        Res.string.label_allow_chi
+                        stringResource(MR.strings.label_allow_chi)
                     )
                 }
 
@@ -99,7 +99,7 @@ object FuroShantenScreen :
 
                 Button(
                     modifier = Modifier.windowHorizontalMargin(),
-                    content = { Text(Res.string.text_calc) },
+                    content = { Text(stringResource(MR.strings.text_calc)) },
                     onClick = {
                         coroutineScope.launch {
                             model.onSubmit(appState)

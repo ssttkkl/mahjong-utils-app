@@ -23,7 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.Res
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 
 interface KeyboardKeyItem {
     val weightOfRow: Float
@@ -49,7 +50,7 @@ fun <T : KeyboardKeyItem> KeyboardScreen(
     ) {
         Image(
             Icons.Filled.KeyboardArrowDown,
-            Res.string.label_keyboard_collapse,
+            stringResource(MR.strings.label_keyboard_collapse),
             Modifier.clickable {
                 onCollapse()
             }.fillMaxWidth()
