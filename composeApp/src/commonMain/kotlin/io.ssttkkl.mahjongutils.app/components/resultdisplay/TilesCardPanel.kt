@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
@@ -24,18 +25,18 @@ fun TilesPanel(
     tiles: List<Tile>,
     tracingElement: (@Composable RowScope.() -> Unit)? = null,
     caption: String? = null,
-    tileModifier: Modifier = Modifier.height(30.dp)
+    fontSize: TextUnit = TextUnit.Unspecified
 ) {
     Panel(label) {
         Column {
             if (tracingElement != null) {
                 Row {
-                    Tiles(tiles, tileModifier)
+                    Tiles(tiles, fontSize = fontSize)
                     Spacer(Modifier.width(8.dp))
                     tracingElement()
                 }
             } else {
-                Tiles(tiles, tileModifier)
+                Tiles(tiles, fontSize = fontSize)
             }
 
             if (caption != null) {
@@ -55,18 +56,18 @@ fun TilesTopCardPanel(
     tiles: List<Tile>,
     tracingElement: (@Composable RowScope.() -> Unit)? = null,
     caption: String? = null,
-    tileModifier: Modifier = Modifier.height(30.dp)
+    fontSize: TextUnit = TextUnit.Unspecified
 ) {
     TopCardPanel(label, content = arrayOf({
         Column {
             if (tracingElement != null) {
                 Row {
-                    Tiles(tiles, tileModifier)
+                    Tiles(tiles, fontSize = fontSize)
                     Spacer(Modifier.width(8.dp))
                     tracingElement()
                 }
             } else {
-                Tiles(tiles, tileModifier)
+                Tiles(tiles, fontSize = fontSize)
             }
 
             if (caption != null) {
@@ -99,12 +100,12 @@ fun TilesWithNumPanel(
     label: String,
     tiles: Collection<Tile>,
     tileNum: Int,
-    tileModifier: Modifier = Modifier.height(30.dp)
+    fontSize: TextUnit = TextUnit.Unspecified
 ) {
     TilesPanel(
         label,
         tiles.sorted(),
         caption = stringResource(MR.strings.text_tiles_num, tileNum),
-        tileModifier = tileModifier
+        fontSize = fontSize
     )
 }

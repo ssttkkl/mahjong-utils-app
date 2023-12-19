@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
@@ -136,6 +137,6 @@ private fun TilesInHandPanel(tiles: List<Tile>, withGot: Boolean) {
             else
                 MR.strings.text_tiles_without_got
         ),
-        tileModifier = Modifier.height(36.dp)
+        fontSize = 20.sp
     )
 }
