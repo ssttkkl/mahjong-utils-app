@@ -1,24 +1,21 @@
 package io.ssttkkl.mahjongutils.app.components.combobox
 
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuBoxScope
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.ssttkkl.mahjongutils.app.components.checkbox.CheckboxWithText
 
@@ -33,13 +30,6 @@ sealed class ChooseAction<T> {
     data class OnNotChoose<T>(val value: T) : ChooseAction<T>()
 }
 
-private val comboBoxExpandedShape = RoundedCornerShape(8.dp).copy(
-    bottomEnd = CornerSize(0.dp),
-    bottomStart = CornerSize(0.dp)
-)
-
-private val comboBoxNotExpandedShape = RoundedCornerShape(8.dp)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExposedDropdownMenuBoxScope.ComboBoxTextField(
@@ -47,7 +37,7 @@ private fun ExposedDropdownMenuBoxScope.ComboBoxTextField(
     expanded: Boolean,
     modifier: Modifier = Modifier
 ) {
-    TextField(
+    OutlinedTextField(
         modifier = Modifier.menuAnchor().then(modifier),
         textStyle = TextStyle.Default.copy(
             fontSize = 14.sp,
@@ -57,11 +47,11 @@ private fun ExposedDropdownMenuBoxScope.ComboBoxTextField(
         value = text,
         onValueChange = {},
         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-        shape = if (expanded) comboBoxExpandedShape
-        else comboBoxNotExpandedShape,
-        colors = ExposedDropdownMenuDefaults.textFieldColors(
-            focusedIndicatorColor = Transparent,
-            unfocusedIndicatorColor = Transparent
+        colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
+            focusedBorderColor = if (!expanded)
+                MaterialTheme.colorScheme.onSurface
+            else
+                MaterialTheme.colorScheme.primary,
         ),
         maxLines = 1
     )

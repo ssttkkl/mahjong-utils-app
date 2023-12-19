@@ -8,9 +8,9 @@ import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -18,9 +18,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -33,12 +33,13 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
-import io.ssttkkl.mahjongutils.app.components.checkbox.CheckboxWithText
 import io.ssttkkl.mahjongutils.app.components.combobox.ChooseAction
 import io.ssttkkl.mahjongutils.app.components.combobox.ComboBox
 import io.ssttkkl.mahjongutils.app.components.combobox.ComboOption
 import io.ssttkkl.mahjongutils.app.components.combobox.MultiComboBox
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
+import io.ssttkkl.mahjongutils.app.components.segmentedbutton.SegmentedButtonOption
+import io.ssttkkl.mahjongutils.app.components.segmentedbutton.SingleChoiceSegmentedButtonGroup
 import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
@@ -48,6 +49,10 @@ import kotlinx.coroutines.launch
 import mahjongutils.models.Wind
 import mahjongutils.yaku.Yaku
 
+private val ankanOptions = listOf<ComboOption<Boolean>>(
+    ComboOption(Res.string.label_ankan, true),
+    ComboOption(Res.string.label_minkan, false)
+)
 
 private val windComboOptions = listOf<ComboOption<Wind?>>(
     ComboOption(Res.string.label_wind_unspecified, null),
@@ -64,6 +69,12 @@ private fun yakuComboOptions(allExtraYaku: List<Pair<Yaku, Boolean>>): List<Comb
         }
 }
 
+private val tsumoOptions: List<SegmentedButtonOption<Boolean>> =
+    listOf<SegmentedButtonOption<Boolean>>(
+        SegmentedButtonOption(Res.string.label_tsumo, true),
+        SegmentedButtonOption(Res.string.label_ron, false)
+    )
+
 object HoraScreen :
     FormAndResultScreen<HoraScreenModel, HoraCalcResult>() {
     override val title: String
@@ -77,6 +88,7 @@ object HoraScreen :
         return rememberScreenModel { HoraScreenModel() }
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun FormContent(
         appState: AppState,
@@ -132,13 +144,12 @@ object HoraScreen :
                                         enter = fadeIn() + expandHorizontally(),
                                         exit = fadeOut() + shrinkHorizontally(),
                                     ) {
-                                        CheckboxWithText(
+                                        ComboBox(
                                             furoModel.ankan,
-                                            { furoModel.ankan = !furoModel.ankan },
-                                            Modifier.fillMaxHeight()
-                                        ) {
-                                            Text(Res.string.label_ankan)
-                                        }
+                                            { furoModel.ankan = it },
+                                            ankanOptions,
+                                            Modifier.width(150.dp)
+                                        )
                                     }
                                 },
                             )
@@ -169,16 +180,11 @@ object HoraScreen :
                                 isError = isError
                             )
                         }
-                        CheckboxWithText(
-                            model.tsumo,
-                            { model.tsumo = it },
-                            Modifier.padding(start = 8.dp)
-                        ) {
-                            Text(
-                                Res.string.label_tsumo,
-                                style = MaterialTheme.typography.labelSmall
-                            )
-                        }
+
+                        SingleChoiceSegmentedButtonGroup(
+                            tsumoOptions, model.tsumo, { model.tsumo = it },
+                            Modifier.padding(start = 16.dp)
+                        )
                     }
                 }
 
