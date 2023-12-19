@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens
+package io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens
 
 /*
  * Copyright 2023 The Android Open Source Project

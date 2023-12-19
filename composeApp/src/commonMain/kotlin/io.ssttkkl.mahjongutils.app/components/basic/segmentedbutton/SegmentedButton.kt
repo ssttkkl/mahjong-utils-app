@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.ssttkkl.mahjongutils.app.components.segmentedbutton
+package io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
@@ -78,18 +78,18 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.MotionTokens
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.OutlinedSegmentedButtonTokens
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.DisabledLabelTextColor
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.DisabledLabelTextOpacity
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.DisabledOutlineOpacity
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.OutlineColor
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.SelectedContainerColor
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.SelectedLabelTextColor
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.UnselectedLabelTextColor
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.end
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.start
-import io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens.value
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.MotionTokens
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.OutlinedSegmentedButtonTokens
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.DisabledLabelTextColor
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.DisabledLabelTextOpacity
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.DisabledOutlineOpacity
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.OutlineColor
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.SelectedContainerColor
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.SelectedLabelTextColor
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.OutlinedSegmentedButtonTokens.UnselectedLabelTextColor
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.end
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.start
+import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens.value
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

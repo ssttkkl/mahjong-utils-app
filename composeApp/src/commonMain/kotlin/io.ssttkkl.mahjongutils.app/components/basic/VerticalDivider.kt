@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.components.divider
+package io.ssttkkl.mahjongutils.app.components.basic
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -15,10 +15,10 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
+import io.ssttkkl.mahjongutils.app.components.basic.RatioGroups
+import io.ssttkkl.mahjongutils.app.components.basic.RatioOption
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
-import io.ssttkkl.mahjongutils.app.components.ratio.RatioGroups
-import io.ssttkkl.mahjongutils.app.components.ratio.RatioOption
-import io.ssttkkl.mahjongutils.app.components.tilefield.TileField
+import io.ssttkkl.mahjongutils.app.components.tile.TileField
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing

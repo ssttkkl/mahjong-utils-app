@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.components.combobox
+package io.ssttkkl.mahjongutils.app.components.basic
 
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import io.ssttkkl.mahjongutils.app.components.checkbox.CheckboxWithText
 
 data class ComboOption<T>(
     val text: String,

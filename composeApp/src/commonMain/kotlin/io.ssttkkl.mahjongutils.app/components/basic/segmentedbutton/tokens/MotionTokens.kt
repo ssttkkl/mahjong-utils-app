@@ -1,11 +1,7 @@
-package io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens
-
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.TextStyle
+package io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens
 
 /*
- * Copyright 2021 The Android Open Source Project
+ * Copyright 2022 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +17,7 @@ import androidx.compose.ui.text.TextStyle
  */
 // VERSION: v0_103
 // GENERATED CODE - DO NOT MODIFY BY HAND
-internal enum class TypographyKeyTokens {
-    LabelLarge,
-}
 
-internal val TypographyKeyTokens.value: TextStyle
-    @Composable
-    get() = when (this) {
-        TypographyKeyTokens.LabelLarge -> MaterialTheme.typography.labelLarge
-    }
+internal object MotionTokens {
+    const val DurationMedium3 = 350.0
+}

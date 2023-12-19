@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.components.segmentedbutton
+package io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text

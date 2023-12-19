@@ -15,7 +15,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
-import io.ssttkkl.mahjongutils.app.components.tiles.Tiles
+import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import mahjongutils.models.Tile
 
 @Composable

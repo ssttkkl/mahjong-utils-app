@@ -1,9 +1,8 @@
-package io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens
+package io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp

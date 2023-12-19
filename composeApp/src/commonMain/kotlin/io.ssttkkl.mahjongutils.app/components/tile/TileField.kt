@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.components.tilefield
+package io.ssttkkl.mahjongutils.app.components.tile
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField

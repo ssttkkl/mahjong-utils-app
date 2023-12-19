@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.components.switch
+package io.ssttkkl.mahjongutils.app.components.basic
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.selection.selectable

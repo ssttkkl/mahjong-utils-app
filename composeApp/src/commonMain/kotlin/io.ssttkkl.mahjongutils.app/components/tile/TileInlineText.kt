@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.components.tiles
+package io.ssttkkl.mahjongutils.app.components.tile
 
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent

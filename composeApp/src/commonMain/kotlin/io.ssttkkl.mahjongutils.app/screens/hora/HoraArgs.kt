@@ -7,9 +7,6 @@ import mahjongutils.hora.hora
 import mahjongutils.models.Furo
 import mahjongutils.models.Tile
 import mahjongutils.models.Wind
-import mahjongutils.shanten.CommonShantenResult
-import mahjongutils.shanten.regularShanten
-import mahjongutils.shanten.shanten
 import mahjongutils.yaku.Yaku
 
 @Serializable

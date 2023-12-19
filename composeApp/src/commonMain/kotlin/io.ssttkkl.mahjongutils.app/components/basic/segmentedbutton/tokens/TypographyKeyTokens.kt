@@ -1,8 +1,8 @@
-package io.ssttkkl.mahjongutils.app.components.segmentedbutton.tokens
+package io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.tokens
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 
 /*
  * Copyright 2021 The Android Open Source Project
@@ -19,20 +19,14 @@ import androidx.compose.ui.graphics.Color
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// VERSION: v0_162
+// VERSION: v0_103
 // GENERATED CODE - DO NOT MODIFY BY HAND
-internal enum class ColorSchemeKeyTokens {
-    OnSecondaryContainer,
-    OnSurface,
-    Outline,
-    SecondaryContainer,
+internal enum class TypographyKeyTokens {
+    LabelLarge,
 }
 
-internal val ColorSchemeKeyTokens.value: Color
+internal val TypographyKeyTokens.value: TextStyle
     @Composable
     get() = when (this) {
-        ColorSchemeKeyTokens.OnSecondaryContainer -> MaterialTheme.colorScheme.onSecondaryContainer
-        ColorSchemeKeyTokens.OnSurface -> MaterialTheme.colorScheme.onSurface
-        ColorSchemeKeyTokens.Outline -> MaterialTheme.colorScheme.outline
-        ColorSchemeKeyTokens.SecondaryContainer -> MaterialTheme.colorScheme.secondaryContainer
+        TypographyKeyTokens.LabelLarge -> MaterialTheme.typography.labelLarge
     }

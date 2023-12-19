@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
-import io.ssttkkl.mahjongutils.app.components.divider.VerticalDivider
+import io.ssttkkl.mahjongutils.app.components.basic.VerticalDivider
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
-import io.ssttkkl.mahjongutils.app.components.tiles.TileInlineText
+import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.models.Tatsu
