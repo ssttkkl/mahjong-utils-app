@@ -49,7 +49,8 @@
     <string name="label_minkan">大明杠</string>
     <string name="label_agari">所和的牌</string>
     <string name="label_tsumo">自摸</string>
-    <string name="label_dora">宝牌</string>
+    <string name="label_ron">荣和</string>
+    <string name="label_dora_count">宝牌数量</string>
     <string name="label_self_wind">自风</string>
     <string name="label_round_wind">场风</string>
     <string name="label_extra_yaku">额外役</string>

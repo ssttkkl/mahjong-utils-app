@@ -217,7 +217,7 @@ object HoraScreen :
 
                 Row {
                     TopPanel(
-                        Res.string.label_dora,
+                        Res.string.label_dora_count,
                         Modifier.weight(1f)
                     ) {
                         ValidationField(model.doraErrMsg) { isError ->
