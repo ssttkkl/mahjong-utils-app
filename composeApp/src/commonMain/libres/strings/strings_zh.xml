@@ -58,6 +58,15 @@
     <string name="label_wind_south">南</string>
     <string name="label_wind_west">西</string>
     <string name="label_wind_north">北</string>
+    <string name="label_yaku_tenhou">天和</string>
+    <string name="label_yaku_chihou">地和</string>
+    <string name="label_yaku_wrichi">两立直</string>
+    <string name="label_yaku_richi">立直</string>
+    <string name="label_yaku_ippatsu">一发</string>
+    <string name="label_yaku_rinshan">岭上开花</string>
+    <string name="label_yaku_chankan">枪杠</string>
+    <string name="label_yaku_haitei">海底捞月</string>
+    <string name="label_yaku_houtei">河底捞鱼</string>
 
     <string name="text_must_enter_tiles">请输入手牌。</string>
     <string name="text_must_enter_chance_tile">请输入他家打的牌。</string>

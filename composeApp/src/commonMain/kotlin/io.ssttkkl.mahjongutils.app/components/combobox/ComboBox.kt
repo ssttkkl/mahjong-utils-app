@@ -1,6 +1,5 @@
 package io.ssttkkl.mahjongutils.app.components.combobox
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
@@ -12,14 +11,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,6 +27,11 @@ data class ComboOption<T>(
     val value: T,
     val enabled: Boolean = true
 )
+
+sealed class ChooseAction<T> {
+    data class OnChoose<T>(val value: T) : ChooseAction<T>()
+    data class OnNotChoose<T>(val value: T) : ChooseAction<T>()
+}
 
 private val comboBoxExpandedShape = RoundedCornerShape(8.dp).copy(
     bottomEnd = CornerSize(0.dp),
@@ -69,8 +70,8 @@ private fun ExposedDropdownMenuBoxScope.ComboBoxTextField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> MultiComboBox(
-    selected: Set<T>,
-    onSelected: (T, Set<T>) -> Unit,
+    chosen: Set<T>,
+    onChosen: (ChooseAction<T>) -> Unit,
     options: List<ComboOption<T>>,
     modifier: Modifier = Modifier,
     produceDisplayText: ((Collection<ComboOption<T>>) -> String)? = null,
@@ -87,7 +88,7 @@ fun <T> MultiComboBox(
         modifier = modifier,
     ) {
         ComboBoxTextField(
-            options.filter { it.value in selected }.let {
+            options.filter { it.value in chosen }.let {
                 produceDisplayText?.invoke(it) ?: it.joinToString { it.text }
             },
             expanded,
@@ -102,13 +103,17 @@ fun <T> MultiComboBox(
                 DropdownMenuItem(
                     text = {
                         if (showCheckbox) {
-                            CheckboxWithText(it.value in selected, null) { Text(it.text) }
+                            CheckboxWithText(it.value in chosen, null) { Text(it.text) }
                         } else {
                             Text(it.text)
                         }
                     },
                     onClick = {
-                        onSelected(it.value, selected + it.value)
+                        if (it.value in chosen) {
+                            onChosen(ChooseAction.OnNotChoose(it.value))
+                        } else {
+                            onChosen(ChooseAction.OnChoose(it.value))
+                        }
                         if (closeOnClick) {
                             expanded = false
                         }
@@ -122,7 +127,6 @@ fun <T> MultiComboBox(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> ComboBox(
     selected: T,
@@ -132,7 +136,7 @@ fun <T> ComboBox(
 ) {
     MultiComboBox(
         setOf(selected),
-        { it, _ -> onSelected(it) },
+        { (it as? ChooseAction.OnChoose<T>)?.let { onSelected(it.value) } },
         options,
         modifier,
         closeOnClick = true,

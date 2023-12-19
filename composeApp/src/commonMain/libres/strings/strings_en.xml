@@ -58,6 +58,15 @@
     <string name="label_wind_south">South</string>
     <string name="label_wind_west">West</string>
     <string name="label_wind_north">North</string>
+    <string name="label_yaku_tenhou">Tenhou</string>
+    <string name="label_yaku_chihou">Chihou</string>
+    <string name="label_yaku_wrichi">WRichi</string>
+    <string name="label_yaku_richi">Richi</string>
+    <string name="label_yaku_ippatsu">Ippatsu</string>
+    <string name="label_yaku_rinshan">Rinshan</string>
+    <string name="label_yaku_chankan">Chankan</string>
+    <string name="label_yaku_haitei">Haitei</string>
+    <string name="label_yaku_houtei">Houtei</string>
 
     <string name="text_must_enter_tiles">Enter your tiles in hand please.</string>
     <string name="text_must_enter_chance_tile">Enter your chance tile please.</string>

@@ -39,12 +39,33 @@ class HoraScreenModel : ResultScreenModel<HoraCalcResult>() {
     var agariErrMsg by mutableStateOf<String?>(null)
     var doraErrMsg by mutableStateOf<String?>(null)
 
-    fun availableExtraYaku(): Set<Yaku> {
-        return Yakus.allExtraYaku
-    }
-
-    fun allExtraYaku(): Set<Yaku> {
-        return Yakus.allExtraYaku
+    // yaku to enabled
+    fun allExtraYaku(): List<Pair<Yaku, Boolean>> {
+        return listOf(
+            Yakus.Tenhou,
+            Yakus.Chihou,
+            Yakus.WRichi,
+            Yakus.Richi,
+            Yakus.Ippatsu,
+            Yakus.Rinshan,
+            Yakus.Chankan,
+            Yakus.Haitei,
+            Yakus.Houtei
+        ).map {
+            var disabled = false
+            if (it == Yakus.Tenhou) {
+                disabled = disabled || selfWind?.ordinal != 0
+                disabled = disabled || furo.isNotEmpty()
+            } else if (it == Yakus.Chihou) {
+                disabled = disabled || selfWind?.ordinal == 0
+                disabled = disabled || furo.isNotEmpty()
+            } else if (it == Yakus.Richi || it == Yakus.WRichi) {
+                disabled = disabled || furo.isNotEmpty()
+            } else if (it == Yakus.Ippatsu) {
+                disabled = disabled || Yakus.Richi !in extraYaku || Yakus.WRichi !in extraYaku
+            }
+            it to !disabled
+        }
     }
 
     override suspend fun onCalc(appState: AppState): HoraCalcResult {

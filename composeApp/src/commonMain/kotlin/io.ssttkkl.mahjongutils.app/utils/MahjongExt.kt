@@ -8,6 +8,8 @@ import mahjongutils.models.Tile
 import mahjongutils.models.TileType
 import mahjongutils.models.Wind
 import mahjongutils.models.isWind
+import mahjongutils.yaku.Yaku
+import mahjongutils.yaku.Yakus
 
 // https://en.wikipedia.org/wiki/Mahjong_Tiles_(Unicode_block)
 private val tileToEmojiMapping = buildMap {
@@ -100,4 +102,18 @@ val Wind.localizedName
         Wind.South -> Res.string.label_wind_south
         Wind.West -> Res.string.label_wind_west
         Wind.North -> Res.string.label_wind_north
+    }
+
+val Yaku.localizedName
+    get() = when (this) {
+        Yakus.Tenhou -> Res.string.label_yaku_tenhou
+        Yakus.Chihou -> Res.string.label_yaku_chihou
+        Yakus.WRichi -> Res.string.label_yaku_wrichi
+        Yakus.Richi -> Res.string.label_yaku_richi
+        Yakus.Ippatsu -> Res.string.label_yaku_ippatsu
+        Yakus.Rinshan -> Res.string.label_yaku_rinshan
+        Yakus.Chankan -> Res.string.label_yaku_chankan
+        Yakus.Haitei -> Res.string.label_yaku_haitei
+        Yakus.Houtei -> Res.string.label_yaku_houtei
+        else -> ""
     }

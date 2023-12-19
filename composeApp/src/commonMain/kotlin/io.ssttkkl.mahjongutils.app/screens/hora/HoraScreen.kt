@@ -34,6 +34,7 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import io.ssttkkl.mahjongutils.app.Res
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.checkbox.CheckboxWithText
+import io.ssttkkl.mahjongutils.app.components.combobox.ChooseAction
 import io.ssttkkl.mahjongutils.app.components.combobox.ComboBox
 import io.ssttkkl.mahjongutils.app.components.combobox.ComboOption
 import io.ssttkkl.mahjongutils.app.components.combobox.MultiComboBox
@@ -45,6 +46,7 @@ import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.localizedName
 import kotlinx.coroutines.launch
 import mahjongutils.models.Wind
+import mahjongutils.yaku.Yaku
 
 
 private val windComboOptions = listOf<ComboOption<Wind?>>(
@@ -54,6 +56,13 @@ private val windComboOptions = listOf<ComboOption<Wind?>>(
     ComboOption(Wind.West.localizedName, Wind.West),
     ComboOption(Wind.North.localizedName, Wind.North)
 )
+
+private fun yakuComboOptions(allExtraYaku: List<Pair<Yaku, Boolean>>): List<ComboOption<Yaku>> {
+    return allExtraYaku
+        .map {
+            ComboOption(it.first.localizedName, it.first, it.second)
+        }
+}
 
 object HoraScreen :
     FormAndResultScreen<HoraScreenModel, HoraCalcResult>() {
@@ -221,13 +230,15 @@ object HoraScreen :
                         Modifier.weight(1f)
                     ) {
                         val allExtraYaku = model.allExtraYaku()
-                        val availableExtraYaku = model.availableExtraYaku()
-                        val options = allExtraYaku.map {
-                            ComboOption(it.name, it, it in availableExtraYaku)
-                        }
+                        val options = yakuComboOptions(allExtraYaku)
                         MultiComboBox(
                             model.extraYaku,
-                            { _, it -> model.extraYaku = it },
+                            {
+                                when (it) {
+                                    is ChooseAction.OnChoose<Yaku> -> model.extraYaku += it.value
+                                    is ChooseAction.OnNotChoose<Yaku> -> model.extraYaku -= it.value
+                                }
+                            },
                             options,
                             Modifier.fillMaxWidth()
                         )
