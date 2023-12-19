@@ -2,8 +2,6 @@ package io.ssttkkl.mahjongutils.app.components.resultdisplay
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -18,6 +16,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.divider.VerticalDivider
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
+import io.ssttkkl.mahjongutils.app.components.tiles.TileInlineText
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.models.Tatsu
@@ -120,15 +119,25 @@ private fun ShantenActionContent(
     Row(modifier, horizontalArrangement, verticalAlignment) {
         when (action) {
             is ShantenAction.Discard -> {
-                Text(stringResource(MR.strings.text_shanten_action_discard, action.tile.emoji))
+                TileInlineText(
+                    stringResource(
+                        MR.strings.text_shanten_action_discard,
+                        action.tile.emoji
+                    )
+                )
             }
 
             is ShantenAction.Ankan -> {
-                Text(stringResource(MR.strings.text_shanten_action_ankan, action.tile.emoji))
+                TileInlineText(
+                    stringResource(
+                        MR.strings.text_shanten_action_ankan,
+                        action.tile.emoji
+                    )
+                )
             }
 
             is ShantenAction.Chi -> {
-                Text(
+                TileInlineText(
                     stringResource(
                         MR.strings.text_shanten_action_chi_and_discard,
                         action.tatsu.first.emoji, action.tatsu.second.emoji, action.discard.emoji
@@ -137,7 +146,7 @@ private fun ShantenActionContent(
             }
 
             is ShantenAction.Pon -> {
-                Text(
+                TileInlineText(
                     stringResource(
                         MR.strings.text_shanten_action_pon_and_discard,
                         action.discard.emoji
@@ -146,17 +155,16 @@ private fun ShantenActionContent(
             }
 
             is ShantenAction.Minkan -> {
-                Text(stringResource(MR.strings.text_shanten_action_minkan))
+                TileInlineText(stringResource(MR.strings.text_shanten_action_minkan))
             }
 
             is ShantenAction.Pass -> {
-                Text(stringResource(MR.strings.text_shanten_action_pass))
+                TileInlineText(stringResource(MR.strings.text_shanten_action_pass))
             }
         }
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ImprovementsPanel(
     label: String,
@@ -173,16 +181,14 @@ private fun ImprovementsPanel(
                 it.value.firstOrNull()?.advanceNum ?: 0
             )
         }.forEach { (tile, discardTiles, advanceNum) ->
-            FlowRow {
-                Text(
-                    stringResource(
-                        MR.strings.text_improvement_desc,
-                        tile.emoji,
-                        discardTiles.joinToString("") { it.emoji },
-                        advanceNum
-                    )
+            TileInlineText(
+                stringResource(
+                    MR.strings.text_improvement_desc,
+                    tile.emoji,
+                    discardTiles.joinToString("") { it.emoji },
+                    advanceNum
                 )
-            }
+            )
             Spacer(Modifier.height(8.dp))
         }
         Text(

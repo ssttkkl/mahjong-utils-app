@@ -41,8 +41,8 @@
     <string name="text_good_shape_advance_tiles_num">Total: %d (%s% of all)</string>
     <string name="text_improvement_desc">Draw %s then Discard %s (Waiting: %d)</string>
 
-    <string name="label_tile_discarded_by_other">Tile Discarded by Other</string>
-    <string name="label_tile_discarded_by_other_short">From Other</string>
+    <string name="label_tile_discarded_by_other">Discarded by Other</string>
+    <string name="label_tile_discarded_by_other_short">From Other: %s</string>
     <string name="label_other_options">Other Options</string>
     <string name="label_allow_chi">Allow Chi</string>
     <string name="label_furo">Furo</string>

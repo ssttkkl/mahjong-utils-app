@@ -3,14 +3,11 @@ package io.ssttkkl.mahjongutils.app.screens.furoshanten
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
@@ -18,8 +15,9 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionCardContent
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesTopCardPanel
-import io.ssttkkl.mahjongutils.app.components.tiles.Tiles
+import io.ssttkkl.mahjongutils.app.components.tiles.TileInlineText
 import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.utils.emoji
 import io.ssttkkl.mahjongutils.app.utils.shantenNumText
 import mahjongutils.shanten.ShantenWithFuroChance
 
@@ -35,8 +33,12 @@ fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFu
                 stringResource(MR.strings.label_tiles_in_hand),
                 args.tiles,
                 tracingElement = {
-                    Text(stringResource(MR.strings.label_tile_discarded_by_other_short))
-                    Tiles(listOf(args.chanceTile), Modifier.height(36.dp))
+                    TileInlineText(
+                        stringResource(
+                            MR.strings.label_tile_discarded_by_other_short,
+                            args.chanceTile.emoji
+                        )
+                    )
                 }
             )
 
