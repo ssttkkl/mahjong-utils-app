@@ -8,7 +8,7 @@ import io.ssttkkl.mahjongutils.app.utils.shantenNumText
 
 @Composable
 fun ShantenNumCardPanel(shantenNum: Int) {
-    TopCardPanel(Res.string.label_shanten_num, {
+    TopCardPanel(Res.string.label_shanten_num, content = arrayOf({
         Text(shantenNumText(shantenNum))
-    })
+    }))
 }

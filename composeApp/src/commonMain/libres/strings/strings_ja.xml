@@ -42,6 +42,7 @@
     <string name="text_shanten_action_and"></string>
     <string name="text_good_shape_advance_tiles_num">{}枚（{}%）</string>
     <string name="label_tile_discarded_by_other">他家から出る</string>
+    <string name="label_tile_discarded_by_other_short">出る</string>
     <string name="label_other_options">オプション</string>
     <string name="label_allow_chi">チーができる</string>
     <string name="label_furo">副露</string>

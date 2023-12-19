@@ -35,7 +35,7 @@ fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFu
                 Res.string.label_tiles_in_hand,
                 args.tiles,
                 tracingElement = {
-                    Text(Res.string.label_tile_discarded_by_other)
+                    Text(Res.string.label_tile_discarded_by_other_short)
                     Tiles(listOf(args.chanceTile), Modifier.height(36.dp))
                 }
             )

@@ -57,7 +57,7 @@ fun TilesTopCardPanel(
     caption: String? = null,
     tileModifier: Modifier = Modifier.height(30.dp)
 ) {
-    TopCardPanel(label, {
+    TopCardPanel(label, content = arrayOf({
         Column {
             if (tracingElement != null) {
                 Row {
@@ -77,7 +77,7 @@ fun TilesTopCardPanel(
                 )
             }
         }
-    })
+    }))
 }
 
 
