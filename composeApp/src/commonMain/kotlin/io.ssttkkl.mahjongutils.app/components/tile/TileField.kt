@@ -3,11 +3,14 @@ package io.ssttkkl.mahjongutils.app.components.tile
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.coerceIn
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
@@ -23,50 +26,63 @@ fun TileField(
     val tileImeHostState = LocalTileImeHostState.current
 
     val coroutineScope = rememberCoroutineScope()
-    val coreTileFieldState = remember { CoreTileFieldState() }
+    val state = remember { CoreTileFieldState() }
 
     val currentValue by rememberUpdatedState(value)
     val currentOnValueChange by rememberUpdatedState(onValueChange)
 
-    DisposableEffect(coreTileFieldState.focused) {
-        if (coreTileFieldState.focused) {
-            tileImeHostState.visible = true
+    val consumer = remember(tileImeHostState) { tileImeHostState.TileImeConsumer() }
+
+    // 退出时隐藏键盘
+    DisposableEffect(tileImeHostState) {
+        onDispose {
+            consumer.release()
+        }
+    }
+
+    // 限制selection在值范围内
+    state.selection = state.selection.coerceIn(0, value.size)
+
+    // 绑定键盘到该输入框
+    DisposableEffect(tileImeHostState, state.focused) {
+        if (state.focused) {
+            consumer.consume()
 
             val collectPendingTileJob = coroutineScope.launch {
                 tileImeHostState.pendingTile.collect { tile ->
                     val newValue = buildList {
-                        addAll(currentValue.take(coreTileFieldState.selection.start))
+                        addAll(currentValue.take(state.selection.start))
                         add(tile)
-                        addAll(currentValue.takeLast(currentValue.size - coreTileFieldState.selection.end))
+                        addAll(currentValue.takeLast(currentValue.size - state.selection.end))
                     }
                     currentOnValueChange(newValue)
-                    coreTileFieldState.selection = TextRange(coreTileFieldState.selection.start + 1)
+                    state.selection = TextRange(state.selection.start + 1)
                 }
             }
             val collectBackspaceJob = coroutineScope.launch {
                 tileImeHostState.backspace.collect {
-                    if (coreTileFieldState.selection.length == 0) {
-                        val curCursor = coreTileFieldState.selection.start
+                    if (state.selection.length == 0) {
+                        val curCursor = state.selection.start
                         if (curCursor - 1 in currentValue.indices) {
                             val newValue = ArrayList(currentValue).apply {
                                 removeAt(curCursor - 1)
                             }
                             currentOnValueChange(newValue)
-                            coreTileFieldState.selection = TextRange(curCursor - 1)
+                            state.selection = TextRange(curCursor - 1)
                         }
                     } else {
                         val newValue = buildList {
-                            addAll(currentValue.take(coreTileFieldState.selection.start))
-                            addAll(currentValue.takeLast(value.size - coreTileFieldState.selection.end))
+                            addAll(currentValue.take(state.selection.start))
+                            addAll(currentValue.takeLast(currentValue.size - state.selection.end))
                         }
                         currentOnValueChange(newValue)
-                        coreTileFieldState.selection = TextRange(coreTileFieldState.selection.start)
+                        state.selection = TextRange(state.selection.start)
                     }
                 }
             }
             val collectCollapseJob = coroutineScope.launch {
                 tileImeHostState.collapse.collect {
-                    tileImeHostState.visible = false
+                    consumer.release()
                 }
             }
 
@@ -76,6 +92,7 @@ fun TileField(
                 collectCollapseJob.cancel()
             }
         } else {
+            consumer.release()
             onDispose { }
         }
     }
@@ -83,7 +100,7 @@ fun TileField(
     CoreTileField(
         value = value,
         modifier = modifier,
-        state = coreTileFieldState,
+        state = state,
         label = label,
         isError = isError
     )

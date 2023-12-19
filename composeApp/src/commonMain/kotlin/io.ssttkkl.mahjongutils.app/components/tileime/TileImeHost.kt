@@ -36,10 +36,32 @@ import kotlinx.coroutines.withContext
 import mahjongutils.models.Tile
 
 class TileImeHostState {
-    var visible by mutableStateOf(false)
+    var consumer by mutableStateOf(0)
     val pendingTile = MutableSharedFlow<Tile>()
     val backspace = MutableSharedFlow<Unit>()
     val collapse = MutableSharedFlow<Unit>()
+
+    val visible
+        get() = consumer != 0
+
+    inner class TileImeConsumer {
+        var consuming by mutableStateOf(false)
+            private set
+
+        fun consume() {
+            if (!consuming) {
+                consumer += 1
+                consuming = true
+            }
+        }
+
+        fun release() {
+            if (consuming) {
+                consumer -= 1
+                consuming = false
+            }
+        }
+    }
 }
 
 @Composable
@@ -87,11 +109,11 @@ fun UseTileIme(
 
         val platformService = object : PlatformTextInputService {
             override fun hideSoftwareKeyboard() {
-                state.visible = false
+                state.consumer -= 1
             }
 
             override fun showSoftwareKeyboard() {
-                state.visible = true
+                state.consumer += 1
             }
 
             override fun startInput(
