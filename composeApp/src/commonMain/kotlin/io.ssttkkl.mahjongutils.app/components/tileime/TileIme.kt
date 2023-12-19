@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.painterResource
 import io.ssttkkl.mahjongutils.app.MR
+import io.ssttkkl.mahjongutils.app.components.tile.painterResource
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.models.Tile
 
@@ -31,9 +32,10 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
     data class TileKey(val tile: Tile) : TileImeKey<TileKey>() {
         @Composable
         override fun display(onClick: () -> Unit) {
-            Text(
-                tile.emoji,
-                modifier = Modifier
+            val density = LocalDensity.current
+
+            Box(
+                Modifier
                     .fillMaxSize()
                     .padding(4.dp)
                     .clip(RoundedCornerShape(8.dp))
@@ -41,9 +43,14 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
                     .clickable {
                         onClick()
                     },
-                textAlign = TextAlign.Center,
-                fontSize = 36.sp
-            )
+                Alignment.Center
+            ) {
+                Image(
+                    tile.painterResource,
+                    "",
+                    Modifier.size(with(density) { 36.sp.toDp() })
+                )
+            }
         }
     }
 

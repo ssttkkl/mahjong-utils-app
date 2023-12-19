@@ -100,7 +100,6 @@ actual fun CoreTileField(
         factory = { context ->
             ListenSelectionEditText(context).apply {
                 showSoftInputOnFocus = false
-                maxLines = 1
                 textSize = fontSizeInSp
                 background = null
 

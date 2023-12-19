@@ -56,7 +56,7 @@ private fun annotateTileFromEmoji(string: String): AnnotatedString = buildAnnota
 private val tileInlineTextContent = TileModel.all.associate { tile ->
     tileContentIdRevMapping[tile]!! to InlineTextContent(
         Placeholder(
-            (1 * 1.2).em, (1.4 * 1.2).em, // 牌图片的比例是1.4:1
+            1.em, 1.4.em, // 牌图片的比例是1.4:1
             PlaceholderVerticalAlign.TextCenter
         )
     ) {
