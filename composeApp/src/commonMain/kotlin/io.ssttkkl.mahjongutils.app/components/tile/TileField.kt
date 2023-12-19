@@ -1,27 +1,47 @@
 package io.ssttkkl.mahjongutils.app.components.tile
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TileField(
+fun BaseTileField(
     value: List<Tile>,
     onValueChange: (List<Tile>) -> Unit,
     modifier: Modifier = Modifier,
-    label: String? = null,
+    enabled: Boolean = true,
+    fontSize: TextUnit = 30.sp,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    prefix: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val tileImeHostState = LocalTileImeHostState.current
 
@@ -44,8 +64,8 @@ fun TileField(
     state.selection = state.selection.coerceIn(0, value.size)
 
     // 绑定键盘到该输入框
-    DisposableEffect(tileImeHostState, state.focused) {
-        if (state.focused) {
+    DisposableEffect(tileImeHostState, enabled, state.focused) {
+        if (enabled && state.focused) {
             consumer.consume()
 
             val collectPendingTileJob = coroutineScope.launch {
@@ -97,74 +117,73 @@ fun TileField(
         }
     }
 
-    CoreTileField(
-        value = value,
-        modifier = modifier,
-        state = state,
-        label = label,
+    val cursorColor: Color = MaterialTheme.colorScheme.primary
+    val errorCursorColor: Color = MaterialTheme.colorScheme.error
+
+    val shape = OutlinedTextFieldDefaults.shape
+    val colors = OutlinedTextFieldDefaults.colors()
+
+    val decorationBox = @Composable { innerTextField: @Composable () -> Unit ->
+        OutlinedTextFieldDefaults.DecorationBox(
+            value = "",
+            visualTransformation = VisualTransformation.None,
+            innerTextField = innerTextField,
+            placeholder = placeholder,
+            label = label,
+            leadingIcon = leadingIcon,
+            trailingIcon = trailingIcon,
+            prefix = prefix,
+            suffix = suffix,
+            supportingText = supportingText,
+            singleLine = true,
+            enabled = enabled,
+            isError = isError,
+            interactionSource = interactionSource,
+            colors = colors,
+            container = {
+                OutlinedTextFieldDefaults.ContainerBox(
+                    enabled,
+                    isError,
+                    interactionSource,
+                    colors,
+                    shape
+                )
+            }
+        )
+    }
+
+    decorationBox {
+        CoreTileField(
+            value = value,
+            modifier = modifier,
+            state = state,
+            cursorColor = if (isError) errorCursorColor else cursorColor,
+            fontSizeInSp = if (fontSize.isSp)
+                fontSize.value
+            else
+                LocalTextStyle.current.fontSize.value
+        )
+    }
+}
+
+
+@Composable
+fun TileField(
+    value: List<Tile>,
+    onValueChange: (List<Tile>) -> Unit,
+    modifier: Modifier = Modifier,
+    isError: Boolean = false,
+) {
+    BaseTileField(
+        value,
+        onValueChange,
+        modifier,
+        trailingIcon = {
+            Text(
+                stringResource(MR.strings.text_tiles_num_short, value.size),
+                style = MaterialTheme.typography.labelMedium
+            )
+        },
         isError = isError
     )
 }
-
-//@Composable
-//fun TileField(
-//    value: List<Tile>,
-//    onValueChange: (List<Tile>) -> Unit,
-//    modifier: Modifier = Modifier,
-//    label: String? = null,
-//    textStyle: TextStyle = TilesTextStyle,
-//    isError: Boolean = false,
-//) {
-//    var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
-//
-//    val tilesText = value.joinToString("") { it.emoji }
-//    if (tilesText != textFieldValue.text) {
-//        // 保证选择的边界是两个emoji之间
-//        textFieldValue = TextFieldValue(tilesText)
-//    }
-//
-//    UseTileIme(
-//        transformTile = {
-//            buildAnnotatedString {
-//                append(it.emoji)
-//            }
-//        }
-//    ) {
-//        OutlinedTextField(
-//            value = textFieldValue,
-//            onValueChange = { raw ->
-//                // 保证选择的边界在两个emoji之间（每个emoji占两个字符）
-//                textFieldValue = raw.let {
-//                    it.copy(
-//                        selection = TextRange(
-//                            max(0, it.selection.start - it.selection.start % 2),
-//                            max(0, it.selection.end - it.selection.end % 2)
-//                        )
-//                    )
-//                }
-//
-//                val tiles = buildList {
-//                    repeat(textFieldValue.text.length / 2) {
-//                        // 每个tile emoji占两个字符
-//                        add(emojiToTile(textFieldValue.text.substring(it * 2, it * 2 + 2)))
-//                    }
-//                }
-//                onValueChange(tiles)
-//            },
-//            modifier = modifier,
-//            textStyle = textStyle,
-//            label = {
-//                label?.let {
-//                    Text(it)
-//                }
-//            },
-//            trailingIcon = {
-//                Text(
-//                    stringResource(MR.strings.text_tiles_num_short, value.size),
-//                    style = MaterialTheme.typography.labelMedium
-//                )
-//            },
-//            isError = isError
-//        )
-//    }
-//}
