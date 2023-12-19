@@ -37,11 +37,9 @@ import mahjongutils.models.Tile
 
 class TileImeHostState {
     var visible by mutableStateOf(false)
-    var textFieldValue by mutableStateOf<TextFieldValue?>(null)
-    var options by mutableStateOf(ImeOptions.Default)
     val pendingTile = MutableSharedFlow<Tile>()
-    val editCommand = MutableSharedFlow<List<EditCommand>>()
-    val action = MutableSharedFlow<ImeAction>()
+    val backspace = MutableSharedFlow<Unit>()
+    val collapse = MutableSharedFlow<Unit>()
 }
 
 @Composable
@@ -66,8 +64,8 @@ fun TileImeHost(
             ) {
                 TileIme(
                     { scope.launch { state.pendingTile.emit(it) } },
-                    { scope.launch { state.editCommand.emit(listOf(BackspaceCommand())) } },
-                    { scope.launch { state.action.emit(ImeAction.Done) } }
+                    { scope.launch { state.backspace.emit(Unit) } },
+                    { scope.launch { state.collapse.emit(Unit) } }
                 )
             }
         }
@@ -84,8 +82,8 @@ fun UseTileIme(
 
     val service = remember(scope, state) {
         var pendingTileCollector: Job? = null
-        var editCommandCollector: Job? = null
-        var imeActionCollector: Job? = null
+        var backspaceCollector: Job? = null
+        var collapseCollector: Job? = null
 
         val platformService = object : PlatformTextInputService {
             override fun hideSoftwareKeyboard() {
@@ -102,22 +100,21 @@ fun UseTileIme(
                 onEditCommand: (List<EditCommand>) -> Unit,
                 onImeActionPerformed: (ImeAction) -> Unit
             ) {
-                state.options = imeOptions
                 showSoftwareKeyboard()
                 pendingTileCollector = state.pendingTile.onEach {
                     withContext(Dispatchers.Main) {
                         val str = transformTile(it)
-                        state.editCommand.emit(listOf(CommitTextCommand(str, str.length)))
+                        onEditCommand(listOf(CommitTextCommand(str, str.length)))
                     }
                 }.launchIn(scope)
-                editCommandCollector = state.editCommand.onEach {
+                backspaceCollector = state.backspace.onEach {
                     withContext(Dispatchers.Main) {
-                        onEditCommand(it)
+                        onEditCommand(listOf(BackspaceCommand()))
                     }
                 }.launchIn(scope)
-                imeActionCollector = state.action.onEach {
+                collapseCollector = state.collapse.onEach {
                     withContext(Dispatchers.Main) {
-                        onImeActionPerformed(it)
+                        onImeActionPerformed(ImeAction.Done)
                     }
                 }.launchIn(scope)
             }
@@ -126,14 +123,14 @@ fun UseTileIme(
                 hideSoftwareKeyboard()
                 pendingTileCollector?.cancel()
                 pendingTileCollector = null
-                editCommandCollector?.cancel()
-                editCommandCollector = null
-                imeActionCollector?.cancel()
-                imeActionCollector = null
+                backspaceCollector?.cancel()
+                backspaceCollector = null
+                collapseCollector?.cancel()
+                collapseCollector = null
             }
 
             override fun updateState(oldValue: TextFieldValue?, newValue: TextFieldValue) {
-                state.textFieldValue = newValue
+
             }
         }
 

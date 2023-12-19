@@ -70,11 +70,6 @@ object ShantenScreen :
     ) {
         val coroutineScope = rememberCoroutineScope()
 
-        val tilesState by model.tiles.collectAsState()
-        val shantenModeState by model.shantenMode.collectAsState()
-
-        val tilesErrMsg by model.tilesErrMsg.collectAsState()
-
         with(Spacing.current) {
             Column(
                 modifier.verticalScroll(rememberScrollState())
@@ -82,10 +77,10 @@ object ShantenScreen :
                 VerticalSpacerBetweenPanels()
 
                 TopPanel(stringResource(MR.strings.label_tiles_in_hand)) {
-                    ValidationField(tilesErrMsg?.let { stringResource(it) }) { isError ->
+                    ValidationField(model.tilesErrMsg?.let { stringResource(it) }) { isError ->
                         TileField(
-                            value = tilesState,
-                            onValueChange = { model.tiles.value = it },
+                            value = model.tiles,
+                            onValueChange = { model.tiles = it },
                             modifier = Modifier.fillMaxWidth(),
                             isError = isError
                         )
@@ -99,8 +94,8 @@ object ShantenScreen :
                     noPaddingContent = true
                 ) {
                     ShantenModeRatioGroups(
-                        shantenModeState,
-                        { model.shantenMode.value = it }
+                        model.shantenMode,
+                        { model.shantenMode = it }
                     )
                 }
 

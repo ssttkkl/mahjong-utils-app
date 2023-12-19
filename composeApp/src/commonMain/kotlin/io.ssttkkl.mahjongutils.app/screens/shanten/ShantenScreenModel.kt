@@ -1,5 +1,8 @@
 package io.ssttkkl.mahjongutils.app.screens.shanten
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
@@ -9,40 +12,38 @@ import mahjongutils.models.Tile
 import mahjongutils.models.countAsCodeArray
 
 class ShantenScreenModel : ResultScreenModel<ShantenCalcResult>() {
-    val tiles = MutableStateFlow<List<Tile>>(emptyList())
-    val shantenMode = MutableStateFlow(ShantenMode.Union)
+    var tiles by mutableStateOf<List<Tile>>(emptyList())
+    var shantenMode by mutableStateOf(ShantenMode.Union)
 
-    val tilesErrMsg = MutableStateFlow<StringResource?>(null)
+    var tilesErrMsg by mutableStateOf<StringResource?>(null)
 
     override suspend fun onCheck(): Boolean {
-        val tiles = tiles.value
-
-        if (tiles.size == 0) {
-            tilesErrMsg.value = MR.strings.text_must_enter_tiles
+        if (tiles.isEmpty()) {
+            tilesErrMsg = MR.strings.text_must_enter_tiles
             return false
         }
 
         if (tiles.size > 14) {
-            tilesErrMsg.value = MR.strings.text_cannot_have_more_than_14_tiles
+            tilesErrMsg = MR.strings.text_cannot_have_more_than_14_tiles
             return false
         }
 
         if (tiles.size % 3 == 0) {
-            tilesErrMsg.value = MR.strings.text_tiles_must_not_be_divided_into_3
+            tilesErrMsg = MR.strings.text_tiles_must_not_be_divided_into_3
             return false
         }
 
         if (tiles.countAsCodeArray().any { it > 4 }) {
-            tilesErrMsg.value = MR.strings.text_any_tile_must_not_be_more_than_4
+            tilesErrMsg = MR.strings.text_any_tile_must_not_be_more_than_4
             return false
         }
 
-        tilesErrMsg.value = null
+        tilesErrMsg = null
         return true
     }
 
     override suspend fun onCalc(appState: AppState): ShantenCalcResult {
-        val args = ShantenArgs(tiles.value, shantenMode.value)
+        val args = ShantenArgs(tiles, shantenMode)
         return args.calc()
     }
 }
