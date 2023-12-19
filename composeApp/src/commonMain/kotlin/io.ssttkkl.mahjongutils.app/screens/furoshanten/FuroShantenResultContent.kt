@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.screens.furoshanten
 
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,10 +15,9 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
+import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionCardContent
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesTopCardPanel
-import io.ssttkkl.mahjongutils.app.components.table.ShantenActionTable
-import io.ssttkkl.mahjongutils.app.components.table.ShantenActionTableType
 import io.ssttkkl.mahjongutils.app.components.tiles.Tiles
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.shantenNumText
@@ -103,14 +103,10 @@ fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFu
                     shantenNumText(shantenNum)
                 )
 
-                TopCardPanel(label, {
-                    val type = when (shantenNum) {
-                        0 -> ShantenActionTableType.WithGoodShapeImprovement
-                        1 -> ShantenActionTableType.WithGoodShapeAdvance
-                        else -> ShantenActionTableType.Normal
-                    }
-                    ShantenActionTable(actions, type)
-                })
+                val content: Array<@Composable BoxScope.() -> Unit> = Array(actions.size) {
+                    @Composable { ShantenActionCardContent(actions[it]) }
+                }
+                TopCardPanel(label, content = content)
 
                 VerticalSpacerBetweenPanels()
             }

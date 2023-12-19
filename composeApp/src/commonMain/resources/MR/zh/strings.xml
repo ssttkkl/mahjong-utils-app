@@ -32,14 +32,15 @@
     <string name="text_waiting_tiles_num">听%d张</string>
     <string name="label_shanten_action">%s打法</string>
     <string name="label_shanten_action_backwards">%s打法（退向）</string>
-    <string name="text_shanten_action_discard">打</string>
+    <string name="text_shanten_action_discard">打%s</string>
     <string name="text_shanten_action_ankan">暗杠</string>
-    <string name="text_shanten_action_minkan">大明杠</string>
+    <string name="text_shanten_action_minkan">大明杠%s</string>
     <string name="text_shanten_action_pass">跳过</string>
-    <string name="text_shanten_action_chi">吃</string>
-    <string name="text_shanten_action_pon">碰</string>
-    <string name="text_shanten_action_and"></string>
+    <string name="text_shanten_action_chi_and_discard">%s%s吃，打%s</string>
+    <string name="text_shanten_action_pon_and_discard">碰，打%s</string>
     <string name="text_good_shape_advance_tiles_num">共%d枚（%s%）</string>
+    <string name="text_improvement_desc">摸%s，打%s（听%d枚）</string>
+
     <string name="label_tile_discarded_by_other">他家打</string>
     <string name="label_tile_discarded_by_other_short">他家打</string>
     <string name="label_other_options">选项</string>

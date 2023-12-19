@@ -33,13 +33,14 @@
     <string name="label_shanten_action">%sの打牌</string>
     <string name="label_shanten_action_backwards">%sの打牌（向聴戻し）</string>
     <string name="text_shanten_action_discard">打</string>
-    <string name="text_shanten_action_ankan">暗槓</string>
+    <string name="text_shanten_action_ankan">暗槓%s</string>
     <string name="text_shanten_action_minkan">大明槓</string>
     <string name="text_shanten_action_pass">パス</string>
-    <string name="text_shanten_action_chi">チー</string>
-    <string name="text_shanten_action_pon">ポン</string>
-    <string name="text_shanten_action_and"></string>
+    <string name="text_shanten_action_chi_and_discard">%s%sチー、%s切る</string>
+    <string name="text_shanten_action_pon_and_discard">ポン、%s切る</string>
     <string name="text_good_shape_advance_tiles_num">%d枚（%s%）</string>
+    <string name="text_improvement_desc">ツモ%sだら%s切る（%d枚待ちになる）</string>
+
     <string name="label_tile_discarded_by_other">他家から出る</string>
     <string name="label_tile_discarded_by_other_short">出る</string>
     <string name="label_other_options">オプション</string>

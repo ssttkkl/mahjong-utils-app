@@ -32,14 +32,15 @@
     <string name="text_waiting_tiles_num">Waiting: %d</string>
     <string name="label_shanten_action">%s</string>
     <string name="label_shanten_action_backwards">%s (Backwards)</string>
-    <string name="text_shanten_action_discard">Discard</string>
-    <string name="text_shanten_action_ankan">Ankan</string>
+    <string name="text_shanten_action_discard">Discard %s</string>
+    <string name="text_shanten_action_ankan">Ankan %s</string>
     <string name="text_shanten_action_minkan">Minkan</string>
     <string name="text_shanten_action_pass">Pass</string>
-    <string name="text_shanten_action_chi">Chi</string>
-    <string name="text_shanten_action_pon">Pon</string>
-    <string name="text_shanten_action_and"> and </string>
+    <string name="text_shanten_action_chi_and_discard">%s%s Chi and Discard %s</string>
+    <string name="text_shanten_action_pon_and_discard">Pon and Discard %s</string>
     <string name="text_good_shape_advance_tiles_num">Total: %d (%s% of all)</string>
+    <string name="text_improvement_desc">Draw %s then Discard %s (Waiting: %d)</string>
+
     <string name="label_tile_discarded_by_other">Tile Discarded by Other</string>
     <string name="label_tile_discarded_by_other_short">From Other</string>
     <string name="label_other_options">Other Options</string>

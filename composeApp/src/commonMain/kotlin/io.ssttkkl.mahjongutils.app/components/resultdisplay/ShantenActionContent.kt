@@ -18,9 +18,8 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.divider.VerticalDivider
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
-import io.ssttkkl.mahjongutils.app.components.tiles.Tile
-import io.ssttkkl.mahjongutils.app.components.tiles.Tiles
 import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.models.Tatsu
 import mahjongutils.models.Tile
 import mahjongutils.shanten.Improvement
@@ -121,37 +120,33 @@ private fun ShantenActionContent(
     Row(modifier, horizontalArrangement, verticalAlignment) {
         when (action) {
             is ShantenAction.Discard -> {
-                Text(stringResource(MR.strings.text_shanten_action_discard))
-                Tile(action.tile)
+                Text(stringResource(MR.strings.text_shanten_action_discard, action.tile.emoji))
             }
 
             is ShantenAction.Ankan -> {
-                Text(stringResource(MR.strings.text_shanten_action_ankan))
-                Tile(action.tile)
+                Text(stringResource(MR.strings.text_shanten_action_ankan, action.tile.emoji))
             }
 
             is ShantenAction.Chi -> {
-                Tiles(listOf(action.tatsu.first, action.tatsu.second))
                 Text(
-                    stringResource(MR.strings.text_shanten_action_chi)
-                            + stringResource(MR.strings.text_shanten_action_and)
-                            + stringResource(MR.strings.text_shanten_action_discard)
+                    stringResource(
+                        MR.strings.text_shanten_action_chi_and_discard,
+                        action.tatsu.first.emoji, action.tatsu.second.emoji, action.discard.emoji
+                    )
                 )
-                Tile(action.discard)
             }
 
             is ShantenAction.Pon -> {
                 Text(
-                    stringResource(MR.strings.text_shanten_action_pon)
-                            + stringResource(MR.strings.text_shanten_action_and)
-                            + stringResource(MR.strings.text_shanten_action_discard)
+                    stringResource(
+                        MR.strings.text_shanten_action_pon_and_discard,
+                        action.discard.emoji
+                    )
                 )
-                Tile(action.discard)
             }
 
             is ShantenAction.Minkan -> {
                 Text(stringResource(MR.strings.text_shanten_action_minkan))
-                Tile(action.tile)
             }
 
             is ShantenAction.Pass -> {
@@ -179,16 +174,13 @@ private fun ImprovementsPanel(
             )
         }.forEach { (tile, discardTiles, advanceNum) ->
             FlowRow {
-                Text(stringResource(MR.strings.text_draw))
-                Tiles(listOf(tile))
                 Text(
-                    stringResource(MR.strings.text_shanten_action_and)
-                            + stringResource(MR.strings.text_shanten_action_discard)
-                )
-                Tiles(discardTiles)
-                Text(
-                    stringResource(MR.strings.text_comma)
-                            + stringResource(MR.strings.text_waiting_tiles_num, advanceNum)
+                    stringResource(
+                        MR.strings.text_improvement_desc,
+                        tile.emoji,
+                        discardTiles.joinToString("") { it.emoji },
+                        advanceNum
+                    )
                 )
             }
             Spacer(Modifier.height(8.dp))
