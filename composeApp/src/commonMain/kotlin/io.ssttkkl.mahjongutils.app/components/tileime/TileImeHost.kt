@@ -103,17 +103,19 @@ fun UseTileIme(
     val state = LocalTileImeHostState.current
 
     val service = remember(scope, state) {
+        var consumer = state.TileImeConsumer()
+
         var pendingTileCollector: Job? = null
         var backspaceCollector: Job? = null
         var collapseCollector: Job? = null
 
         val platformService = object : PlatformTextInputService {
             override fun hideSoftwareKeyboard() {
-                state.consumer -= 1
+                consumer.consume()
             }
 
             override fun showSoftwareKeyboard() {
-                state.consumer += 1
+                consumer.release()
             }
 
             override fun startInput(
