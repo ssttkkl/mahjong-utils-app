@@ -99,7 +99,7 @@ actual fun CoreTileField(
 ) {
     val coroutineContext = rememberCoroutineScope()
 
-    var pendingSelectionChange by remember { mutableStateOf(false) }
+    var notifySelectionChange by remember { mutableStateOf(true) }
     var prevFocusInteraction by remember { mutableStateOf<FocusInteraction.Focus?>(null) }
     var prevPressInteraction by remember { mutableStateOf<PressInteraction.Press?>(null) }
 
@@ -136,7 +136,7 @@ actual fun CoreTileField(
                 }
 
                 addOnSelectionChangedListener { selStart, selEnd ->
-                    if (!pendingSelectionChange) {
+                    if (notifySelectionChange) {
                         state.selection = TextRange(selStart, selEnd)
                     }
                 }
@@ -179,13 +179,13 @@ actual fun CoreTileField(
         },
         update = { edittext ->
             edittext.apply {
-                // setText的时候会调用onSelectionChanged把选择区域置为[0,0)，所以需要暂时不同步状态
-                pendingSelectionChange = true
+                // setText的时候会调用onSelectionChanged把选择区域置为[0,0]，所以需要暂时不同步状态
+                notifySelectionChange = false
                 setText(
                     value.toSpannedString(context, tileHeight)
                 )
                 setSelection(state.selection.start, state.selection.end)
-                pendingSelectionChange = false
+                notifySelectionChange = true
 
                 if (Build.VERSION.SDK_INT >= 29) {
                     textCursorDrawable = cursorDrawable

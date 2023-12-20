@@ -2,11 +2,7 @@
 platform :ios, '13.0'
 
 target 'iosApp' do
-  use_frameworks! :linkage => :static
-
-  pre_install do |installer|
-    FileUtils.mkdir_p(installer.sandbox.root.to_s + '/../../composeApp/build/generated/libres/apple/libres-bundles')
-  end
+  # use_frameworks! :linkage => :static
 
   # Pods for iosApp
   pod 'composeApp', :path => '../composeApp'
