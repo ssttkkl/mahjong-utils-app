@@ -1,7 +1,6 @@
 package io.ssttkkl.mahjongutils.app.screens.hora
 
 import androidx.compose.runtime.Immutable
-import kotlinx.serialization.Serializable
 import mahjongutils.hora.Hora
 import mahjongutils.hora.hora
 import mahjongutils.models.Furo
@@ -9,7 +8,6 @@ import mahjongutils.models.Tile
 import mahjongutils.models.Wind
 import mahjongutils.yaku.Yaku
 
-@Serializable
 @Immutable
 data class HoraArgs(
     val tiles: List<Tile>,

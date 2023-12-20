@@ -6,7 +6,10 @@
     <string name="title_furo_shanten_result">Furo Shanten Result</string>
     <string name="title_hora">Hora Analyses</string>
     <string name="title_hora_result">Hora Analyses Result</string>
+    <string name="title_about">About</string>
+
     <string name="message_unknown_error">Unknown error</string>
+
     <string name="label_keyboard_collapse">Collapse</string>
     <string name="label_tiles_in_hand">Tiles in Hand</string>
     <string name="label_shanten_mode">Shanten Mode</string>

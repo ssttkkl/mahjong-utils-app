@@ -8,4 +8,5 @@ plugins {
     alias(libs.plugins.kotlinSerialization) apply false
     alias(libs.plugins.kotlinNativeCocoapods) apply false
     alias(libs.plugins.mokoResources) apply false
+    alias(libs.plugins.aboutLibraries) apply false
 }

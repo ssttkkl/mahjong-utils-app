@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinNativeCocoapods)
     alias(libs.plugins.mokoResources)
+    alias(libs.plugins.aboutLibraries)
 }
 
 kotlin {
@@ -72,7 +73,8 @@ kotlin {
             implementation(compose.components.resources)
             implementation(libs.material3.windowSizeClass)
 
-            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.about.libraries.core)
+            implementation(libs.about.libraries.compose)
 
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.screenmodel)
