@@ -10,6 +10,9 @@ import android.text.Spannable
 import android.text.SpannedString
 import android.text.style.ImageSpan
 import android.view.MotionEvent
+import android.view.View
+import android.view.View.OnFocusChangeListener
+import android.view.View.OnTouchListener
 import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.runtime.Composable
@@ -49,8 +52,8 @@ private fun List<Tile>.toSpannedString(context: Context, height: Int): SpannedSt
                 drawable.setBounds(
                     0,
                     0,
-                    (height * 0.8).toInt(),
-                    (width * 0.8).toInt()
+                    height,
+                    width
                 )
 
                 val layer = LayerDrawable(arrayOf(drawable))
@@ -61,7 +64,7 @@ private fun List<Tile>.toSpannedString(context: Context, height: Int): SpannedSt
                     (width * 0.1).toInt(),
                     (height * 0.1).toInt()
                 )
-                layer.setBounds(0, 0, width, height)
+                layer.setBounds(0, 0, (width * 1.2).toInt(), (height * 1.2).toInt())
 
                 setSpan(
                     ImageSpan(layer),
@@ -100,8 +103,6 @@ actual fun CoreTileField(
     val coroutineContext = rememberCoroutineScope()
 
     var notifySelectionChange by remember { mutableStateOf(true) }
-    var prevFocusInteraction by remember { mutableStateOf<FocusInteraction.Focus?>(null) }
-    var prevPressInteraction by remember { mutableStateOf<PressInteraction.Press?>(null) }
 
     val cursorDrawable = cursorDrawable(cursorColor)
     val tileHeight = with(LocalDensity.current) {
@@ -113,24 +114,28 @@ actual fun CoreTileField(
         factory = { context ->
             ListenSelectionEditText(context).apply {
                 showSoftInputOnFocus = false
-                textSize = fontSizeInSp
                 background = null
+                setPadding(0, 0, 0, 0)
+                minHeight = (tileHeight * 1.2).toInt() // 有20%的LayerInset
 
                 if (Build.VERSION.SDK_INT >= 29) {
                     textCursorDrawable = cursorDrawable
                 }
 
-                setOnFocusChangeListener { _, focused ->
-                    coroutineContext.launch {
-                        if (focused) {
-                            prevFocusInteraction = FocusInteraction.Focus().also {
-                                state.interactionSource.emit(it)
+                onFocusChangeListener = object : OnFocusChangeListener {
+                    var prevFocusInteraction: FocusInteraction.Focus? = null
+                    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+                        coroutineContext.launch {
+                            if (hasFocus) {
+                                prevFocusInteraction = FocusInteraction.Focus().also {
+                                    state.interactionSource.emit(it)
+                                }
+                            } else {
+                                prevFocusInteraction?.let { prevFocusInteraction ->
+                                    state.interactionSource.emit(prevFocusInteraction)
+                                }
+                                prevFocusInteraction = null
                             }
-                        } else {
-                            prevFocusInteraction?.let { prevFocusInteraction ->
-                                state.interactionSource.emit(prevFocusInteraction)
-                            }
-                            prevFocusInteraction = null
                         }
                     }
                 }
@@ -141,40 +146,44 @@ actual fun CoreTileField(
                     }
                 }
 
-                setOnTouchListener { v, event ->
-                    when (event.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            coroutineContext.launch {
-                                prevPressInteraction = PressInteraction.Press(
-                                    Offset(event.x, event.y)
-                                ).also {
-                                    state.interactionSource.emit(it)
-                                }
-                            }
-                        }
+                setOnTouchListener(object : OnTouchListener {
+                    var prevPressInteraction: PressInteraction.Press? = null
 
-                        MotionEvent.ACTION_UP -> {
-                            coroutineContext.launch {
-                                prevPressInteraction?.let { prevPressInteraction ->
-                                    state.interactionSource.emit(
-                                        PressInteraction.Release(prevPressInteraction)
-                                    )
+                    override fun onTouch(v: View, event: MotionEvent): Boolean {
+                        when (event.action) {
+                            MotionEvent.ACTION_DOWN -> {
+                                coroutineContext.launch {
+                                    prevPressInteraction = PressInteraction.Press(
+                                        Offset(event.x, event.y)
+                                    ).also {
+                                        state.interactionSource.emit(it)
+                                    }
                                 }
                             }
-                        }
 
-                        MotionEvent.ACTION_CANCEL -> {
-                            coroutineContext.launch {
-                                prevPressInteraction?.let { prevPressInteraction ->
-                                    state.interactionSource.emit(
-                                        PressInteraction.Cancel(prevPressInteraction)
-                                    )
+                            MotionEvent.ACTION_UP -> {
+                                coroutineContext.launch {
+                                    prevPressInteraction?.let { prevPressInteraction ->
+                                        state.interactionSource.emit(
+                                            PressInteraction.Release(prevPressInteraction)
+                                        )
+                                    }
+                                }
+                            }
+
+                            MotionEvent.ACTION_CANCEL -> {
+                                coroutineContext.launch {
+                                    prevPressInteraction?.let { prevPressInteraction ->
+                                        state.interactionSource.emit(
+                                            PressInteraction.Cancel(prevPressInteraction)
+                                        )
+                                    }
                                 }
                             }
                         }
+                        return v.onTouchEvent(event)
                     }
-                    v.onTouchEvent(event)
-                }
+                })
             }
         },
         update = { edittext ->
