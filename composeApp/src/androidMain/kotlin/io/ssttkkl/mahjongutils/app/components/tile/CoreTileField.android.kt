@@ -8,39 +8,24 @@ import android.os.Build
 import android.text.Spannable
 import android.text.SpannedString
 import android.text.style.ImageSpan
-import android.util.TypedValue
+import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.buildSpannedString
+import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
-
-private fun dp2Px(dp: Float, ctx: Context): Int {
-    return if (Build.VERSION.SDK_INT >= 34) {
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, ctx.resources.displayMetrics)
-            .toInt()
-    } else {
-        val scale = ctx.resources.displayMetrics.density
-        (dp * scale + 0.5f).toInt()
-    }
-}
-
-private fun sp2Px(sp: Float, ctx: Context): Int {
-    return if (Build.VERSION.SDK_INT >= 34) {
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, ctx.resources.displayMetrics)
-            .toInt()
-    } else {
-        val fontScale = ctx.resources.displayMetrics.scaledDensity
-        (sp * fontScale + 0.5f).toInt()
-    }
-}
 
 
 private fun List<Tile>.toSpannedString(context: Context, height: Int): SpannedString {
@@ -86,6 +71,20 @@ private fun List<Tile>.toSpannedString(context: Context, height: Int): SpannedSt
 }
 
 @Composable
+fun cursorDrawable(cursorColor: Color): GradientDrawable {
+    val thickness = with(LocalDensity.current) {
+        2.dp.toPx().toInt()
+    }
+
+    return remember {
+        GradientDrawable()
+    }.apply {
+        setColor(cursorColor.toArgb())
+        setSize(thickness, 0)
+    }
+}
+
+@Composable
 actual fun CoreTileField(
     value: List<Tile>,
     modifier: Modifier,
@@ -93,7 +92,15 @@ actual fun CoreTileField(
     cursorColor: Color,
     fontSizeInSp: Float,
 ) {
+    val coroutineContext = rememberCoroutineScope()
+
     var pendingSelectionChange by remember { mutableStateOf(false) }
+    var prevFocusInteraction by remember { mutableStateOf<FocusInteraction.Focus?>(null) }
+
+    val cursorDrawable = cursorDrawable(cursorColor)
+    val tileHeight = with(LocalDensity.current) {
+        fontSizeInSp.sp.toPx().toInt()
+    }
 
     AndroidView(
         modifier = modifier,
@@ -104,14 +111,22 @@ actual fun CoreTileField(
                 background = null
 
                 if (Build.VERSION.SDK_INT >= 29) {
-                    textCursorDrawable = GradientDrawable().apply {
-                        setColor(cursorColor.toArgb())
-                        setSize(dp2Px(2f, context), 0)
-                    }
+                    textCursorDrawable = cursorDrawable
                 }
 
-                setOnFocusChangeListener { view, b ->
-                    state.focused = b
+                setOnFocusChangeListener { _, focused ->
+                    coroutineContext.launch {
+                        if (focused) {
+                            prevFocusInteraction = FocusInteraction.Focus().also {
+                                state.interactionSource.emit(it)
+                            }
+                        } else {
+                            prevFocusInteraction?.let { prevFocusInteraction ->
+                                state.interactionSource.emit(prevFocusInteraction)
+                            }
+                            prevFocusInteraction = null
+                        }
+                    }
                 }
 
                 addOnSelectionChangedListener { selStart, selEnd ->
@@ -121,20 +136,19 @@ actual fun CoreTileField(
                 }
             }
         },
-        update = {
-            // setText的时候会调用onSelectionChanged把选择区域置为[0,0)，所以需要暂时不同步状态
-            pendingSelectionChange = true
-            it.setText(
-                value.toSpannedString(
-                    it.context,
-                    sp2Px(it.textSize, it.context)
+        update = { edittext ->
+            edittext.apply {
+                // setText的时候会调用onSelectionChanged把选择区域置为[0,0)，所以需要暂时不同步状态
+                pendingSelectionChange = true
+                setText(
+                    value.toSpannedString(context, tileHeight)
                 )
-            )
-            it.setSelection(state.selection.start, state.selection.end)
-            pendingSelectionChange = false
+                setSelection(state.selection.start, state.selection.end)
+                pendingSelectionChange = false
 
-            if (Build.VERSION.SDK_INT >= 29) {
-                (it.textCursorDrawable as? GradientDrawable)?.setColor(cursorColor.toArgb())
+                if (Build.VERSION.SDK_INT >= 29) {
+                    textCursorDrawable = cursorDrawable
+                }
             }
         }
     )

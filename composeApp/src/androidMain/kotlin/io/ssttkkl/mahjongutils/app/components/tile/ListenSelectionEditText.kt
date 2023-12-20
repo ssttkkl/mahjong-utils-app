@@ -21,6 +21,7 @@ internal class ListenSelectionEditText : EditText {
 
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
         super.onSelectionChanged(selStart, selEnd)
+        // 子类还没初始化的时候父类调用，此时onSelectionChangedListeners == null
         if (onSelectionChangedListeners != null) {
             for (listener in onSelectionChangedListeners) {
                 listener.onSelectionChanged(selStart, selEnd)
