@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import androidx.compose.material3.Surface
@@ -25,6 +27,8 @@ import kotlinx.coroutines.launch
 @Composable
 actual fun Capturable(
     state: CaptureState,
+    heightWrapContent: Boolean,
+    widthWrapContent: Boolean,
     content: @Composable () -> Unit
 ) {
     var bounds by remember {
@@ -33,10 +37,12 @@ actual fun Capturable(
     val capturing by state.capturing.collectAsState()
 
     // 依据状态值 选择是否使用AndroidView进行展示获取截图
-    if (capturing) {
+    if (capturing && bounds != null) {
         CaptureView(
             captureState = state,
-            bounds = bounds,
+            bounds = bounds!!,
+            heightWrapContent = heightWrapContent,
+            widthWrapContent = widthWrapContent,
             content = content
         )
     } else {
@@ -50,25 +56,37 @@ actual fun Capturable(
 @Composable
 private fun CaptureView(
     captureState: CaptureState,
-    bounds: Rect?,
+    bounds: Rect,
+    heightWrapContent: Boolean,
+    widthWrapContent: Boolean,
     content: @Composable () -> Unit
 ) {
     AndroidView(factory = {
-        FrameLayout(it).apply {
+        object : FrameLayout(it) {
+            override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+                super.onMeasure(
+                    if (widthWrapContent) MeasureSpec.UNSPECIFIED else widthMeasureSpec,
+                    if (heightWrapContent) MeasureSpec.UNSPECIFIED else heightMeasureSpec
+                )
+            }
+        }.apply {
             layoutParams = ViewGroup.LayoutParams(
-                (bounds!!.right - bounds.left).toInt(),
-                (bounds.bottom - bounds.top).toInt()
+                if (widthWrapContent) WRAP_CONTENT else (bounds.right - bounds.left).toInt(),
+                if (heightWrapContent) WRAP_CONTENT else (bounds.bottom - bounds.top).toInt()
             )
+
             val composeView = ComposeView(it).apply {
                 setContent {
                     content()
                 }
             }
+
             drawListener(captureState, composeView, this)
+
             addView(
                 composeView, ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
+                    if (widthWrapContent) WRAP_CONTENT else MATCH_PARENT,
+                    if (heightWrapContent) WRAP_CONTENT else MATCH_PARENT
                 )
             )
 

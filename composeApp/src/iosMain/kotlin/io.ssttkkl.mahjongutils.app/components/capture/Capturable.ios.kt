@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 @Composable
 actual fun Capturable(
     state: CaptureState,
+    heightWrapContent: Boolean,
+    widthWrapContent: Boolean,
     content: @Composable () -> Unit
 ) {
     content()

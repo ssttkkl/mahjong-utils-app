@@ -33,5 +33,7 @@ fun rememberCaptureState(): CaptureState {
 @Composable
 expect fun Capturable(
     state: CaptureState = rememberCaptureState(),
+    heightWrapContent: Boolean = false,
+    widthWrapContent: Boolean = false,
     content: @Composable () -> Unit
 )
