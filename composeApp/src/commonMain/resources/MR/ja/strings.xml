@@ -55,6 +55,7 @@
     <string name="label_self_wind">自風</string>
     <string name="label_round_wind">場風</string>
     <string name="label_extra_yaku">役</string>
+    <string name="label_extra_yaku_unspecified">なし</string>
     <string name="label_wind_unspecified">指定しない</string>
     <string name="label_wind_east">東</string>
     <string name="label_wind_south">南</string>

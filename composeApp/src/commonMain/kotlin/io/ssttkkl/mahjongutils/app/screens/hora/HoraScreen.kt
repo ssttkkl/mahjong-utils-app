@@ -21,13 +21,17 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -46,6 +50,7 @@ import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.localizedName
+import io.ssttkkl.mahjongutils.app.utils.withAlpha
 import kotlinx.coroutines.launch
 import mahjongutils.models.Wind
 import mahjongutils.yaku.Yaku
@@ -94,7 +99,6 @@ object HoraScreen :
         return rememberScreenModel { HoraScreenModel() }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun FormContent(
         appState: AppState,
@@ -231,6 +235,12 @@ object HoraScreen :
                                 value = model.dora,
                                 onValueChange = { model.dora = it },
                                 modifier = Modifier.fillMaxWidth(),
+                                placeholder = {
+                                    Text(
+                                        "0",
+                                        style = LocalTextStyle.current.withAlpha(0.4f)
+                                    )
+                                },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 isError = isError
                             )
@@ -252,7 +262,14 @@ object HoraScreen :
                                 }
                             },
                             options,
-                            Modifier.fillMaxWidth()
+                            Modifier.fillMaxWidth(),
+                            produceDisplayText = {
+                                if (it.isEmpty()) {
+                                    stringResource(MR.strings.label_extra_yaku_unspecified)
+                                } else {
+                                    it.joinToString { it.text }
+                                }
+                            }
                         )
                     }
                 }

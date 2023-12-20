@@ -63,7 +63,7 @@ fun <T> MultiComboBox(
     onChosen: (ChooseAction<T>) -> Unit,
     options: List<ComboOption<T>>,
     modifier: Modifier = Modifier,
-    produceDisplayText: ((Collection<ComboOption<T>>) -> String)? = null,
+    produceDisplayText: (@Composable (Collection<ComboOption<T>>) -> String)? = null,
     closeOnClick: Boolean = false,
     showCheckbox: Boolean = true,
 ) {

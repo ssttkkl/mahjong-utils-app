@@ -55,7 +55,8 @@
     <string name="label_self_wind">Self Wind</string>
     <string name="label_round_wind">Round Wind</string>
     <string name="label_extra_yaku">Extra Yaku</string>
-    <string name="label_wind_unspecified">None</string>
+    <string name="label_extra_yaku_unspecified">None</string>
+    <string name="label_wind_unspecified">Unspecified</string>
     <string name="label_wind_east">East</string>
     <string name="label_wind_south">South</string>
     <string name="label_wind_west">West</string>
