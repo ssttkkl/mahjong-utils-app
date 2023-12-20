@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.components.tile
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
@@ -8,7 +9,9 @@ import android.os.Build
 import android.text.Spannable
 import android.text.SpannedString
 import android.text.style.ImageSpan
+import android.view.MotionEvent
 import androidx.compose.foundation.interaction.FocusInteraction
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
@@ -84,6 +88,7 @@ fun cursorDrawable(cursorColor: Color): GradientDrawable {
     }
 }
 
+@SuppressLint("ClickableViewAccessibility")
 @Composable
 actual fun CoreTileField(
     value: List<Tile>,
@@ -96,6 +101,7 @@ actual fun CoreTileField(
 
     var pendingSelectionChange by remember { mutableStateOf(false) }
     var prevFocusInteraction by remember { mutableStateOf<FocusInteraction.Focus?>(null) }
+    var prevPressInteraction by remember { mutableStateOf<PressInteraction.Press?>(null) }
 
     val cursorDrawable = cursorDrawable(cursorColor)
     val tileHeight = with(LocalDensity.current) {
@@ -133,6 +139,41 @@ actual fun CoreTileField(
                     if (!pendingSelectionChange) {
                         state.selection = TextRange(selStart, selEnd)
                     }
+                }
+
+                setOnTouchListener { v, event ->
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            coroutineContext.launch {
+                                prevPressInteraction = PressInteraction.Press(
+                                    Offset(event.x, event.y)
+                                ).also {
+                                    state.interactionSource.emit(it)
+                                }
+                            }
+                        }
+
+                        MotionEvent.ACTION_UP -> {
+                            coroutineContext.launch {
+                                prevPressInteraction?.let { prevPressInteraction ->
+                                    state.interactionSource.emit(
+                                        PressInteraction.Release(prevPressInteraction)
+                                    )
+                                }
+                            }
+                        }
+
+                        MotionEvent.ACTION_CANCEL -> {
+                            coroutineContext.launch {
+                                prevPressInteraction?.let { prevPressInteraction ->
+                                    state.interactionSource.emit(
+                                        PressInteraction.Cancel(prevPressInteraction)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    v.onTouchEvent(event)
                 }
             }
         },
