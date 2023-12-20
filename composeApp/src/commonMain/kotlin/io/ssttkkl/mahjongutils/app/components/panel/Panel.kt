@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,6 +22,26 @@ import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 
 @Composable
+private fun PanelTitle(
+    header: @Composable () -> String,
+    modifier: Modifier,
+    trailingContent: (@Composable () -> Unit)? = null
+) {
+    Row(modifier) {
+        Text(
+            header(),
+            Modifier.weight(1f),
+            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+            maxLines = 1,
+        )
+        trailingContent?.let {
+            Spacer(Modifier.padding(start = 8.dp))
+            trailingContent()
+        }
+    }
+}
+
+@Composable
 fun Panel(
     header: String,
     modifier: Modifier = Modifier,
@@ -29,18 +50,7 @@ fun Panel(
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(modifier) {
-        Row(titleModifier) {
-            Text(
-                header,
-                Modifier.weight(1f),
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                maxLines = 1,
-            )
-            titleTrailingContent?.let {
-                Spacer(Modifier.padding(start = 8.dp))
-                titleTrailingContent()
-            }
-        }
+        PanelTitle({ header }, titleModifier, titleTrailingContent)
         Spacer(Modifier.height(8.dp))
         content()
     }
@@ -81,19 +91,13 @@ fun CardPanel(
     cardModifier: Modifier = Modifier,
     titleModifier: Modifier = Modifier,
     titleTrailingContent: (@Composable () -> Unit)? = null,
-    vararg content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     with(Spacing.current) {
         Panel(header, modifier, titleModifier, titleTrailingContent) {
-            content.forEachIndexed { index, it ->
-                Card(Modifier.fillMaxWidth().then(cardModifier)) {
-                    Box(Modifier.padding(cardInnerPadding)) {
-                        it()
-                    }
-                }
-
-                if (index != content.size) {
-                    Spacer(Modifier.height(4.dp))
+            Card(Modifier.fillMaxWidth().then(cardModifier)) {
+                Box(Modifier.padding(cardInnerPadding)) {
+                    content()
                 }
             }
         }
@@ -104,7 +108,7 @@ fun CardPanel(
 fun TopCardPanel(
     header: String,
     titleTrailingContent: (@Composable () -> Unit)? = null,
-    vararg content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     with(Spacing.current) {
         CardPanel(
@@ -118,5 +122,34 @@ fun TopCardPanel(
             titleTrailingContent = titleTrailingContent,
             content = content
         )
+    }
+}
+
+fun LazyListScope.LazyCardPanel(
+    header: @Composable () -> String,
+    cardModifier: @Composable () -> Modifier = { Modifier },
+    titleModifier: @Composable () -> Modifier = { Modifier },
+    titleTrailingContent: (@Composable () -> Unit)? = null,
+    content: Sequence<Pair<Any?, @Composable BoxScope.() -> Unit>>
+) {
+    item {
+        PanelTitle(header, titleModifier(), titleTrailingContent)
+        Spacer(Modifier.height(8.dp))
+    }
+
+    content.forEachIndexed { index, (key, content) ->
+        item(key) {
+            if (index != 0) {
+                Spacer(Modifier.height(4.dp))
+            }
+
+            with(Spacing.current) {
+                Card(Modifier.fillMaxWidth().then(cardModifier())) {
+                    Box(Modifier.padding(cardInnerPadding)) {
+                        content()
+                    }
+                }
+            }
+        }
     }
 }

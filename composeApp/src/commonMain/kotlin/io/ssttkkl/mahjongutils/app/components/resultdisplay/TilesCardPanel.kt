@@ -58,7 +58,7 @@ fun TilesTopCardPanel(
     caption: String? = null,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    TopCardPanel(label, content = arrayOf({
+    TopCardPanel(label) {
         Column {
             if (tracingElement != null) {
                 Row {
@@ -78,7 +78,7 @@ fun TilesTopCardPanel(
                 )
             }
         }
-    }))
+    }
 }
 
 

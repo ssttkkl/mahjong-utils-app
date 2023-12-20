@@ -61,11 +61,12 @@ sealed class ShantenAction {
 
 @Composable
 fun ShantenActionCardContent(
-    action: ShantenAction
+    action: ShantenAction,
+    modifier: Modifier = Modifier
 ) {
     val shanten = action.shantenAfterAction
     with(Spacing.current) {
-        Row {
+        Row(modifier) {
             ShantenActionContent(
                 action,
                 Modifier.width(120.dp)
