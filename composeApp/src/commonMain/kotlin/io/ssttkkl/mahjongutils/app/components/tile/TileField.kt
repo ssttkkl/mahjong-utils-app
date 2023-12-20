@@ -64,9 +64,10 @@ fun BaseTileField(
         }
     }
     // 用户收起键盘后再点击输入框，重新弹出
+    val focused by interactionSource.collectIsFocusedAsState()
     val pressed by interactionSource.collectIsPressedAsState()
     LaunchedEffect(pressed) {
-        if (pressed) {
+        if (focused && pressed) {
             consumer.consume()
         }
     }
@@ -75,7 +76,6 @@ fun BaseTileField(
     state.selection = state.selection.coerceIn(0, value.size)
 
     // 绑定键盘到该输入框
-    val focused by interactionSource.collectIsFocusedAsState()
     DisposableEffect(tileImeHostState, enabled, focused) {
         if (enabled && focused) {
             consumer.consume()

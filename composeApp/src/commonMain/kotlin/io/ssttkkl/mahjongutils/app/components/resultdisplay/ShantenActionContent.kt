@@ -156,7 +156,7 @@ private fun ShantenActionContent(
             }
 
             is ShantenAction.Minkan -> {
-                TileInlineText(stringResource(MR.strings.text_shanten_action_minkan))
+                TileInlineText(stringResource(MR.strings.text_shanten_action_minkan, action.tile))
             }
 
             is ShantenAction.Pass -> {

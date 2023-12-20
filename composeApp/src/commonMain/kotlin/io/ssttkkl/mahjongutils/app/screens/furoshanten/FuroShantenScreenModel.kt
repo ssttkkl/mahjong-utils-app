@@ -11,7 +11,7 @@ import mahjongutils.models.countAsCodeArray
 class FuroShantenScreenModel : ResultScreenModel<FuroChanceShantenCalcResult>() {
     val tiles = MutableStateFlow<List<Tile>>(emptyList())
     val chanceTile = MutableStateFlow<Tile?>(null)
-    val allowChi = MutableStateFlow(false)
+    val allowChi = MutableStateFlow(true)
 
     val tilesErrMsg = MutableStateFlow<StringResource?>(null)
     val chanceTileErrMsg = MutableStateFlow<StringResource?>(null)

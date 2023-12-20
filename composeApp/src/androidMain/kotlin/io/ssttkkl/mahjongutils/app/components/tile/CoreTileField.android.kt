@@ -132,7 +132,7 @@ actual fun CoreTileField(
                                 }
                             } else {
                                 prevFocusInteraction?.let { prevFocusInteraction ->
-                                    state.interactionSource.emit(prevFocusInteraction)
+                                    state.interactionSource.emit(FocusInteraction.Unfocus(prevFocusInteraction))
                                 }
                                 prevFocusInteraction = null
                             }

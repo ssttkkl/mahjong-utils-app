@@ -84,7 +84,12 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithGot) {
             )
         }
 
-        groupedShanten.toList().sortedBy { it.first }
+        groupedShanten.mapValues {
+            // 按照进张降序排序
+            it.value.sortedByDescending { it.shantenAfterAction.advanceNum }
+        }
+            .toList()
+            .sortedBy { it.first }  // 按照向听数排序
     }
 
     with(Spacing.current) {
