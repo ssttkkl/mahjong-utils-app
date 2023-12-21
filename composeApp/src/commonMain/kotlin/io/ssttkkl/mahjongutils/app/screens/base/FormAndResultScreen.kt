@@ -74,8 +74,9 @@ abstract class FormAndResultScreen<M : ResultScreenModel<ARG, RES>, ARG, RES> : 
     @Composable
     abstract fun FormContent(appState: AppState, model: M, modifier: Modifier)
 
+    // 加上protected，ios link报错？？？
     @Composable
-    protected abstract fun HistoryItem(item: History<ARG>, model: M)
+    /*protected*/ abstract fun HistoryItem(item: History<ARG>, model: M)
 
     protected abstract fun onClickHistoryItem(item: History<ARG>, model: M)
 
