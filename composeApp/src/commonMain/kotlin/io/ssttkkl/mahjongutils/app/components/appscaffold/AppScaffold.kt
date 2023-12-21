@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -55,6 +56,47 @@ fun ColumnScope.NavigationItems(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+private fun AppBottomSheet(
+    state: AppBottomSheetState
+) {
+    if (state.visible) {
+        ModalBottomSheet(
+            onDismissRequest = { state.visible = false },
+            sheetState = state.sheetState
+        ) {
+            state.content()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AppBar(
+    state: AppBarState,
+    navigator: Navigator,
+    navigationIcon: @Composable (canGoBack: Boolean) -> Unit
+) {
+    TopAppBar(
+        title = {
+            Text(
+                (navigator.lastItem as? NavigationScreen)
+                    ?.title
+                    ?.let { stringResource(it) } ?: ""
+            )
+        },
+        navigationIcon = {
+            navigationIcon(navigator.canPop)
+        },
+        actions = {
+            with(state) {
+                Actions()
+            }
+        },
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    )
+}
+
+@Composable
 fun AppScaffold(
     appState: AppState,
     navigatableScreens: List<NavigationScreen>,
@@ -66,19 +108,7 @@ fun AppScaffold(
         Scaffold(
             modifier = Modifier.safeDrawingPadding(),
             topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            (appState.navigator.lastItem as? NavigationScreen)
-                                ?.title
-                                ?.let { stringResource(it) } ?: ""
-                        )
-                    },
-                    navigationIcon = {
-                        navigationIcon(appState.navigator.canPop)
-                    },
-                    scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-                )
+                AppBar(appState.appBarState, appState.navigator, navigationIcon)
             },
             snackbarHost = {
                 SnackbarHost(appState.snackbarHostState)
@@ -87,6 +117,8 @@ fun AppScaffold(
             Box(Modifier.padding(innerPadding)) {
                 CurrentScreen()
             }
+
+            AppBottomSheet(appState.appBottomSheetState)
         }
     }
 

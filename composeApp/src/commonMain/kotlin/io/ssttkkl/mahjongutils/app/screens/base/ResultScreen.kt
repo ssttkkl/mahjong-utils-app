@@ -14,7 +14,7 @@ data class ResultScreen<RES>(
     val result: Deferred<RES>,
     val onResultMove: (Deferred<RES>) -> Unit,
     val resultContent: @Composable (RES) -> Unit
-) : NavigationScreen {
+) : NavigationScreen() {
 
     @Composable
     override fun Content() {

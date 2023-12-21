@@ -25,7 +25,7 @@ import io.ssttkkl.mahjongutils.app.components.capture.rememberCaptureState
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import kotlinx.coroutines.launch
 
-object AboutScreen : NavigationScreen {
+object AboutScreen : NavigationScreen() {
     override val title: StringResource
         get() = MR.strings.title_about
 
