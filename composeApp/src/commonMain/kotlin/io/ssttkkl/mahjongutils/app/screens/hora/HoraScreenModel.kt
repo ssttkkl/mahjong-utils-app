@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
+import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
+import io.ssttkkl.mahjongutils.app.models.hora.HoraCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.ResultScreenModel
 import mahjongutils.models.Furo
 import mahjongutils.models.Tile

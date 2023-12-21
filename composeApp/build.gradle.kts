@@ -82,6 +82,13 @@ kotlin {
             implementation(libs.moko.resources)
             implementation(libs.moko.resources.compose)
 
+            implementation(libs.okio)
+            implementation(libs.androidx.datastore.core)
+            implementation(libs.androidx.datastore.core.okio)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.serialization.json.okio)
+            implementation(libs.kotlinx.datetime)
+
             implementation(libs.mahjong.utils)
         }
     }

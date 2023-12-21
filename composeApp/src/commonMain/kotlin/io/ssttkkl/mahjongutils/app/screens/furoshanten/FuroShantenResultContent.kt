@@ -20,6 +20,7 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsC
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesTopCardPanel
 import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
+import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import io.ssttkkl.mahjongutils.app.utils.shantenNumText

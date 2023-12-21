@@ -16,6 +16,7 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsC
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesTopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesWithNumTopCardPanel
+import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import mahjongutils.models.Tile
 import mahjongutils.shanten.ShantenWithGot

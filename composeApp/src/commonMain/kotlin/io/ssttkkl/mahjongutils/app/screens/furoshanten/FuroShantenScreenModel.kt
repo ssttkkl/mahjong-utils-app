@@ -1,10 +1,17 @@
 package io.ssttkkl.mahjongutils.app.screens.furoshanten
 
+import cafe.adriel.voyager.core.model.screenModelScope
 import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
+import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
+import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenCalcResult
+import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.screens.base.ResultScreenModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
 import mahjongutils.models.countAsCodeArray
 
@@ -60,6 +67,9 @@ class FuroShantenScreenModel : ResultScreenModel<FuroChanceShantenCalcResult>() 
     override suspend fun onCalc(appState: AppState): FuroChanceShantenCalcResult {
         val chanceTile = chanceTile.value!!
         val args = FuroChanceShantenArgs(tiles.value, chanceTile, allowChi.value)
+        screenModelScope.launch(Dispatchers.Default + NonCancellable) {
+            FuroChanceShantenArgs.history.insert(args)
+        }
         return args.calc()
     }
 }

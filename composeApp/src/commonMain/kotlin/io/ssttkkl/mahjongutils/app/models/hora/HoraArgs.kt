@@ -1,12 +1,14 @@
-package io.ssttkkl.mahjongutils.app.screens.hora
+package io.ssttkkl.mahjongutils.app.models.hora
 
 import androidx.compose.runtime.Immutable
+import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import mahjongutils.hora.Hora
 import mahjongutils.hora.hora
 import mahjongutils.models.Furo
 import mahjongutils.models.Tile
 import mahjongutils.models.Wind
 import mahjongutils.yaku.Yaku
+import kotlin.reflect.typeOf
 
 @Immutable
 data class HoraArgs(
@@ -22,6 +24,14 @@ data class HoraArgs(
     fun calc(): HoraCalcResult {
         val result = hora(tiles, furo, agari, tsumo, dora, selfWind, roundWind, extraYaku)
         return HoraCalcResult(this, result)
+    }
+
+    companion object {
+        private const val DATASTORE_FILENAME = "hora.json"
+
+        val history: HistoryDataStore<HoraArgs> by lazy {
+            HistoryDataStore(typeOf<HoraArgs>()) { it / DATASTORE_FILENAME }
+        }
     }
 }
 

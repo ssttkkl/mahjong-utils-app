@@ -3,11 +3,17 @@ package io.ssttkkl.mahjongutils.app.screens.shanten
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import cafe.adriel.voyager.core.model.screenModelScope
 import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
+import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
+import io.ssttkkl.mahjongutils.app.models.shanten.ShantenCalcResult
+import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
 import io.ssttkkl.mahjongutils.app.screens.base.ResultScreenModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
 import mahjongutils.models.countAsCodeArray
 
@@ -44,6 +50,9 @@ class ShantenScreenModel : ResultScreenModel<ShantenCalcResult>() {
 
     override suspend fun onCalc(appState: AppState): ShantenCalcResult {
         val args = ShantenArgs(tiles, shantenMode)
+        screenModelScope.launch(Dispatchers.Default + NonCancellable) {
+            ShantenArgs.history.insert(args)
+        }
         return args.calc()
     }
 }

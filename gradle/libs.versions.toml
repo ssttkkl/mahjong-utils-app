@@ -13,16 +13,21 @@ androidx-test-junit = "1.1.5"
 compose = "1.5.4"
 compose-compiler = "1.5.5"
 compose-plugin = "1.6.0-alpha01"
+datastoreCore = "1.1.0-alpha07"
 junit = "4.13.2"
 kotlin = "1.9.21"
 kotlinx-serialization = "1.6.2"
+kotlinx-datetime = "0.5.0"
 mahjongUtils = "0.6.1"
 material3-windowSizeClass = "0.5.0-alpha03"
+okio = "3.7.0"
 voyager = "1.0.0"
 mokoResources = "0.23.0"
 aboutLibraries = "10.9.2"
 
 [libraries]
+androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastoreCore" }
+androidx-datastore-core-okio = { module = "androidx.datastore:datastore-core-okio", version.ref = "datastoreCore" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -39,8 +44,11 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-json-okio = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json-okio", version.ref = "kotlinx-serialization" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 mahjong-utils = { module = "io.github.ssttkkl:mahjong-utils", version.ref = "mahjongUtils" }
 material3-windowSizeClass = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "material3-windowSizeClass" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenmodel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "mokoResources" }

@@ -19,6 +19,7 @@ import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
+import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import kotlinx.coroutines.launch

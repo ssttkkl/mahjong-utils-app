@@ -1,14 +1,20 @@
-package io.ssttkkl.mahjongutils.app.screens.shanten
+package io.ssttkkl.mahjongutils.app.models.shanten
 
+import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
+import io.ssttkkl.mahjongutils.app.utils.os.FileUtils
+import io.ssttkkl.mahjongutils.app.utils.os.historyPath
+import kotlinx.serialization.Serializable
 import mahjongutils.models.Tile
 import mahjongutils.shanten.CommonShantenResult
 import mahjongutils.shanten.regularShanten
 import mahjongutils.shanten.shanten
+import kotlin.reflect.typeOf
 
 enum class ShantenMode {
     Union, Regular
 }
 
+@Serializable
 data class ShantenArgs(
     val tiles: List<Tile>,
     val mode: ShantenMode
@@ -19,6 +25,14 @@ data class ShantenArgs(
             ShantenMode.Regular -> regularShanten(tiles)
         }
         return ShantenCalcResult(this, result)
+    }
+
+    companion object {
+        private const val DATASTORE_FILENAME = "shanten.json"
+
+        val history: HistoryDataStore<ShantenArgs> by lazy {
+            HistoryDataStore(typeOf<ShantenArgs>()) { it / DATASTORE_FILENAME }
+        }
     }
 }
 
