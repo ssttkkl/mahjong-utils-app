@@ -125,28 +125,30 @@ fun TopCardPanel(
     }
 }
 
-fun LazyListScope.LazyCardPanel(
+fun <T> LazyListScope.LazyCardPanel(
+    items: Sequence<T>,
+    keyMapping: (key: T) -> Any? = { it },
     header: @Composable () -> String,
-    cardModifier: @Composable () -> Modifier = { Modifier },
+    cardModifier: @Composable (key: T) -> Modifier = { Modifier },
     titleModifier: @Composable () -> Modifier = { Modifier },
     titleTrailingContent: (@Composable () -> Unit)? = null,
-    content: Sequence<Pair<Any?, @Composable BoxScope.() -> Unit>>
+    content: @Composable BoxScope.(T) -> Unit
 ) {
     item {
         PanelTitle(header, titleModifier(), titleTrailingContent)
         Spacer(Modifier.height(8.dp))
     }
 
-    content.forEachIndexed { index, (key, content) ->
-        item(key) {
+    items.forEachIndexed { index, it ->
+        item(keyMapping(it)) {
             if (index != 0) {
                 Spacer(Modifier.height(4.dp))
             }
 
             with(Spacing.current) {
-                Card(Modifier.fillMaxWidth().then(cardModifier())) {
+                Card(Modifier.fillMaxWidth().then(cardModifier(it))) {
                     Box(Modifier.padding(cardInnerPadding)) {
-                        content()
+                        content(it)
                     }
                 }
             }

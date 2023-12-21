@@ -21,7 +21,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.CurrentScreen
@@ -59,9 +64,31 @@ fun ColumnScope.NavigationItems(
 private fun AppBottomSheet(
     state: AppBottomSheetState
 ) {
-    if (state.visible) {
+    val coroutineScope = rememberCoroutineScope()
+    var visible by remember { mutableStateOf(false) }
+
+    // visible表示的是ModalBottomSheet是否真正可见
+    // 如果state.visible被设成了false，则调用state.sheetState.hide()开始滑出的动画，动画结束再让ModalBottomSheet滚蛋
+    LaunchedEffect(state.visible) {
+        if (!state.visible) {
+            if (visible) {
+                coroutineScope.launch { state.sheetState.hide() }.invokeOnCompletion {
+                    if (!state.sheetState.isVisible) {
+                        visible = false
+                    }
+                }
+            }
+        } else {
+            visible = true
+        }
+    }
+
+    if (visible) {
         ModalBottomSheet(
-            onDismissRequest = { state.visible = false },
+            onDismissRequest = {
+                visible = false
+                state.visible = false
+            },
             sheetState = state.sheetState
         ) {
             state.content()

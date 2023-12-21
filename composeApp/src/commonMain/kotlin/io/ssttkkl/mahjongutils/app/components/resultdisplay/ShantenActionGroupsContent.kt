@@ -1,7 +1,6 @@
 package io.ssttkkl.mahjongutils.app.components.resultdisplay
 
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
@@ -15,6 +14,8 @@ fun LazyListScope.ShantenActionGroupsContent(
 ) {
     groups.forEach { (shantenNum, actions) ->
         LazyCardPanel(
+            items = sequence { yieldAll(actions) },
+            keyMapping = { it.toString() },
             header = {
                 stringResource(
                     if (shantenNum == minShantenNum)
@@ -24,12 +25,8 @@ fun LazyListScope.ShantenActionGroupsContent(
                     shantenNumText(shantenNum)
                 )
             },
-            content = sequence {
-                actions.forEach { action ->
-                    yield(action.toString() to @Composable {
-                        ShantenActionCardContent(action)
-                    })
-                }
+            content = { action ->
+                ShantenActionCardContent(action)
             },
             cardModifier = {
                 with(Spacing.current) {

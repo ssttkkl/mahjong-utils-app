@@ -5,10 +5,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
+import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.models.hora.HoraCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.ResultScreenModel
+import kotlinx.coroutines.flow.Flow
 import mahjongutils.models.Furo
+import mahjongutils.models.Kan
 import mahjongutils.models.Tile
 import mahjongutils.models.Wind
 import mahjongutils.yaku.Yaku
@@ -24,9 +27,20 @@ class FuroModel {
     fun toFuro(): Furo {
         return Furo(tiles, ankan)
     }
+
+    companion object {
+        fun fromFuro(furo: Furo): FuroModel {
+            return FuroModel().apply {
+                tiles = furo.tiles
+                if (furo is Kan) {
+                    ankan = furo.ankan
+                }
+            }
+        }
+    }
 }
 
-class HoraScreenModel : ResultScreenModel<HoraCalcResult>() {
+class HoraScreenModel : ResultScreenModel<HoraArgs, HoraCalcResult>() {
     var tiles by mutableStateOf<List<Tile>>(emptyList())
     val furo = mutableStateListOf<FuroModel>()
     var agari by mutableStateOf<Tile?>(null)
@@ -83,4 +97,7 @@ class HoraScreenModel : ResultScreenModel<HoraCalcResult>() {
         )
         return args.calc()
     }
+
+    override val history: Flow<List<History<HoraArgs>>>
+        get() = HoraArgs.history.data
 }

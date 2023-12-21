@@ -9,6 +9,10 @@
     <string name="title_about">关于</string>
 
     <string name="message_unknown_error">未知错误</string>
+    <string name="text_yes_symbol">√</string>
+    <string name="text_no_symbol">×</string>
+
+    <string name="label_history">历史记录</string>
     <string name="label_keyboard_collapse">收起</string>
     <string name="label_tiles_in_hand">手牌</string>
     <string name="label_shanten_mode">计算模式</string>
@@ -47,6 +51,7 @@
     <string name="label_tile_discarded_by_other_short">他家打%s</string>
     <string name="label_other_options">选项</string>
     <string name="label_allow_chi">允许吃</string>
+    <string name="text_allow_chi">允许吃%s</string>
     <string name="label_furo">副露</string>
     <string name="label_ankan">暗杠</string>
     <string name="label_minkan">大明杠</string>

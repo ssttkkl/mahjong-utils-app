@@ -7,17 +7,19 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
+import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenCalcResult
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
 import io.ssttkkl.mahjongutils.app.screens.base.ResultScreenModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
 import mahjongutils.models.countAsCodeArray
 
-class ShantenScreenModel : ResultScreenModel<ShantenCalcResult>() {
+class ShantenScreenModel : ResultScreenModel<ShantenArgs, ShantenCalcResult>() {
     var tiles by mutableStateOf<List<Tile>>(emptyList())
     var shantenMode by mutableStateOf(ShantenMode.Union)
 
@@ -55,4 +57,7 @@ class ShantenScreenModel : ResultScreenModel<ShantenCalcResult>() {
         }
         return args.calc()
     }
+
+    override val history: Flow<List<History<ShantenArgs>>>
+        get() = ShantenArgs.history.data
 }

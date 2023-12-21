@@ -9,6 +9,10 @@
     <string name="title_about">About</string>
 
     <string name="message_unknown_error">未知のエラー</string>
+    <string name="text_yes_symbol">○</string>
+    <string name="text_no_symbol">×</string>
+
+    <string name="label_history">History</string>
     <string name="label_keyboard_collapse">閉じる</string>
     <string name="label_tiles_in_hand">手牌</string>
     <string name="label_shanten_mode">計算モード</string>
@@ -47,6 +51,7 @@
     <string name="label_tile_discarded_by_other_short">出る%s</string>
     <string name="label_other_options">オプション</string>
     <string name="label_allow_chi">チーができる</string>
+    <string name="text_allow_chi">チーができる%s</string>
     <string name="label_furo">副露</string>
     <string name="label_ankan">暗槓</string>
     <string name="label_minkan">大明槓</string>

@@ -1,12 +1,12 @@
 package io.ssttkkl.mahjongutils.app.screens.base
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
@@ -19,16 +19,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.StringResource
+import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppBottomSheetState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowMessageOnFailure
+import io.ssttkkl.mahjongutils.app.components.panel.LazyCardPanel
+import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-abstract class FormAndResultScreen<M : ResultScreenModel<RES>, RES> : NavigationScreen() {
+abstract class FormAndResultScreen<M : ResultScreenModel<ARG, RES>, ARG, RES> : NavigationScreen() {
     companion object {
         fun isTwoPanes(windowSizeClass: WindowSizeClass): Boolean {
             return windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
@@ -47,13 +52,20 @@ abstract class FormAndResultScreen<M : ResultScreenModel<RES>, RES> : Navigation
         with(Spacing.current) {
             IconButton(onClick = {
                 appState.appBottomSheetState = AppBottomSheetState {
-                    HistoryContent(appState, model, Modifier.windowHorizontalMargin())
+                    HistoryContent(
+                        appState,
+                        model,
+                        Modifier.windowHorizontalMargin(),
+                        requestCloseModal = {
+                            appState.appBottomSheetState.visible = false
+                        }
+                    )
                 }
                 appState.appBottomSheetState.visible = true
             }) {
                 Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = ""
+                    painterResource(MR.images.icon_history_outlined),
+                    contentDescription = stringResource(MR.strings.label_history)
                 )
             }
         }
@@ -63,7 +75,43 @@ abstract class FormAndResultScreen<M : ResultScreenModel<RES>, RES> : Navigation
     abstract fun FormContent(appState: AppState, model: M, modifier: Modifier)
 
     @Composable
-    open fun HistoryContent(appState: AppState, model: M, modifier: Modifier) {
+    protected abstract fun HistoryItem(item: History<ARG>, model: M)
+
+    protected abstract fun onClickHistoryItem(item: History<ARG>, model: M)
+
+    @Composable
+    fun HistoryContent(
+        appState: AppState,
+        model: M,
+        modifier: Modifier,
+        requestCloseModal: () -> Unit
+    ) {
+        val history by model.history.collectAsState(emptyList())
+
+        with(Spacing.current) {
+            LazyColumn(modifier) {
+                item {
+                    VerticalSpacerBetweenPanels()
+                }
+
+                LazyCardPanel(
+                    items = sequence { yieldAll(history) },
+                    keyMapping = { it.createTime.toEpochMilliseconds() },
+                    header = { stringResource(MR.strings.label_history) },
+                    cardModifier = {
+                        Modifier.clickable {
+                            onClickHistoryItem(it, model)
+                            requestCloseModal()
+                        }
+                    },
+                    content = { HistoryItem(it, model) }
+                )
+
+                item {
+                    VerticalSpacerBetweenPanels()
+                }
+            }
+        }
     }
 
     @Composable

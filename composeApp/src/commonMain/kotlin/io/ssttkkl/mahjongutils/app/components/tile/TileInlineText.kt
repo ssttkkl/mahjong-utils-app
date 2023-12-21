@@ -33,13 +33,13 @@ private val tileContentIdRevMapping = tileContentIdMapping.entries.associate {
     it.value to it.key
 }
 
-private fun annotateTileFromEmoji(string: String): AnnotatedString = buildAnnotatedString {
+private fun annotateTileFromEmoji(charSeq: CharSequence): AnnotatedString = buildAnnotatedString {
     val patterns = TileModel.all.map { it.emoji }.toSet()
 
     var i = 0
-    while (i < string.length) {
-        if (i + 1 < string.length) {
-            val span = string.substring(i, i + 2)
+    while (i < charSeq.length) {
+        if (i + 1 < charSeq.length) {
+            val span = charSeq.substring(i, i + 2)
             if (span in patterns) {
                 val tile = emojiToTile(span)
                 appendInlineContent(tileContentIdRevMapping[tile]!!, span)
@@ -48,8 +48,17 @@ private fun annotateTileFromEmoji(string: String): AnnotatedString = buildAnnota
             }
         }
 
-        append(string[i])
+        append(charSeq[i])
         i += 1
+    }
+
+    if (charSeq is AnnotatedString) {
+        charSeq.spanStyles.forEach {
+            addStyle(it.item, it.start, it.end)
+        }
+        charSeq.paragraphStyles.forEach {
+            addStyle(it.item, it.start, it.end)
+        }
     }
 }
 
@@ -66,7 +75,7 @@ private val tileInlineTextContent = TileModel.all.associate { tile ->
 
 @Composable
 fun TileInlineText(
-    text: String,
+    text: CharSequence,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     fontSize: TextUnit = TextUnit.Unspecified,
