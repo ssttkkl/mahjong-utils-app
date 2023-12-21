@@ -6,6 +6,8 @@
     <string name="title_furo_shanten_result">副露牌理计算</string>
     <string name="title_hora">和牌分析</string>
     <string name="title_hora_result">和牌分析结果</string>
+    <string name="title_about">关于</string>
+
     <string name="message_unknown_error">未知错误</string>
     <string name="label_keyboard_collapse">收起</string>
     <string name="label_tiles_in_hand">手牌</string>

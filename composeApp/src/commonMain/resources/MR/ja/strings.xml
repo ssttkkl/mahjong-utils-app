@@ -6,6 +6,8 @@
     <string name="title_furo_shanten_result">鳴き牌理結果</string>
     <string name="title_hora">和了分析</string>
     <string name="title_hora_result">和了分析結果</string>
+    <string name="title_about">About</string>
+
     <string name="message_unknown_error">未知のエラー</string>
     <string name="label_keyboard_collapse">閉じる</string>
     <string name="label_tiles_in_hand">手牌</string>
