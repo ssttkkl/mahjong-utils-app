@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -132,7 +133,11 @@ actual fun CoreTileField(
                                 }
                             } else {
                                 prevFocusInteraction?.let { prevFocusInteraction ->
-                                    state.interactionSource.emit(FocusInteraction.Unfocus(prevFocusInteraction))
+                                    state.interactionSource.emit(
+                                        FocusInteraction.Unfocus(
+                                            prevFocusInteraction
+                                        )
+                                    )
                                 }
                                 prevFocusInteraction = null
                             }
@@ -193,7 +198,8 @@ actual fun CoreTileField(
                 setText(
                     value.toSpannedString(context, tileHeight)
                 )
-                setSelection(state.selection.start, state.selection.end)
+                val textRange = state.selection.coerceIn(0, text.length)
+                setSelection(textRange.start, textRange.end)
                 notifySelectionChange = true
 
                 if (Build.VERSION.SDK_INT >= 29) {

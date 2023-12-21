@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import dev.icerock.moko.resources.compose.stringResource
@@ -88,7 +87,7 @@ object ShantenScreen :
             ) {
                 VerticalSpacerBetweenPanels()
 
-                TopPanel(stringResource(MR.strings.label_tiles_in_hand)) {
+                TopPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
                     ValidationField(model.tilesErrMsg?.let { stringResource(it) }) { isError ->
                         TileField(
                             value = model.tiles,
@@ -102,7 +101,7 @@ object ShantenScreen :
                 VerticalSpacerBetweenPanels()
 
                 TopPanel(
-                    stringResource(MR.strings.label_shanten_mode),
+                    { Text(stringResource(MR.strings.label_shanten_mode)) },
                     noPaddingContent = true
                 ) {
                     ShantenModeRatioGroups(

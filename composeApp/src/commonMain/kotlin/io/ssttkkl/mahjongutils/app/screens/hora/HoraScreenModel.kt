@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.screens.hora
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +51,14 @@ class HoraScreenModel : ResultScreenModel<HoraArgs, HoraCalcResult>() {
     var roundWind by mutableStateOf<Wind?>(null)
     var extraYaku by mutableStateOf<Set<Yaku>>(emptySet())
 
+    val autoDetectedAgari by derivedStateOf {
+        if (tiles.size % 3 == 2) {
+            tiles.last()
+        } else {
+            null
+        }
+    }
+
     var tilesErrMsg by mutableStateOf<String?>(null)
     val furoErrMsg = mutableStateListOf<String?>(null)
     var agariErrMsg by mutableStateOf<String?>(null)
@@ -88,13 +97,14 @@ class HoraScreenModel : ResultScreenModel<HoraArgs, HoraCalcResult>() {
         val args = HoraArgs(
             tiles,
             furo.map { it.toFuro() },
-            agari!!,
+            (agari ?: autoDetectedAgari)!!,
             tsumo,
             dora.toIntOrNull() ?: 0,
             selfWind,
             roundWind,
             extraYaku
         )
+        HoraArgs.history.insert(args)
         return args.calc()
     }
 

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,7 +18,9 @@ import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.basic.VerticalDivider
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
+import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.models.Tatsu
 import mahjongutils.models.Tile
@@ -118,49 +121,58 @@ private fun ShantenActionContent(
     verticalAlignment: Alignment.Vertical = Alignment.Top,
 ) {
     Row(modifier, horizontalArrangement, verticalAlignment) {
-        when (action) {
-            is ShantenAction.Discard -> {
-                TileInlineText(
-                    stringResource(
-                        MR.strings.text_shanten_action_discard,
-                        action.tile.emoji
+        CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
+            when (action) {
+                is ShantenAction.Discard -> {
+                    TileInlineText(
+                        stringResource(
+                            MR.strings.text_shanten_action_discard,
+                            action.tile.emoji
+                        )
                     )
-                )
-            }
+                }
 
-            is ShantenAction.Ankan -> {
-                TileInlineText(
-                    stringResource(
-                        MR.strings.text_shanten_action_ankan,
-                        action.tile.emoji
+                is ShantenAction.Ankan -> {
+                    TileInlineText(
+                        stringResource(
+                            MR.strings.text_shanten_action_ankan,
+                            action.tile.emoji
+                        )
                     )
-                )
-            }
+                }
 
-            is ShantenAction.Chi -> {
-                TileInlineText(
-                    stringResource(
-                        MR.strings.text_shanten_action_chi_and_discard,
-                        action.tatsu.first.emoji, action.tatsu.second.emoji, action.discard.emoji
+                is ShantenAction.Chi -> {
+                    TileInlineText(
+                        stringResource(
+                            MR.strings.text_shanten_action_chi_and_discard,
+                            action.tatsu.first.emoji,
+                            action.tatsu.second.emoji,
+                            action.discard.emoji
+                        )
                     )
-                )
-            }
+                }
 
-            is ShantenAction.Pon -> {
-                TileInlineText(
-                    stringResource(
-                        MR.strings.text_shanten_action_pon_and_discard,
-                        action.discard.emoji
+                is ShantenAction.Pon -> {
+                    TileInlineText(
+                        stringResource(
+                            MR.strings.text_shanten_action_pon_and_discard,
+                            action.discard.emoji
+                        )
                     )
-                )
-            }
+                }
 
-            is ShantenAction.Minkan -> {
-                TileInlineText(stringResource(MR.strings.text_shanten_action_minkan, action.tile))
-            }
+                is ShantenAction.Minkan -> {
+                    TileInlineText(
+                        stringResource(
+                            MR.strings.text_shanten_action_minkan,
+                            action.tile
+                        )
+                    )
+                }
 
-            is ShantenAction.Pass -> {
-                TileInlineText(stringResource(MR.strings.text_shanten_action_pass))
+                is ShantenAction.Pass -> {
+                    TileInlineText(stringResource(MR.strings.text_shanten_action_pass))
+                }
             }
         }
     }
@@ -172,7 +184,7 @@ private fun ImprovementsPanel(
     improvement: Map<Tile, List<Improvement>>,
     improvementNum: Int
 ) {
-    Panel(label) {
+    Panel({ Text(label) }) {
         improvement.map {
             // tile, discard_tiles, advance_num
             // 摸tile, 打discard_tiles, 进advance_num张

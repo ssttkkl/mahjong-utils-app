@@ -1,10 +1,6 @@
 package io.ssttkkl.mahjongutils.app.components.tile
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,11 +15,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.compose.painterResource
 import io.ssttkkl.mahjongutils.app.MR
-import io.ssttkkl.mahjongutils.app.utils.emoji
+import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import mahjongutils.models.Tile
 
 @Composable
@@ -37,10 +32,10 @@ fun Tile(tile: Tile, modifier: Modifier = Modifier) {
 
 @Composable
 fun Tiles(
-    tiles: List<Tile>,
+    tiles: Iterable<Tile>,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
-    fontSize: TextUnit = TextUnit.Unspecified,
+    fontSize: TextUnit = LocalTileTextSize.current,
     fontStyle: FontStyle? = null,
     fontWeight: FontWeight? = null,
     fontFamily: FontFamily? = null,
@@ -56,7 +51,7 @@ fun Tiles(
     style: TextStyle = LocalTextStyle.current
 ) {
     TileInlineText(
-        text = tiles.joinToString("") { it.emoji },
+        text = tiles.annotatedAsInline(),
         modifier = modifier,
         color = color,
         fontSize = fontSize,

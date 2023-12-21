@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import io.ssttkkl.mahjongutils.app.utils.emojiToTile
+import mahjongutils.models.Tile
 import mahjongutils.models.Tile as TileModel
 
 private val tileContentIdMapping = TileModel.all.associateBy {
@@ -33,7 +35,28 @@ private val tileContentIdRevMapping = tileContentIdMapping.entries.associate {
     it.value to it.key
 }
 
-private fun annotateTileFromEmoji(charSeq: CharSequence): AnnotatedString = buildAnnotatedString {
+fun Tile.annotatedAsInline(
+    fontSize: TextUnit = TextUnit.Unspecified
+): AnnotatedString = buildAnnotatedString {
+    val tile = this@annotatedAsInline
+    pushStyle(SpanStyle(fontSize = fontSize))
+    appendInlineContent(tileContentIdRevMapping[tile]!!, tile.toString())
+    pop()
+}
+
+fun Iterable<Tile>.annotatedAsInline(
+    fontSize: TextUnit = TextUnit.Unspecified
+): AnnotatedString =
+    buildAnnotatedString {
+        forEach {
+            append(it.annotatedAsInline(fontSize))
+        }
+    }
+
+private fun annotateTileFromEmoji(
+    charSeq: CharSequence,
+    fontSize: TextUnit = TextUnit.Unspecified,
+): AnnotatedString = buildAnnotatedString {
     val patterns = TileModel.all.map { it.emoji }.toSet()
 
     var i = 0
@@ -42,7 +65,7 @@ private fun annotateTileFromEmoji(charSeq: CharSequence): AnnotatedString = buil
             val span = charSeq.substring(i, i + 2)
             if (span in patterns) {
                 val tile = emojiToTile(span)
-                appendInlineContent(tileContentIdRevMapping[tile]!!, span)
+                append(tile.annotatedAsInline(fontSize))
                 i += 2
                 continue
             }
@@ -53,6 +76,9 @@ private fun annotateTileFromEmoji(charSeq: CharSequence): AnnotatedString = buil
     }
 
     if (charSeq is AnnotatedString) {
+        charSeq.getStringAnnotations(0, charSeq.length).forEach {
+            addStringAnnotation(it.tag, it.item, it.start, it.end)
+        }
         charSeq.spanStyles.forEach {
             addStyle(it.item, it.start, it.end)
         }
@@ -79,6 +105,7 @@ fun TileInlineText(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     fontSize: TextUnit = TextUnit.Unspecified,
+    tileSize: TextUnit = TextUnit.Unspecified,
     fontStyle: FontStyle? = null,
     fontWeight: FontWeight? = null,
     fontFamily: FontFamily? = null,
@@ -91,10 +118,10 @@ fun TileInlineText(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
 ) {
     Text(
-        text = annotateTileFromEmoji(text),
+        text = annotateTileFromEmoji(text, tileSize),
         inlineContent = tileInlineTextContent,
         modifier = modifier,
         color = color,

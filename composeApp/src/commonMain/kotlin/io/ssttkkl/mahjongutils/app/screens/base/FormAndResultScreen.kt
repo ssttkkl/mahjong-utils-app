@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -98,7 +99,7 @@ abstract class FormAndResultScreen<M : ResultScreenModel<ARG, RES>, ARG, RES> : 
                 LazyCardPanel(
                     items = sequence { yieldAll(history) },
                     keyMapping = { it.createTime.toEpochMilliseconds() },
-                    header = { stringResource(MR.strings.label_history) },
+                    header = { Text(stringResource(MR.strings.label_history)) },
                     cardModifier = {
                         Modifier.clickable {
                             onClickHistoryItem(it, model)

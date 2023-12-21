@@ -14,7 +14,6 @@ import io.ssttkkl.mahjongutils.app.screens.base.ResultScreenModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
 import mahjongutils.models.countAsCodeArray

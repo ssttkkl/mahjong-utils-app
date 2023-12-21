@@ -18,10 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
+import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import mahjongutils.models.Tile
 import mahjongutils.models.toTilesString
 
@@ -32,7 +32,7 @@ fun BaseTileField(
     onValueChange: (List<Tile>) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    fontSize: TextUnit = 30.sp,
+    fontSize: TextUnit = TileTextSize.Default.bodyLarge,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -145,6 +145,8 @@ fun TileField(
     value: List<Tile>,
     onValueChange: (List<Tile>) -> Unit,
     modifier: Modifier = Modifier,
+    placeholder: (@Composable () -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
 ) {
     BaseTileField(
@@ -157,6 +159,8 @@ fun TileField(
                 style = MaterialTheme.typography.labelMedium
             )
         },
-        isError = isError
+        placeholder = placeholder,
+        supportingText = supportingText,
+        isError = isError,
     )
 }

@@ -64,7 +64,7 @@ object FuroShantenScreen :
             ) {
                 VerticalSpacerBetweenPanels()
 
-                TopPanel(stringResource(MR.strings.label_tiles_in_hand)) {
+                TopPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
                     ValidationField(model.tilesErrMsg?.let { stringResource(it) }) { isError ->
                         TileField(
                             value = model.tiles,
@@ -76,8 +76,7 @@ object FuroShantenScreen :
                 }
 
                 VerticalSpacerBetweenPanels()
-
-                TopPanel(stringResource(MR.strings.label_tile_discarded_by_other)) {
+                TopPanel({ Text(stringResource(MR.strings.label_tile_discarded_by_other)) }) {
                     ValidationField(model.chanceTileErrMsg?.let { stringResource(it) }) { isError ->
                         TileField(
                             value = model.chanceTile?.let { listOf(it) } ?: emptyList(),
@@ -91,7 +90,7 @@ object FuroShantenScreen :
                 VerticalSpacerBetweenPanels()
 
                 TopPanel(
-                    stringResource(MR.strings.label_other_options),
+                    { Text(stringResource(MR.strings.label_other_options)) },
                     noPaddingContent = true
                 ) {
                     SwitchItem(

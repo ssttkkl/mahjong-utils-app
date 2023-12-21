@@ -31,8 +31,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
@@ -117,7 +119,7 @@ object HoraScreen :
             ) {
                 VerticalSpacerBetweenPanels()
 
-                TopPanel(stringResource(MR.strings.label_tiles_in_hand)) {
+                TopPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
                     ValidationField(model.tilesErrMsg) { isError ->
                         TileField(
                             value = model.tiles,
@@ -131,7 +133,7 @@ object HoraScreen :
                 VerticalSpacerBetweenPanels()
 
                 TopPanel(
-                    stringResource(MR.strings.label_furo),
+                    { Text(stringResource(MR.strings.label_furo)) },
                     noPaddingContent = true
                 ) {
                     Column(Modifier.fillMaxWidth()) {
@@ -182,16 +184,23 @@ object HoraScreen :
 
                 VerticalSpacerBetweenPanels()
 
-                TopPanel(
-                    stringResource(MR.strings.label_agari),
-                ) {
+                TopPanel({ Text(stringResource(MR.strings.label_furo)) }) {
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                         ValidationField(model.agariErrMsg, Modifier.weight(1f)) { isError ->
                             TileField(
                                 value = model.agari?.let { listOf(it) } ?: emptyList(),
                                 onValueChange = { model.agari = it.firstOrNull() },
                                 modifier = Modifier.fillMaxWidth(),
-                                isError = isError
+                                isError = isError,
+                                placeholder = {
+                                    model.autoDetectedAgari?.let { autoDetectedAgari ->
+                                        Tiles(
+                                            listOf(autoDetectedAgari),
+                                            Modifier.alpha(0.4f),
+                                            fontSize = 24.sp
+                                        )
+                                    }
+                                }
                             )
                         }
 
@@ -206,7 +215,7 @@ object HoraScreen :
 
                 Row {
                     TopPanel(
-                        stringResource(MR.strings.label_self_wind),
+                        { Text(stringResource(MR.strings.label_self_wind)) },
                         Modifier.weight(1f)
                     ) {
                         ComboBox(
@@ -217,7 +226,7 @@ object HoraScreen :
                         )
                     }
                     TopPanel(
-                        stringResource(MR.strings.label_round_wind),
+                        { Text(stringResource(MR.strings.label_round_wind)) },
                         Modifier.weight(1f)
                     ) {
                         ComboBox(
@@ -231,7 +240,7 @@ object HoraScreen :
 
                 Row {
                     TopPanel(
-                        stringResource(MR.strings.label_dora_count),
+                        { Text(stringResource(MR.strings.label_dora_count)) },
                         Modifier.weight(1f)
                     ) {
                         ValidationField(model.doraErrMsg) { isError ->
@@ -252,7 +261,7 @@ object HoraScreen :
                     }
 
                     TopPanel(
-                        stringResource(MR.strings.label_extra_yaku),
+                        { Text(stringResource(MR.strings.label_extra_yaku)) },
                         Modifier.weight(1f)
                     ) {
                         val allExtraYaku = model.allExtraYaku()
@@ -301,7 +310,7 @@ object HoraScreen :
         result: HoraCalcResult,
         modifier: Modifier
     ) {
-
+        HoraResultContent(result.args, result.result)
     }
 
     @Composable

@@ -1,8 +1,6 @@
 package io.ssttkkl.mahjongutils.app.models.shanten
 
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
-import io.ssttkkl.mahjongutils.app.utils.os.FileUtils
-import io.ssttkkl.mahjongutils.app.utils.os.historyPath
 import kotlinx.serialization.Serializable
 import mahjongutils.models.Tile
 import mahjongutils.shanten.CommonShantenResult

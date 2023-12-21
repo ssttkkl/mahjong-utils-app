@@ -38,7 +38,11 @@ class TileFieldImeConsumer(
                     val newValue = buildList {
                         addAll(currentValue.take(state.selection.start))
                         add(tile)
-                        addAll(currentValue.takeLast(currentValue.size - state.selection.end))
+
+                        val restToTake = currentValue.size - state.selection.end
+                        if (restToTake > 0) {
+                            addAll(currentValue.takeLast(currentValue.size - state.selection.end))
+                        }
                     }
                     currentOnValueChange?.invoke(newValue)
                     state.selection = TextRange(state.selection.start + 1)

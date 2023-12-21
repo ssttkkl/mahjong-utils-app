@@ -1,7 +1,7 @@
 package io.ssttkkl.mahjongutils.app.models.hora
 
-import androidx.compose.runtime.Immutable
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
+import kotlinx.serialization.Serializable
 import mahjongutils.hora.Hora
 import mahjongutils.hora.hora
 import mahjongutils.models.Furo
@@ -10,7 +10,7 @@ import mahjongutils.models.Wind
 import mahjongutils.yaku.Yaku
 import kotlin.reflect.typeOf
 
-@Immutable
+@Serializable
 data class HoraArgs(
     val tiles: List<Tile>,
     val furo: List<Furo>,

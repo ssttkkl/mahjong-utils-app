@@ -5,19 +5,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
+import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsContent
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
-import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesTopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesWithNumTopCardPanel
+import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import mahjongutils.models.Tile
 import mahjongutils.shanten.ShantenWithGot
 import mahjongutils.shanten.ShantenWithoutGot
@@ -117,15 +119,19 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithGot) {
 
 @Composable
 private fun TilesInHandPanel(tiles: List<Tile>, withGot: Boolean) {
-    TilesTopCardPanel(
-        stringResource(MR.strings.label_tiles_in_hand),
-        tiles,
-        caption = stringResource(
-            if (withGot)
-                MR.strings.text_tiles_with_got
-            else
-                MR.strings.text_tiles_without_got
-        ),
-        fontSize = 20.sp
-    )
+    TopCardPanel(
+        { Text(stringResource(MR.strings.label_tiles_in_hand)) },
+        caption = {
+            Text(
+                stringResource(
+                    if (withGot)
+                        MR.strings.text_tiles_with_got
+                    else
+                        MR.strings.text_tiles_without_got
+                )
+            )
+        }
+    ) {
+        Tiles(tiles, fontSize = TileTextSize.Default.bodyLarge)
+    }
 }
