@@ -52,7 +52,10 @@
     <string name="label_other_options">Other Options</string>
     <string name="label_allow_chi">Allow Chi</string>
     <string name="text_allow_chi">Allow Chi: %s</string>
+    <string name="label_hand_deconstruction">Hand Deconstruction</string>
     <string name="label_furo">Furo</string>
+    <string name="label_mentsu">Mentsu</string>
+    <string name="label_jyantou">Jyantou</string>
     <string name="label_ankan">Ankan</string>
     <string name="label_minkan">Minkan</string>
     <string name="label_agari">Agari</string>
