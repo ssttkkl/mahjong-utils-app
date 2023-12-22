@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.coerceIn
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,16 +33,24 @@ class TileFieldImeConsumer(
     var currentOnValueChange: ((List<Tile>) -> Unit)? = null
 
     fun start() {
+        if (consumer.consuming)
+            return
+
         coroutineScope = CoroutineScope(Dispatchers.Main).also {
             it.launch {
                 tileImeHostState.pendingTile.collect { tile ->
+                    state.selection = state.selection.coerceIn(0, currentValue.size)
                     val newValue = buildList {
-                        addAll(currentValue.take(state.selection.start))
+                        addAll(currentValue.subList(0, state.selection.start))
                         add(tile)
 
-                        val restToTake = currentValue.size - state.selection.end
-                        if (restToTake > 0) {
-                            addAll(currentValue.takeLast(currentValue.size - state.selection.end))
+                        if (state.selection.end != currentValue.size) {
+                            addAll(
+                                currentValue.subList(
+                                    state.selection.end + 1,
+                                    currentValue.size
+                                )
+                            )
                         }
                     }
                     currentOnValueChange?.invoke(newValue)
@@ -51,8 +60,9 @@ class TileFieldImeConsumer(
 
             it.launch {
                 tileImeHostState.backspace.collect {
+                    state.selection = state.selection.coerceIn(0, currentValue.size)
+                    val curCursor = state.selection.start
                     if (state.selection.length == 0) {
-                        val curCursor = state.selection.start
                         if (curCursor - 1 in currentValue.indices) {
                             val newValue = ArrayList(currentValue).apply {
                                 removeAt(curCursor - 1)
@@ -62,11 +72,19 @@ class TileFieldImeConsumer(
                         }
                     } else {
                         val newValue = buildList {
-                            addAll(currentValue.take(state.selection.start))
-                            addAll(currentValue.takeLast(currentValue.size - state.selection.end))
+                            addAll(currentValue.subList(0, state.selection.start))
+
+                            if (state.selection.end != currentValue.size) {
+                                addAll(
+                                    currentValue.subList(
+                                        state.selection.end + 1,
+                                        currentValue.size
+                                    )
+                                )
+                            }
                         }
                         currentOnValueChange?.invoke(newValue)
-                        state.selection = TextRange(state.selection.start)
+                        state.selection = TextRange(curCursor - 1)
                     }
                 }
             }
@@ -76,9 +94,9 @@ class TileFieldImeConsumer(
                     consumer.release()
                 }
             }
-
-            consumer.consume()
         }
+
+        consumer.consume()
     }
 
     fun stop() {

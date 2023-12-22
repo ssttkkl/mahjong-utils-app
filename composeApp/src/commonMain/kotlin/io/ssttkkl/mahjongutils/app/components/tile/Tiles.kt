@@ -1,11 +1,25 @@
 package io.ssttkkl.mahjongutils.app.components.tile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -14,7 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.compose.painterResource
 import io.ssttkkl.mahjongutils.app.MR
@@ -22,11 +38,19 @@ import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import mahjongutils.models.Tile
 
 @Composable
-fun Tile(tile: Tile, modifier: Modifier = Modifier) {
+fun TileImage(
+    tile: Tile?,
+    modifier: Modifier = Modifier,
+    alignment: Alignment = Alignment.Center,
+    contentScale: ContentScale = ContentScale.Fit,
+    alpha: Float = DefaultAlpha,
+    colorFilter: ColorFilter? = null
+) {
     Image(
-        tile.painterResource,
+        tile?.painterResource ?: painterResource(MR.images.tile_back),
         tile.toString(),
-        modifier
+        modifier,
+        alignment, contentScale, alpha, colorFilter
     )
 }
 
@@ -69,6 +93,35 @@ fun Tiles(
         onTextLayout = onTextLayout,
         style = style
     )
+}
+
+@Composable
+fun RotatedSingleTile(
+    tile: Tile,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = LocalTileTextSize.current,
+) {
+    with(LocalDensity.current) {
+        var originalSize by remember { mutableStateOf<IntSize?>(null) }
+        val shouldHavePadding by derivedStateOf {
+            originalSize?.let {
+                val paddingStart = (it.height - it.width).toDp() / 2
+                PaddingValues(start = paddingStart, top = paddingStart)
+            } ?: PaddingValues(0.dp)
+        }
+
+        Tiles(
+            listOf(tile),
+            modifier.padding(shouldHavePadding)
+                .rotate(-90f)
+                .onSizeChanged {
+                    if (originalSize == null) {
+                        originalSize = it
+                    }
+                },
+            fontSize = fontSize
+        )
+    }
 }
 
 

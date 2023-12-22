@@ -35,6 +35,8 @@ private val tileContentIdRevMapping = tileContentIdMapping.entries.associate {
     it.value to it.key
 }
 
+private const val tileBackContentId = "tile-back"
+
 fun Tile.annotatedAsInline(
     fontSize: TextUnit = TextUnit.Unspecified
 ): AnnotatedString = buildAnnotatedString {
@@ -52,6 +54,14 @@ fun Iterable<Tile>.annotatedAsInline(
             append(it.annotatedAsInline(fontSize))
         }
     }
+
+fun tileBackInline(
+    fontSize: TextUnit = TextUnit.Unspecified
+): AnnotatedString = buildAnnotatedString {
+    pushStyle(SpanStyle(fontSize = fontSize))
+    appendInlineContent(tileBackContentId, "0z")
+    pop()
+}
 
 private fun annotateTileFromEmoji(
     charSeq: CharSequence,
@@ -95,9 +105,16 @@ private val tileInlineTextContent = TileModel.all.associate { tile ->
             PlaceholderVerticalAlign.TextCenter
         )
     ) {
-        Tile(tile)
+        TileImage(tile)
     }
-}
+} + Pair(tileBackContentId, InlineTextContent(
+    Placeholder(
+        1.em, 1.4.em, // 牌图片的比例是1.4:1
+        PlaceholderVerticalAlign.TextCenter
+    )
+) {
+    TileImage(null)
+})
 
 @Composable
 fun TileInlineText(

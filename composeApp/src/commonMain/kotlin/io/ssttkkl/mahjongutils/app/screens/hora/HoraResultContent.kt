@@ -12,12 +12,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
+import io.ssttkkl.mahjongutils.app.components.tile.FuroTiles
+import io.ssttkkl.mahjongutils.app.components.tile.RotatedSingleTile
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
@@ -28,16 +29,21 @@ import mahjongutils.hora.Hora
 import mahjongutils.hora.RegularHoraHandPattern
 import mahjongutils.models.Wind
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun HandTilesPanel(args: HoraArgs) {
     TopCardPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
         CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
-            Row {
-                Tiles(args.tiles.dropLast(1))
-                Tiles(
-                    listOf(args.tiles.last()),
-                    Modifier.rotate(-90f)
-                )
+            FlowRow {
+                Row {
+                    Tiles(args.tiles.dropLast(1))
+                    RotatedSingleTile(args.tiles.last())
+                }
+
+                args.furo.forEach {
+                    Spacer(Modifier.width(8.dp))
+                    FuroTiles(it)
+                }
             }
         }
     }
