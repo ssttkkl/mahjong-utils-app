@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.utils.os
+package io.ssttkkl.mahjongutils.app.utils
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory

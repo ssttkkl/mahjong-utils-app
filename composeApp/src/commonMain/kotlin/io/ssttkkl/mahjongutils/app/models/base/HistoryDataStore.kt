@@ -1,9 +1,9 @@
 package io.ssttkkl.mahjongutils.app.models.base
 
 import androidx.datastore.core.DataStore
-import io.ssttkkl.mahjongutils.app.utils.os.FileUtils
-import io.ssttkkl.mahjongutils.app.utils.os.createDatastore
-import io.ssttkkl.mahjongutils.app.utils.os.historyPath
+import io.ssttkkl.mahjongutils.app.utils.FileUtils
+import io.ssttkkl.mahjongutils.app.utils.createDatastore
+import io.ssttkkl.mahjongutils.app.utils.historyPath
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer

@@ -13,6 +13,7 @@
     <string name="text_no_symbol">No</string>
 
     <string name="label_history">History</string>
+    <string name="label_share">Share</string>
     <string name="label_keyboard_collapse">Collapse</string>
     <string name="label_tiles_in_hand">Tiles in Hand</string>
     <string name="label_shanten_mode">Shanten Mode</string>

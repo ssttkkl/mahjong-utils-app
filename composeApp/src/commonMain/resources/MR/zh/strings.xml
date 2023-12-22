@@ -13,6 +13,7 @@
     <string name="text_no_symbol">×</string>
 
     <string name="label_history">历史记录</string>
+    <string name="label_share">分享</string>
     <string name="label_keyboard_collapse">收起</string>
     <string name="label_tiles_in_hand">手牌</string>
     <string name="label_shanten_mode">计算模式</string>

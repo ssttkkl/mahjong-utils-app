@@ -1,6 +1,5 @@
 package io.ssttkkl.mahjongutils.app.screens.shanten
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
@@ -29,32 +28,36 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithoutGot) {
     val scrollState = rememberScrollState()
 
     with(Spacing.current) {
-        Column(Modifier.fillMaxWidth().verticalScroll(scrollState)) {
-            VerticalSpacerBetweenPanels()
+        LazyColumn(Modifier.fillMaxWidth()) {
+            item {
+                VerticalSpacerBetweenPanels()
+                TilesInHandPanel(args.tiles, false)
+            }
 
-            TilesInHandPanel(args.tiles, false)
+            item {
+                VerticalSpacerBetweenPanels()
+                ShantenNumCardPanel(shanten.shantenNum)
+            }
 
-            VerticalSpacerBetweenPanels()
+            item {
+                VerticalSpacerBetweenPanels()
+                TilesWithNumTopCardPanel(
+                    stringResource(MR.strings.label_advance_tiles),
+                    shanten.advance,
+                    shanten.advanceNum
+                )
+            }
 
-            ShantenNumCardPanel(shanten.shantenNum)
-
-            VerticalSpacerBetweenPanels()
-
-            TilesWithNumTopCardPanel(
-                stringResource(MR.strings.label_advance_tiles),
-                shanten.advance,
-                shanten.advanceNum
-            )
-
-            VerticalSpacerBetweenPanels()
-
-            shanten.goodShapeAdvance?.let { goodShapeAdvance ->
-                shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
-                    TilesWithNumTopCardPanel(
-                        stringResource(MR.strings.label_good_shape_advance_tiles),
-                        goodShapeAdvance,
-                        goodShapeAdvanceNum
-                    )
+            item {
+                VerticalSpacerBetweenPanels()
+                shanten.goodShapeAdvance?.let { goodShapeAdvance ->
+                    shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
+                        TilesWithNumTopCardPanel(
+                            stringResource(MR.strings.label_good_shape_advance_tiles),
+                            goodShapeAdvance,
+                            goodShapeAdvanceNum
+                        )
+                    }
                 }
             }
         }

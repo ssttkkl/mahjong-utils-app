@@ -8,59 +8,26 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.boundsInRoot
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.viewinterop.AndroidView
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-actual fun Capturable(
-    state: CaptureState,
-    heightWrapContent: Boolean,
-    widthWrapContent: Boolean,
-    content: @Composable () -> Unit
-) {
-    var bounds by remember {
-        mutableStateOf<Rect?>(null)
-    }
-    val capturing by state.capturing.collectAsState()
-
-    // 依据状态值 选择是否使用AndroidView进行展示获取截图
-    if (capturing && bounds != null) {
-        CaptureView(
-            captureState = state,
-            bounds = bounds!!,
-            heightWrapContent = heightWrapContent,
-            widthWrapContent = widthWrapContent,
-            content = content
-        )
-    } else {
-        Surface(modifier = Modifier.onGloballyPositioned {
-            bounds = it.boundsInRoot()
-        }, content = content)
-
-    }
-}
-
-@Composable
-private fun CaptureView(
+internal actual fun CaptureView(
     captureState: CaptureState,
     bounds: Rect,
     heightWrapContent: Boolean,
     widthWrapContent: Boolean,
     content: @Composable () -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     AndroidView(factory = {
         object : FrameLayout(it) {
             override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -81,7 +48,7 @@ private fun CaptureView(
                 }
             }
 
-            drawListener(captureState, composeView, this)
+            drawListener(captureState, coroutineScope, composeView, this)
 
             addView(
                 composeView, ViewGroup.LayoutParams(
@@ -96,6 +63,7 @@ private fun CaptureView(
 
 private fun drawListener(
     state: CaptureState,
+    coroutineScope: CoroutineScope,
     view: View,
     viewGroup: ViewGroup
 ) {
@@ -107,9 +75,9 @@ private fun drawListener(
                     // View 绘制第一帧 开始截图并移除 监听，随后切换截图状态 回到Compose组件
                     remove = true
                     view.post {
-                        val bitmap = getViewGroupBitmap(viewGroup).asImageBitmap()
-                        state.coroutineScope.launch {
-                            state.captureResult.emit(bitmap)
+                        val bitmap = getViewGroupBitmap(viewGroup)
+                        coroutineScope.launch {
+                            state.captureResult.emit(CaptureResult(bitmap))
                         }
                         state.capturing.value = false
                         view.viewTreeObserver.removeOnDrawListener(this)
@@ -131,4 +99,12 @@ private fun getViewGroupBitmap(viewGroup: ViewGroup): Bitmap {
     val canvas = Canvas(bitmap)
     viewGroup.draw(canvas)
     return bitmap
+}
+
+actual class CaptureResult(
+    val bitmap: Bitmap
+) {
+    actual fun getImageBitmap(): ImageBitmap {
+        return bitmap.asImageBitmap()
+    }
 }

@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.utils.os
+package io.ssttkkl.mahjongutils.app.utils
 
 import okio.FileSystem
 import okio.Path

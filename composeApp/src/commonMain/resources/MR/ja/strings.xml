@@ -12,7 +12,8 @@
     <string name="text_yes_symbol">○</string>
     <string name="text_no_symbol">×</string>
 
-    <string name="label_history">History</string>
+    <string name="label_history">ヒストリ</string>
+    <string name="label_share">シェア</string>
     <string name="label_keyboard_collapse">閉じる</string>
     <string name="label_tiles_in_hand">手牌</string>
     <string name="label_shanten_mode">計算モード</string>

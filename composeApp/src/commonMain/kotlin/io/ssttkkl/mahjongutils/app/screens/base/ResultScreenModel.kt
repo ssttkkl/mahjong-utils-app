@@ -3,6 +3,7 @@ package io.ssttkkl.mahjongutils.app.screens.base
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
+import io.ssttkkl.mahjongutils.app.components.capture.CaptureState
 import io.ssttkkl.mahjongutils.app.models.base.History
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers

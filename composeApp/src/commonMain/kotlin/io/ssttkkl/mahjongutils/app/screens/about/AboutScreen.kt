@@ -21,6 +21,7 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.readTextAsState
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.capture.Capturable
+import io.ssttkkl.mahjongutils.app.components.capture.CaptureResult
 import io.ssttkkl.mahjongutils.app.components.capture.rememberCaptureState
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import kotlinx.coroutines.launch
@@ -35,7 +36,7 @@ object AboutScreen : NavigationScreen() {
 
         val coroutineScope = rememberCoroutineScope()
         val captureState = rememberCaptureState()
-        var captureResult by remember { mutableStateOf<ImageBitmap?>(null) }
+        var captureResult by remember { mutableStateOf<CaptureResult?>(null) }
 
         Column {
             FloatingActionButton({
