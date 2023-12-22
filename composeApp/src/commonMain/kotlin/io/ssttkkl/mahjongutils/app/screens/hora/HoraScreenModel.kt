@@ -9,7 +9,7 @@ import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.models.hora.HoraCalcResult
-import io.ssttkkl.mahjongutils.app.screens.base.ResultScreenModel
+import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
 import kotlinx.coroutines.flow.Flow
 import mahjongutils.models.Furo
 import mahjongutils.models.Kan
@@ -41,7 +41,7 @@ class FuroModel {
     }
 }
 
-class HoraScreenModel : ResultScreenModel<HoraArgs, HoraCalcResult>() {
+class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
     var tiles by mutableStateOf<List<Tile>>(emptyList())
     val furo = mutableStateListOf<FuroModel>()
     var agari by mutableStateOf<Tile?>(null)

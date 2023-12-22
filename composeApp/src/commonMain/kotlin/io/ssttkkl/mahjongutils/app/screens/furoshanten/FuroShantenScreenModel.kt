@@ -10,7 +10,7 @@ import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenCalcResult
-import io.ssttkkl.mahjongutils.app.screens.base.ResultScreenModel
+import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +19,7 @@ import mahjongutils.models.Tile
 import mahjongutils.models.countAsCodeArray
 
 class FuroShantenScreenModel :
-    ResultScreenModel<FuroChanceShantenArgs, FuroChanceShantenCalcResult>() {
+    FormAndResultScreenModel<FuroChanceShantenArgs, FuroChanceShantenCalcResult>() {
 
     var tiles by mutableStateOf<List<Tile>>(emptyList())
     var chanceTile by mutableStateOf<Tile?>(null)

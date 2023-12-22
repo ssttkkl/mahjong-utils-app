@@ -10,7 +10,7 @@ import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 
 abstract class NavigationScreen : Screen {
-    abstract val title: StringResource
+    abstract val title: StringResource?
 
     @Composable
     open fun RowScope.TopBarActions(appState: AppState) {

@@ -45,12 +45,12 @@ fun ColumnScope.NavigationItems(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    navigatableScreens.forEach {
+    navigatableScreens.forEach { screen ->
         NavigationDrawerItem(
-            label = { Text(stringResource(it.title)) },
-            selected = navigator.lastItem == it,
+            label = { screen.title?.let { Text(stringResource(it)) } },
+            selected = navigator.lastItem == screen,
             onClick = {
-                navigator.replaceAll(it)
+                navigator.replaceAll(screen)
                 coroutineScope.launch {
                     drawerState?.close()
                 }

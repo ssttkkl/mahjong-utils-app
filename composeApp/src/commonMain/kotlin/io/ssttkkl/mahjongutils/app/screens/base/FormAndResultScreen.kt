@@ -34,7 +34,8 @@ import io.ssttkkl.mahjongutils.app.utils.Spacing
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-abstract class FormAndResultScreen<M : ResultScreenModel<ARG, RES>, ARG, RES> : NavigationScreen() {
+abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, RES> :
+    NavigationScreen() {
     companion object {
         fun isTwoPanes(windowSizeClass: WindowSizeClass): Boolean {
             return windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
@@ -136,6 +137,7 @@ abstract class FormAndResultScreen<M : ResultScreenModel<ARG, RES>, ARG, RES> : 
     @Composable
     private fun OnePaneContent(appState: AppState, model: M) {
         val coroutineScope = rememberCoroutineScope()
+        val resultScreenModel = ResultScreen.rememberScreenModel(key)
 
         DisposableEffect(appState, model, coroutineScope) {
             val job = coroutineScope.launch {
@@ -144,13 +146,14 @@ abstract class FormAndResultScreen<M : ResultScreenModel<ARG, RES>, ARG, RES> : 
                         // 将result移动至ResultScreen
                         // 保证从ResultScreen返回后不会重复跳转
                         // 除非调用了onResultMove将result再次移动回来（发生在旋转后由单栏变成双栏的场合）
-                        appState.navigator.push(
-                            ResultScreen(
-                                title = resultTitle,
-                                result = result,
-                                onResultMove = { model.result.value = it }) {
-                                ResultContent(appState, it, Modifier)
-                            })
+                        resultScreenModel.apply {
+                            title = resultTitle
+                            resultHolder = ResultHolder(result) { model.result.value = it }
+                            resultContent = {
+                                ResultContent(appState, it as RES, Modifier)
+                            }
+                        }
+                        appState.navigator.push(ResultScreen(key))
                         model.result.value = null
                     }
                 }

@@ -11,7 +11,7 @@ import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenCalcResult
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
-import io.ssttkkl.mahjongutils.app.screens.base.ResultScreenModel
+import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
 import mahjongutils.models.countAsCodeArray
 
-class ShantenScreenModel : ResultScreenModel<ShantenArgs, ShantenCalcResult>() {
+class ShantenScreenModel : FormAndResultScreenModel<ShantenArgs, ShantenCalcResult>() {
     var tiles by mutableStateOf<List<Tile>>(emptyList())
     var shantenMode by mutableStateOf(ShantenMode.Union)
 

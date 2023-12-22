@@ -1,43 +1,42 @@
 package io.ssttkkl.mahjongutils.app.screens.base
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
+import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.components.capture.CaptureState
-import io.ssttkkl.mahjongutils.app.models.base.History
+import io.ssttkkl.mahjongutils.app.utils.saveToAlbum
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-abstract class ResultScreenModel<ARG, RES> : ScreenModel {
-    val result = MutableStateFlow<Deferred<RES>?>(null)
-
-    fun resetResult() {
-        result.value = null
+class ResultHolder<RES>(
+    var result: Deferred<RES>?,
+    val onResultMove: (Deferred<RES>) -> Unit,
+) {
+    fun moveResult() {
+        val resultToMove = result
+        result = null
+        if (resultToMove != null) {
+            onResultMove(resultToMove)
+        }
     }
+}
 
-    fun postCheck() {
+class ResultScreenModel : ScreenModel {
+    var title by mutableStateOf<StringResource?>(null)
+    var resultHolder by mutableStateOf<ResultHolder<*>?>(null)
+    var resultContent by mutableStateOf<@Composable (Any) -> Unit>({})
+
+    var calculating by mutableStateOf(true)
+    val captureState = CaptureState()
+
+    fun onCapture() {
         screenModelScope.launch {
-            onCheck()
+            val result = captureState.capture()
+            result.saveToAlbum()
         }
     }
-
-    open suspend fun onCheck(): Boolean = true
-
-    abstract suspend fun onCalc(appState: AppState): RES
-
-    suspend fun onSubmit(appState: AppState) {
-        if (!onCheck()) {
-            return
-        }
-
-        result.value = screenModelScope.async(Dispatchers.Default) {
-            onCalc(appState)
-        }
-    }
-
-    abstract val history: Flow<List<History<ARG>>>
 }

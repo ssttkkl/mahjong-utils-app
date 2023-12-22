@@ -54,6 +54,7 @@ import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.models.hora.HoraCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
 import io.ssttkkl.mahjongutils.app.utils.localizedName
 import io.ssttkkl.mahjongutils.app.utils.withAlpha
@@ -197,7 +198,7 @@ object HoraScreen :
                                         Tiles(
                                             listOf(autoDetectedAgari),
                                             Modifier.alpha(0.4f),
-                                            fontSize = 24.sp
+                                            fontSize = TileTextSize.Default.bodyLarge * 0.8
                                         )
                                     }
                                 }

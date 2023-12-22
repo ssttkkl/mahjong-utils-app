@@ -7,7 +7,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import cafe.adriel.voyager.core.model.rememberScreenModel
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
@@ -17,22 +20,38 @@ import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowMessageOnFailure
 import io.ssttkkl.mahjongutils.app.components.capture.Capturable
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen.Companion.isTwoPanes
-import kotlinx.coroutines.Deferred
+import kotlin.jvm.Transient
 
-data class ResultScreen<RES>(
-    override val title: StringResource,
-    val result: Deferred<RES>,
-    val onResultMove: (Deferred<RES>) -> Unit,
-    val resultContent: @Composable (RES) -> Unit
+class ResultScreen(
+    override val key: String
 ) : NavigationScreen() {
+
+    companion object {
+        @Composable
+        fun rememberScreenModel(key: String): ResultScreenModel {
+            val appState = LocalAppState.current
+            val model = appState.navigator.rememberNavigatorScreenModel(key) {
+                ResultScreenModel()
+            }
+            return model
+        }
+    }
+
+    @delegate:Transient
+    override var title: StringResource? by mutableStateOf(null)
+
+    @Composable
+    private fun rememberScreenModel(): ResultScreenModel {
+        return rememberScreenModel(key)
+    }
 
     @Composable
     override fun RowScope.TopBarActions(appState: AppState) {
-        val captureModel = rememberScreenModel { ResultCaptureScreenModel() }
+        val model = rememberScreenModel()
 
-        if (!captureModel.calculating) {
+        if (!model.calculating) {
             IconButton(onClick = {
-                captureModel.onCapture()
+                model.onCapture()
             }) {
                 Icon(Icons.Outlined.Share, stringResource(MR.strings.label_share))
             }
@@ -44,31 +63,31 @@ data class ResultScreen<RES>(
         super.Content()
 
         val appState = LocalAppState.current
-        val captureModel = rememberScreenModel { ResultCaptureScreenModel() }
+        val model = rememberScreenModel()
+        LaunchedEffect(model.title) {
+            title = model.title
+        }
 
         // 如果是双栏，直接弹出
         // 调用onResultMove将result移动回去，从而能在上层展示
         LaunchedEffect(appState.windowSizeClass) {
             if (isTwoPanes(appState.windowSizeClass)) {
                 appState.navigator.pop()
-                onResultMove(result)
+                model.resultHolder?.moveResult()
             }
         }
 
         Calculation(
-            result,
+            model,
             {
-                captureModel.calculating = true
-                val result = result.await()
-                captureModel.calculating = false
-                result
+                model.resultHolder?.result?.await()
             },
             onFailure = {
                 PopAndShowMessageOnFailure(it)
             }
-        ) {
-            Capturable(captureModel.captureState) {
-                resultContent(it)
+        ) { result ->
+            Capturable(model.captureState) {
+                result?.let { model.resultContent(it) }
             }
         }
     }

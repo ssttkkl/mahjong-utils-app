@@ -145,14 +145,21 @@ fun TileField(
     value: List<Tile>,
     onValueChange: (List<Tile>) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    fontSize: TextUnit = TileTextSize.Default.bodyLarge,
+    label: @Composable (() -> Unit)? = null,
     placeholder: (@Composable () -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     BaseTileField(
         value,
         onValueChange,
         modifier,
+        enabled = enabled,
+        fontSize = fontSize,
+        label = label,
         trailingIcon = {
             Text(
                 stringResource(MR.strings.text_tiles_num_short, value.size),
