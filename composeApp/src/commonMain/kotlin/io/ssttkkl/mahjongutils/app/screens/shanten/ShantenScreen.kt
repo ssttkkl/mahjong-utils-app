@@ -88,7 +88,7 @@ object ShantenScreen :
                 VerticalSpacerBetweenPanels()
 
                 TopPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
-                    ValidationField(model.tilesErrMsg?.let { stringResource(it) }) { isError ->
+                    ValidationField(model.tilesErrMsg) { isError ->
                         TileField(
                             value = model.tiles,
                             onValueChange = { model.tiles = it },
@@ -102,7 +102,7 @@ object ShantenScreen :
 
                 TopPanel(
                     { Text(stringResource(MR.strings.label_shanten_mode)) },
-                    noPaddingContent = true
+                    noContentPadding = true
                 ) {
                     ShantenModeRatioGroups(
                         model.shantenMode,
@@ -114,7 +114,7 @@ object ShantenScreen :
 
                 Button(
                     modifier = Modifier.windowHorizontalMargin(),
-                    content = { Text(stringResource(MR.strings.text_calc)) },
+                    content = { Text(stringResource(MR.strings.label_calc)) },
                     onClick = {
                         coroutineScope.launch {
                             model.onSubmit(appState)

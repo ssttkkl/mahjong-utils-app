@@ -5,6 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import dev.icerock.moko.resources.StringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
@@ -21,6 +23,7 @@ import mahjongutils.yaku.Yakus
 class FuroModel {
     var tiles: List<Tile> by mutableStateOf(emptyList())
     var ankan: Boolean by mutableStateOf(false)
+    var errMsg by mutableStateOf<StringResource?>(null)
 
     val isKan: Boolean
         get() = tiles.size == 4 && tiles.all { it == tiles.first() }
@@ -59,14 +62,19 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         }
     }
 
-    var tilesErrMsg by mutableStateOf<String?>(null)
-    val furoErrMsg = mutableStateListOf<String?>(null)
-    var agariErrMsg by mutableStateOf<String?>(null)
-    var doraErrMsg by mutableStateOf<String?>(null)
+    var tilesErrMsg by mutableStateOf<StringResource?>(null)
+    var agariErrMsg by mutableStateOf<StringResource?>(null)
+    var doraErrMsg by mutableStateOf<StringResource?>(null)
+
+    val unavailableYaku by derivedStateOf {
+        Yakus.allExtraYaku.filter {
+            !isYakuAvailable(it)
+        }
+    }
 
     // yaku to enabled
-    fun allExtraYaku(): List<Pair<Yaku, Boolean>> {
-        return listOf(
+    val allExtraYaku by derivedStateOf {
+        listOf(
             Yakus.Tenhou,
             Yakus.Chihou,
             Yakus.WRichi,
@@ -77,20 +85,79 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
             Yakus.Haitei,
             Yakus.Houtei
         ).map {
-            var disabled = false
-            if (it == Yakus.Tenhou) {
-                disabled = disabled || selfWind?.ordinal != 0
-                disabled = disabled || furo.isNotEmpty()
-            } else if (it == Yakus.Chihou) {
-                disabled = disabled || selfWind?.ordinal == 0
-                disabled = disabled || furo.isNotEmpty()
-            } else if (it == Yakus.Richi || it == Yakus.WRichi) {
-                disabled = disabled || furo.isNotEmpty()
-            } else if (it == Yakus.Ippatsu) {
-                disabled = disabled || Yakus.Richi !in extraYaku || Yakus.WRichi !in extraYaku
-            }
-            it to !disabled
+            it to isYakuAvailable(it)
         }
+    }
+
+    private fun isYakuAvailable(yaku: Yaku): Boolean {
+        var disabled = false
+        if (yaku == Yakus.Tenhou) {
+            disabled = disabled || selfWind?.ordinal != 0
+            disabled = disabled || furo.isNotEmpty()
+        } else if (yaku == Yakus.Chihou) {
+            disabled = disabled || selfWind?.ordinal == 0
+            disabled = disabled || furo.isNotEmpty()
+        } else if (yaku == Yakus.Richi || yaku == Yakus.WRichi) {
+            disabled = disabled || furo.isNotEmpty()
+        } else if (yaku == Yakus.Ippatsu) {
+            disabled = disabled || Yakus.Richi !in extraYaku || Yakus.WRichi !in extraYaku
+        }
+
+        return !disabled
+    }
+
+    override suspend fun onCheck(): Boolean {
+        var validTiles = true
+        var validAgari = true
+        var validDora = true
+        var validFuro = true
+
+        val dora = dora.toIntOrNull()
+        if (dora == null) {
+            doraErrMsg = MR.strings.text_invalid_dora_count
+            validDora = false
+        }
+
+        if (tiles.isEmpty()) {
+            tilesErrMsg = MR.strings.text_must_enter_tiles
+            validTiles = false
+        }
+
+        val curTilesCount = tiles.size + furo.size * 3
+        if (curTilesCount != 14 && curTilesCount != 13) {
+            tilesErrMsg = MR.strings.text_hora_hand_tiles_not_enough
+            validTiles = false
+        }
+
+        val agari = agari ?: autoDetectedAgari
+        if (agari == null) {
+            agariErrMsg = MR.strings.text_must_enter_agari
+            validAgari = false
+        } else if (agari !in tiles) {
+            agariErrMsg = MR.strings.text_agari_not_in_hand
+            validAgari = false
+        }
+
+        furo.forEach {
+            try {
+                it.toFuro()
+                it.errMsg = null
+            } catch (e: IllegalArgumentException) {
+                it.errMsg = MR.strings.text_invalid_furo
+            }
+        }
+        validFuro = furo.all { it.errMsg == null }
+
+        if (validTiles) {
+            tilesErrMsg = null
+        }
+        if (validAgari) {
+            agariErrMsg = null
+        }
+        if (validDora) {
+            doraErrMsg = null
+        }
+        return validTiles && validAgari && validDora && validFuro
     }
 
     override suspend fun onCalc(appState: AppState): HoraCalcResult {

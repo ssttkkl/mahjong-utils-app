@@ -50,7 +50,7 @@ fun <T : KeyboardKeyItem> KeyboardScreen(
     ) {
         Image(
             Icons.Filled.KeyboardArrowDown,
-            stringResource(MR.strings.label_keyboard_collapse),
+            "",
             Modifier.clickable {
                 onCollapse()
             }.fillMaxWidth()

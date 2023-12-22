@@ -6,6 +6,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import dev.icerock.moko.resources.StringResource
+import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
 fun ValidationField(
@@ -25,4 +27,16 @@ fun ValidationField(
             )
         }
     }
+}
+
+@Composable
+fun ValidationField(
+    errMsg: StringResource?,
+    modifier: Modifier = Modifier,
+    content: @Composable (isError: Boolean) -> Unit
+) {
+    ValidationField(
+        errMsg?.let { stringResource(errMsg) },
+        modifier, content
+    )
 }

@@ -20,7 +20,7 @@ import kotlin.coroutines.CoroutineContext
 @Composable
 fun PopAndShowMessageOnFailure(throwable: Throwable) {
     val appState = LocalAppState.current
-    val unknownError = stringResource(MR.strings.message_unknown_error)
+    val unknownError = stringResource(MR.strings.text_unknown_error)
 
     LaunchedEffect(throwable) {
         appState.navigator.popUntilRoot()

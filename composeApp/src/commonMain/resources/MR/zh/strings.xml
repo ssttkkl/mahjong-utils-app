@@ -8,44 +8,38 @@
     <string name="title_hora_result">和牌分析结果</string>
     <string name="title_about">关于</string>
 
-    <string name="message_unknown_error">未知错误</string>
-    <string name="text_yes_symbol">√</string>
-    <string name="text_no_symbol">×</string>
-
     <string name="label_history">历史记录</string>
     <string name="label_share">分享</string>
-    <string name="label_keyboard_collapse">收起</string>
+
     <string name="label_tiles_in_hand">手牌</string>
     <string name="label_shanten_mode">计算模式</string>
     <string name="label_union_shanten">一般形</string>
     <string name="text_union_shanten_desc">除四面子+一雀头的标准形外，还考虑七对子与国士无双和牌的情况</string>
     <string name="label_regular_shanten">标准形</string>
     <string name="text_regular_shanten_desc">只考虑四面子+一雀头和牌的情况</string>
+    <string name="label_calc">计算</string>
+
+    <string name="text_tiles_without_got">未摸牌</string>
+    <string name="text_tiles_with_got">已摸牌</string>
     <string name="label_shanten_num">向听数</string>
+    <string name="text_shanten_num">%d向听</string>
+    <string name="text_tenpai">听牌</string>
+    <string name="text_hora">和了</string>
     <string name="label_advance_tiles">进张</string>
     <string name="label_waiting_tiles">听牌</string>
     <string name="label_good_shape_advance_tiles">好形进张</string>
     <string name="label_good_shape_improvement_tiles">好形改良</string>
-    <string name="text_calc">计算</string>
-    <string name="text_shanten_num">%d向听</string>
     <string name="text_tiles_num">共%d枚</string>
     <string name="text_tiles_num_short">%d枚</string>
-    <string name="text_tenpai">听牌</string>
-    <string name="text_hora">和了</string>
-    <string name="text_tiles_without_got">未摸牌</string>
-    <string name="text_tiles_with_got">已摸牌</string>
-    <string name="text_draw">摸</string>
-    <string name="text_comma">，</string>
-    <string name="text_waiting_tiles_num">听%d张</string>
+    <string name="text_tiles_num_and_percentile">共%d枚（%s%%）</string>
     <string name="label_shanten_action">%s打法</string>
     <string name="label_shanten_action_backwards">%s打法（退向）</string>
     <string name="text_shanten_action_discard">打%s</string>
-    <string name="text_shanten_action_ankan">暗杠</string>
+    <string name="text_shanten_action_ankan">暗杠%s</string>
     <string name="text_shanten_action_minkan">大明杠%s</string>
     <string name="text_shanten_action_pass">跳过</string>
     <string name="text_shanten_action_chi_and_discard">%s%s吃，打%s</string>
     <string name="text_shanten_action_pon_and_discard">碰，打%s</string>
-    <string name="text_good_shape_advance_tiles_num">共%d枚（%s%）</string>
     <string name="text_improvement_desc">摸%s，打%s（听%d枚）</string>
 
     <string name="label_tile_discarded_by_other">他家打</string>
@@ -53,7 +47,10 @@
     <string name="label_other_options">选项</string>
     <string name="label_allow_chi">允许吃</string>
     <string name="text_allow_chi">允许吃%s</string>
+
     <string name="label_furo">副露</string>
+    <string name="label_mentsu">面子</string>
+    <string name="label_jyantou">雀头</string>
     <string name="label_ankan">暗杠</string>
     <string name="label_minkan">大明杠</string>
     <string name="label_agari">所和的牌</string>
@@ -64,11 +61,13 @@
     <string name="label_round_wind">场风</string>
     <string name="label_extra_yaku">额外役</string>
     <string name="label_extra_yaku_unspecified">无</string>
+
     <string name="label_wind_unspecified">未指定</string>
     <string name="label_wind_east">东</string>
     <string name="label_wind_south">南</string>
     <string name="label_wind_west">西</string>
     <string name="label_wind_north">北</string>
+
     <string name="label_yaku_tenhou">天和</string>
     <string name="label_yaku_chihou">地和</string>
     <string name="label_yaku_wrichi">两立直</string>
@@ -79,6 +78,14 @@
     <string name="label_yaku_haitei">海底捞月</string>
     <string name="label_yaku_houtei">河底捞鱼</string>
 
+    <string name="label_yaku">役种</string>
+    <string name="label_hora_point">番符与点数</string>
+    <string name="label_hand_deconstruction">手牌分解</string>
+
+    <string name="text_yes_symbol">√</string>
+    <string name="text_no_symbol">×</string>
+
+    <string name="text_unknown_error">未知错误</string>
     <string name="text_must_enter_tiles">请输入手牌。</string>
     <string name="text_must_enter_chance_tile">请输入他家打的牌。</string>
     <string name="text_cannot_have_more_than_14_tiles">手牌数量不能超过14枚。</string>

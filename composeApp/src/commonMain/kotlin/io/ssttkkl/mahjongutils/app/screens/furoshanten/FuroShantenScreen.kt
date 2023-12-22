@@ -65,7 +65,7 @@ object FuroShantenScreen :
                 VerticalSpacerBetweenPanels()
 
                 TopPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
-                    ValidationField(model.tilesErrMsg?.let { stringResource(it) }) { isError ->
+                    ValidationField(model.tilesErrMsg) { isError ->
                         TileField(
                             value = model.tiles,
                             onValueChange = { model.tiles = it },
@@ -77,7 +77,7 @@ object FuroShantenScreen :
 
                 VerticalSpacerBetweenPanels()
                 TopPanel({ Text(stringResource(MR.strings.label_tile_discarded_by_other)) }) {
-                    ValidationField(model.chanceTileErrMsg?.let { stringResource(it) }) { isError ->
+                    ValidationField(model.chanceTileErrMsg) { isError ->
                         TileField(
                             value = model.chanceTile?.let { listOf(it) } ?: emptyList(),
                             onValueChange = { model.chanceTile = it.firstOrNull() },
@@ -91,7 +91,7 @@ object FuroShantenScreen :
 
                 TopPanel(
                     { Text(stringResource(MR.strings.label_other_options)) },
-                    noPaddingContent = true
+                    noContentPadding = true
                 ) {
                     SwitchItem(
                         model.allowChi,
@@ -104,7 +104,7 @@ object FuroShantenScreen :
 
                 Button(
                     modifier = Modifier.windowHorizontalMargin(),
-                    content = { Text(stringResource(MR.strings.text_calc)) },
+                    content = { Text(stringResource(MR.strings.label_calc)) },
                     onClick = {
                         coroutineScope.launch {
                             model.onSubmit(appState)

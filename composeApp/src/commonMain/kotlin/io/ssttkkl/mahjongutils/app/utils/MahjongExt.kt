@@ -64,6 +64,43 @@ val Wind.localizedName
 
 val Yaku.localizedName
     get() = when (this) {
+        Yakus.Tsumo -> MR.strings.label_yaku_tsumo
+        Yakus.Pinhu -> MR.strings.label_yaku_pinhu
+        Yakus.Tanyao -> MR.strings.label_yaku_tanyao
+        Yakus.Ipe -> MR.strings.label_yaku_ipe
+        Yakus.SelfWind -> MR.strings.label_yaku_self_wind
+        Yakus.RoundWind -> MR.strings.label_yaku_round_wind
+        Yakus.Chankan -> MR.strings.label_yaku_chankan
+        Yakus.Haku -> MR.strings.label_yaku_haku
+        Yakus.Hatsu -> MR.strings.label_yaku_hatsu
+        Yakus.Chun -> MR.strings.label_yaku_chun
+        Yakus.Sanshoku -> MR.strings.label_yaku_sanshoku
+        Yakus.Ittsu -> MR.strings.label_yaku_ittsu
+        Yakus.Chanta -> MR.strings.label_yaku_chanta
+        Yakus.Chitoi -> MR.strings.label_yaku_chitoi
+        Yakus.Toitoi -> MR.strings.label_yaku_toitoi
+        Yakus.Sananko -> MR.strings.label_yaku_sananko
+        Yakus.Honroto -> MR.strings.label_yaku_honroto
+        Yakus.Sandoko -> MR.strings.label_yaku_sandoko
+        Yakus.Sankantsu -> MR.strings.label_yaku_sankantsu
+        Yakus.Shosangen -> MR.strings.label_yaku_shosangen
+        Yakus.Honitsu -> MR.strings.label_yaku_honitsu
+        Yakus.Junchan -> MR.strings.label_yaku_junchan
+        Yakus.Ryanpe -> MR.strings.label_yaku_ryanpe
+        Yakus.Chinitsu -> MR.strings.label_yaku_chinitsu
+        Yakus.Kokushi -> MR.strings.label_yaku_kokushi
+        Yakus.Suanko -> MR.strings.label_yaku_suanko
+        Yakus.Daisangen -> MR.strings.label_yaku_daisangen
+        Yakus.Tsuiso -> MR.strings.label_yaku_tsuiso
+        Yakus.Shousushi -> MR.strings.label_yaku_shousushi
+        Yakus.Lyuiso -> MR.strings.label_yaku_lyuiso
+        Yakus.Chinroto -> MR.strings.label_yaku_chinroto
+        Yakus.Sukantsu -> MR.strings.label_yaku_sukantsu
+        Yakus.Churen -> MR.strings.label_yaku_churen
+        Yakus.Daisushi -> MR.strings.label_yaku_daisushi
+        Yakus.ChurenNineWaiting -> MR.strings.label_yaku_churenNineWaiting
+        Yakus.SuankoTanki -> MR.strings.label_yaku_suankoTanki
+        Yakus.KokushiThirteenWaiting -> MR.strings.label_yaku_kokushiThirteenWaiting
         Yakus.Tenhou -> MR.strings.label_yaku_tenhou
         Yakus.Chihou -> MR.strings.label_yaku_chihou
         Yakus.WRichi -> MR.strings.label_yaku_wrichi

@@ -2,8 +2,6 @@ package io.ssttkkl.mahjongutils.app.screens.shanten
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -25,21 +23,19 @@ import mahjongutils.shanten.ShantenWithoutGot
 
 @Composable
 fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithoutGot) {
-    val scrollState = rememberScrollState()
-
     with(Spacing.current) {
         LazyColumn(Modifier.fillMaxWidth()) {
-            item {
+            item("hand") {
                 VerticalSpacerBetweenPanels()
                 TilesInHandPanel(args.tiles, false)
             }
 
-            item {
+            item("shantenNum") {
                 VerticalSpacerBetweenPanels()
                 ShantenNumCardPanel(shanten.shantenNum)
             }
 
-            item {
+            item("advance") {
                 VerticalSpacerBetweenPanels()
                 TilesWithNumTopCardPanel(
                     stringResource(MR.strings.label_advance_tiles),
@@ -48,17 +44,22 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithoutGot) {
                 )
             }
 
-            item {
-                VerticalSpacerBetweenPanels()
+            item("goodShapeAdvance") {
                 shanten.goodShapeAdvance?.let { goodShapeAdvance ->
                     shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
+                        VerticalSpacerBetweenPanels()
                         TilesWithNumTopCardPanel(
                             stringResource(MR.strings.label_good_shape_advance_tiles),
                             goodShapeAdvance,
-                            goodShapeAdvanceNum
+                            goodShapeAdvanceNum,
+                            1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
                         )
                     }
                 }
+            }
+
+            item("footer") {
+                VerticalSpacerBetweenPanels()
             }
         }
     }

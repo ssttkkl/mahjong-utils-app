@@ -28,13 +28,13 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
@@ -135,13 +135,13 @@ object HoraScreen :
 
                 TopPanel(
                     { Text(stringResource(MR.strings.label_furo)) },
-                    noPaddingContent = true
+                    noContentPadding = true
                 ) {
                     Column(Modifier.fillMaxWidth()) {
                         model.furo.forEachIndexed { index, furoModel ->
                             ListItem(
                                 {
-                                    ValidationField(model.furoErrMsg.getOrNull(index)) { isError ->
+                                    ValidationField(furoModel.errMsg) { isError ->
                                         TileField(
                                             furoModel.tiles,
                                             { furoModel.tiles = it },
@@ -185,7 +185,7 @@ object HoraScreen :
 
                 VerticalSpacerBetweenPanels()
 
-                TopPanel({ Text(stringResource(MR.strings.label_furo)) }) {
+                TopPanel({ Text(stringResource(MR.strings.label_agari)) }) {
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                         ValidationField(model.agariErrMsg, Modifier.weight(1f)) { isError ->
                             TileField(
@@ -265,8 +265,13 @@ object HoraScreen :
                         { Text(stringResource(MR.strings.label_extra_yaku)) },
                         Modifier.weight(1f)
                     ) {
-                        val allExtraYaku = model.allExtraYaku()
-                        val options = yakuComboOptions(allExtraYaku)
+                        val options = yakuComboOptions(model.allExtraYaku)
+
+                        // 某些役种被ban后更新选择
+                        LaunchedEffect(model.unavailableYaku) {
+                            model.extraYaku -= model.unavailableYaku
+                        }
+
                         MultiComboBox(
                             model.extraYaku,
                             {
@@ -292,7 +297,7 @@ object HoraScreen :
 
                 Button(
                     modifier = Modifier.windowHorizontalMargin(),
-                    content = { Text(stringResource(MR.strings.text_calc)) },
+                    content = { Text(stringResource(MR.strings.label_calc)) },
                     onClick = {
                         coroutineScope.launch {
                             model.onSubmit(appState)

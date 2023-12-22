@@ -3,20 +3,16 @@ package io.ssttkkl.mahjongutils.app.screens.hora
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
@@ -27,9 +23,42 @@ import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
+import io.ssttkkl.mahjongutils.app.utils.localizedName
 import mahjongutils.hora.Hora
 import mahjongutils.hora.RegularHoraHandPattern
 import mahjongutils.models.Wind
+
+@Composable
+private fun HandTilesPanel(args: HoraArgs) {
+    TopCardPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
+        CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
+            Row {
+                Tiles(args.tiles.dropLast(1))
+                Tiles(
+                    listOf(args.tiles.last()),
+                    Modifier.rotate(-90f)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PointPanel(hora: Hora) {
+    TopCardPanel({ Text(stringResource(MR.strings.label_hora_point)) }) {
+        Text("${hora.han}番${hora.hu}符")
+    }
+    Spacer(Modifier.height(8.dp))
+    TopCardPanel {
+        Text(
+            if (hora.selfWind == Wind.East) {
+                hora.parentPoint.toString()
+            } else {
+                hora.childPoint.toString()
+            }
+        )
+    }
+}
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -37,9 +66,11 @@ private fun HandDeconstructionPanel(pattern: RegularHoraHandPattern) {
     with(Spacing.current) {
         TopCardPanel({ Text(stringResource(MR.strings.label_hand_deconstruction)) }) {
             Row {
-                Panel({ Text(stringResource(MR.strings.label_jyantou)) }, Modifier.weight(3f)) {
+                Panel({ Text(stringResource(MR.strings.label_jyantou)) }, Modifier.weight(4f)) {
                     Tiles(listOf(pattern.jyantou, pattern.jyantou))
                 }
+
+                Spacer(Modifier.width(8.dp))
 
                 Panel({ Text(stringResource(MR.strings.label_mentsu)) }, Modifier.weight(12f)) {
                     FlowRow {
@@ -73,39 +104,14 @@ private fun HandDeconstructionPanel(pattern: RegularHoraHandPattern) {
 }
 
 @Composable
-private fun HoraInfoRow(title: String, content: @Composable RowScope.() -> Unit) {
-    Row {
-        Text(
-            title, Modifier.width(100.dp),
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-        )
-        content()
-    }
-}
+private fun YakuPanel(hora: Hora) {
+    TopCardPanel({ Text(stringResource(MR.strings.label_yaku)) }) {
+        hora.yaku.sortedBy { it.han }.forEachIndexed { index, yaku ->
+            if (index != 0) {
+                Spacer(Modifier.height(8.dp))
+            }
 
-@Composable
-private fun HoraInfoPanel(hora: Hora) {
-    with(Spacing.current) {
-        TopCardPanel({ Text("Hora Info") }) {
-            HoraInfoRow("役种") {
-                Text(hora.yaku.joinToString())
-            }
-            Divider(Modifier.padding(vertical = panelsVerticalSpacing / 2))
-            HoraInfoRow("番数") {
-                Text(hora.han.toString())
-            }
-            Divider(Modifier.padding(vertical = panelsVerticalSpacing / 2))
-            HoraInfoRow("符数") {
-                Text(hora.hu.toString())
-            }
-            Divider(Modifier.padding(vertical = panelsVerticalSpacing / 2))
-            HoraInfoRow("点数") {
-                if (hora.selfWind == Wind.East) {
-                    Text(hora.parentPoint.toString())
-                } else {
-                    Text(hora.childPoint.toString())
-                }
-            }
+            Text(stringResource(yaku.localizedName))
         }
     }
 }
@@ -117,17 +123,12 @@ fun HoraResultContent(args: HoraArgs, hora: Hora) {
             item("hand") {
                 VerticalSpacerBetweenPanels()
 
-                TopCardPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
-                    CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
-                        Row {
-                            Tiles(args.tiles.dropLast(1))
-                            Tiles(
-                                listOf(args.tiles.last()),
-                                Modifier.rotate(-90f)
-                            )
-                        }
-                    }
-                }
+                HandTilesPanel(args)
+            }
+
+            item("point") {
+                VerticalSpacerBetweenPanels()
+                PointPanel(hora)
             }
 
             val pattern = hora.pattern
@@ -138,9 +139,9 @@ fun HoraResultContent(args: HoraArgs, hora: Hora) {
                 }
             }
 
-            item("info") {
+            item("yaku") {
                 VerticalSpacerBetweenPanels()
-                HoraInfoPanel(hora)
+                YakuPanel(hora)
             }
         }
     }

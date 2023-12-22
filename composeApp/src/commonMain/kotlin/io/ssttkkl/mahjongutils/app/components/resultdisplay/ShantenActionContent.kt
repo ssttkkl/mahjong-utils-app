@@ -95,7 +95,8 @@ fun ShantenActionCardContent(
                     TilesWithNumPanel(
                         stringResource(MR.strings.label_good_shape_advance_tiles),
                         goodShapeAdvance.sorted(),
-                        shanten.goodShapeAdvanceNum ?: 0
+                        shanten.goodShapeAdvanceNum ?: 0,
+                        1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
                     )
                 }
 
