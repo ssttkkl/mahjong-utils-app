@@ -68,6 +68,33 @@
     <string name="label_wind_west">West</string>
     <string name="label_wind_north">North</string>
 
+    <string name="text_x_han_x_hu">%d Han %d Hu</string>
+    <string name="text_x_bai_yakuman">%d-Times Yakuman</string>
+    <string name="text_parent_tsumo">Oya Tsumo: %d ALL (%d in total)</string>
+    <string name="text_parent_ron">Oya Ron: %d</string>
+    <string name="text_child_tsumo">Ko Tsumo: %d - %d (%d in total)</string>
+    <string name="text_child_ron">Ko Ron: %d</string>
+    <string name="text_parent_tsumo_with_tag">Oya Tsumo: %d ALL (%s, %d in total)</string>
+    <string name="text_parent_ron_with_tag">Oya Ron: %d (%s)</string>
+    <string name="text_child_tsumo_with_tag">Ko Tsumo: %d - %d (%s, %d in total)</string>
+    <string name="text_child_ron_with_tag">Ko Ron: %d (%s)</string>
+
+    <string name="text_one">1</string>
+    <string name="text_two">2</string>
+    <string name="text_three">3</string>
+    <string name="text_four">4</string>
+    <string name="text_five">5</string>
+    <string name="text_six">6</string>
+
+    <string name="label_kiriagemangan">Kiriage Mangan</string>
+    <string name="label_mangan">Mangan</string>
+    <string name="label_haneman">Haneman</string>
+    <string name="label_baiman">Baiman</string>
+    <string name="label_sanbaiman">Sanbaiman</string>
+    <string name="label_kazoeyakuman">Kazoe Yakuman</string>
+    <string name="label_yakuman">Yakuman</string>
+    <string name="label_multiple_yakuman">%s Times Yakuman</string>
+
     <string name="label_yaku_tsumo">Tsumo</string>
     <string name="label_yaku_pinhu">Pinhu</string>
     <string name="label_yaku_tanyao">Tanyao</string>

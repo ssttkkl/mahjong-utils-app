@@ -67,6 +67,33 @@
     <string name="label_wind_west">西</string>
     <string name="label_wind_north">北</string>
 
+    <string name="text_x_han_x_hu">%d番%d符</string>
+    <string name="text_x_bai_yakuman">%d倍役満</string>
+    <string name="text_parent_tsumo">親ツモする番：%d ALL（共%d）</string>
+    <string name="text_parent_ron">親ロンする番：%d</string>
+    <string name="text_child_tsumo">子ツモする番：%d - %d（共%d）</string>
+    <string name="text_child_ron">子ロンする番：%d</string>
+    <string name="text_parent_tsumo_with_tag">親ツモする番：%d ALL（共%d，%s）</string>
+    <string name="text_parent_ron_with_tag">親ロンする番：%d（%s）</string>
+    <string name="text_child_tsumo_with_tag">子ツモする番：%d - %d（共%d，%s）</string>
+    <string name="text_child_ron_with_tag">子ロンする番：%d（%s）</string>
+
+    <string name="text_one">一</string>
+    <string name="text_two">二</string>
+    <string name="text_three">三</string>
+    <string name="text_four">四</string>
+    <string name="text_five">五</string>
+    <string name="text_six">六</string>
+
+    <string name="label_kiriagemangan">切り上げ満貫</string>
+    <string name="label_mangan">満貫</string>
+    <string name="label_haneman">跳満</string>
+    <string name="label_baiman">倍満</string>
+    <string name="label_sanbaiman">三倍満</string>
+    <string name="label_kazoeyakuman">数え役満</string>
+    <string name="label_yakuman">役満</string>
+    <string name="label_multiple_yakuman">%s倍役満</string>
+
     <string name="label_yaku_tenhou">テンホウ</string>
     <string name="label_yaku_chihou">チイホウ</string>
     <string name="label_yaku_wrichi">ダブルリーチ</string>

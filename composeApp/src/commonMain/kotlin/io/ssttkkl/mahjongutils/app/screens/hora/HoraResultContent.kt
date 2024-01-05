@@ -25,6 +25,8 @@ import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.localizedName
+import mahjongutils.hanhu.ChildPoint
+import mahjongutils.hanhu.ParentPoint
 import mahjongutils.hora.Hora
 import mahjongutils.hora.RegularHoraHandPattern
 import mahjongutils.models.Wind
@@ -49,22 +51,7 @@ private fun HandTilesPanel(args: HoraArgs) {
     }
 }
 
-@Composable
-private fun PointPanel(hora: Hora) {
-    TopCardPanel({ Text(stringResource(MR.strings.label_hora_point)) }) {
-        Text("${hora.han}番${hora.hu}符")
-    }
-    Spacer(Modifier.height(8.dp))
-    TopCardPanel {
-        Text(
-            if (hora.selfWind == Wind.East) {
-                hora.parentPoint.toString()
-            } else {
-                hora.childPoint.toString()
-            }
-        )
-    }
-}
+
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

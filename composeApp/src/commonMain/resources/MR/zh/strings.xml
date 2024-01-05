@@ -68,6 +68,33 @@
     <string name="label_wind_west">西</string>
     <string name="label_wind_north">北</string>
 
+    <string name="text_x_han_x_hu">%d番%d符</string>
+    <string name="text_x_bai_yakuman">%d倍役满</string>
+    <string name="text_parent_tsumo">亲家自摸：%d ALL（共%d）</string>
+    <string name="text_parent_ron">亲家荣和：%d</string>
+    <string name="text_child_tsumo">子家自摸：%d - %d（共%d）</string>
+    <string name="text_child_ron">子家荣和：%d</string>
+    <string name="text_parent_tsumo_with_tag">亲家自摸：%d ALL（共%d，%s）</string>
+    <string name="text_parent_ron_with_tag">亲家荣和：%d（%s）</string>
+    <string name="text_child_tsumo_with_tag">子家自摸：%d - %d（共%d，%s）</string>
+    <string name="text_child_ron_with_tag">子家荣和：%d（%s）</string>
+
+    <string name="text_one">一</string>
+    <string name="text_two">二</string>
+    <string name="text_three">三</string>
+    <string name="text_four">四</string>
+    <string name="text_five">五</string>
+    <string name="text_six">六</string>
+
+    <string name="label_kiriagemangan">切上满贯</string>
+    <string name="label_mangan">满贯</string>
+    <string name="label_haneman">跳满</string>
+    <string name="label_baiman">倍满</string>
+    <string name="label_sanbaiman">三倍满</string>
+    <string name="label_kazoeyakuman">累计役满</string>
+    <string name="label_yakuman">役满</string>
+    <string name="label_multiple_yakuman">%s倍役满</string>
+
     <string name="label_yaku_tenhou">天和</string>
     <string name="label_yaku_chihou">地和</string>
     <string name="label_yaku_wrichi">两立直</string>
