@@ -120,13 +120,44 @@ object HoraScreen :
             ) {
                 VerticalSpacerBetweenPanels()
 
-                TopPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
+                TopPanel {
                     ValidationField(model.tilesErrMsg) { isError ->
                         TileField(
                             value = model.tiles,
                             onValueChange = { model.tiles = it },
                             modifier = Modifier.fillMaxWidth(),
-                            isError = isError
+                            isError = isError,
+                            label = { Text(stringResource(MR.strings.label_tiles_in_hand)) }
+                        )
+                    }
+                }
+
+                VerticalSpacerBetweenPanels()
+
+                TopPanel {
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        ValidationField(model.agariErrMsg, Modifier.weight(1f)) { isError ->
+                            TileField(
+                                value = model.agari?.let { listOf(it) } ?: emptyList(),
+                                onValueChange = { model.agari = it.firstOrNull() },
+                                modifier = Modifier.fillMaxWidth(),
+                                isError = isError,
+                                label = { Text(stringResource(MR.strings.label_agari)) },
+                                placeholder = {
+                                    model.autoDetectedAgari?.let { autoDetectedAgari ->
+                                        Tiles(
+                                            listOf(autoDetectedAgari),
+                                            Modifier.alpha(0.4f),
+                                            fontSize = TileTextSize.Default.bodyLarge * 0.8
+                                        )
+                                    }
+                                }
+                            )
+                        }
+
+                        SingleChoiceSegmentedButtonGroup(
+                            tsumoOptions(), model.tsumo, { model.tsumo = it },
+                            Modifier.padding(start = 16.dp)
                         )
                     }
                 }
@@ -185,54 +216,21 @@ object HoraScreen :
 
                 VerticalSpacerBetweenPanels()
 
-                TopPanel({ Text(stringResource(MR.strings.label_agari)) }) {
-                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        ValidationField(model.agariErrMsg, Modifier.weight(1f)) { isError ->
-                            TileField(
-                                value = model.agari?.let { listOf(it) } ?: emptyList(),
-                                onValueChange = { model.agari = it.firstOrNull() },
-                                modifier = Modifier.fillMaxWidth(),
-                                isError = isError,
-                                placeholder = {
-                                    model.autoDetectedAgari?.let { autoDetectedAgari ->
-                                        Tiles(
-                                            listOf(autoDetectedAgari),
-                                            Modifier.alpha(0.4f),
-                                            fontSize = TileTextSize.Default.bodyLarge * 0.8
-                                        )
-                                    }
-                                }
-                            )
-                        }
-
-                        SingleChoiceSegmentedButtonGroup(
-                            tsumoOptions(), model.tsumo, { model.tsumo = it },
-                            Modifier.padding(start = 16.dp)
-                        )
-                    }
-                }
-
-                VerticalSpacerBetweenPanels()
-
                 Row {
-                    TopPanel(
-                        { Text(stringResource(MR.strings.label_self_wind)) },
-                        Modifier.weight(1f)
-                    ) {
+                    TopPanel(modifier = Modifier.weight(1f)) {
                         ComboBox(
                             model.selfWind,
                             { model.selfWind = it },
                             windComboOptions(),
-                            Modifier.fillMaxWidth()
+                            Modifier.fillMaxWidth(),
+                            label = { Text(stringResource(MR.strings.label_self_wind)) }
                         )
                     }
-                    TopPanel(
-                        { Text(stringResource(MR.strings.label_round_wind)) },
-                        Modifier.weight(1f)
-                    ) {
+                    TopPanel(modifier = Modifier.weight(1f)) {
                         ComboBox(
                             model.roundWind, { model.roundWind = it }, windComboOptions(),
-                            Modifier.fillMaxWidth()
+                            Modifier.fillMaxWidth(),
+                            label = { Text(stringResource(MR.strings.label_round_wind)) }
                         )
                     }
                 }
@@ -240,10 +238,7 @@ object HoraScreen :
                 VerticalSpacerBetweenPanels()
 
                 Row {
-                    TopPanel(
-                        { Text(stringResource(MR.strings.label_dora_count)) },
-                        Modifier.weight(1f)
-                    ) {
+                    TopPanel(modifier = Modifier.weight(1f)) {
                         ValidationField(model.doraErrMsg) { isError ->
                             OutlinedTextField(
                                 value = model.dora,
@@ -256,15 +251,13 @@ object HoraScreen :
                                     )
                                 },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                isError = isError
+                                isError = isError,
+                                label = { Text(stringResource(MR.strings.label_dora_count)) }
                             )
                         }
                     }
 
-                    TopPanel(
-                        { Text(stringResource(MR.strings.label_extra_yaku)) },
-                        Modifier.weight(1f)
-                    ) {
+                    TopPanel(modifier = Modifier.weight(1f)) {
                         val options = yakuComboOptions(model.allExtraYaku)
 
                         // 某些役种被ban后更新选择
@@ -288,7 +281,8 @@ object HoraScreen :
                                 } else {
                                     it.joinToString { it.text }
                                 }
-                            }
+                            },
+                            label = { Text(stringResource(MR.strings.label_extra_yaku)) }
                         )
                     }
                 }

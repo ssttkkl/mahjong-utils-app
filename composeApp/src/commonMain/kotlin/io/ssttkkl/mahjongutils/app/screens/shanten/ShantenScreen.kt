@@ -87,13 +87,14 @@ object ShantenScreen :
             ) {
                 VerticalSpacerBetweenPanels()
 
-                TopPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
+                TopPanel {
                     ValidationField(model.tilesErrMsg) { isError ->
                         TileField(
                             value = model.tiles,
                             onValueChange = { model.tiles = it },
                             modifier = Modifier.fillMaxWidth(),
-                            isError = isError
+                            isError = isError,
+                            label = { Text(stringResource(MR.strings.label_tiles_in_hand)) }
                         )
                     }
                 }

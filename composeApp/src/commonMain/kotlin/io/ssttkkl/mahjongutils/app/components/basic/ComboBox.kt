@@ -34,7 +34,8 @@ sealed class ChooseAction<T> {
 private fun ExposedDropdownMenuBoxScope.ComboBoxTextField(
     text: String,
     expanded: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    label: @Composable (() -> Unit)? = null,
 ) {
     OutlinedTextField(
         modifier = Modifier.menuAnchor().then(modifier),
@@ -52,7 +53,8 @@ private fun ExposedDropdownMenuBoxScope.ComboBoxTextField(
             else
                 MaterialTheme.colorScheme.primary,
         ),
-        maxLines = 1
+        maxLines = 1,
+        label = label,
     )
 }
 
@@ -66,6 +68,7 @@ fun <T> MultiComboBox(
     produceDisplayText: (@Composable (Collection<ComboOption<T>>) -> String)? = null,
     closeOnClick: Boolean = false,
     showCheckbox: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -81,7 +84,8 @@ fun <T> MultiComboBox(
                 produceDisplayText?.invoke(it) ?: it.joinToString { it.text }
             },
             expanded,
-            modifier
+            modifier,
+            label
         )
 
         ExposedDropdownMenu(
@@ -122,6 +126,7 @@ fun <T> ComboBox(
     onSelected: (T) -> Unit,
     options: List<ComboOption<T>>,
     modifier: Modifier = Modifier,
+    label: @Composable (() -> Unit)? = null,
 ) {
     MultiComboBox(
         setOf(selected),
@@ -129,6 +134,7 @@ fun <T> ComboBox(
         options,
         modifier,
         closeOnClick = true,
-        showCheckbox = false
+        showCheckbox = false,
+        label = label
     )
 }

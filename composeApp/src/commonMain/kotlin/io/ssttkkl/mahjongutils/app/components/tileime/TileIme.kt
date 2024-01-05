@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.painterResource
 import io.ssttkkl.mahjongutils.app.MR
+import io.ssttkkl.mahjongutils.app.components.backhandler.BackHandler
 import io.ssttkkl.mahjongutils.app.components.tile.painterResource
 import mahjongutils.models.Tile
 
@@ -93,6 +94,9 @@ fun TileIme(
         Tile.parseTiles("123456789s").map { TileImeKey.TileKey(it) },
         Tile.parseTiles("1234567z").map { TileImeKey.TileKey(it) } + TileImeKey.BackspaceKey
     )
+    BackHandler {
+        onCollapse()
+    }
     KeyboardScreen(matrix, onCollapse) {
         when (it) {
             is TileImeKey.TileKey -> {
