@@ -166,7 +166,7 @@ private fun ShantenActionContent(
                     TileInlineText(
                         stringResource(
                             MR.strings.text_shanten_action_minkan,
-                            action.tile
+                            action.tile.emoji
                         )
                     )
                 }

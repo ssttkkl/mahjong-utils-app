@@ -2,14 +2,19 @@ package io.ssttkkl.mahjongutils.app.screens.base
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -18,7 +23,10 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.screenModelScope
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
@@ -29,6 +37,7 @@ import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowMessageOnFailure
 import io.ssttkkl.mahjongutils.app.components.panel.LazyCardPanel
+import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import kotlinx.coroutines.flow.collectLatest
@@ -67,8 +76,14 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
             }) {
                 Icon(
                     painterResource(MR.images.icon_history_outlined),
-                    contentDescription = stringResource(MR.strings.label_history)
+                    stringResource(MR.strings.label_history)
                 )
+            }
+
+            IconButton(onClick = {
+                model.resetForm()
+            }) {
+                Icon(Icons.Filled.Clear, stringResource(MR.strings.label_clear))
             }
         }
     }
@@ -89,26 +104,50 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
         modifier: Modifier,
         requestCloseModal: () -> Unit
     ) {
-        val history by model.history.collectAsState(emptyList())
+        val history by model.history.data.collectAsState(emptyList())
+
+        @Composable
+        fun PanelHeader() {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(stringResource(MR.strings.label_history))
+                TextButton(
+                    onClick = {
+                        model.screenModelScope.launch {
+                            model.history.clear()
+                        }
+                    },
+                    enabled = history.isNotEmpty()
+                ) {
+                    Text(stringResource(MR.strings.label_clear))
+                }
+            }
+        }
 
         with(Spacing.current) {
             LazyColumn(modifier) {
-                item {
-                    VerticalSpacerBetweenPanels()
-                }
-
-                LazyCardPanel(
-                    items = sequence { yieldAll(history) },
-                    keyMapping = { it.createTime.toEpochMilliseconds() },
-                    header = { Text(stringResource(MR.strings.label_history)) },
-                    cardModifier = {
-                        Modifier.clickable {
-                            onClickHistoryItem(it, model)
-                            requestCloseModal()
+                if (history.isEmpty()) {
+                    item {
+                        Panel(header = { PanelHeader() }) {
+                            Text(
+                                stringResource(MR.strings.text_empty_history),
+                                style = MaterialTheme.typography.labelLarge,
+                            )
                         }
-                    },
-                    content = { HistoryItem(it, model) }
-                )
+                    }
+                } else {
+                    LazyCardPanel(
+                        items = sequence { yieldAll(history) },
+                        keyMapping = { it.createTime.toEpochMilliseconds() },
+                        header = { PanelHeader() },
+                        cardModifier = {
+                            Modifier.clickable {
+                                onClickHistoryItem(it, model)
+                                requestCloseModal()
+                            }
+                        },
+                        content = { HistoryItem(it, model) }
+                    )
+                }
 
                 item {
                     VerticalSpacerBetweenPanels()

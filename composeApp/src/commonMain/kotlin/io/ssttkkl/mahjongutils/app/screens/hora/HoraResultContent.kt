@@ -17,40 +17,23 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
-import io.ssttkkl.mahjongutils.app.components.tile.FuroTiles
-import io.ssttkkl.mahjongutils.app.components.tile.RotatedSingleTile
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.localizedName
-import mahjongutils.hanhu.ChildPoint
-import mahjongutils.hanhu.ParentPoint
 import mahjongutils.hora.Hora
 import mahjongutils.hora.RegularHoraHandPattern
-import mahjongutils.models.Wind
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun HandTilesPanel(args: HoraArgs) {
     TopCardPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
         CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
-            FlowRow {
-                Row {
-                    Tiles(args.tiles.dropLast(1))
-                    RotatedSingleTile(args.tiles.last())
-                }
-
-                args.furo.forEach {
-                    Spacer(Modifier.width(8.dp))
-                    FuroTiles(it)
-                }
-            }
+            HoraTiles(args)
         }
     }
 }
-
 
 
 @OptIn(ExperimentalLayoutApi::class)

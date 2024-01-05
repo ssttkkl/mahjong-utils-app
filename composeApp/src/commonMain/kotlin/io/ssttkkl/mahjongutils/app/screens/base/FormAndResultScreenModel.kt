@@ -4,6 +4,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.models.base.History
+import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -13,6 +14,10 @@ import kotlinx.coroutines.launch
 
 abstract class FormAndResultScreenModel<ARG, RES> : ScreenModel {
     val result = MutableStateFlow<Deferred<RES>?>(null)
+
+    open fun resetForm() {
+
+    }
 
     fun resetResult() {
         result.value = null
@@ -38,5 +43,6 @@ abstract class FormAndResultScreenModel<ARG, RES> : ScreenModel {
         }
     }
 
-    abstract val history: Flow<List<History<ARG>>>
+    abstract val history: HistoryDataStore<ARG>
+
 }

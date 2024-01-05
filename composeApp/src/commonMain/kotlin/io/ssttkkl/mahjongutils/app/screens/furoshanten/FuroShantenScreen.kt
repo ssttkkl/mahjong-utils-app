@@ -1,12 +1,9 @@
 package io.ssttkkl.mahjongutils.app.screens.furoshanten
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -21,17 +18,15 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
+import io.ssttkkl.mahjongutils.app.components.panel.Caption
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
-import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
-import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
-import io.ssttkkl.mahjongutils.app.utils.emoji
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
 import kotlinx.coroutines.launch
 
@@ -128,34 +123,18 @@ object FuroShantenScreen :
         FuroShantenResultContent(result.args, result.result.shantenInfo)
     }
 
-    @OptIn(ExperimentalLayoutApi::class)
     @Composable
     override fun HistoryItem(item: History<FuroChanceShantenArgs>, model: FuroShantenScreenModel) {
         Column {
-            FlowRow {
-                Tiles(item.args.tiles)
+            FuroShantenTiles(item.args.tiles, item.args.chanceTile)
 
-                Spacer(Modifier.width(8.dp))
+            if (!item.args.allowChi) {
+                Spacer(Modifier.height(8.dp))
 
-                TileInlineText(
-                    stringResource(
-                        MR.strings.label_tile_discarded_by_other_short,
-                        item.args.chanceTile.emoji
-                    ),
-                    style = MaterialTheme.typography.labelLarge
+                Caption(
+                    title = { Text(stringResource(MR.strings.label_allow_chi)) },
+                    content = { Text(stringResource(MR.strings.text_no_symbol)) }
                 )
-
-                if (!item.args.allowChi) {
-                    Spacer(Modifier.width(8.dp))
-
-                    Text(
-                        stringResource(
-                            MR.strings.text_allow_chi,
-                            stringResource(MR.strings.text_no_symbol)
-                        ),
-                        style = MaterialTheme.typography.labelLarge
-                    )
-                }
             }
 
             Spacer(Modifier.height(16.dp))

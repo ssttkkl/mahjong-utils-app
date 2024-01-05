@@ -8,6 +8,7 @@ import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.models.base.History
+import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
@@ -27,6 +28,15 @@ class FuroShantenScreenModel :
 
     var tilesErrMsg by mutableStateOf<StringResource?>(null)
     var chanceTileErrMsg by mutableStateOf<StringResource?>(null)
+
+    override fun resetForm() {
+        tiles = emptyList()
+        chanceTile = null
+        allowChi = true
+
+        tilesErrMsg = null
+        chanceTileErrMsg = null
+    }
 
     override suspend fun onCheck(): Boolean {
         var validTiles = true
@@ -75,6 +85,6 @@ class FuroShantenScreenModel :
         return args.calc()
     }
 
-    override val history: Flow<List<History<FuroChanceShantenArgs>>>
-        get() = FuroChanceShantenArgs.history.data
+    override val history: HistoryDataStore<FuroChanceShantenArgs>
+        get() = FuroChanceShantenArgs.history
 }

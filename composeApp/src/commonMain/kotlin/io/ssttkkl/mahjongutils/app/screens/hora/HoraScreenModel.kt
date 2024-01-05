@@ -9,6 +9,7 @@ import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.models.base.History
+import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.models.hora.HoraCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
@@ -44,6 +45,71 @@ class FuroModel {
     }
 }
 
+private val yakuConflictingMatrix = mapOf(
+    Yakus.Tenhou to setOf(
+        Yakus.Chihou,
+        Yakus.Richi,
+        Yakus.WRichi,
+        Yakus.Ippatsu,
+        Yakus.Rinshan,
+        Yakus.Chankan,
+        Yakus.Haitei,
+        Yakus.Houtei
+    ),
+    Yakus.Chihou to setOf(
+        Yakus.Tenhou,
+        Yakus.Richi,
+        Yakus.WRichi,
+        Yakus.Ippatsu,
+        Yakus.Rinshan,
+        Yakus.Chankan,
+        Yakus.Haitei,
+        Yakus.Houtei
+    ),
+    Yakus.Richi to setOf(
+        Yakus.Tenhou,
+        Yakus.Chihou,
+        Yakus.WRichi
+    ),
+    Yakus.WRichi to setOf(
+        Yakus.Tenhou,
+        Yakus.Chihou,
+        Yakus.Richi
+    ),
+    Yakus.Ippatsu to setOf(
+        Yakus.Tenhou,
+        Yakus.Chihou,
+        Yakus.Rinshan,
+        Yakus.Chankan
+    ),
+    Yakus.Rinshan to setOf(
+        Yakus.Tenhou,
+        Yakus.Chihou,
+        Yakus.Ippatsu,
+        Yakus.Chankan,
+        Yakus.Houtei
+    ),
+    Yakus.Chankan to setOf(
+        Yakus.Tenhou,
+        Yakus.Chihou,
+        Yakus.Ippatsu,
+        Yakus.Rinshan,
+        Yakus.Haitei
+    ),
+    Yakus.Haitei to setOf(
+        Yakus.Tenhou,
+        Yakus.Chihou,
+        Yakus.Chankan,
+        Yakus.Houtei
+    ),
+    Yakus.Houtei to setOf(
+        Yakus.Tenhou,
+        Yakus.Chihou,
+        Yakus.Rinshan,
+        Yakus.Haitei
+    )
+)
+
 class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
     var tiles by mutableStateOf<List<Tile>>(emptyList())
     val furo = mutableStateListOf<FuroModel>()
@@ -66,8 +132,26 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
     var agariErrMsg by mutableStateOf<StringResource?>(null)
     var doraErrMsg by mutableStateOf<StringResource?>(null)
 
+    override fun resetForm() {
+        tiles = emptyList()
+        furo.clear()
+        agari = null
+        tsumo = true
+        dora = ""
+        selfWind = null
+        roundWind = null
+        extraYaku = emptySet()
+
+        tilesErrMsg = null
+        agariErrMsg = null
+        doraErrMsg = null
+    }
+
     val unavailableYaku by derivedStateOf {
-        Yakus.allExtraYaku.filter {
+        var conflictingYaku = extraYaku.mapNotNull { yakuConflictingMatrix[it] }
+            .flatten()
+            .toSet()
+        (Yakus.allExtraYaku - conflictingYaku).filter {
             !isYakuAvailable(it)
         }
     }
@@ -94,13 +178,23 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         if (yaku == Yakus.Tenhou) {
             disabled = disabled || selfWind?.ordinal != 0
             disabled = disabled || furo.isNotEmpty()
+            disabled = disabled || !tsumo
         } else if (yaku == Yakus.Chihou) {
             disabled = disabled || selfWind?.ordinal == 0
             disabled = disabled || furo.isNotEmpty()
+            disabled = disabled || !tsumo
         } else if (yaku == Yakus.Richi || yaku == Yakus.WRichi) {
             disabled = disabled || furo.isNotEmpty()
         } else if (yaku == Yakus.Ippatsu) {
-            disabled = disabled || Yakus.Richi !in extraYaku || Yakus.WRichi !in extraYaku
+            disabled = disabled || (Yakus.Richi !in extraYaku && Yakus.WRichi !in extraYaku)
+        } else if (yaku == Yakus.Rinshan) {
+            disabled = disabled || !tsumo || furo.count { it.isKan } == 0
+        } else if (yaku == Yakus.Chankan) {
+            disabled = disabled || tsumo
+        } else if (yaku == Yakus.Haitei) {
+            disabled = disabled || !tsumo
+        } else if (yaku == Yakus.Houtei) {
+            disabled = disabled || tsumo
         }
 
         return !disabled
@@ -175,6 +269,6 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         return args.calc()
     }
 
-    override val history: Flow<List<History<HoraArgs>>>
-        get() = HoraArgs.history.data
+    override val history: HistoryDataStore<HoraArgs>
+        get() = HoraArgs.history
 }

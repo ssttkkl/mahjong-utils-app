@@ -47,6 +47,10 @@ class HistoryDataStore<T>(
         }
     }
 
+    suspend fun clear() {
+        dataStore.updateData { emptyList() }
+    }
+
     val data: Flow<List<History<T>>>
         get() = dataStore.data
 }

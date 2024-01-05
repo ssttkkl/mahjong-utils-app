@@ -2,11 +2,9 @@ package io.ssttkkl.mahjongutils.app.screens.shanten
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -22,6 +20,7 @@ import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.basic.RatioGroups
 import io.ssttkkl.mahjongutils.app.components.basic.RatioOption
+import io.ssttkkl.mahjongutils.app.components.panel.Caption
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
@@ -141,24 +140,21 @@ object ShantenScreen :
         }
     }
 
-    @OptIn(ExperimentalLayoutApi::class)
     @Composable
     override fun HistoryItem(item: History<ShantenArgs>, model: ShantenScreenModel) {
         Column {
-            FlowRow {
-                Tiles(item.args.tiles)
+            Tiles(item.args.tiles)
 
-                Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.height(8.dp))
 
+            Caption(title = {
                 Text(
                     when (item.args.mode) {
                         ShantenMode.Union -> stringResource(MR.strings.label_union_shanten)
                         ShantenMode.Regular -> stringResource(MR.strings.label_regular_shanten)
-                    },
-                    style = MaterialTheme.typography.labelLarge
+                    }
                 )
-
-            }
+            })
 
             Spacer(Modifier.height(16.dp))
 

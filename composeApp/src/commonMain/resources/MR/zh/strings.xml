@@ -9,7 +9,10 @@
     <string name="title_about">关于</string>
 
     <string name="label_history">历史记录</string>
+    <string name="label_clear">清空</string>
     <string name="label_share">分享</string>
+
+    <string name="text_empty_history">空</string>
 
     <string name="label_tiles_in_hand">手牌</string>
     <string name="label_shanten_mode">计算模式</string>
@@ -46,7 +49,6 @@
     <string name="label_tile_discarded_by_other_short">他家打%s</string>
     <string name="label_other_options">选项</string>
     <string name="label_allow_chi">允许吃</string>
-    <string name="text_allow_chi">允许吃%s</string>
 
     <string name="label_furo">副露</string>
     <string name="label_mentsu">面子</string>
@@ -95,6 +97,45 @@
     <string name="label_yakuman">役满</string>
     <string name="label_multiple_yakuman">%s倍役满</string>
 
+    <string name="label_yaku_tsumo">自摸</string>
+    <string name="label_yaku_pinhu">平和</string>
+    <string name="label_yaku_tanyao">断幺</string>
+    <string name="label_yaku_ipe">一杯口</string>
+    <string name="label_yaku_self_wind">自风</string>
+    <string name="label_yaku_round_wind">场风</string>
+    <string name="label_yaku_chankan">枪杠</string>
+    <string name="label_yaku_haku">白</string>
+    <string name="label_yaku_hatsu">发</string>
+    <string name="label_yaku_chun">中</string>
+    <string name="label_yaku_sanshoku">三色同顺</string>
+    <string name="label_yaku_ittsu">一气通贯</string>
+    <string name="label_yaku_chanta">混全带幺九</string>
+    <string name="label_yaku_chitoi">七对子</string>
+    <string name="label_yaku_toitoi">对对和</string>
+    <string name="label_yaku_sananko">三暗刻</string>
+    <string name="label_yaku_honroto">混老头</string>
+    <string name="label_yaku_sandoko">三色同刻</string>
+    <string name="label_yaku_sankantsu">三杠子</string>
+    <string name="label_yaku_shosangen">小三元</string>
+    <string name="label_yaku_honitsu">混一色</string>
+    <string name="label_yaku_junchan">纯全带幺九</string>
+    <string name="label_yaku_ryanpe">两杯口</string>
+    <string name="label_yaku_chinitsu">清一色</string>
+
+    <string name="label_yaku_kokushi">国士无双</string>
+    <string name="label_yaku_suanko">四暗刻</string>
+    <string name="label_yaku_daisangen">大三元</string>
+    <string name="label_yaku_tsuiso">字一色</string>
+    <string name="label_yaku_shousushi">小四喜</string>
+    <string name="label_yaku_lyuiso">绿一色</string>
+    <string name="label_yaku_chinroto">清老头</string>
+    <string name="label_yaku_sukantsu">四杠子</string>
+    <string name="label_yaku_churen">九莲宝灯</string>
+    <string name="label_yaku_daisushi">大四喜</string>
+    <string name="label_yaku_churenNineWaiting">纯正九莲宝灯</string>
+    <string name="label_yaku_suankoTanki">四暗刻单骑</string>
+    <string name="label_yaku_kokushiThirteenWaiting">国士无双十三面</string>
+
     <string name="label_yaku_tenhou">天和</string>
     <string name="label_yaku_chihou">地和</string>
     <string name="label_yaku_wrichi">两立直</string>
@@ -111,6 +152,7 @@
 
     <string name="text_yes_symbol">√</string>
     <string name="text_no_symbol">×</string>
+    <string name="text_comma">、</string>
 
     <string name="text_unknown_error">未知错误</string>
     <string name="text_must_enter_tiles">请输入手牌。</string>
@@ -119,4 +161,9 @@
     <string name="text_tiles_must_not_be_divided_into_3">手牌数量不能为3的倍数。</string>
     <string name="text_any_tile_must_not_be_more_than_4">每种牌的数量不能超过4枚。</string>
     <string name="text_tiles_are_not_without_got">手牌必须为未摸牌的状态。（4、7、10或13张）</string>
+    <string name="text_hora_hand_tiles_not_enough">输入的手牌数量不足以构成和牌。</string>
+    <string name="text_invalid_dora_count">不是有效的宝牌数量。</string>
+    <string name="text_invalid_furo">不是有效的副露。</string>
+    <string name="text_must_enter_agari">请输入所和的牌。</string>
+    <string name="text_agari_not_in_hand">所和的牌不在你的和牌中。</string>
 </resources>

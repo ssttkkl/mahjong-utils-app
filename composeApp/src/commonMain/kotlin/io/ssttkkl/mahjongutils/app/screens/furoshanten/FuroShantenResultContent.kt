@@ -1,28 +1,34 @@
 package io.ssttkkl.mahjongutils.app.screens.furoshanten
 
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsContent
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
-import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
-import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
+import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
-import io.ssttkkl.mahjongutils.app.utils.emoji
+import io.ssttkkl.mahjongutils.app.utils.TileTextSize
+import mahjongutils.models.Tile
 import mahjongutils.shanten.ShantenWithFuroChance
+
+@Composable
+private fun FuroShantenTilesPanel(tiles: List<Tile>, chanceTile: Tile) {
+    TopCardPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
+        CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
+            FuroShantenTiles(tiles, chanceTile)
+        }
+    }
+}
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -84,21 +90,7 @@ fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFu
         LazyColumn(Modifier.fillMaxWidth()) {
             item {
                 VerticalSpacerBetweenPanels()
-
-                TopCardPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
-                    FlowRow {
-                        Tiles(args.tiles)
-
-                        Spacer(Modifier.width(8.dp))
-
-                        TileInlineText(
-                            stringResource(
-                                MR.strings.label_tile_discarded_by_other_short,
-                                args.chanceTile.emoji
-                            )
-                        )
-                    }
-                }
+                FuroShantenTilesPanel(args.tiles, args.chanceTile)
             }
 
             item {

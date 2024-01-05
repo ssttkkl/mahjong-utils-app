@@ -8,6 +8,7 @@ import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.models.base.History
+import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenCalcResult
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
@@ -24,6 +25,12 @@ class ShantenScreenModel : FormAndResultScreenModel<ShantenArgs, ShantenCalcResu
     var shantenMode by mutableStateOf(ShantenMode.Union)
 
     var tilesErrMsg by mutableStateOf<StringResource?>(null)
+
+    override fun resetForm() {
+        tiles = emptyList()
+        shantenMode = ShantenMode.Union
+        tilesErrMsg = null
+    }
 
     override suspend fun onCheck(): Boolean {
         if (tiles.isEmpty()) {
@@ -58,6 +65,6 @@ class ShantenScreenModel : FormAndResultScreenModel<ShantenArgs, ShantenCalcResu
         return args.calc()
     }
 
-    override val history: Flow<List<History<ShantenArgs>>>
-        get() = ShantenArgs.history.data
+    override val history: HistoryDataStore<ShantenArgs>
+        get() = ShantenArgs.history
 }

@@ -9,7 +9,11 @@
     <string name="title_about">About</string>
 
     <string name="label_history">ヒストリ</string>
+    <string name="label_clear">クリア</string>
     <string name="label_share">シェア</string>
+
+    <string name="text_empty_history">なし</string>
+    <string name="text_comma">・</string>
 
     <string name="label_tiles_in_hand">手牌</string>
     <string name="label_shanten_mode">計算モード</string>

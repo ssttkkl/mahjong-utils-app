@@ -7,6 +7,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,6 +47,7 @@ import io.ssttkkl.mahjongutils.app.components.basic.ComboOption
 import io.ssttkkl.mahjongutils.app.components.basic.MultiComboBox
 import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.SegmentedButtonOption
 import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.SingleChoiceSegmentedButtonGroup
+import io.ssttkkl.mahjongutils.app.components.panel.Caption
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
@@ -313,10 +316,60 @@ object HoraScreen :
         HoraResultContent(result.args, result.result)
     }
 
+    @OptIn(ExperimentalLayoutApi::class)
     @Composable
     override fun HistoryItem(item: History<HoraArgs>, model: HoraScreenModel) {
         Column {
-            Tiles(item.args.tiles)
+            HoraTiles(item.args)
+
+            Spacer(Modifier.height(8.dp))
+
+            FlowRow {
+                Caption(title = {
+                    if (item.args.tsumo) {
+                        Text(stringResource(MR.strings.label_tsumo))
+                    } else {
+                        Text(stringResource(MR.strings.label_ron))
+                    }
+                })
+
+                if (item.args.selfWind != null) {
+                    Spacer(Modifier.width(24.dp))
+                    Caption(
+                        title = { Text(stringResource(MR.strings.label_self_wind)) },
+                        content = { Text(stringResource(item.args.selfWind.localizedName)) }
+                    )
+                }
+
+                if (item.args.roundWind != null) {
+                    Spacer(Modifier.width(24.dp))
+                    Caption(
+                        title = { Text(stringResource(MR.strings.label_round_wind)) },
+                        content = { Text(stringResource(item.args.roundWind.localizedName)) }
+                    )
+                }
+
+                if (item.args.dora > 0) {
+                    Spacer(Modifier.width(24.dp))
+                    Caption(
+                        title = { Text(stringResource(MR.strings.label_dora_count)) },
+                        content = { Text(item.args.dora.toString()) }
+                    )
+                }
+
+                if (item.args.extraYaku.isNotEmpty()) {
+                    Spacer(Modifier.width(24.dp))
+                    Caption(
+                        title = { Text(stringResource(MR.strings.label_extra_yaku)) },
+                        content = {
+                            Text(
+                                item.args.extraYaku.map { stringResource(it.localizedName) }
+                                    .joinToString(stringResource(MR.strings.text_comma))
+                            )
+                        }
+                    )
+                }
+            }
 
             Spacer(Modifier.height(16.dp))
 
