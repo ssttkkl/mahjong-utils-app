@@ -4,6 +4,7 @@ import org.jetbrains.compose.ExperimentalComposeLibrary
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.kotlinxAtomicfu)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinNativeCocoapods)
@@ -88,6 +89,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.serialization.json.okio)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.atomicfu)
 
             implementation(libs.mahjong.utils)
         }

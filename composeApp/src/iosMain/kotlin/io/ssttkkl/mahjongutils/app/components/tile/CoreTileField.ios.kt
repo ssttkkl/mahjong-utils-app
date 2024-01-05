@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import kotlinx.coroutines.launch
@@ -71,6 +72,8 @@ internal actual fun CoreTileField(
 ) {
     val scope = currentRecomposeScope
     val coroutineContext = rememberCoroutineScope()
+
+    val logger = remember { LoggerFactory.getLogger("CoreTileField") }
     val focusManager = LocalFocusManager.current
 
     var notifySelectionChange by remember { mutableStateOf(true) }
@@ -86,6 +89,7 @@ internal actual fun CoreTileField(
             var prevFocusInteraction: FocusInteraction.Focus? = null
 
             override fun textViewDidChange(textView: UITextView) {
+                logger.debug("textViewDidChange")
                 val textShouldBe = value.toNSAttributedString(tileHeight)
                 if (!textView.attributedText.isEqual(textShouldBe)) {
                     // 防止用户输入了什么奇怪的东西，重新渲染下
@@ -94,6 +98,7 @@ internal actual fun CoreTileField(
             }
 
             override fun textViewDidBeginEditing(textView: UITextView) {
+                logger.debug("textViewDidBeginEditing")
                 focusManager.clearFocus()  // 如果当前焦点在compose编辑框，不会自动清除焦点
                 prevFocusInteraction = FocusInteraction.Focus()
                     .also {
@@ -104,6 +109,7 @@ internal actual fun CoreTileField(
             }
 
             override fun textViewDidEndEditing(textView: UITextView) {
+                logger.debug("textViewDidEndEditing")
                 prevFocusInteraction?.let { prevFocusInteraction ->
                     coroutineContext.launch {
                         state.interactionSource.emit(FocusInteraction.Unfocus(prevFocusInteraction))
@@ -113,6 +119,7 @@ internal actual fun CoreTileField(
             }
 
             override fun textViewDidChangeSelection(textView: UITextView) {
+                logger.debug("textViewDidChangeSelection")
                 if (notifySelectionChange) {
                     val uiRange = textView.selectedTextRange
                     if (uiRange != null) {
@@ -160,19 +167,37 @@ internal actual fun CoreTileField(
                 notifySelectionChange = true
 
                 // 设置光标位置
-                val start = positionFromPosition(
-                    beginningOfDocument,
-                    state.selection.start.toLong()
-                )
-                val end = positionFromPosition(
-                    beginningOfDocument,
-                    state.selection.end.toLong()
-                )
-                if (start != null && end != null) {
-                    val uiRange = textRangeFromPosition(start, end)
-                    setSelectedTextRange(uiRange)
-                    scrollRangeToVisible(selectedRange)
+                var needSetSelection = true
+
+                val curRange = selectedTextRange
+                if (curRange != null) {
+                    val curStart = offsetFromPosition(
+                        beginningOfDocument, curRange.start
+                    )
+                    val curEnd = offsetFromPosition(
+                        beginningOfDocument, curRange.end
+                    )
+                    if (curStart == state.selection.start.toLong() && curEnd == state.selection.end.toLong()) {
+                        needSetSelection = false
+                    }
                 }
+
+                if (needSetSelection) {
+                    val start = positionFromPosition(
+                        beginningOfDocument,
+                        state.selection.start.toLong()
+                    )
+                    val end = positionFromPosition(
+                        beginningOfDocument,
+                        state.selection.end.toLong()
+                    )
+                    if (start != null && end != null) {
+                        val uiRange = textRangeFromPosition(start, end)
+                        setSelectedTextRange(uiRange)
+                        scrollRangeToVisible(selectedRange)
+                    }
+                }
+
                 tintColor = UIColor(
                     red = cursorColor.red.toDouble(),
                     green = cursorColor.green.toDouble(),

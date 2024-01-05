@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import kotlinx.coroutines.launch
@@ -152,32 +153,34 @@ fun AppScaffold(
     CompositionLocalProvider(
         LocalAppState provides appState
     ) {
-        if (!useNavigationDrawer) {
-            with(Spacing.current) {
-                Row {
-                    Column(Modifier.width(200.dp)) {
-                        NavigationItems(appState.navigator, navigatableScreens)
-                    }
-                    Spacer(Modifier.width(panesHorizontalSpacing))
-                    Column(Modifier.weight(1f)) {
-                        InnerScaffold()
-                    }
-                }
-            }
-        } else {
-            ModalNavigationDrawer(
-                drawerState = appState.drawerState,
-                drawerContent = {
-                    ModalDrawerSheet {
-                        NavigationItems(
-                            appState.navigator,
-                            navigatableScreens,
-                            appState.drawerState
-                        )
+        TileImeHost {
+            if (!useNavigationDrawer) {
+                with(Spacing.current) {
+                    Row {
+                        Column(Modifier.width(200.dp)) {
+                            NavigationItems(appState.navigator, navigatableScreens)
+                        }
+                        Spacer(Modifier.width(panesHorizontalSpacing))
+                        Column(Modifier.weight(1f)) {
+                            InnerScaffold()
+                        }
                     }
                 }
-            ) {
-                InnerScaffold()
+            } else {
+                ModalNavigationDrawer(
+                    drawerState = appState.drawerState,
+                    drawerContent = {
+                        ModalDrawerSheet {
+                            NavigationItems(
+                                appState.navigator,
+                                navigatableScreens,
+                                appState.drawerState
+                            )
+                        }
+                    }
+                ) {
+                    InnerScaffold()
+                }
             }
         }
     }

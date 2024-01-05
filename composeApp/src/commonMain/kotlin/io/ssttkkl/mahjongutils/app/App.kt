@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppScaffold
 import io.ssttkkl.mahjongutils.app.components.appscaffold.rememberAppState
-import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
 import io.ssttkkl.mahjongutils.app.screens.about.AboutScreen
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.screens.furoshanten.FuroShantenScreen
@@ -35,43 +34,41 @@ private val navigatableScreens: List<NavigationScreen> = listOf(
 @Composable
 fun App() {
     MaterialTheme {
-        TileImeHost {
-            Navigator(ShantenScreen) { navigator ->
-                val windowSizeClass: WindowSizeClass = calculateWindowSizeClass()
-                val useNavigationDrawer =
-                    !(windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
-                            && windowSizeClass.heightSizeClass != WindowHeightSizeClass.Compact)
+        Navigator(ShantenScreen) { navigator ->
+            val windowSizeClass: WindowSizeClass = calculateWindowSizeClass()
+            val useNavigationDrawer =
+                !(windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
+                        && windowSizeClass.heightSizeClass != WindowHeightSizeClass.Compact)
 
-                val appState = rememberAppState(
-                    navigator,
-                    windowSizeClass = windowSizeClass
-                )
+            val appState = rememberAppState(
+                navigator,
+                windowSizeClass = windowSizeClass
+            )
 
-                AppScaffold(
-                    appState,
-                    navigatableScreens,
-                    useNavigationDrawer,
-                    navigationIcon = { canGoBack ->
-                        if (!canGoBack) {
-                            if (useNavigationDrawer) {
-                                Icon(Icons.Filled.Menu, "", Modifier.clickable {
-                                    appState.coroutineScope.launch {
-                                        if (appState.drawerState.isClosed) {
-                                            appState.drawerState.open()
-                                        } else {
-                                            appState.drawerState.close()
-                                        }
+            AppScaffold(
+                appState,
+                navigatableScreens,
+                useNavigationDrawer,
+                navigationIcon = { canGoBack ->
+                    if (!canGoBack) {
+                        if (useNavigationDrawer) {
+                            Icon(Icons.Filled.Menu, "", Modifier.clickable {
+                                appState.coroutineScope.launch {
+                                    if (appState.drawerState.isClosed) {
+                                        appState.drawerState.open()
+                                    } else {
+                                        appState.drawerState.close()
                                     }
-                                })
-                            }
-                        } else {
-                            Icon(Icons.Filled.ArrowBack, "", Modifier.clickable {
-                                appState.navigator.pop()
+                                }
                             })
                         }
+                    } else {
+                        Icon(Icons.Filled.ArrowBack, "", Modifier.clickable {
+                            appState.navigator.pop()
+                        })
                     }
-                )
-            }
+                }
+            )
         }
     }
 }

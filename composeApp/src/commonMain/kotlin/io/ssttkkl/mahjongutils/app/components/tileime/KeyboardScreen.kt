@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
+import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 
 interface KeyboardKeyItem {
     val weightOfRow: Float
@@ -34,14 +35,13 @@ interface KeyboardKeyItem {
     fun display(onClick: () -> Unit)
 }
 
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun <T : KeyboardKeyItem> KeyboardScreen(
     keysMatrix: List<List<T>>,
     onCollapse: () -> Unit,
     onCommit: (T) -> Unit,
 ) {
-    val windowSizeClass = calculateWindowSizeClass()
+    val windowSizeClass = LocalAppState.current.windowSizeClass
 
     Column(
         Modifier.fillMaxWidth()
@@ -85,21 +85,6 @@ fun <T : KeyboardKeyItem> KeyboardScreen(
                         }
                     }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun FixedHeightBox(modifier: Modifier, height: Dp, content: @Composable () -> Unit) {
-    Layout(modifier = modifier, content = content) { measurables, constraints ->
-        val placeables = measurables.map { measurable ->
-            measurable.measure(constraints)
-        }
-        val h = height.roundToPx()
-        layout(constraints.maxWidth, h) {
-            placeables.forEach { placeable ->
-                placeable.place(x = 0, y = kotlin.math.min(0, h - placeable.height))
             }
         }
     }

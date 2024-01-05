@@ -11,23 +11,82 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.TextUnit
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
+import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import mahjongutils.models.Tile
 import mahjongutils.models.toTilesString
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+private fun TileImeHostState.TileImeConsumer.consume(
+    state: CoreTileFieldState,
+    valueState: State<List<Tile>>,
+    onValueChangeState: State<((List<Tile>) -> Unit)?>
+) {
+    val value by valueState
+    val onValueChange by onValueChangeState
+
+    this.consume(
+        handlePendingTile = { tile ->
+            state.selection = state.selection.coerceIn(0, value.size)
+            val newValue = buildList {
+                addAll(value.subList(0, state.selection.start))
+                add(tile)
+
+                if (state.selection.end != value.size) {
+                    addAll(
+                        value.subList(
+                            state.selection.end + 1,
+                            value.size
+                        )
+                    )
+                }
+            }
+            onValueChange?.invoke(newValue)
+            state.selection = TextRange(state.selection.start + 1)
+        },
+        handleBackspace = {
+            state.selection = state.selection.coerceIn(0, value.size)
+            val curCursor = state.selection.start
+            if (state.selection.length == 0) {
+                if (curCursor - 1 in value.indices) {
+                    val newValue = ArrayList(value).apply {
+                        removeAt(curCursor - 1)
+                    }
+                    onValueChange?.invoke(newValue)
+                    state.selection = TextRange(curCursor - 1)
+                }
+            } else {
+                val newValue = buildList {
+                    addAll(value.subList(0, state.selection.start))
+
+                    if (state.selection.end != value.size) {
+                        addAll(
+                            value.subList(
+                                state.selection.end + 1,
+                                value.size
+                            )
+                        )
+                    }
+                }
+                onValueChange?.invoke(newValue)
+                state.selection = TextRange(curCursor)
+            }
+        }
+    )
+}
+
 @Composable
 fun BaseTileField(
     value: List<Tile>,
@@ -41,46 +100,46 @@ fun BaseTileField(
     val state = remember(interactionSource) {
         CoreTileFieldState(interactionSource)
     }
+
+    val currentValueState = rememberUpdatedState(value)
+    val currentOnValueChangeState = rememberUpdatedState(onValueChange)
+
     val tileImeHostState = LocalTileImeHostState.current
     val consumer = remember(state, tileImeHostState) {
-        TileFieldImeConsumer(state, tileImeHostState)
+        tileImeHostState.TileImeConsumer()
     }
 
     LaunchedEffect(value) {
-        consumer.currentValue = value
-
         // 限制selection在值范围内
         state.selection = state.selection.coerceIn(0, value.size)
-    }
-    LaunchedEffect(onValueChange) {
-        consumer.currentOnValueChange = onValueChange
     }
 
     // 退出时隐藏键盘
     DisposableEffect(consumer) {
         onDispose {
-            consumer.stop()
+            consumer.release()
         }
     }
+
     // 用户收起键盘后再点击输入框，重新弹出
     val focused by interactionSource.collectIsFocusedAsState()
     val pressed by interactionSource.collectIsPressedAsState()
     LaunchedEffect(enabled && focused && pressed, consumer) {
         if (enabled && focused && pressed) {
-            consumer.start()
+            consumer.consume(state, currentValueState, currentOnValueChangeState)
         }
     }
 
     // 绑定键盘到该输入框
-    DisposableEffect(enabled && focused) {
+    DisposableEffect(enabled && focused, consumer) {
         if (enabled && focused) {
-            consumer.start()
+            consumer.consume(state, currentValueState, currentOnValueChangeState)
 
             onDispose {
-                consumer.stop()
+                consumer.release()
             }
         } else {
-            consumer.stop()
+            consumer.release()
             onDispose { }
         }
     }

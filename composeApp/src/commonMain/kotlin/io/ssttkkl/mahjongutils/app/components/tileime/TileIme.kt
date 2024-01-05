@@ -11,6 +11,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -82,30 +85,42 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
     }
 }
 
+private val tileImeMatrix = listOf(
+    Tile.parseTiles("123456789m").map { TileImeKey.TileKey(it) },
+    Tile.parseTiles("123456789p").map { TileImeKey.TileKey(it) },
+    Tile.parseTiles("123456789s").map { TileImeKey.TileKey(it) },
+    Tile.parseTiles("1234567z").map { TileImeKey.TileKey(it) } + TileImeKey.BackspaceKey
+)
+
 @Composable
 fun TileIme(
     onCommitTile: (Tile) -> Unit,
     onBackspace: () -> Unit,
     onCollapse: () -> Unit,
 ) {
-    val matrix = listOf(
-        Tile.parseTiles("123456789m").map { TileImeKey.TileKey(it) },
-        Tile.parseTiles("123456789p").map { TileImeKey.TileKey(it) },
-        Tile.parseTiles("123456789s").map { TileImeKey.TileKey(it) },
-        Tile.parseTiles("1234567z").map { TileImeKey.TileKey(it) } + TileImeKey.BackspaceKey
-    )
-    BackHandler {
-        onCollapse()
-    }
-    KeyboardScreen(matrix, onCollapse) {
-        when (it) {
-            is TileImeKey.TileKey -> {
-                onCommitTile(it.tile)
-            }
+    val currentOnCommitTile by rememberUpdatedState(onCommitTile)
+    val currentOnBackspace by rememberUpdatedState(onBackspace)
+    val currentOnCollapse by rememberUpdatedState(onCollapse)
+    val currentOnCommit = remember {
+        { it: TileImeKey<*> ->
+            when (it) {
+                is TileImeKey.TileKey -> {
+                    currentOnCommitTile(it.tile)
+                }
 
-            is TileImeKey.BackspaceKey -> {
-                onBackspace()
+                is TileImeKey.BackspaceKey -> {
+                    currentOnBackspace()
+                }
             }
         }
     }
+
+    BackHandler {
+        currentOnCollapse()
+    }
+    KeyboardScreen(
+        tileImeMatrix,
+        currentOnCollapse,
+        currentOnCommit
+    )
 }
