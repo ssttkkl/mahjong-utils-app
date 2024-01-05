@@ -119,8 +119,8 @@ internal actual fun CoreTileField(
             }
 
             override fun textViewDidChangeSelection(textView: UITextView) {
-                logger.debug("textViewDidChangeSelection")
                 if (notifySelectionChange) {
+                    logger.debug("textViewDidChangeSelection")
                     val uiRange = textView.selectedTextRange
                     if (uiRange != null) {
                         val start = textView.offsetFromPosition(
@@ -137,6 +137,11 @@ internal actual fun CoreTileField(
             }
         }
     }
+
+    // 避免一直更新UI
+    var currentValue: List<Tile>? by remember { mutableStateOf(null) }
+    var currentSelection: TextRange? by remember { mutableStateOf(null) }
+    var currentCursorColor: Color? by remember { mutableStateOf(null) }
 
     UIKitView(
         modifier = modifier.fillMaxWidth()
@@ -162,27 +167,15 @@ internal actual fun CoreTileField(
         update = {
             it.apply {
                 // setText的时候会调用onSelectionChanged把选择区域置为[n,n]，所以需要暂时不同步状态
-                notifySelectionChange = false
-                attributedText = value.toNSAttributedString(tileHeight)
-                notifySelectionChange = true
-
-                // 设置光标位置
-                var needSetSelection = true
-
-                val curRange = selectedTextRange
-                if (curRange != null) {
-                    val curStart = offsetFromPosition(
-                        beginningOfDocument, curRange.start
-                    )
-                    val curEnd = offsetFromPosition(
-                        beginningOfDocument, curRange.end
-                    )
-                    if (curStart == state.selection.start.toLong() && curEnd == state.selection.end.toLong()) {
-                        needSetSelection = false
-                    }
+                if (currentValue != value) {
+                    notifySelectionChange = false
+                    attributedText = value.toNSAttributedString(tileHeight)
+                    notifySelectionChange = true
+                    currentValue = value
                 }
 
-                if (needSetSelection) {
+                // 设置光标位置
+                if (currentSelection != state.selection) {
                     val start = positionFromPosition(
                         beginningOfDocument,
                         state.selection.start.toLong()
@@ -196,14 +189,18 @@ internal actual fun CoreTileField(
                         setSelectedTextRange(uiRange)
                         scrollRangeToVisible(selectedRange)
                     }
+                    currentSelection = state.selection
                 }
 
-                tintColor = UIColor(
-                    red = cursorColor.red.toDouble(),
-                    green = cursorColor.green.toDouble(),
-                    blue = cursorColor.blue.toDouble(),
-                    alpha = cursorColor.alpha.toDouble()
-                )
+                if (currentCursorColor != cursorColor) {
+                    tintColor = UIColor(
+                        red = cursorColor.red.toDouble(),
+                        green = cursorColor.green.toDouble(),
+                        blue = cursorColor.blue.toDouble(),
+                        alpha = cursorColor.alpha.toDouble()
+                    )
+                    currentCursorColor = cursorColor
+                }
 
                 // 计算合适的高度
                 val sizeThatFitsTextView = sizeThatFits(

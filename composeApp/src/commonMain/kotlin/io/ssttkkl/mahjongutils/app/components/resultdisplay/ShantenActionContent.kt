@@ -33,33 +33,57 @@ sealed class ShantenAction {
     data class Discard(
         val tile: Tile,
         override val shantenAfterAction: ShantenWithoutGot
-    ) : ShantenAction()
+    ) : ShantenAction() {
+        override fun toString(): String {
+            return "Discard $tile"
+        }
+    }
 
     data class Ankan(
         val tile: Tile,
         override val shantenAfterAction: ShantenWithoutGot
-    ) : ShantenAction()
+    ) : ShantenAction() {
+        override fun toString(): String {
+            return "Ankan $tile"
+        }
+    }
 
     data class Chi(
         val tatsu: Tatsu,
         val discard: Tile,
         override val shantenAfterAction: ShantenWithoutGot
-    ) : ShantenAction()
+    ) : ShantenAction() {
+        override fun toString(): String {
+            return "$tatsu Chi, Discard $discard"
+        }
+    }
 
     data class Pon(
         val tile: Tile,
         val discard: Tile,
         override val shantenAfterAction: ShantenWithoutGot
-    ) : ShantenAction()
+    ) : ShantenAction() {
+        override fun toString(): String {
+            return "$tile Pon, Discard $discard"
+        }
+    }
 
     data class Minkan(
         val tile: Tile,
         override val shantenAfterAction: ShantenWithoutGot
-    ) : ShantenAction()
+    ) : ShantenAction() {
+        override fun toString(): String {
+            return "$tile Minkan"
+        }
+    }
 
     data class Pass(
         override val shantenAfterAction: ShantenWithoutGot
-    ) : ShantenAction()
+    ) : ShantenAction() {
+        override fun toString(): String {
+            return "Pass"
+        }
+    }
 }
 
 @Composable

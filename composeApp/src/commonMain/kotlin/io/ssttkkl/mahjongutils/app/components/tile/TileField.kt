@@ -47,7 +47,7 @@ private fun TileImeHostState.TileImeConsumer.consume(
                 if (state.selection.end != value.size) {
                     addAll(
                         value.subList(
-                            state.selection.end + 1,
+                            state.selection.end,
                             value.size
                         )
                     )
@@ -124,9 +124,9 @@ fun BaseTileField(
     // 用户收起键盘后再点击输入框，重新弹出
     val focused by interactionSource.collectIsFocusedAsState()
     val pressed by interactionSource.collectIsPressedAsState()
-    LaunchedEffect(enabled && focused && pressed, consumer) {
-        if (enabled && focused && pressed) {
-            consumer.consume(state, currentValueState, currentOnValueChangeState)
+    LaunchedEffect(pressed && consumer.consuming, tileImeHostState) {
+        if (pressed && consumer.consuming) {
+            tileImeHostState.visible = true
         }
     }
 

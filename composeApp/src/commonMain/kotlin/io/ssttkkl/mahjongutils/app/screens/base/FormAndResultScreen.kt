@@ -137,7 +137,7 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
                 } else {
                     LazyCardPanel(
                         items = sequence { yieldAll(history) },
-                        keyMapping = { it.createTime.toEpochMilliseconds() },
+                        keyMapping = { "${it.createTime.toEpochMilliseconds()}-${it.args.hashCode()}" },
                         header = { PanelHeader() },
                         cardModifier = {
                             Modifier.clickable {
