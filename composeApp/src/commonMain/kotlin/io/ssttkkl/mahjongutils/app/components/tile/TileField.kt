@@ -71,13 +71,9 @@ fun BaseTileField(
         }
     }
 
-    val keyboardController = LocalSoftwareKeyboardController.current
-
     // 绑定键盘到该输入框
     DisposableEffect(enabled && focused) {
         if (enabled && focused) {
-            // 强制隐藏系统软键盘
-            keyboardController?.hide()
             consumer.start()
 
             onDispose {

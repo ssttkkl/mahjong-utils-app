@@ -5,12 +5,17 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
+import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
 import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
-import io.ssttkkl.mahjongutils.app.components.tile.Tiles
+import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.models.Tile
 
@@ -18,7 +23,13 @@ import mahjongutils.models.Tile
 @Composable
 fun FuroShantenTiles(tiles: List<Tile>, chanceTile: Tile) {
     FlowRow {
-        Tiles(tiles)
+        val preferTileSize = LocalTileTextSize.current
+        var reducedTileSize by remember { mutableStateOf(preferTileSize) }
+
+        AutoSingleLineTiles(
+            tiles,
+            fontSize = preferTileSize
+        ) { reducedTileSize = it.textSize }
 
         Spacer(Modifier.width(8.dp))
 
@@ -26,7 +37,8 @@ fun FuroShantenTiles(tiles: List<Tile>, chanceTile: Tile) {
             stringResource(
                 MR.strings.label_tile_discarded_by_other_short,
                 chanceTile.emoji
-            )
+            ),
+            tileSize = reducedTileSize
         )
     }
 }

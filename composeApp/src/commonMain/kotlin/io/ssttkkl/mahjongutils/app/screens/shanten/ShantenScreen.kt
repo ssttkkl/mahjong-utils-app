@@ -1,7 +1,6 @@
 package io.ssttkkl.mahjongutils.app.screens.shanten
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,8 +21,8 @@ import io.ssttkkl.mahjongutils.app.components.basic.RatioGroups
 import io.ssttkkl.mahjongutils.app.components.basic.RatioOption
 import io.ssttkkl.mahjongutils.app.components.panel.Caption
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
+import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
-import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
@@ -143,7 +142,7 @@ object ShantenScreen :
     @Composable
     override fun HistoryItem(item: History<ShantenArgs>, model: ShantenScreenModel) {
         Column {
-            Tiles(item.args.tiles)
+            AutoSingleLineTiles(item.args.tiles)
 
             Spacer(Modifier.height(8.dp))
 

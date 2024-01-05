@@ -17,6 +17,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
+import io.ssttkkl.mahjongutils.app.components.tile.FuroTiles
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
@@ -50,7 +51,7 @@ private fun HandDeconstructionPanel(pattern: RegularHoraHandPattern) {
 
                 Panel({ Text(stringResource(MR.strings.label_mentsu)) }, Modifier.weight(12f)) {
                     FlowRow {
-                        pattern.menzenMentsu.forEachIndexed { index, mentsu ->
+                        pattern.menzenMentsu.sortedBy { it.tiles.first() }.forEachIndexed { index, mentsu ->
                             if (index != 0) {
                                 Spacer(Modifier.width(8.dp))
                             }
@@ -70,7 +71,7 @@ private fun HandDeconstructionPanel(pattern: RegularHoraHandPattern) {
                                 Spacer(Modifier.width(8.dp))
                             }
 
-                            Tiles(furo.tiles)
+                            FuroTiles(furo)
                         }
                     }
                 }
@@ -118,6 +119,10 @@ fun HoraResultContent(args: HoraArgs, hora: Hora) {
             item("yaku") {
                 VerticalSpacerBetweenPanels()
                 YakuPanel(hora)
+            }
+
+            item("bottom_spacer") {
+                VerticalSpacerBetweenPanels()
             }
         }
     }

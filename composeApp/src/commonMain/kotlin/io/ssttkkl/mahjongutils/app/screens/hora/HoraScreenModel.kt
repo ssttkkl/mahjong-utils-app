@@ -8,12 +8,10 @@ import androidx.compose.runtime.setValue
 import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
-import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.models.hora.HoraCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
-import kotlinx.coroutines.flow.Flow
 import mahjongutils.models.Furo
 import mahjongutils.models.Kan
 import mahjongutils.models.Tile
@@ -206,7 +204,7 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         var validDora = true
         var validFuro = true
 
-        val dora = dora.toIntOrNull()
+        val dora = if (dora.isEmpty()) 0 else dora.toIntOrNull()
         if (dora == null) {
             doraErrMsg = MR.strings.text_invalid_dora_count
             validDora = false

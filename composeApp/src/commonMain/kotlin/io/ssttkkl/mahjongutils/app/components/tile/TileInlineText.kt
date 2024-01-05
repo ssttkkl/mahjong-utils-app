@@ -22,6 +22,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
+import io.ssttkkl.mahjongutils.app.components.autosizetext.AutoSingleLineText
+import io.ssttkkl.mahjongutils.app.components.autosizetext.TextSizeConstrainedResult
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import io.ssttkkl.mahjongutils.app.utils.emojiToTile
@@ -117,6 +119,24 @@ private val tileInlineTextContent = TileModel.all.associate { tile ->
     TileImage(null)
 })
 
+private val lieDownTileInlineTextContent = TileModel.all.associate { tile ->
+    tileContentIdRevMapping[tile]!! to InlineTextContent(
+        Placeholder(
+            1.4.em, 1.em, // 牌图片的比例是1.4:1
+            PlaceholderVerticalAlign.TextBottom
+        )
+    ) {
+        LieDownTileImage(tile)
+    }
+} + Pair(tileBackContentId, InlineTextContent(
+    Placeholder(
+        1.4.em, 1.em, // 牌图片的比例是1.4:1
+        PlaceholderVerticalAlign.TextBottom
+    )
+) {
+    LieDownTileImage(null)
+})
+
 @Composable
 fun TileInlineText(
     text: CharSequence,
@@ -157,5 +177,87 @@ fun TileInlineText(
         minLines = minLines,
         onTextLayout = onTextLayout,
         style = style,
+    )
+}
+
+@Composable
+fun LieDownTileInlineText(
+    text: CharSequence,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    tileSize: TextUnit = LocalTileTextSize.current,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    style: TextStyle = LocalTextStyle.current,
+) {
+    Text(
+        text = annotateTileFromEmoji(text, tileSize),
+        inlineContent = lieDownTileInlineTextContent,
+        modifier = modifier,
+        color = color,
+        fontSize = fontSize,
+        fontStyle = fontStyle,
+        fontWeight = fontWeight,
+        fontFamily = fontFamily,
+        letterSpacing = letterSpacing,
+        textDecoration = textDecoration,
+        textAlign = textAlign,
+        lineHeight = lineHeight,
+        overflow = overflow,
+        softWrap = softWrap,
+        maxLines = maxLines,
+        minLines = minLines,
+        onTextLayout = onTextLayout,
+        style = style,
+    )
+}
+
+@Composable
+fun TileInlineAutoSingleLineText(
+    text: CharSequence,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    tileSize: TextUnit = LocalTileTextSize.current,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    style: TextStyle = LocalTextStyle.current,
+    onTextSizeConstrained: ((TextSizeConstrainedResult) -> Unit)? = null
+) {
+    AutoSingleLineText(
+        text = annotateTileFromEmoji(text, tileSize),
+        inlineContent = tileInlineTextContent,
+        modifier = modifier,
+        color = color,
+        fontSize = fontSize,
+        fontStyle = fontStyle,
+        fontWeight = fontWeight,
+        fontFamily = fontFamily,
+        letterSpacing = letterSpacing,
+        textDecoration = textDecoration,
+        textAlign = textAlign,
+        lineHeight = lineHeight,
+        overflow = overflow,
+        softWrap = softWrap,
+        style = style,
+        onTextSizeConstrained = onTextSizeConstrained
     )
 }

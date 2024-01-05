@@ -13,7 +13,7 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsContent
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesWithNumTopCardPanel
-import io.ssttkkl.mahjongutils.app.components.tile.Tiles
+import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
@@ -136,6 +136,6 @@ private fun TilesInHandPanel(tiles: List<Tile>, withGot: Boolean) {
             )
         }
     ) {
-        Tiles(tiles, fontSize = TileTextSize.Default.bodyLarge)
+        AutoSingleLineTiles(tiles, fontSize = TileTextSize.Default.bodyLarge)
     }
 }

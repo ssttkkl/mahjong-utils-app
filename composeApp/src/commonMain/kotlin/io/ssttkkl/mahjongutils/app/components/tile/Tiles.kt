@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +17,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
@@ -34,7 +36,9 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.compose.painterResource
 import io.ssttkkl.mahjongutils.app.MR
+import io.ssttkkl.mahjongutils.app.components.autosizetext.TextSizeConstrainedResult
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
+import io.ssttkkl.mahjongutils.app.utils.toLieDownImageBitmap
 import mahjongutils.models.Tile
 
 @Composable
@@ -48,6 +52,24 @@ fun TileImage(
 ) {
     Image(
         tile?.painterResource ?: painterResource(MR.images.tile_back),
+        tile.toString(),
+        modifier,
+        alignment, contentScale, alpha, colorFilter
+    )
+}
+
+@Composable
+fun LieDownTileImage(
+    tile: Tile?,
+    modifier: Modifier = Modifier,
+    alignment: Alignment = Alignment.Center,
+    contentScale: ContentScale = ContentScale.Fit,
+    alpha: Float = DefaultAlpha,
+    colorFilter: ColorFilter? = null
+) {
+    val image = (tile?.imageResource ?: MR.images.tile_back).toLieDownImageBitmap()
+    Image(
+        BitmapPainter(image),
         tile.toString(),
         modifier,
         alignment, contentScale, alpha, colorFilter
@@ -96,32 +118,81 @@ fun Tiles(
 }
 
 @Composable
-fun RotatedSingleTile(
-    tile: Tile,
+fun LieDownTiles(
+    tiles: Iterable<Tile>,
     modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
     fontSize: TextUnit = LocalTileTextSize.current,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
+    minLines: Int = 1,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    style: TextStyle = LocalTextStyle.current
 ) {
-    with(LocalDensity.current) {
-        var originalSize by remember { mutableStateOf<IntSize?>(null) }
-        val shouldHavePadding by derivedStateOf {
-            originalSize?.let {
-                val paddingStart = (it.height - it.width).toDp() / 2
-                PaddingValues(start = paddingStart, top = paddingStart)
-            } ?: PaddingValues(0.dp)
-        }
+    LieDownTileInlineText(
+        text = tiles.annotatedAsInline(),
+        modifier = modifier,
+        color = color,
+        fontSize = fontSize,
+        fontStyle = fontStyle,
+        fontWeight = fontWeight,
+        fontFamily = fontFamily,
+        letterSpacing = letterSpacing,
+        textDecoration = textDecoration,
+        textAlign = textAlign,
+        lineHeight = lineHeight,
+        overflow = overflow,
+        softWrap = softWrap,
+        maxLines = maxLines,
+        minLines = minLines,
+        onTextLayout = onTextLayout,
+        style = style
+    )
+}
 
-        Tiles(
-            listOf(tile),
-            modifier.padding(shouldHavePadding)
-                .rotate(-90f)
-                .onSizeChanged {
-                    if (originalSize == null) {
-                        originalSize = it
-                    }
-                },
-            fontSize = fontSize
-        )
-    }
+@Composable
+fun AutoSingleLineTiles(
+    tiles: Iterable<Tile>,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = LocalTileTextSize.current,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    style: TextStyle = LocalTextStyle.current,
+    onTextSizeConstrained: ((TextSizeConstrainedResult) -> Unit)? = null
+) {
+    TileInlineAutoSingleLineText(
+        text = tiles.annotatedAsInline(),
+        modifier = modifier,
+        color = color,
+        fontSize = fontSize,
+        fontStyle = fontStyle,
+        fontWeight = fontWeight,
+        fontFamily = fontFamily,
+        letterSpacing = letterSpacing,
+        textDecoration = textDecoration,
+        textAlign = textAlign,
+        lineHeight = lineHeight,
+        overflow = overflow,
+        softWrap = softWrap,
+        style = style,
+        onTextSizeConstrained = onTextSizeConstrained
+    )
 }
 
 

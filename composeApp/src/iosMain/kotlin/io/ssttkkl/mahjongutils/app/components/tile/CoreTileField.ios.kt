@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.interop.UIKitView
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -70,6 +71,7 @@ internal actual fun CoreTileField(
 ) {
     val scope = currentRecomposeScope
     val coroutineContext = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
 
     var notifySelectionChange by remember { mutableStateOf(true) }
 
@@ -92,6 +94,7 @@ internal actual fun CoreTileField(
             }
 
             override fun textViewDidBeginEditing(textView: UITextView) {
+                focusManager.clearFocus()  // 如果当前焦点在compose编辑框，不会自动清除焦点
                 prevFocusInteraction = FocusInteraction.Focus()
                     .also {
                         coroutineContext.launch {
