@@ -1,6 +1,7 @@
 package io.ssttkkl.mahjongutils.app.screens.hanhu
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -8,8 +9,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -22,7 +23,6 @@ import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
-import kotlinx.coroutines.launch
 
 object HanhuScreen : NavigationScreen() {
     override val title: StringResource
@@ -33,11 +33,8 @@ object HanhuScreen : NavigationScreen() {
         val model = rememberScreenModel { HanhuScreenModel() }
 
         with(Spacing.current) {
-            Column(
-                Modifier.verticalScroll(rememberScrollState())
-            ) {
-                VerticalSpacerBetweenPanels()
-
+            @Composable
+            fun Form() {
                 TopPanel {
                     ValidationField(model.hanErr, Modifier.fillMaxWidth()) { isError ->
                         OutlinedTextField(
@@ -71,12 +68,14 @@ object HanhuScreen : NavigationScreen() {
                         model.onSubmit()
                     }
                 )
+            }
 
-                VerticalSpacerBetweenPanels()
-
+            @Composable
+            fun Result() {
                 Calculation(
                     model.result,
-                    { Triple(it, it?.parentPoint?.await(), it?.childPoint?.await()) }
+                    { Triple(it, it?.parentPoint?.await(), it?.childPoint?.await()) },
+                    onCalculating = {}
                 ) { (result, parentPoint, childPoint) ->
                     if (result != null) {
                         PointPanel(
@@ -87,6 +86,36 @@ object HanhuScreen : NavigationScreen() {
                             childPoint
                         )
 
+                        VerticalSpacerBetweenPanels()
+                    }
+                }
+            }
+
+            if (LocalAppState.current.windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                Column(
+                    Modifier.verticalScroll(rememberScrollState())
+                ) {
+                    VerticalSpacerBetweenPanels()
+                    Form()
+                    VerticalSpacerBetweenPanels()
+                    Result()
+                    VerticalSpacerBetweenPanels()
+                }
+            } else {
+                Row {
+                    Column(
+                        Modifier.weight(2f).verticalScroll(rememberScrollState())
+                    ) {
+                        VerticalSpacerBetweenPanels()
+                        Form()
+                        VerticalSpacerBetweenPanels()
+                    }
+
+                    Column(
+                        Modifier.weight(3f).verticalScroll(rememberScrollState())
+                    ) {
+                        VerticalSpacerBetweenPanels()
+                        Result()
                         VerticalSpacerBetweenPanels()
                     }
                 }

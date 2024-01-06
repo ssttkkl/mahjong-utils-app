@@ -13,7 +13,6 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
@@ -43,7 +42,6 @@ fun ShowSnackbarOnFailure(throwable: Throwable) {
     }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun <U, V> Calculation(
     arg: U,
