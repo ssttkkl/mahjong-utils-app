@@ -43,7 +43,12 @@ internal actual fun CaptureView(
             window.rootViewController = ComposeUIViewController { content() }
 
             coroutineScope.launch(Dispatchers.Main) {
-                UIGraphicsBeginImageContext(CGSizeMake(width.value.toDouble(), height.value.toDouble()))
+                UIGraphicsBeginImageContext(
+                    CGSizeMake(
+                        width.value.toDouble(),
+                        height.value.toDouble()
+                    )
+                )
                 val context = UIGraphicsGetCurrentContext()
                 window.layer.renderInContext(context)
                 val image = UIGraphicsGetImageFromCurrentImageContext()

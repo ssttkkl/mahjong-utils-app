@@ -161,7 +161,11 @@ object ShantenScreen :
         }
     }
 
-    override fun onClickHistoryItem(item: History<ShantenArgs>, model: ShantenScreenModel) {
+    override fun onClickHistoryItem(
+        item: History<ShantenArgs>,
+        model: ShantenScreenModel,
+        appState: AppState
+    ) {
         model.tiles = item.args.tiles
         model.shantenMode = item.args.mode
 

@@ -63,6 +63,16 @@ class AppBottomSheetState(
     }
 }
 
+class AppDialogState(
+    val dialog: @Composable (onDismissRequest: () -> Unit) -> Unit
+) {
+    var visible: Boolean by mutableStateOf(false)
+
+    companion object {
+        val NONE = AppDialogState {}
+    }
+}
+
 class AppState(
     val coroutineScope: CoroutineScope,
     val navigator: Navigator,
@@ -72,6 +82,7 @@ class AppState(
     val snackbarHostState = SnackbarHostState()
     var appBarState = AppBarState()
 
+    var appDialogState by mutableStateOf(AppDialogState.NONE)
     var appBottomSheetState by mutableStateOf(AppBottomSheetState.NONE)
 }
 

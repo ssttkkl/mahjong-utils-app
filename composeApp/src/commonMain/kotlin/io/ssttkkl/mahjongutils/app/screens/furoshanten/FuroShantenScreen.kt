@@ -10,7 +10,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -89,7 +88,7 @@ object FuroShantenScreen :
                 ) {
                     SwitchItem(
                         model.allowChi,
-                        { model.allowChi = !model.allowChi },
+                        { model.allowChi = it },
                         stringResource(MR.strings.label_allow_chi)
                     )
                 }
@@ -128,7 +127,7 @@ object FuroShantenScreen :
 
                 Caption(
                     title = { Text(stringResource(MR.strings.label_allow_chi)) },
-                    content = { Text(stringResource(MR.strings.text_no_symbol)) }
+                    content = { Text(stringResource(MR.strings.text_false_symbol)) }
                 )
             }
 
@@ -143,7 +142,8 @@ object FuroShantenScreen :
 
     override fun onClickHistoryItem(
         item: History<FuroChanceShantenArgs>,
-        model: FuroShantenScreenModel
+        model: FuroShantenScreenModel,
+        appState: AppState
     ) {
         model.tiles = item.args.tiles
         model.chanceTile = item.args.chanceTile

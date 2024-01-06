@@ -25,7 +25,7 @@ fun Caption(
             title?.invoke()
         }
 
-        if(content != null) {
+        if (content != null) {
             Spacer(Modifier.width(8.dp))
 
             CompositionLocalProvider(

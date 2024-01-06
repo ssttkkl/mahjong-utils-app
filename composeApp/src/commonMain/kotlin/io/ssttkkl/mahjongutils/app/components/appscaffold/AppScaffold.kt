@@ -1,6 +1,5 @@
 package io.ssttkkl.mahjongutils.app.components.appscaffold
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -16,6 +15,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -60,10 +60,24 @@ fun ColumnScope.NavigationItems(
     }
 }
 
+@Composable
+private fun AppDialog(
+    state: AppDialogState,
+    resetStateRequest: () -> Unit
+) {
+    if (state.visible) {
+        state.dialog {
+            state.visible = false
+            resetStateRequest()
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppBottomSheet(
-    state: AppBottomSheetState
+    state: AppBottomSheetState,
+    resetStateRequest: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     var visible by remember { mutableStateOf(false) }
@@ -76,6 +90,7 @@ private fun AppBottomSheet(
                 coroutineScope.launch { state.sheetState.hide() }.invokeOnCompletion {
                     if (!state.sheetState.isVisible) {
                         visible = false
+                        resetStateRequest()
                     }
                 }
             }
@@ -87,8 +102,9 @@ private fun AppBottomSheet(
     if (visible) {
         ModalBottomSheet(
             onDismissRequest = {
-                visible = false
                 state.visible = false
+                visible = false
+                resetStateRequest()
             },
             sheetState = state.sheetState
         ) {
@@ -142,11 +158,17 @@ fun AppScaffold(
                 SnackbarHost(appState.snackbarHostState)
             }
         ) { innerPadding ->
-            Box(Modifier.padding(innerPadding)) {
+            AppDialog(appState.appDialogState) {
+                appState.appDialogState = AppDialogState.NONE
+            }
+
+            Surface(Modifier.padding(innerPadding)) {
                 CurrentScreen()
             }
 
-            AppBottomSheet(appState.appBottomSheetState)
+            AppBottomSheet(appState.appBottomSheetState) {
+                appState.appBottomSheetState = AppBottomSheetState.NONE
+            }
         }
     }
 

@@ -1,7 +1,5 @@
 package io.ssttkkl.mahjongutils.app.utils.log
 
-import io.ssttkkl.mahjongutils.app.utils.log.Logger
-
 internal class LoggerDelegate(
     val tag: String
 ) : Logger {

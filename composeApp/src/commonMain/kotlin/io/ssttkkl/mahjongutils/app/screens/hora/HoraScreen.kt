@@ -21,16 +21,25 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -39,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
+import io.ssttkkl.mahjongutils.app.components.appscaffold.AppDialogState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.basic.ChooseAction
 import io.ssttkkl.mahjongutils.app.components.basic.ComboBox
@@ -94,6 +104,7 @@ private fun tsumoOptions(): List<SegmentedButtonOption<Boolean>> =
         SegmentedButtonOption(stringResource(MR.strings.label_ron), false)
     )
 
+
 object HoraScreen :
     FormAndResultScreen<HoraScreenModel, HoraArgs, HoraCalcResult>() {
     override val title
@@ -106,6 +117,7 @@ object HoraScreen :
     override fun getScreenModel(): HoraScreenModel {
         return rememberScreenModel { HoraScreenModel() }
     }
+
 
     @Composable
     override fun FormContent(
@@ -215,86 +227,110 @@ object HoraScreen :
 
                 VerticalSpacerBetweenPanels()
 
-                Row {
-                    TopPanel(modifier = Modifier.weight(1f)) {
-                        ComboBox(
-                            model.selfWind,
-                            { model.selfWind = it },
-                            windComboOptions(),
-                            Modifier.fillMaxWidth(),
-                            label = { Text(stringResource(MR.strings.label_self_wind)) }
-                        )
-                    }
-                    TopPanel(modifier = Modifier.weight(1f)) {
-                        ComboBox(
-                            model.roundWind, { model.roundWind = it }, windComboOptions(),
-                            Modifier.fillMaxWidth(),
-                            label = { Text(stringResource(MR.strings.label_round_wind)) }
-                        )
-                    }
-                }
-
-                VerticalSpacerBetweenPanels()
-
-                Row {
-                    TopPanel(modifier = Modifier.weight(1f)) {
-                        ValidationField(model.doraErrMsg) { isError ->
-                            OutlinedTextField(
-                                value = model.dora,
-                                onValueChange = { model.dora = it },
-                                modifier = Modifier.fillMaxWidth(),
-                                placeholder = {
-                                    Text(
-                                        "0",
-                                        style = LocalTextStyle.current.withAlpha(0.4f)
-                                    )
-                                },
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                isError = isError,
-                                label = { Text(stringResource(MR.strings.label_dora_count)) }
+                TopPanel(
+                    { Text(stringResource(MR.strings.label_other_information)) },
+                    noContentPadding = true
+                ) {
+                    Row {
+                        TopPanel(modifier = Modifier.weight(1f)) {
+                            ComboBox(
+                                model.selfWind,
+                                { model.selfWind = it },
+                                windComboOptions(),
+                                Modifier.fillMaxWidth(),
+                                label = { Text(stringResource(MR.strings.label_self_wind)) }
+                            )
+                        }
+                        TopPanel(modifier = Modifier.weight(1f)) {
+                            ComboBox(
+                                model.roundWind, { model.roundWind = it }, windComboOptions(),
+                                Modifier.fillMaxWidth(),
+                                label = { Text(stringResource(MR.strings.label_round_wind)) }
                             )
                         }
                     }
 
-                    TopPanel(modifier = Modifier.weight(1f)) {
-                        val options = yakuComboOptions(model.allExtraYaku)
+                    VerticalSpacerBetweenPanels()
 
-                        // 某些役种被ban后更新选择
-                        LaunchedEffect(model.unavailableYaku) {
-                            model.extraYaku -= model.unavailableYaku
+                    Row {
+                        TopPanel(modifier = Modifier.weight(1f)) {
+                            ValidationField(model.doraErrMsg) { isError ->
+                                OutlinedTextField(
+                                    value = model.dora,
+                                    onValueChange = { model.dora = it },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    placeholder = {
+                                        Text(
+                                            "0",
+                                            style = LocalTextStyle.current.withAlpha(0.4f)
+                                        )
+                                    },
+                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                    isError = isError,
+                                    label = { Text(stringResource(MR.strings.label_dora_count)) }
+                                )
+                            }
                         }
 
-                        MultiComboBox(
-                            model.extraYaku,
-                            {
-                                when (it) {
-                                    is ChooseAction.OnChoose<Yaku> -> model.extraYaku += it.value
-                                    is ChooseAction.OnNotChoose<Yaku> -> model.extraYaku -= it.value
-                                }
-                            },
-                            options,
-                            Modifier.fillMaxWidth(),
-                            produceDisplayText = {
-                                if (it.isEmpty()) {
-                                    stringResource(MR.strings.label_extra_yaku_unspecified)
-                                } else {
-                                    it.joinToString { it.text }
-                                }
-                            },
-                            label = { Text(stringResource(MR.strings.label_extra_yaku)) }
-                        )
+                        TopPanel(modifier = Modifier.weight(1f)) {
+                            val options = yakuComboOptions(model.allExtraYaku)
+
+                            // 某些役种被ban后更新选择
+                            LaunchedEffect(model.unavailableYaku) {
+                                model.extraYaku -= model.unavailableYaku
+                            }
+
+                            MultiComboBox(
+                                model.extraYaku,
+                                {
+                                    when (it) {
+                                        is ChooseAction.OnChoose<Yaku> -> model.extraYaku += it.value
+                                        is ChooseAction.OnNotChoose<Yaku> -> model.extraYaku -= it.value
+                                    }
+                                },
+                                options,
+                                Modifier.fillMaxWidth(),
+                                produceDisplayText = {
+                                    if (it.isEmpty()) {
+                                        stringResource(MR.strings.label_extra_yaku_unspecified)
+                                    } else {
+                                        it.joinToString { it.text }
+                                    }
+                                },
+                                label = { Text(stringResource(MR.strings.label_extra_yaku)) }
+                            )
+                        }
                     }
                 }
 
                 VerticalSpacerBetweenPanels()
 
-                Button(
-                    modifier = Modifier.windowHorizontalMargin(),
-                    content = { Text(stringResource(MR.strings.label_calc)) },
-                    onClick = {
-                        model.onSubmit()
+                var horaOptionsDialogVisible by rememberSaveable { mutableStateOf(false) }
+                if (horaOptionsDialogVisible) {
+                    HoraOptionsDialog(
+                        model.horaOptions,
+                        onChangeOptions = {
+                            model.horaOptions = it
+                        },
+                        onDismissRequest = {
+                            horaOptionsDialogVisible = false
+                        },
+                    )
+                }
+
+                Row {
+                    Button(
+                        modifier = Modifier.windowHorizontalMargin(),
+                        content = { Text(stringResource(MR.strings.label_calc)) },
+                        onClick = {
+                            model.onSubmit()
+                        }
+                    )
+
+                    TextButton({ horaOptionsDialogVisible = true }) {
+                        Text(stringResource(MR.strings.label_hora_options))
                     }
-                )
+                }
 
                 VerticalSpacerBetweenPanels()
             }
@@ -374,7 +410,11 @@ object HoraScreen :
         }
     }
 
-    override fun onClickHistoryItem(item: History<HoraArgs>, model: HoraScreenModel) {
+    override fun onClickHistoryItem(
+        item: History<HoraArgs>,
+        model: HoraScreenModel,
+        appState: AppState
+    ) {
         with(item.args) {
             model.tiles = tiles
             model.furo.clear()
@@ -385,9 +425,47 @@ object HoraScreen :
             model.selfWind = selfWind
             model.roundWind = roundWind
             model.extraYaku = extraYaku
+
+            if (model.horaOptions != options) {
+                appState.appDialogState = AppDialogState { onDismissRequest ->
+                    OverwriteHoraOptionsAlertDialog(onDismissRequest) {
+                        model.horaOptions = options
+                    }
+                }.also {
+                    it.visible = true
+                }
+            }
         }
 
         model.postCheck()
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun OverwriteHoraOptionsAlertDialog(
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+    ) {
+        Card {
+            Column(
+                Modifier.padding(Spacing.current.cardInnerPadding)
+            ) {
+                Text(stringResource(MR.strings.text_overwrite_hora_options_hint))
+
+                Row {
+                    Surface(Modifier.weight(1f)) {}
+                    TextButton({ onDismissRequest() }) {
+                        Text(stringResource(MR.strings.label_no))
+                    }
+                    TextButton({ onConfirmation();onDismissRequest() }) {
+                        Text(stringResource(MR.strings.label_yes))
+                    }
+                }
+            }
+        }
+    }
+}

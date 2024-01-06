@@ -59,11 +59,32 @@
     <string name="label_agari">Agari</string>
     <string name="label_tsumo">Tsumo</string>
     <string name="label_ron">Ron</string>
+    <string name="label_other_information">Other Information</string>
     <string name="label_dora_count">Number of Dora</string>
     <string name="label_self_wind">Self Wind</string>
     <string name="label_round_wind">Round Wind</string>
     <string name="label_extra_yaku">Extra Yaku</string>
     <string name="label_extra_yaku_unspecified">None</string>
+
+    <string name="label_hora_options">Hora Options</string>
+    <string name="label_aotenjou">Aotenjou</string>
+    <string name="desc_aotenjou">Aotenjou</string>
+    <string name="label_hasKuitan">Kuitan</string>
+    <string name="desc_hasKuitan">Kuitan</string>
+    <string name="label_renpuuJyantou4Hu">RenpuuJyantouHu</string>
+    <string name="desc_renpuuJyantou4Hu">RenpuuJyantouHu</string>
+    <string name="label_hasKiriageMangan">KiriageMangan</string>
+    <string name="desc_hasKiriageMangan">KiriageMangan</string>
+    <string name="label_hasKazoeYakuman">KazoeYakuman</string>
+    <string name="desc_hasKazoeYakuman">KazoeYakuman</string>
+    <string name="label_hasMultipleYakuman">MultipleYakuman</string>
+    <string name="desc_hasMultipleYakuman">MultipleYakuman</string>
+    <string name="label_hasComplexYakuman">ComplexYakuman</string>
+    <string name="desc_hasComplexYakuman">ComplexYakuman</string>
+    <string name="label_hora_options_ok">OK</string>
+    <string name="label_hora_options_restore">Restore</string>
+    <string name="text_overwrite_hora_options_hint">Do you also want to overwrite hora options?
+    </string>
 
     <string name="label_wind_unspecified">Unspecified</string>
     <string name="label_wind_east">East</string>
@@ -73,7 +94,7 @@
 
     <string name="text_x_han_x_hu">%d Han %d Hu</string>
     <string name="text_x_han_x_hu_with_tag">%d Han %d Hu (%s)</string>
-    <string name="text_x_bai_yakuman">%d-Times Yakuman</string>
+    <string name="text_x_bai_yakuman">%s-Times Yakuman</string>
     <string name="text_parent_tsumo">Oya Tsumo: %d ALL (%d in total)</string>
     <string name="text_parent_ron">Oya Ron: %d</string>
     <string name="text_child_tsumo">Ko Tsumo: %d - %d (%d in total)</string>
@@ -153,25 +174,33 @@
     <string name="label_han">Han</string>
     <string name="label_hu">Hu</string>
 
-    <string name="text_yes_symbol">Yes</string>
-    <string name="text_no_symbol">No</string>
-    <string name="text_comma">, </string>
+    <string name="label_yes">Yes</string>
+    <string name="label_no">No</string>
+    <string name="text_true_symbol">Yes</string>
+    <string name="text_false_symbol">No</string>
+    <string name="text_comma">,</string>
 
     <string name="text_unknown_error">Unknown error</string>
     <string name="text_must_enter_tiles">Input your tiles in hand please.</string>
     <string name="text_must_enter_chance_tile">Input your chance tile please.</string>
-    <string name="text_cannot_have_more_than_14_tiles">You cannot have more than 14 tiles. </string>
-    <string name="text_tiles_must_not_be_divided_into_3">Number of tiles must not be divided into 3. </string>
-    <string name="text_any_tile_must_not_be_more_than_4">You cannot have any tile more than 4. </string>
-    <string name="text_tiles_are_not_without_got">You must not draw a tile in your hand. (have 4, 7, 10 or 13 tiles) </string>
-    <string name="text_hora_hand_tiles_not_enough">Number of tiles you entered is not enough. </string>
-    <string name="text_invalid_dora_count">Invalid number of dora. </string>
-    <string name="text_invalid_furo">Not a valid furo. </string>
+    <string name="text_cannot_have_more_than_14_tiles">You cannot have more than 14 tiles.</string>
+    <string name="text_tiles_must_not_be_divided_into_3">Number of tiles must not be divided into
+        3.
+    </string>
+    <string name="text_any_tile_must_not_be_more_than_4">You cannot have any tile more than 4.
+    </string>
+    <string name="text_tiles_are_not_without_got">You must not draw a tile in your hand. (have 4, 7,
+        10 or 13 tiles)
+    </string>
+    <string name="text_hora_hand_tiles_not_enough">Number of tiles you entered is not enough.
+    </string>
+    <string name="text_invalid_dora_count">Invalid number of dora.</string>
+    <string name="text_invalid_furo">Not a valid furo.</string>
     <string name="text_must_enter_agari">Enter your agari tile please.</string>
-    <string name="text_agari_not_in_hand">The agari tile is not in your tiles in hand. </string>
-    <string name="text_must_enter_han">Input the han please. </string>
-    <string name="text_invalid_han_number">The han you inputted is invalid. </string>
-    <string name="text_must_enter_hu">Input the hu please. </string>
-    <string name="text_invalid_hu_number">The hu you inputted is invalid. </string>
-    <string name="text_hu_exceeded_maximum">The hu exceeds the maximum value of 140. </string>
+    <string name="text_agari_not_in_hand">The agari tile is not in your tiles in hand.</string>
+    <string name="text_must_enter_han">Input the han please.</string>
+    <string name="text_invalid_han_number">The han you inputted is invalid.</string>
+    <string name="text_must_enter_hu">Input the hu please.</string>
+    <string name="text_invalid_hu_number">The hu you inputted is invalid.</string>
+    <string name="text_hu_exceeded_maximum">The hu exceeds the maximum value of 140.</string>
 </resources>

@@ -15,7 +15,7 @@ enum class ShantenMode {
 @Serializable
 data class ShantenArgs(
     val tiles: List<Tile>,
-    val mode: ShantenMode
+    val mode: ShantenMode = ShantenMode.Union
 ) {
     fun calc(): ShantenCalcResult {
         val result = when (mode) {

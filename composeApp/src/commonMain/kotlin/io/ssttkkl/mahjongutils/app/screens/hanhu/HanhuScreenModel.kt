@@ -43,7 +43,7 @@ class HanhuScreenModel : ScreenModel {
                 ok = false
             }
 
-            if (huNum == null || huNum <= 0 || huNum % 10 != 0) {
+            if (huNum == null || huNum <= 0 || huNum % 10 != 0 && huNum != 25) {
                 huErr = MR.strings.text_invalid_hu_number
                 ok = false
             } else if (huNum > 140) {

@@ -18,7 +18,9 @@
     <string name="label_tiles_in_hand">手牌</string>
     <string name="label_shanten_mode">计算模式</string>
     <string name="label_union_shanten">一般形</string>
-    <string name="text_union_shanten_desc">除四面子+一雀头的标准形外，还考虑七对子与国士无双和牌的情况</string>
+    <string name="text_union_shanten_desc">
+        除四面子+一雀头的标准形外，还考虑七对子与国士无双和牌的情况
+    </string>
     <string name="label_regular_shanten">标准形</string>
     <string name="text_regular_shanten_desc">只考虑四面子+一雀头和牌的情况</string>
     <string name="label_calc">计算</string>
@@ -59,11 +61,32 @@
     <string name="label_agari">所和的牌</string>
     <string name="label_tsumo">自摸</string>
     <string name="label_ron">荣和</string>
+    <string name="label_other_information">其他信息</string>
     <string name="label_dora_count">宝牌数量</string>
     <string name="label_self_wind">自风</string>
     <string name="label_round_wind">场风</string>
     <string name="label_extra_yaku">额外役</string>
     <string name="label_extra_yaku_unspecified">无</string>
+
+    <string name="label_hora_options">规则设置</string>
+    <string name="label_aotenjou">青天井</string>
+    <string name="desc_aotenjou">Aotenjou</string>
+    <string name="label_hasKuitan">有食断</string>
+    <string name="desc_hasKuitan">Kuitan</string>
+    <string name="label_renpuuJyantou4Hu">连风雀头计4符</string>
+    <string name="desc_renpuuJyantou4Hu">RenpuuJyantouHu</string>
+    <string name="label_hasKiriageMangan">有切上满贯</string>
+    <string name="desc_hasKiriageMangan">KiriageMangan</string>
+    <string name="label_hasKazoeYakuman">有累计役满</string>
+    <string name="desc_hasKazoeYakuman">KazoeYakuman</string>
+    <string name="label_hasMultipleYakuman">有多倍役满</string>
+    <string name="desc_hasMultipleYakuman">MultipleYakuman</string>
+    <string name="label_hasComplexYakuman">有复合役满</string>
+    <string name="desc_hasComplexYakuman">ComplexYakuman</string>
+    <string name="label_hora_options_ok">好</string>
+    <string name="label_hora_options_restore">恢复默认值</string>
+    <string name="text_overwrite_hora_options_hint">该历史记录使用的规则与当前不一致，是否覆盖？
+    </string>
 
     <string name="label_wind_unspecified">未指定</string>
     <string name="label_wind_east">东</string>
@@ -73,7 +96,7 @@
 
     <string name="text_x_han_x_hu">%d番%d符</string>
     <string name="text_x_han_x_hu_with_tag">%d番%d符（%s）</string>
-    <string name="text_x_bai_yakuman">%d倍役满</string>
+    <string name="text_x_bai_yakuman">%s倍役满</string>
     <string name="text_parent_tsumo">亲家自摸：%d ALL（共%d）</string>
     <string name="text_parent_ron">亲家荣和：%d</string>
     <string name="text_child_tsumo">子家自摸：%d - %d（共%d）</string>
@@ -153,8 +176,10 @@
     <string name="label_han">番</string>
     <string name="label_hu">符</string>
 
-    <string name="text_yes_symbol">√</string>
-    <string name="text_no_symbol">×</string>
+    <string name="label_yes">是</string>
+    <string name="label_no">否</string>
+    <string name="text_true_symbol">√</string>
+    <string name="text_false_symbol">×</string>
     <string name="text_comma">、</string>
 
     <string name="text_unknown_error">未知错误</string>

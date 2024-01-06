@@ -7,7 +7,6 @@ import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
-import io.ssttkkl.mahjongutils.app.utils.cformat
 import io.ssttkkl.mahjongutils.app.utils.percentile
 import mahjongutils.models.Tile
 

@@ -19,7 +19,8 @@
     <string name="label_tiles_in_hand">手牌</string>
     <string name="label_shanten_mode">計算モード</string>
     <string name="label_union_shanten">一般形</string>
-    <string name="text_union_shanten_desc">標準形（４面子１雀頭の形）だけではなく、七対形や国士形も含めて考えます。</string>
+    <string name="text_union_shanten_desc">標準形（４面子１雀頭の形）だけではなく、七対形や国士形も含めて考えます。
+    </string>
     <string name="label_regular_shanten">標準形</string>
     <string name="text_regular_shanten_desc">４面子１雀頭の形だけを考えます。</string>
     <string name="label_calc">計算</string>
@@ -60,6 +61,7 @@
     <string name="label_agari">アガリ牌</string>
     <string name="label_tsumo">ツモ</string>
     <string name="label_ron">ロン</string>
+    <string name="label_other_information">他の情報</string>
     <string name="label_dora_count">ドラの数</string>
     <string name="label_self_wind">自風</string>
     <string name="label_round_wind">場風</string>
@@ -74,7 +76,7 @@
 
     <string name="text_x_han_x_hu">%d飜%d符</string>
     <string name="text_x_han_x_hu_with_tag">%d飜%d符（%s）</string>
-    <string name="text_x_bai_yakuman">%d倍役満</string>
+    <string name="text_x_bai_yakuman">%s倍役満</string>
     <string name="text_parent_tsumo">親ツモ：%d ALL（共%d）</string>
     <string name="text_parent_ron">親ロンす：%d</string>
     <string name="text_child_tsumo">子ツモ：%d - %d（共%d）</string>
@@ -115,8 +117,10 @@
     <string name="label_han">Han</string>
     <string name="label_hu">Hu</string>
 
-    <string name="text_yes_symbol">○</string>
-    <string name="text_no_symbol">×</string>
+    <string name="label_yes">はい</string>
+    <string name="label_no">いいえ</string>
+    <string name="text_true_symbol">○</string>
+    <string name="text_false_symbol">×</string>
 
     <string name="text_unknown_error">未知のエラー</string>
     <string name="text_must_enter_tiles">手牌を入力してください。</string>

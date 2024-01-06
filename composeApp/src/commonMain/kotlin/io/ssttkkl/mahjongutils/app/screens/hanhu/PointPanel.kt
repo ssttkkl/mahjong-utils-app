@@ -11,7 +11,6 @@ import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import mahjongutils.hanhu.ChildPoint
 import mahjongutils.hanhu.ParentPoint
-import mahjongutils.models.Wind
 
 @Composable
 private fun digitText(digit: Int): String {

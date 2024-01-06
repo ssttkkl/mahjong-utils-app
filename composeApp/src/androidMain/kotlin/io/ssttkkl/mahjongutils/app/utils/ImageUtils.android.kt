@@ -1,7 +1,5 @@
 package io.ssttkkl.mahjongutils.app.utils
 
-import android.R.attr.height
-import android.R.attr.width
 import android.content.ContentValues
 import android.graphics.Bitmap
 import android.graphics.Matrix

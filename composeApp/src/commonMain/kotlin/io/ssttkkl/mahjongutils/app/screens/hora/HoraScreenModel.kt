@@ -5,13 +5,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import cafe.adriel.voyager.core.model.screenModelScope
 import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.MR
-import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.models.hora.HoraCalcResult
+import io.ssttkkl.mahjongutils.app.models.hora.HoraOptionsStore
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import mahjongutils.hora.HoraOptions
 import mahjongutils.models.Furo
 import mahjongutils.models.Kan
 import mahjongutils.models.Tile
@@ -129,6 +133,24 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
     var tilesErrMsg by mutableStateOf<StringResource?>(null)
     var agariErrMsg by mutableStateOf<StringResource?>(null)
     var doraErrMsg by mutableStateOf<StringResource?>(null)
+
+    private var horaOptionsState = mutableStateOf(HoraOptions.Default)
+    var horaOptions: HoraOptions
+        get() = horaOptionsState.value
+        set(value) {
+            horaOptionsState.value = value
+            screenModelScope.launch {
+                HoraOptionsStore.updateData { value }
+            }
+        }
+
+    init {
+        screenModelScope.launch {
+            HoraOptionsStore.data.collectLatest {
+                horaOptionsState.value = it
+            }
+        }
+    }
 
     override fun resetForm() {
         tiles = emptyList()
@@ -261,7 +283,8 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
             dora.toIntOrNull() ?: 0,
             selfWind,
             roundWind,
-            extraYaku
+            extraYaku,
+            horaOptions
         )
         HoraArgs.history.insert(args)
         return args.calc()

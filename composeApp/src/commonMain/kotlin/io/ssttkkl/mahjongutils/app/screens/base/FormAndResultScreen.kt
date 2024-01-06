@@ -62,7 +62,6 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
             IconButton(onClick = {
                 appState.appBottomSheetState = AppBottomSheetState {
                     HistoryContent(
-                        appState,
                         model,
                         Modifier.windowHorizontalMargin(),
                         requestCloseModal = {
@@ -93,15 +92,15 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
     @Composable
     /*protected*/ abstract fun HistoryItem(item: History<ARG>, model: M)
 
-    protected abstract fun onClickHistoryItem(item: History<ARG>, model: M)
+    protected abstract fun onClickHistoryItem(item: History<ARG>, model: M, appState: AppState)
 
     @Composable
     fun HistoryContent(
-        appState: AppState,
         model: M,
         modifier: Modifier,
         requestCloseModal: () -> Unit
     ) {
+        val appState = LocalAppState.current
         val history by model.history.data.collectAsState(emptyList())
 
         @Composable
@@ -139,7 +138,7 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
                         header = { PanelHeader() },
                         cardModifier = {
                             Modifier.clickable {
-                                onClickHistoryItem(it, model)
+                                onClickHistoryItem(it, model, appState)
                                 requestCloseModal()
                             }
                         },
