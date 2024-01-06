@@ -97,10 +97,10 @@
     <string name="text_x_han_x_hu">%d番%d符</string>
     <string name="text_x_han_x_hu_with_tag">%d番%d符（%s）</string>
     <string name="text_x_bai_yakuman">%s倍役满</string>
-    <string name="text_parent_tsumo">亲家自摸：%d ALL（共%d）</string>
-    <string name="text_parent_ron">亲家荣和：%d</string>
-    <string name="text_child_tsumo">子家自摸：%d - %d（共%d）</string>
-    <string name="text_child_ron">子家荣和：%d</string>
+    <string name="text_parent_tsumo">亲家自摸：%s ALL（共%s）</string>
+    <string name="text_parent_ron">亲家荣和：%s</string>
+    <string name="text_child_tsumo">子家自摸：%s - %s（共%s）</string>
+    <string name="text_child_ron">子家荣和：%s</string>
 
     <string name="text_one">一</string>
     <string name="text_two">二</string>

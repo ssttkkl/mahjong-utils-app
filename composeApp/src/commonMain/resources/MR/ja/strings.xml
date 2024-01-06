@@ -77,10 +77,10 @@
     <string name="text_x_han_x_hu">%d飜%d符</string>
     <string name="text_x_han_x_hu_with_tag">%d飜%d符（%s）</string>
     <string name="text_x_bai_yakuman">%s倍役満</string>
-    <string name="text_parent_tsumo">親ツモ：%d ALL（共%d）</string>
-    <string name="text_parent_ron">親ロンす：%d</string>
-    <string name="text_child_tsumo">子ツモ：%d - %d（共%d）</string>
-    <string name="text_child_ron">子ロン：%d</string>
+    <string name="text_parent_tsumo">親ツモ：%s ALL（共%s）</string>
+    <string name="text_parent_ron">親ロンす：%s</string>
+    <string name="text_child_tsumo">子ツモ：%s - %s（共%s）</string>
+    <string name="text_child_ron">子ロン：%s</string>
 
     <string name="text_one">一</string>
     <string name="text_two">二</string>

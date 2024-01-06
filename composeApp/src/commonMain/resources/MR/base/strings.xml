@@ -95,10 +95,10 @@
     <string name="text_x_han_x_hu">%d Han %d Hu</string>
     <string name="text_x_han_x_hu_with_tag">%d Han %d Hu (%s)</string>
     <string name="text_x_bai_yakuman">%s-Times Yakuman</string>
-    <string name="text_parent_tsumo">Oya Tsumo: %d ALL (%d in total)</string>
-    <string name="text_parent_ron">Oya Ron: %d</string>
-    <string name="text_child_tsumo">Ko Tsumo: %d - %d (%d in total)</string>
-    <string name="text_child_ron">Ko Ron: %d</string>
+    <string name="text_parent_tsumo">Oya Tsumo: %s ALL (%s in total)</string>
+    <string name="text_parent_ron">Oya Ron: %s</string>
+    <string name="text_child_tsumo">Ko Tsumo: %s - %s (%s in total)</string>
+    <string name="text_child_ron">Ko Ron: %s</string>
 
     <string name="text_one">1</string>
     <string name="text_two">2</string>

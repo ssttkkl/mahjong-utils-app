@@ -8,10 +8,10 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.screenModelScope
 import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.MR
+import io.ssttkkl.mahjongutils.app.models.AppOptions
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.models.hora.HoraCalcResult
-import io.ssttkkl.mahjongutils.app.models.hora.HoraOptionsStore
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -140,14 +140,16 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         set(value) {
             horaOptionsState.value = value
             screenModelScope.launch {
-                HoraOptionsStore.updateData { value }
+                AppOptions.datastore.updateData {
+                    it.copy(horaOptions = value)
+                }
             }
         }
 
     init {
         screenModelScope.launch {
-            HoraOptionsStore.data.collectLatest {
-                horaOptionsState.value = it
+            AppOptions.datastore.data.collectLatest {
+                horaOptionsState.value = it.horaOptions
             }
         }
     }

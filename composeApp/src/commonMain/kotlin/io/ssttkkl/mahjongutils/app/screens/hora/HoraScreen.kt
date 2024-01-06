@@ -305,15 +305,15 @@ object HoraScreen :
 
                 VerticalSpacerBetweenPanels()
 
-                var horaOptionsDialogVisible by rememberSaveable { mutableStateOf(false) }
-                if (horaOptionsDialogVisible) {
+                var optionsDialogVisible by rememberSaveable { mutableStateOf(false) }
+                if (optionsDialogVisible) {
                     HoraOptionsDialog(
                         model.horaOptions,
                         onChangeOptions = {
                             model.horaOptions = it
                         },
                         onDismissRequest = {
-                            horaOptionsDialogVisible = false
+                            optionsDialogVisible = false
                         },
                     )
                 }
@@ -327,7 +327,7 @@ object HoraScreen :
                         }
                     )
 
-                    TextButton({ horaOptionsDialogVisible = true }) {
+                    TextButton({ optionsDialogVisible = true }) {
                         Text(stringResource(MR.strings.label_hora_options))
                     }
                 }

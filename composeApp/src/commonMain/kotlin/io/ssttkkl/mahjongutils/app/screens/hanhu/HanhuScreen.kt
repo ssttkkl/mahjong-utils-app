@@ -9,8 +9,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -22,6 +27,7 @@ import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
+import io.ssttkkl.mahjongutils.app.screens.hora.HoraOptionsDialog
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 
 object HanhuScreen : NavigationScreen() {
@@ -61,13 +67,32 @@ object HanhuScreen : NavigationScreen() {
 
                 VerticalSpacerBetweenPanels()
 
-                Button(
-                    modifier = Modifier.windowHorizontalMargin(),
-                    content = { Text(stringResource(MR.strings.label_calc)) },
-                    onClick = {
-                        model.onSubmit()
+                var optionsDialogVisible by rememberSaveable { mutableStateOf(false) }
+                if (optionsDialogVisible) {
+                    HanhuOptionsDialog(
+                        model.hanhuOptions,
+                        onChangeOptions = {
+                            model.hanhuOptions = it
+                        },
+                        onDismissRequest = {
+                            optionsDialogVisible = false
+                        },
+                    )
+                }
+
+                Row {
+                    Button(
+                        modifier = Modifier.windowHorizontalMargin(),
+                        content = { Text(stringResource(MR.strings.label_calc)) },
+                        onClick = {
+                            model.onSubmit()
+                        }
+                    )
+
+                    TextButton({ optionsDialogVisible = true }) {
+                        Text(stringResource(MR.strings.label_hora_options))
                     }
-                )
+                }
             }
 
             @Composable

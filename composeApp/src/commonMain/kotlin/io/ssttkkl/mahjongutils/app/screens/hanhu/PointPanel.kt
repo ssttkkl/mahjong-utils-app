@@ -87,49 +87,49 @@ private fun hanhuText(han: Int, hu: Int, hasYakuman: Boolean) {
 private fun textParentTsumo(parentPoint: ParentPoint) =
     stringResource(
         MR.strings.text_parent_tsumo,
-        parentPoint.tsumo,
-        parentPoint.tsumoTotal
+        parentPoint.tsumo.toString(),
+        parentPoint.tsumoTotal.toString()
     )
 
 @Composable
 private fun textParentRon(parentPoint: ParentPoint) =
     stringResource(
         MR.strings.text_parent_ron,
-        parentPoint.ron
+        parentPoint.ron.toString()
     )
 
 @Composable
 private fun textChildTsumo(childPoint: ChildPoint) =
     stringResource(
         MR.strings.text_child_tsumo,
-        childPoint.tsumoChild,
-        childPoint.tsumoParent,
-        childPoint.tsumoTotal,
+        childPoint.tsumoChild.toString(),
+        childPoint.tsumoParent.toString(),
+        childPoint.tsumoTotal.toString(),
     )
 
 @Composable
 private fun textChildRon(childPoint: ChildPoint) =
     stringResource(
         MR.strings.text_child_ron,
-        childPoint.ron
+        childPoint.ron.toString()
     )
 
 @Composable
 private fun parentPointText(parentPoint: ParentPoint) {
-    if (parentPoint.tsumo > 0) {
+    if (parentPoint.tsumo > 0uL) {
         Text(textParentTsumo(parentPoint))
     }
-    if (parentPoint.ron > 0) {
+    if (parentPoint.ron > 0uL) {
         Text(textParentRon(parentPoint))
     }
 }
 
 @Composable
 private fun childPointText(childPoint: ChildPoint) {
-    if (childPoint.tsumoTotal > 0) {
+    if (childPoint.tsumoTotal > 0uL) {
         Text(textChildTsumo(childPoint))
     }
-    if (childPoint.ron > 0) {
+    if (childPoint.ron > 0uL) {
         Text(textChildRon(childPoint))
     }
 }

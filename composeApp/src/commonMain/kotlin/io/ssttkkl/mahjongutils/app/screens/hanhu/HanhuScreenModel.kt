@@ -7,11 +7,14 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.MR
+import io.ssttkkl.mahjongutils.app.models.AppOptions
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mahjongutils.hanhu.ChildPoint
+import mahjongutils.hanhu.HanHuOptions
 import mahjongutils.hanhu.ParentPoint
 import mahjongutils.hanhu.getChildPointByHanHu
 import mahjongutils.hanhu.getParentPointByHanHu
@@ -27,6 +30,26 @@ class HanhuScreenModel : ScreenModel {
     var han: String by mutableStateOf("")
     var hu: String by mutableStateOf("")
 
+    private var hanhuOptionsState = mutableStateOf(HanHuOptions.Default)
+    var hanhuOptions: HanHuOptions
+        get() = hanhuOptionsState.value
+        set(value) {
+            hanhuOptionsState.value = value
+            screenModelScope.launch {
+                AppOptions.datastore.updateData {
+                    it.copy(hanHuOptions = value)
+                }
+            }
+        }
+
+    init {
+        screenModelScope.launch {
+            AppOptions.datastore.data.collectLatest {
+                hanhuOptionsState.value = it.hanHuOptions
+            }
+        }
+    }
+
     var hanErr: StringResource? by mutableStateOf(null)
     var huErr: StringResource? by mutableStateOf(null)
 
@@ -41,6 +64,8 @@ class HanhuScreenModel : ScreenModel {
             if (hanNum == null) {
                 hanErr = MR.strings.text_invalid_han_number
                 ok = false
+            } else {
+                hanErr = null
             }
 
             if (huNum == null || huNum <= 0 || huNum % 10 != 0 && huNum != 25) {
@@ -49,20 +74,24 @@ class HanhuScreenModel : ScreenModel {
             } else if (huNum > 140) {
                 huErr = MR.strings.text_hu_exceeded_maximum
                 ok = false
+            } else {
+                huErr = null
             }
 
-            result = if (ok) {
-                HanhuResult(
-                    hanNum!!, huNum!!,
-                    screenModelScope.async(Dispatchers.Default) {
-                        getParentPointByHanHu(hanNum, huNum)
-                    },
-                    screenModelScope.async(Dispatchers.Default) {
-                        getChildPointByHanHu(hanNum, huNum)
-                    }
-                )
+            if (ok) {
+                if (result?.han != hanNum!! || result?.hu != huNum!!) {
+                    result = HanhuResult(
+                        hanNum, huNum!!,
+                        screenModelScope.async(Dispatchers.Default) {
+                            getParentPointByHanHu(hanNum, huNum, hanhuOptions)
+                        },
+                        screenModelScope.async(Dispatchers.Default) {
+                            getChildPointByHanHu(hanNum, huNum, hanhuOptions)
+                        }
+                    )
+                }
             } else {
-                null
+                result = null
             }
         }
     }
