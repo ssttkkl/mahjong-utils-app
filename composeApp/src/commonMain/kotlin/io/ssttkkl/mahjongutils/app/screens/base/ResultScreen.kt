@@ -17,7 +17,7 @@ import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
-import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowMessageOnFailure
+import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowSnackbarOnFailure
 import io.ssttkkl.mahjongutils.app.components.capture.Capturable
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen.Companion.isTwoPanes
 import kotlin.jvm.Transient
@@ -83,7 +83,7 @@ class ResultScreen(
                 model.resultHolder?.result?.await()
             },
             onFailure = {
-                PopAndShowMessageOnFailure(it)
+                PopAndShowSnackbarOnFailure(it)
             }
         ) { result ->
             Capturable(model.captureState) {

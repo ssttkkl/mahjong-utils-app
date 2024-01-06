@@ -6,6 +6,7 @@
     <string name="title_furo_shanten_result">鳴き牌理結果</string>
     <string name="title_hora">和了分析</string>
     <string name="title_hora_result">和了分析結果</string>
+    <string name="title_hanhu">飜符得点計算</string>
     <string name="title_about">About</string>
 
     <string name="label_history">ヒストリ</string>
@@ -23,14 +24,14 @@
     <string name="text_regular_shanten_desc">４面子１雀頭の形だけを考えます。</string>
     <string name="label_calc">計算</string>
 
-    <string name="text_tiles_without_got">まだツモしない</string>
+    <string name="text_tiles_without_got"></string>
     <string name="text_tiles_with_got">ツモ済み</string>
     <string name="label_shanten_num">向聴数</string>
     <string name="text_shanten_num">%d向聴</string>
     <string name="text_tenpai">聴牌</string>
     <string name="text_hora">和了</string>
     <string name="label_advance_tiles">受け入れ</string>
-    <string name="label_waiting_tiles">待ち</string>
+    <string name="label_waiting_tiles">当たり牌</string>
     <string name="label_good_shape_advance_tiles">好形受け入れ</string>
     <string name="label_good_shape_improvement_tiles">好形変化</string>
     <string name="text_tiles_num">%d枚</string>
@@ -71,13 +72,13 @@
     <string name="label_wind_west">西</string>
     <string name="label_wind_north">北</string>
 
-    <string name="text_x_han_x_hu">%d番%d符</string>
-    <string name="text_x_han_x_hu_with_tag">%d番%d符（%s）</string>
+    <string name="text_x_han_x_hu">%d飜%d符</string>
+    <string name="text_x_han_x_hu_with_tag">%d飜%d符（%s）</string>
     <string name="text_x_bai_yakuman">%d倍役満</string>
-    <string name="text_parent_tsumo">親ツモする番：%d ALL（共%d）</string>
-    <string name="text_parent_ron">親ロンする番：%d</string>
-    <string name="text_child_tsumo">子ツモする番：%d - %d（共%d）</string>
-    <string name="text_child_ron">子ロンする番：%d</string>
+    <string name="text_parent_tsumo">親ツモ：%d ALL（共%d）</string>
+    <string name="text_parent_ron">親ロンす：%d</string>
+    <string name="text_child_tsumo">子ツモ：%d - %d（共%d）</string>
+    <string name="text_child_ron">子ロン：%d</string>
 
     <string name="text_one">一</string>
     <string name="text_two">二</string>
@@ -107,14 +108,26 @@
 
     <string name="label_yaku_dora">ドラ%d</string>
 
+    <string name="label_yaku">Yaku</string>
+    <string name="label_hora_point">Han, Hu and Point</string>
+    <string name="label_hand_deconstruction">Hand Deconstruction</string>
+
+    <string name="label_han">Han</string>
+    <string name="label_hu">Hu</string>
+
     <string name="text_yes_symbol">○</string>
     <string name="text_no_symbol">×</string>
 
     <string name="text_unknown_error">未知のエラー</string>
     <string name="text_must_enter_tiles">手牌を入力してください。</string>
     <string name="text_must_enter_chance_tile">出る牌を入力してください。</string>
-    <string name="text_cannot_have_more_than_14_tiles">手牌の数は１４枚以下になければなりません。</string>
-    <string name="text_tiles_must_not_be_divided_into_3">手牌の数は３の倍数にならないでください。</string>
-    <string name="text_any_tile_must_not_be_more_than_4">各タイプの牌の枚数は４枚以下になければなりません。</string>
-    <string name="text_tiles_are_not_without_got">ツモをしていない手牌でなければなりません。（４、７、１０、１３枚の数）</string>
+    <string name="text_cannot_have_more_than_14_tiles">手牌の数は多いすぎます。</string>
+    <string name="text_tiles_must_not_be_divided_into_3">手牌の数は３n＋１または３n＋２を満足するべきです。</string>
+    <string name="text_any_tile_must_not_be_more_than_4">同じ牌は４枚以下（４枚含む）にするべきです。</string>
+    <string name="text_tiles_are_not_without_got">手牌の数は４、７、１０、１３枚にしてください。</string>
+    <string name="text_hora_hand_tiles_not_enough">牌の数は少ないので和了ができません。</string>
+    <string name="text_invalid_dora_count">有効な数ではありません。</string>
+    <string name="text_invalid_furo">有効な副露ではありません。</string>
+    <string name="text_must_enter_agari">アガリ牌を入力してください。</string>
+    <string name="text_agari_not_in_hand">手牌の中にはアガリ牌が見つかりません。</string>
 </resources>

@@ -31,7 +31,6 @@ import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
-import kotlinx.coroutines.launch
 import mahjongutils.shanten.ShantenWithoutGot
 import mahjongutils.shanten.asWithGot
 import mahjongutils.shanten.asWithoutGot
@@ -115,9 +114,7 @@ object ShantenScreen :
                     modifier = Modifier.windowHorizontalMargin(),
                     content = { Text(stringResource(MR.strings.label_calc)) },
                     onClick = {
-                        coroutineScope.launch {
-                            model.onSubmit(appState)
-                        }
+                        model.onSubmit()
                     }
                 )
 

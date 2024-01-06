@@ -6,6 +6,7 @@
     <string name="title_furo_shanten_result">Furo Shanten Result</string>
     <string name="title_hora">Hora Analyses</string>
     <string name="title_hora_result">Hora Analyses Result</string>
+    <string name="title_hanhu">Point Calculation By Han and Hu</string>
     <string name="title_about">About</string>
 
     <string name="label_history">History</string>
@@ -149,13 +150,16 @@
     <string name="label_hora_point">Han, Hu and Point</string>
     <string name="label_hand_deconstruction">Hand Deconstruction</string>
 
+    <string name="label_han">Han</string>
+    <string name="label_hu">Hu</string>
+
     <string name="text_yes_symbol">Yes</string>
     <string name="text_no_symbol">No</string>
     <string name="text_comma">, </string>
 
     <string name="text_unknown_error">Unknown error</string>
-    <string name="text_must_enter_tiles">Enter your tiles in hand please.</string>
-    <string name="text_must_enter_chance_tile">Enter your chance tile please.</string>
+    <string name="text_must_enter_tiles">Input your tiles in hand please.</string>
+    <string name="text_must_enter_chance_tile">Input your chance tile please.</string>
     <string name="text_cannot_have_more_than_14_tiles">You cannot have more than 14 tiles. </string>
     <string name="text_tiles_must_not_be_divided_into_3">Number of tiles must not be divided into 3. </string>
     <string name="text_any_tile_must_not_be_more_than_4">You cannot have any tile more than 4. </string>
@@ -165,4 +169,9 @@
     <string name="text_invalid_furo">Not a valid furo. </string>
     <string name="text_must_enter_agari">Enter your agari tile please.</string>
     <string name="text_agari_not_in_hand">The agari tile is not in your tiles in hand. </string>
+    <string name="text_must_enter_han">Input the han please. </string>
+    <string name="text_invalid_han_number">The han you inputted is invalid. </string>
+    <string name="text_must_enter_hu">Input the hu please. </string>
+    <string name="text_invalid_hu_number">The hu you inputted is invalid. </string>
+    <string name="text_hu_exceeded_maximum">The hu exceeds the maximum value of 140. </string>
 </resources>

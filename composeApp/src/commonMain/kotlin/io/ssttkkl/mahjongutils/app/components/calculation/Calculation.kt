@@ -13,12 +13,13 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 @Composable
-fun PopAndShowMessageOnFailure(throwable: Throwable) {
+fun PopAndShowSnackbarOnFailure(throwable: Throwable) {
     val appState = LocalAppState.current
     val unknownError = stringResource(MR.strings.text_unknown_error)
 
@@ -31,6 +32,19 @@ fun PopAndShowMessageOnFailure(throwable: Throwable) {
 }
 
 @Composable
+fun ShowSnackbarOnFailure(throwable: Throwable) {
+    val appState = LocalAppState.current
+    val unknownError = stringResource(MR.strings.text_unknown_error)
+
+    LaunchedEffect(throwable) {
+        withContext(NonCancellable) {
+            appState.snackbarHostState.showSnackbar(unknownError)
+        }
+    }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@Composable
 fun <U, V> Calculation(
     arg: U,
     handle: suspend (U) -> V,
@@ -40,7 +54,7 @@ fun <U, V> Calculation(
             modifier = Modifier.fillMaxWidth()
         )
     },
-    onFailure: @Composable ((Throwable) -> Unit)? = null,
+    onFailure: @Composable ((Throwable) -> Unit) = { ShowSnackbarOnFailure(it) },
     onSuccess: @Composable (V) -> Unit
 ) {
     var result: Result<V>? by remember(arg) { mutableStateOf(null) }
@@ -54,6 +68,6 @@ fun <U, V> Calculation(
 
     result?.let {
         it.onSuccess { onSuccess(it) }
-            .onFailure { onFailure?.invoke(it) }
+            .onFailure { onFailure(it) }
     } ?: onCalculating()
 }

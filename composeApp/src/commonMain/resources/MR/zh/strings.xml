@@ -6,6 +6,7 @@
     <string name="title_furo_shanten_result">副露牌理计算</string>
     <string name="title_hora">和牌分析</string>
     <string name="title_hora_result">和牌分析结果</string>
+    <string name="title_hanhu">番符得点计算</string>
     <string name="title_about">关于</string>
 
     <string name="label_history">历史记录</string>
@@ -146,8 +147,11 @@
     <string name="label_yaku_dora">宝牌%d</string>
 
     <string name="label_yaku">役种</string>
-    <string name="label_hora_point">番符与点数</string>
+    <string name="label_hora_point">番符得点</string>
     <string name="label_hand_deconstruction">手牌分解</string>
+
+    <string name="label_han">番</string>
+    <string name="label_hu">符</string>
 
     <string name="text_yes_symbol">√</string>
     <string name="text_no_symbol">×</string>
@@ -165,4 +169,6 @@
     <string name="text_invalid_furo">不是有效的副露。</string>
     <string name="text_must_enter_agari">请输入所和的牌。</string>
     <string name="text_agari_not_in_hand">所和的牌不在你的和牌中。</string>
+    <string name="text_invalid_han_number">输入的番数不合法。</string>
+    <string name="text_invalid_hu_number">输入的符数不合法。</string>
 </resources>

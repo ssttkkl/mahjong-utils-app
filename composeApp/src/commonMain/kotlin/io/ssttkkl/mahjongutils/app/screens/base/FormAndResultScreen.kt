@@ -2,7 +2,6 @@ package io.ssttkkl.mahjongutils.app.screens.base
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -25,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.screenModelScope
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
@@ -35,7 +33,7 @@ import io.ssttkkl.mahjongutils.app.components.appscaffold.AppBottomSheetState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
-import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowMessageOnFailure
+import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowSnackbarOnFailure
 import io.ssttkkl.mahjongutils.app.components.panel.LazyCardPanel
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.models.base.History
@@ -222,7 +220,7 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
                                 result.await()
                             },
                             onFailure = {
-                                PopAndShowMessageOnFailure(it)
+                                PopAndShowSnackbarOnFailure(it)
                             }
                         ) {
                             ResultContent(appState, it, Modifier)

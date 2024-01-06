@@ -76,7 +76,7 @@ class FuroShantenScreenModel :
         return validTiles && validChanceTile
     }
 
-    override suspend fun onCalc(appState: AppState): FuroChanceShantenCalcResult {
+    override suspend fun onCalc(): FuroChanceShantenCalcResult {
         val chanceTile = chanceTile!!
         val args = FuroChanceShantenArgs(tiles, chanceTile, allowChi)
         screenModelScope.launch(Dispatchers.Default + NonCancellable) {

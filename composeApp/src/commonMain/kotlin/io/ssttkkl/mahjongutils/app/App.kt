@@ -19,6 +19,7 @@ import io.ssttkkl.mahjongutils.app.components.appscaffold.rememberAppState
 import io.ssttkkl.mahjongutils.app.screens.about.AboutScreen
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.screens.furoshanten.FuroShantenScreen
+import io.ssttkkl.mahjongutils.app.screens.hanhu.HanhuScreen
 import io.ssttkkl.mahjongutils.app.screens.hora.HoraScreen
 import io.ssttkkl.mahjongutils.app.screens.shanten.ShantenScreen
 import kotlinx.coroutines.launch
@@ -27,6 +28,7 @@ private val navigatableScreens: List<NavigationScreen> = listOf(
     ShantenScreen,
     FuroShantenScreen,
     HoraScreen,
+    HanhuScreen,
     AboutScreen
 )
 

@@ -28,7 +28,6 @@ import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenCalcResul
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
-import kotlinx.coroutines.launch
 
 
 object FuroShantenScreen :
@@ -51,8 +50,6 @@ object FuroShantenScreen :
         model: FuroShantenScreenModel,
         modifier: Modifier
     ) {
-        val coroutineScope = rememberCoroutineScope()
-
         with(Spacing.current) {
             Column(
                 modifier.verticalScroll(rememberScrollState())
@@ -103,9 +100,7 @@ object FuroShantenScreen :
                     modifier = Modifier.windowHorizontalMargin(),
                     content = { Text(stringResource(MR.strings.label_calc)) },
                     onClick = {
-                        coroutineScope.launch {
-                            model.onSubmit(appState)
-                        }
+                        model.onSubmit()
                     }
                 )
 

@@ -31,7 +31,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -61,7 +60,6 @@ import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
 import io.ssttkkl.mahjongutils.app.utils.localizedName
 import io.ssttkkl.mahjongutils.app.utils.withAlpha
-import kotlinx.coroutines.launch
 import mahjongutils.models.Wind
 import mahjongutils.yaku.Yaku
 
@@ -115,8 +113,6 @@ object HoraScreen :
         model: HoraScreenModel,
         modifier: Modifier
     ) {
-        val coroutineScope = rememberCoroutineScope()
-
         with(Spacing.current) {
             Column(
                 modifier.verticalScroll(rememberScrollState())
@@ -130,7 +126,7 @@ object HoraScreen :
                             onValueChange = { model.tiles = it },
                             modifier = Modifier.fillMaxWidth(),
                             isError = isError,
-                            label =stringResource(MR.strings.label_tiles_in_hand)
+                            label = stringResource(MR.strings.label_tiles_in_hand)
                         )
                     }
                 }
@@ -145,7 +141,7 @@ object HoraScreen :
                                 onValueChange = { model.agari = it.firstOrNull() },
                                 modifier = Modifier.fillMaxWidth(),
                                 isError = isError,
-                                label =stringResource(MR.strings.label_agari),
+                                label = stringResource(MR.strings.label_agari),
                                 placeholder = {
                                     model.autoDetectedAgari?.let { autoDetectedAgari ->
                                         Tiles(
@@ -296,9 +292,7 @@ object HoraScreen :
                     modifier = Modifier.windowHorizontalMargin(),
                     content = { Text(stringResource(MR.strings.label_calc)) },
                     onClick = {
-                        coroutineScope.launch {
-                            model.onSubmit(appState)
-                        }
+                        model.onSubmit()
                     }
                 )
 

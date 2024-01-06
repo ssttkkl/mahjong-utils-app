@@ -57,7 +57,7 @@ class ShantenScreenModel : FormAndResultScreenModel<ShantenArgs, ShantenCalcResu
         return true
     }
 
-    override suspend fun onCalc(appState: AppState): ShantenCalcResult {
+    override suspend fun onCalc(): ShantenCalcResult {
         val args = ShantenArgs(tiles, shantenMode)
         screenModelScope.launch(Dispatchers.Default + NonCancellable) {
             ShantenArgs.history.insert(args)

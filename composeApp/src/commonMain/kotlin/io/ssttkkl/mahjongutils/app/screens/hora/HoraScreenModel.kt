@@ -252,7 +252,7 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         return validTiles && validAgari && validDora && validFuro
     }
 
-    override suspend fun onCalc(appState: AppState): HoraCalcResult {
+    override suspend fun onCalc(): HoraCalcResult {
         val args = HoraArgs(
             tiles,
             furo.map { it.toFuro() },

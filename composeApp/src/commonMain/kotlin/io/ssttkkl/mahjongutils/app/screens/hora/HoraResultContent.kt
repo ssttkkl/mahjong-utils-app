@@ -20,12 +20,14 @@ import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.tile.FuroTiles
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
+import io.ssttkkl.mahjongutils.app.screens.hanhu.PointPanel
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.localizedName
 import mahjongutils.hora.Hora
 import mahjongutils.hora.RegularHoraHandPattern
+import mahjongutils.models.Wind
 
 @Composable
 private fun HandTilesPanel(args: HoraArgs) {
@@ -111,7 +113,11 @@ fun HoraResultContent(args: HoraArgs, hora: Hora) {
 
             item("point") {
                 VerticalSpacerBetweenPanels()
-                PointPanel(hora)
+                PointPanel(
+                    hora.han, hora.hu, hora.hasYakuman,
+                    if (hora.selfWind == null || hora.selfWind == Wind.East) hora.parentPoint else null,
+                    if (hora.selfWind == null || hora.selfWind != Wind.East) hora.childPoint else null
+                )
             }
 
             val pattern = hora.pattern
