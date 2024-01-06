@@ -3,6 +3,7 @@ package io.ssttkkl.mahjongutils.app.components.tile
 import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.runtime.getValue
@@ -33,15 +34,29 @@ import platform.UIKit.UIColor
 import platform.UIKit.UIEdgeInsetsMake
 import platform.UIKit.UIFont
 import platform.UIKit.UIKeyboardTypeEmailAddress
+import platform.UIKit.UILabel
 import platform.UIKit.UILineBreakModeCharacterWrap
 import platform.UIKit.UITextAutocorrectionType
 import platform.UIKit.UITextSpellCheckingType
 import platform.UIKit.UITextView
 import platform.UIKit.UITextViewDelegateProtocol
 import platform.UIKit.UIView
+import platform.UIKit.UIViewAutoresizingFlexibleHeight
+import platform.UIKit.UIViewAutoresizingFlexibleWidth
 import platform.UIKit.attributedStringWithAttachment
 import platform.darwin.NSObject
+import kotlin.experimental.ExperimentalNativeApi
 import kotlin.math.max
+import kotlin.native.ref.WeakReference
+
+private fun Color.toUIColor(): UIColor {
+    return UIColor(
+        red = red.toDouble(),
+        green = green.toDouble(),
+        blue = blue.toDouble(),
+        alpha = alpha.toDouble()
+    )
+}
 
 @OptIn(ExperimentalForeignApi::class)
 private fun List<Tile>.toNSAttributedString(height: Double): NSAttributedString {
@@ -61,27 +76,34 @@ private fun List<Tile>.toNSAttributedString(height: Double): NSAttributedString 
     return attributedString
 }
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(ExperimentalForeignApi::class, ExperimentalNativeApi::class)
 @Composable
 internal actual fun CoreTileField(
     value: List<Tile>,
     modifier: Modifier,
     state: CoreTileFieldState,
     cursorColor: Color,
-    fontSizeInSp: Float
+    fontSizeInSp: Float,
+    placeholder: String?,
 ) {
     val scope = currentRecomposeScope
     val coroutineContext = rememberCoroutineScope()
 
     val logger = remember { LoggerFactory.getLogger("CoreTileField") }
     val focusManager = LocalFocusManager.current
+    val density = LocalDensity.current
 
     var notifySelectionChange by remember { mutableStateOf(true) }
 
-    val tileHeight = with(LocalDensity.current) {
+    val tileHeight = with(density) {
         fontSizeInSp.sp.toDp().value.toDouble()
     }
+    val placeholderFontSize =
+        UIFont.systemFontOfSize(MaterialTheme.typography.bodyLarge.fontSize.value.toDouble())
+    val placeholderFontColor = MaterialTheme.colorScheme.onSurfaceVariant.toUIColor()
     var heightOfText by remember { mutableStateOf(0.0) }
+
+    var placeholderLabel: WeakReference<UILabel>? by remember { mutableStateOf(null) }
 
     // 防止被GC，在这里强引用
     val textViewDelegate = remember {
@@ -106,6 +128,8 @@ internal actual fun CoreTileField(
                             state.interactionSource.emit(it)
                         }
                     }
+
+                placeholderLabel?.get()?.setHidden(true)
             }
 
             override fun textViewDidEndEditing(textView: UITextView) {
@@ -116,6 +140,9 @@ internal actual fun CoreTileField(
                     }
                 }
                 prevFocusInteraction = null
+
+                placeholderLabel?.get()
+                    ?.setHidden(textView.text.isNotEmpty() || textView.attributedText.string.isNotEmpty())
             }
 
             override fun textViewDidChangeSelection(textView: UITextView) {
@@ -142,14 +169,13 @@ internal actual fun CoreTileField(
     var currentValue: List<Tile>? by remember { mutableStateOf(null) }
     var currentSelection: TextRange? by remember { mutableStateOf(null) }
     var currentCursorColor: Color? by remember { mutableStateOf(null) }
+    var currentPlaceholder: String? by remember { mutableStateOf(null) }
 
     UIKitView(
         modifier = modifier.fillMaxWidth()
             .height(max(tileHeight * 1.2, heightOfText).dp),  // 最小高度为tileHeight * 1.2，避免高度跳动
         factory = {
             UITextView().apply {
-                font = UIFont.systemFontOfSize(tileHeight)
-
                 // 去掉内部的padding
                 textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
                 textContainer.lineBreakMode = UILineBreakModeCharacterWrap
@@ -162,10 +188,22 @@ internal actual fun CoreTileField(
                 spellCheckingType = UITextSpellCheckingType.UITextSpellCheckingTypeNo
 
                 delegate = textViewDelegate
+
+                UILabel().apply {
+                    font = placeholderFontSize
+                    textColor = placeholderFontColor
+                    autoresizingMask =
+                        UIViewAutoresizingFlexibleHeight or UIViewAutoresizingFlexibleWidth
+                }.also {
+                    addSubview(it)
+                    placeholderLabel = WeakReference(it)
+                }
             }
         },
-        update = {
-            it.apply {
+        update = { textView ->
+            textView.apply {
+                font = UIFont.systemFontOfSize(tileHeight)
+
                 // setText的时候会调用onSelectionChanged把选择区域置为[n,n]，所以需要暂时不同步状态
                 if (currentValue != value) {
                     notifySelectionChange = false
@@ -192,14 +230,18 @@ internal actual fun CoreTileField(
                     currentSelection = state.selection
                 }
 
+                // 设置光标颜色
                 if (currentCursorColor != cursorColor) {
-                    tintColor = UIColor(
-                        red = cursorColor.red.toDouble(),
-                        green = cursorColor.green.toDouble(),
-                        blue = cursorColor.blue.toDouble(),
-                        alpha = cursorColor.alpha.toDouble()
-                    )
+                    tintColor = cursorColor.toUIColor()
                     currentCursorColor = cursorColor
+                }
+
+                // 设置placeholder
+                if (currentPlaceholder != placeholder) {
+                    placeholderLabel?.get()?.apply {
+                        text = placeholder
+                    }
+                    currentPlaceholder = placeholder
                 }
 
                 // 计算合适的高度

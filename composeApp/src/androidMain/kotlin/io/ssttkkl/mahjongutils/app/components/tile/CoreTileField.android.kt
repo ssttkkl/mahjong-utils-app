@@ -100,6 +100,7 @@ actual fun CoreTileField(
     state: CoreTileFieldState,
     cursorColor: Color,
     fontSizeInSp: Float,
+    placeholder: String?, // 安卓忽略该属性
 ) {
     val coroutineContext = rememberCoroutineScope()
 

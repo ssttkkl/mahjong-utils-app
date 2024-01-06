@@ -66,7 +66,7 @@ object FuroShantenScreen :
                             onValueChange = { model.tiles = it },
                             modifier = Modifier.fillMaxWidth(),
                             isError = isError,
-                            label = { Text(stringResource(MR.strings.label_tiles_in_hand)) }
+                            label = stringResource(MR.strings.label_tiles_in_hand)
                         )
                     }
                 }
@@ -79,7 +79,7 @@ object FuroShantenScreen :
                             onValueChange = { model.chanceTile = it.firstOrNull() },
                             modifier = Modifier.fillMaxWidth(),
                             isError = isError,
-                            label = { Text(stringResource(MR.strings.label_tile_discarded_by_other)) }
+                            label = stringResource(MR.strings.label_tile_discarded_by_other)
                         )
                     }
                 }

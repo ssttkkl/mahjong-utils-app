@@ -92,6 +92,7 @@ fun BaseTileField(
     value: List<Tile>,
     onValueChange: (List<Tile>) -> Unit,
     modifier: Modifier = Modifier,
+    label: String? = null,
     enabled: Boolean = true,
     fontSize: TextUnit = TileTextSize.Default.bodyLarge,
     isError: Boolean = false,
@@ -155,7 +156,8 @@ fun BaseTileField(
         fontSizeInSp = if (fontSize.isSp)
             fontSize.value
         else
-            LocalTextStyle.current.fontSize.value
+            LocalTextStyle.current.fontSize.value,
+        placeholder = label
     )
 }
 
@@ -168,7 +170,7 @@ fun TileField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     fontSize: TextUnit = TileTextSize.Default.bodyLarge,
-    label: @Composable (() -> Unit)? = null,
+    label: String? = null,
     placeholder: (@Composable () -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
@@ -183,7 +185,7 @@ fun TileField(
             visualTransformation = VisualTransformation.None,
             innerTextField = innerTextField,
             placeholder = placeholder,
-            label = label,
+            label = label?.let { ({ Text(label) }) },
             trailingIcon = {
                 Text(
                     stringResource(MR.strings.text_tiles_num_short, value.size),
@@ -212,6 +214,7 @@ fun TileField(
             value,
             onValueChange,
             modifier,
+            label = label,
             enabled = enabled,
             fontSize = fontSize,
             isError = isError,

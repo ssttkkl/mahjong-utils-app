@@ -130,7 +130,7 @@ object HoraScreen :
                             onValueChange = { model.tiles = it },
                             modifier = Modifier.fillMaxWidth(),
                             isError = isError,
-                            label = { Text(stringResource(MR.strings.label_tiles_in_hand)) }
+                            label =stringResource(MR.strings.label_tiles_in_hand)
                         )
                     }
                 }
@@ -145,7 +145,7 @@ object HoraScreen :
                                 onValueChange = { model.agari = it.firstOrNull() },
                                 modifier = Modifier.fillMaxWidth(),
                                 isError = isError,
-                                label = { Text(stringResource(MR.strings.label_agari)) },
+                                label =stringResource(MR.strings.label_agari),
                                 placeholder = {
                                     model.autoDetectedAgari?.let { autoDetectedAgari ->
                                         Tiles(

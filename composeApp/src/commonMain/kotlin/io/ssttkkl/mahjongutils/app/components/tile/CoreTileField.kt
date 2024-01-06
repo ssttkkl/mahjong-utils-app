@@ -23,4 +23,5 @@ internal expect fun CoreTileField(
     state: CoreTileFieldState,
     cursorColor: Color,
     fontSizeInSp: Float,
+    placeholder: String? = null  // 安卓忽略该属性，因为DecoratorBox在ios的输入框上不生效
 )

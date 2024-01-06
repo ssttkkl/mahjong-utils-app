@@ -92,7 +92,7 @@ object ShantenScreen :
                             onValueChange = { model.tiles = it },
                             modifier = Modifier.fillMaxWidth(),
                             isError = isError,
-                            label = { Text(stringResource(MR.strings.label_tiles_in_hand)) }
+                            label = stringResource(MR.strings.label_tiles_in_hand)
                         )
                     }
                 }
