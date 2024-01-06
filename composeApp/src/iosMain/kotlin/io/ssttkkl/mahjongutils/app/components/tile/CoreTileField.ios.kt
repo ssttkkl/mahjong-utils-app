@@ -105,10 +105,24 @@ internal actual fun CoreTileField(
 
     var placeholderLabel: WeakReference<UILabel>? by remember { mutableStateOf(null) }
 
+    var prevFocusInteraction: FocusInteraction.Focus? by remember { mutableStateOf(null) }
     // 防止被GC，在这里强引用
     val textViewDelegate = remember {
         object : NSObject(), UITextViewDelegateProtocol {
-            var prevFocusInteraction: FocusInteraction.Focus? = null
+            private fun syncSelection(textView: UITextView) {
+                val uiRange = textView.selectedTextRange
+                if (uiRange != null) {
+                    val start = textView.offsetFromPosition(
+                        textView.beginningOfDocument, uiRange.start
+                    )
+                    val end = textView.offsetFromPosition(
+                        textView.beginningOfDocument, uiRange.end
+                    )
+                    state.selection = TextRange(start.toInt(), end.toInt())
+                } else {
+                    state.selection = TextRange.Zero
+                }
+            }
 
             override fun textViewDidChange(textView: UITextView) {
                 logger.debug("textViewDidChange")
@@ -130,6 +144,8 @@ internal actual fun CoreTileField(
                     }
 
                 placeholderLabel?.get()?.setHidden(true)
+
+                syncSelection(textView)
             }
 
             override fun textViewDidEndEditing(textView: UITextView) {
@@ -148,18 +164,7 @@ internal actual fun CoreTileField(
             override fun textViewDidChangeSelection(textView: UITextView) {
                 if (notifySelectionChange) {
                     logger.debug("textViewDidChangeSelection")
-                    val uiRange = textView.selectedTextRange
-                    if (uiRange != null) {
-                        val start = textView.offsetFromPosition(
-                            textView.beginningOfDocument, uiRange.start
-                        )
-                        val end = textView.offsetFromPosition(
-                            textView.beginningOfDocument, uiRange.end
-                        )
-                        state.selection = TextRange(start.toInt(), end.toInt())
-                    } else {
-                        state.selection = TextRange.Zero
-                    }
+                    syncSelection(textView)
                 }
             }
         }
@@ -210,6 +215,9 @@ internal actual fun CoreTileField(
                     attributedText = value.toNSAttributedString(tileHeight)
                     notifySelectionChange = true
                     currentValue = value
+
+                    placeholderLabel?.get()
+                        ?.setHidden(prevFocusInteraction != null || value.isNotEmpty())
                 }
 
                 // 设置光标位置

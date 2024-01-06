@@ -15,24 +15,57 @@ import mahjongutils.hora.Hora
 import mahjongutils.models.Wind
 
 @Composable
-private fun hanhuText(hora: Hora) {
-    if (hora.hasYakuman) {
-        Text(stringResource(MR.strings.text_x_bai_yakuman, hora.han / 13))
-    } else {
-        Text(stringResource(MR.strings.text_x_han_x_hu, hora.han, hora.hu))
+private fun digitText(digit: Int): String {
+    return when (digit) {
+        1 -> stringResource(MR.strings.text_one)
+        2 -> stringResource(MR.strings.text_two)
+        3 -> stringResource(MR.strings.text_three)
+        4 -> stringResource(MR.strings.text_four)
+        5 -> stringResource(MR.strings.text_five)
+        6 -> stringResource(MR.strings.text_six)
+        else -> digit.toString()
     }
 }
 
 @Composable
-private fun textParentTsumo(parentPoint: ParentPoint, tag: String? = null) =
-    if (tag != null)
-        stringResource(
-            MR.strings.text_parent_tsumo_with_tag,
-            parentPoint.tsumo,
-            parentPoint.tsumoTotal,
-            tag
-        )
-    else
+private fun hanhuText(hora: Hora) {
+    when {
+        hora.hasYakuman -> {
+            Text(stringResource(MR.strings.text_x_bai_yakuman, digitText(hora.han / 13)))
+        }
+        hora.han >= 13 -> {
+            Text(stringResource(MR.strings.text_x_han_x_hu_with_tag, hora.han, hora.hu,
+                stringResource(MR.strings.label_kazoeyakuman)
+            ))
+        }
+        hora.han >= 11 -> {
+            Text(stringResource(MR.strings.text_x_han_x_hu_with_tag, hora.han, hora.hu,
+                stringResource(MR.strings.label_sanbaiman)
+            ))
+        }
+        hora.han >= 8 -> {
+            Text(stringResource(MR.strings.text_x_han_x_hu_with_tag, hora.han, hora.hu,
+                stringResource(MR.strings.label_baiman)
+            ))
+        }
+        hora.han >= 6 -> {
+            Text(stringResource(MR.strings.text_x_han_x_hu_with_tag, hora.han, hora.hu,
+                stringResource(MR.strings.label_haneman)
+            ))
+        }
+        hora.han >= 5 || hora.han == 4 && hora.hu >= 40 || hora.han == 3 && hora.hu >= 70 -> {
+            Text(stringResource(MR.strings.text_x_han_x_hu_with_tag, hora.han, hora.hu,
+                stringResource(MR.strings.label_mangan)
+            ))
+        }
+        else -> {
+            Text(stringResource(MR.strings.text_x_han_x_hu, hora.han, hora.hu))
+        }
+    }
+}
+
+@Composable
+private fun textParentTsumo(parentPoint: ParentPoint) =
         stringResource(
             MR.strings.text_parent_tsumo,
             parentPoint.tsumo,
@@ -40,30 +73,14 @@ private fun textParentTsumo(parentPoint: ParentPoint, tag: String? = null) =
         )
 
 @Composable
-private fun textParentRon(parentPoint: ParentPoint, tag: String? = null) =
-    if (tag != null)
-        stringResource(
-            MR.strings.text_parent_ron_with_tag,
-            parentPoint.ron,
-            tag
-        )
-    else
+private fun textParentRon(parentPoint: ParentPoint) =
         stringResource(
             MR.strings.text_parent_ron,
             parentPoint.ron
         )
 
 @Composable
-private fun textChildTsumo(childPoint: ChildPoint, tag: String? = null) =
-    if (tag != null)
-        stringResource(
-            MR.strings.text_child_tsumo_with_tag,
-            childPoint.tsumoChild,
-            childPoint.tsumoParent,
-            childPoint.tsumoTotal,
-            tag
-        )
-    else
+private fun textChildTsumo(childPoint: ChildPoint) =
         stringResource(
             MR.strings.text_child_tsumo,
             childPoint.tsumoChild,
@@ -72,14 +89,7 @@ private fun textChildTsumo(childPoint: ChildPoint, tag: String? = null) =
         )
 
 @Composable
-private fun textChildRon(childPoint: ChildPoint, tag: String? = null) =
-    if (tag != null)
-        stringResource(
-            MR.strings.text_child_ron_with_tag,
-            childPoint.ron,
-            tag
-        )
-    else
+private fun textChildRon(childPoint: ChildPoint) =
         stringResource(
             MR.strings.text_child_ron,
             childPoint.ron
@@ -89,43 +99,36 @@ private fun textChildRon(childPoint: ChildPoint, tag: String? = null) =
 private fun parentPointText(hora: Hora) {
     if (hora.tsumo) {
         Text(
-            when (hora.parentPoint) {
-                ParentPoint.Mangan ->
+            when (hora.parentPoint.tsumo) {
+                ParentPoint.Mangan.tsumo ->
                     textParentTsumo(
-                        hora.parentPoint,
-                        stringResource(MR.strings.label_mangan)
+                        hora.parentPoint
                     )
 
-                ParentPoint.Haneman ->
+                ParentPoint.Haneman.tsumo ->
                     textParentTsumo(
-                        hora.parentPoint,
-                        stringResource(MR.strings.label_haneman)
+                        hora.parentPoint
                     )
 
-                ParentPoint.Baiman ->
+                ParentPoint.Baiman.tsumo ->
                     textParentTsumo(
-                        hora.parentPoint,
-                        stringResource(MR.strings.label_baiman)
+                        hora.parentPoint
                     )
 
-                ParentPoint.Sanbaiman ->
+                ParentPoint.Sanbaiman.tsumo ->
                     textParentTsumo(
-                        hora.parentPoint,
-                        stringResource(MR.strings.label_sanbaiman)
+                        hora.parentPoint
                     )
 
-                ParentPoint.Yakuman ->
+                ParentPoint.Yakuman.tsumo ->
                     textParentTsumo(
-                        hora.parentPoint,
-                        if (hora.hasYakuman) stringResource(MR.strings.label_yakuman)
-                        else stringResource(MR.strings.label_kazoeyakuman)
+                        hora.parentPoint
                     )
 
                 else -> {
-                    if (hora.parentPoint.tsumoTotal > ParentPoint.Yakuman.tsumoTotal) {
+                    if (hora.parentPoint.tsumo > ParentPoint.Yakuman.tsumo) {
                         textParentTsumo(
-                            hora.parentPoint,
-                            stringResource(MR.strings.label_multiple_yakuman, hora.han / 13)
+                            hora.parentPoint
                         )
                     } else {
                         textParentTsumo(hora.parentPoint)
@@ -135,43 +138,36 @@ private fun parentPointText(hora: Hora) {
         )
     } else {
         Text(
-            when (hora.parentPoint) {
-                ParentPoint.Mangan ->
+            when (hora.parentPoint.ron) {
+                ParentPoint.Mangan.ron ->
                     textParentRon(
-                        hora.parentPoint,
-                        stringResource(MR.strings.label_mangan)
+                        hora.parentPoint
                     )
 
-                ParentPoint.Haneman ->
+                ParentPoint.Haneman.ron ->
                     textParentRon(
-                        hora.parentPoint,
-                        stringResource(MR.strings.label_haneman)
+                        hora.parentPoint
                     )
 
-                ParentPoint.Baiman ->
+                ParentPoint.Baiman.ron ->
                     textParentRon(
-                        hora.parentPoint,
-                        stringResource(MR.strings.label_baiman)
+                        hora.parentPoint
                     )
 
-                ParentPoint.Sanbaiman ->
+                ParentPoint.Sanbaiman.ron ->
                     textParentRon(
-                        hora.parentPoint,
-                        stringResource(MR.strings.label_sanbaiman)
+                        hora.parentPoint
                     )
 
-                ParentPoint.Yakuman ->
+                ParentPoint.Yakuman.ron ->
                     textParentRon(
-                        hora.parentPoint,
-                        if (hora.hasYakuman) stringResource(MR.strings.label_yakuman)
-                        else stringResource(MR.strings.label_kazoeyakuman)
+                        hora.parentPoint
                     )
 
                 else -> {
-                    if (hora.parentPoint.tsumoTotal > ParentPoint.Yakuman.tsumoTotal) {
+                    if (hora.parentPoint.ron > ParentPoint.Yakuman.ron) {
                         textParentRon(
-                            hora.parentPoint,
-                            stringResource(MR.strings.label_multiple_yakuman, hora.han / 13)
+                            hora.parentPoint
                         )
                     } else {
                         textParentRon(hora.parentPoint)
@@ -186,43 +182,36 @@ private fun parentPointText(hora: Hora) {
 private fun childPointText(hora: Hora) {
     if (hora.tsumo) {
         Text(
-            when (hora.childPoint) {
-                ChildPoint.Mangan ->
+            when (hora.childPoint.tsumoTotal) {
+                ChildPoint.Mangan.tsumoTotal ->
                     textChildTsumo(
-                        hora.childPoint,
-                        stringResource(MR.strings.label_mangan)
+                        hora.childPoint
                     )
 
-                ChildPoint.Haneman ->
+                ChildPoint.Haneman.tsumoTotal ->
                     textChildTsumo(
-                        hora.childPoint,
-                        stringResource(MR.strings.label_haneman)
+                        hora.childPoint
                     )
 
-                ChildPoint.Baiman ->
+                ChildPoint.Baiman.tsumoTotal ->
                     textChildTsumo(
-                        hora.childPoint,
-                        stringResource(MR.strings.label_baiman)
+                        hora.childPoint
                     )
 
-                ChildPoint.Sanbaiman ->
+                ChildPoint.Sanbaiman.tsumoTotal ->
                     textChildTsumo(
-                        hora.childPoint,
-                        stringResource(MR.strings.label_sanbaiman)
+                        hora.childPoint
                     )
 
-                ChildPoint.Yakuman ->
+                ChildPoint.Yakuman.tsumoTotal ->
                     textChildTsumo(
-                        hora.childPoint,
-                        if (hora.hasYakuman) stringResource(MR.strings.label_yakuman)
-                        else stringResource(MR.strings.label_kazoeyakuman)
+                        hora.childPoint
                     )
 
                 else -> {
                     if (hora.childPoint.tsumoTotal > ChildPoint.Yakuman.tsumoTotal) {
                         textChildTsumo(
-                            hora.childPoint,
-                            stringResource(MR.strings.label_multiple_yakuman, hora.han / 13)
+                            hora.childPoint
                         )
                     } else {
                         textChildTsumo(hora.childPoint)
@@ -232,43 +221,36 @@ private fun childPointText(hora: Hora) {
         )
     } else {
         Text(
-            when (hora.childPoint) {
-                ChildPoint.Mangan ->
+            when (hora.childPoint.ron) {
+                ChildPoint.Mangan.ron ->
                     textChildRon(
-                        hora.childPoint,
-                        stringResource(MR.strings.label_mangan)
+                        hora.childPoint
                     )
 
-                ChildPoint.Haneman ->
+                ChildPoint.Haneman.ron ->
                     textChildRon(
-                        hora.childPoint,
-                        stringResource(MR.strings.label_haneman)
+                        hora.childPoint
                     )
 
-                ChildPoint.Baiman ->
+                ChildPoint.Baiman.ron ->
                     textChildRon(
-                        hora.childPoint,
-                        stringResource(MR.strings.label_baiman)
+                        hora.childPoint
                     )
 
-                ChildPoint.Sanbaiman ->
+                ChildPoint.Sanbaiman.ron ->
                     textChildRon(
-                        hora.childPoint,
-                        stringResource(MR.strings.label_sanbaiman)
+                        hora.childPoint
                     )
 
-                ChildPoint.Yakuman ->
+                ChildPoint.Yakuman.ron ->
                     textChildRon(
-                        hora.childPoint,
-                        if (hora.hasYakuman) stringResource(MR.strings.label_yakuman)
-                        else stringResource(MR.strings.label_kazoeyakuman)
+                        hora.childPoint
                     )
 
                 else -> {
-                    if (hora.childPoint.tsumoTotal > ChildPoint.Yakuman.tsumoTotal) {
+                    if (hora.childPoint.ron > ChildPoint.Yakuman.ron) {
                         textChildRon(
-                            hora.childPoint,
-                            stringResource(MR.strings.label_multiple_yakuman, hora.han / 13)
+                            hora.childPoint
                         )
                     } else {
                         textChildRon(hora.childPoint)

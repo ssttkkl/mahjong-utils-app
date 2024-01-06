@@ -72,15 +72,12 @@
     <string name="label_wind_north">北</string>
 
     <string name="text_x_han_x_hu">%d番%d符</string>
+    <string name="text_x_han_x_hu_with_tag">%d番%d符（%s）</string>
     <string name="text_x_bai_yakuman">%d倍役満</string>
     <string name="text_parent_tsumo">親ツモする番：%d ALL（共%d）</string>
     <string name="text_parent_ron">親ロンする番：%d</string>
     <string name="text_child_tsumo">子ツモする番：%d - %d（共%d）</string>
     <string name="text_child_ron">子ロンする番：%d</string>
-    <string name="text_parent_tsumo_with_tag">親ツモする番：%d ALL（共%d，%s）</string>
-    <string name="text_parent_ron_with_tag">親ロンする番：%d（%s）</string>
-    <string name="text_child_tsumo_with_tag">子ツモする番：%d - %d（共%d，%s）</string>
-    <string name="text_child_ron_with_tag">子ロンする番：%d（%s）</string>
 
     <string name="text_one">一</string>
     <string name="text_two">二</string>
@@ -107,6 +104,8 @@
     <string name="label_yaku_chankan">チャンカン</string>
     <string name="label_yaku_haitei">ハイテイ</string>
     <string name="label_yaku_houtei">ホウテイ</string>
+
+    <string name="label_yaku_dora">ドラ%d</string>
 
     <string name="text_yes_symbol">○</string>
     <string name="text_no_symbol">×</string>

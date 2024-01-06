@@ -51,13 +51,14 @@ private fun HandDeconstructionPanel(pattern: RegularHoraHandPattern) {
 
                 Panel({ Text(stringResource(MR.strings.label_mentsu)) }, Modifier.weight(12f)) {
                     FlowRow {
-                        pattern.menzenMentsu.sortedBy { it.tiles.first() }.forEachIndexed { index, mentsu ->
-                            if (index != 0) {
-                                Spacer(Modifier.width(8.dp))
-                            }
+                        pattern.menzenMentsu.sortedBy { it.tiles.first() }
+                            .forEachIndexed { index, mentsu ->
+                                if (index != 0) {
+                                    Spacer(Modifier.width(8.dp))
+                                }
 
-                            Tiles(mentsu.tiles)
-                        }
+                                Tiles(mentsu.tiles)
+                            }
                     }
                 }
             }
@@ -89,6 +90,11 @@ private fun YakuPanel(hora: Hora) {
             }
 
             Text(stringResource(yaku.localizedName))
+        }
+
+        if (hora.yaku.isNotEmpty() && hora.dora > 0) {
+            Spacer(Modifier.height(8.dp))
+            Text(stringResource(MR.strings.label_yaku_dora, hora.dora))
         }
     }
 }

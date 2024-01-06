@@ -71,15 +71,12 @@
     <string name="label_wind_north">北</string>
 
     <string name="text_x_han_x_hu">%d番%d符</string>
+    <string name="text_x_han_x_hu_with_tag">%d番%d符（%s）</string>
     <string name="text_x_bai_yakuman">%d倍役满</string>
     <string name="text_parent_tsumo">亲家自摸：%d ALL（共%d）</string>
     <string name="text_parent_ron">亲家荣和：%d</string>
     <string name="text_child_tsumo">子家自摸：%d - %d（共%d）</string>
     <string name="text_child_ron">子家荣和：%d</string>
-    <string name="text_parent_tsumo_with_tag">亲家自摸：%d ALL（共%d，%s）</string>
-    <string name="text_parent_ron_with_tag">亲家荣和：%d（%s）</string>
-    <string name="text_child_tsumo_with_tag">子家自摸：%d - %d（共%d，%s）</string>
-    <string name="text_child_ron_with_tag">子家荣和：%d（%s）</string>
 
     <string name="text_one">一</string>
     <string name="text_two">二</string>
@@ -145,6 +142,8 @@
     <string name="label_yaku_chankan">枪杠</string>
     <string name="label_yaku_haitei">海底捞月</string>
     <string name="label_yaku_houtei">河底捞鱼</string>
+
+    <string name="label_yaku_dora">宝牌%d</string>
 
     <string name="label_yaku">役种</string>
     <string name="label_hora_point">番符与点数</string>
