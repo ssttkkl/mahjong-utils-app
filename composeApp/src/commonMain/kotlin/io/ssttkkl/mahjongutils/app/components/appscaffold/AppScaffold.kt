@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -193,6 +197,13 @@ fun AppScaffold(
                     drawerState = appState.drawerState,
                     drawerContent = {
                         ModalDrawerSheet {
+                            IconButton(onClick = {
+                                appState.coroutineScope.launch {
+                                    appState.drawerState.close()
+                                }
+                            }){
+                                Icon(Icons.Default.Close, "")
+                            }
                             NavigationItems(
                                 appState.navigator,
                                 navigatableScreens,
