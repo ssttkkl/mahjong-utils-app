@@ -26,7 +26,7 @@ fun HanhuOptionsDialog(
     onChangeOptions: (HanHuOptions) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
-    Dialog(onDismissRequest) {
+    Dialog(onDismissRequest = onDismissRequest) {
         Card {
             Column(
                 Modifier.padding(Spacing.current.cardInnerPadding)

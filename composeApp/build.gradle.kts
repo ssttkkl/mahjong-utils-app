@@ -1,6 +1,7 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import dev.icerock.gradle.MRVisibility
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -40,6 +41,8 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()
 
+    jvm("desktop")
+
     cocoapods {
         version = "1.0.0"
         summary = "Riichi Mahjong Calculator"
@@ -58,11 +61,6 @@ kotlin {
     }
 
     sourceSets {
-        getByName("androidMain").dependsOn(commonMain.get())
-        getByName("iosArm64Main").dependsOn(commonMain.get())
-        getByName("iosX64Main").dependsOn(commonMain.get())
-        getByName("iosSimulatorArm64Main").dependsOn(commonMain.get())
-
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
@@ -94,6 +92,12 @@ kotlin {
             implementation(libs.kotlinx.atomicfu)
 
             implementation(libs.mahjong.utils)
+        }
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(libs.appdirs)
+            }
         }
     }
 }
@@ -129,6 +133,18 @@ android {
     }
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
+    }
+}
+
+compose.desktop {
+    application {
+        mainClass = "MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "io.ssttkkl.mahjongutils.app"
+            packageVersion = properties["version.name"].toString()
+        }
     }
 }
 

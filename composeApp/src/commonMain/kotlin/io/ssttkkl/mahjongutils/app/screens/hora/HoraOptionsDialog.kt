@@ -26,7 +26,7 @@ fun HoraOptionsDialog(
     onChangeOptions: (HoraOptions) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
-    Dialog(onDismissRequest) {
+    Dialog(onDismissRequest = onDismissRequest) {
         Card {
             Column(
                 Modifier.padding(Spacing.current.cardInnerPadding)

@@ -1,10 +1,5 @@
 package io.ssttkkl.mahjongutils.app.screens.base
 
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -12,13 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
 import dev.icerock.moko.resources.StringResource
-import dev.icerock.moko.resources.compose.stringResource
-import io.ssttkkl.mahjongutils.app.MR
-import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowSnackbarOnFailure
-import io.ssttkkl.mahjongutils.app.components.capture.Capturable
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen.Companion.isTwoPanes
 import kotlin.jvm.Transient
 
@@ -43,19 +34,6 @@ class ResultScreen(
     @Composable
     private fun rememberScreenModel(): ResultScreenModel {
         return rememberScreenModel(key)
-    }
-
-    @Composable
-    override fun RowScope.TopBarActions(appState: AppState) {
-        val model = rememberScreenModel()
-
-        if (!model.calculating) {
-            IconButton(onClick = {
-                model.onCapture()
-            }) {
-                Icon(Icons.Outlined.Share, stringResource(MR.strings.label_share))
-            }
-        }
     }
 
     @Composable
@@ -86,9 +64,7 @@ class ResultScreen(
                 PopAndShowSnackbarOnFailure(it)
             }
         ) { result ->
-            Capturable(model.captureState) {
-                result?.let { model.resultContent(it) }
-            }
+            result?.let { model.resultContent(it) }
         }
     }
 }

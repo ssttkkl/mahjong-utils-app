@@ -5,7 +5,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import dev.icerock.moko.resources.ImageResource
-import io.ssttkkl.mahjongutils.app.components.capture.CaptureResult
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import platform.CoreFoundation.CFRelease
@@ -26,18 +25,8 @@ import platform.CoreGraphics.CGImageGetWidth
 import platform.CoreGraphics.CGRectApplyAffineTransform
 import platform.CoreGraphics.CGRectMake
 import platform.CoreGraphics.kCGInterpolationNone
-import platform.UIKit.UIImageWriteToSavedPhotosAlbum
 import platform.posix.M_PI
 
-@OptIn(ExperimentalForeignApi::class)
-actual suspend fun CaptureResult.saveToAlbum() {
-    UIImageWriteToSavedPhotosAlbum(
-        uiImage,
-        null,
-        null,
-        null
-    )
-}
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
