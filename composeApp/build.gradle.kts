@@ -61,6 +61,13 @@ kotlin {
     }
 
     sourceSets {
+        // https://github.com/icerockdev/moko-resources/issues/618
+        getByName("androidMain").dependsOn(commonMain.get())
+        getByName("desktopMain").dependsOn(commonMain.get())
+        getByName("iosArm64Main").dependsOn(commonMain.get())
+        getByName("iosX64Main").dependsOn(commonMain.get())
+        getByName("iosSimulatorArm64Main").dependsOn(commonMain.get())
+
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
@@ -156,7 +163,7 @@ compose.desktop {
 multiplatformResources {
     multiplatformResourcesPackage = "io.ssttkkl.mahjongutils.app"
     multiplatformResourcesVisibility = MRVisibility.Internal
-    iosBaseLocalizationRegion = "en"
+    iosBaseLocalizationRegion = "zh"
 }
 
 buildkonfig {
