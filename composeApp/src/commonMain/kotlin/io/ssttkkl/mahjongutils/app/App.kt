@@ -22,6 +22,7 @@ import io.ssttkkl.mahjongutils.app.screens.furoshanten.FuroShantenScreen
 import io.ssttkkl.mahjongutils.app.screens.hanhu.HanhuScreen
 import io.ssttkkl.mahjongutils.app.screens.hora.HoraScreen
 import io.ssttkkl.mahjongutils.app.screens.shanten.ShantenScreen
+import io.ssttkkl.mahjongutils.app.theme.AppTheme
 import kotlinx.coroutines.launch
 
 private val navigatableScreens: List<NavigationScreen> = listOf(
@@ -35,7 +36,7 @@ private val navigatableScreens: List<NavigationScreen> = listOf(
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun App() {
-    MaterialTheme {
+    AppTheme {
         Navigator(ShantenScreen) { navigator ->
             val windowSizeClass: WindowSizeClass = calculateWindowSizeClass()
             val useNavigationDrawer =
