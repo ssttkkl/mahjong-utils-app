@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'composeApp'
     spec.version                  = '1.0.0'
-    spec.homepage                 = 'https://github.com/JetBrains/kotlin'
+    spec.homepage                 = 'https://github.com/NNSZ-Yorozuya/mahjong-utils-app'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = 'Private'

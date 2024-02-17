@@ -8,6 +8,8 @@
     <string name="title_hora_result">和牌分析结果</string>
     <string name="title_hanhu">番符得点计算</string>
     <string name="title_about">关于</string>
+    <string name="title_about_appversion">应用程序版本</string>
+    <string name="title_about_opensource_licenses">开放源代码许可</string>
 
     <string name="label_history">历史记录</string>
     <string name="label_clear">清空</string>

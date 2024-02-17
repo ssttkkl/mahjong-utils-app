@@ -1,3 +1,4 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import dev.icerock.gradle.MRVisibility
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
@@ -10,6 +11,7 @@ plugins {
     alias(libs.plugins.kotlinNativeCocoapods)
     alias(libs.plugins.mokoResources)
     alias(libs.plugins.aboutLibraries)
+    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
@@ -41,8 +43,8 @@ kotlin {
     cocoapods {
         version = "1.0.0"
         summary = "Compose App"
-        homepage = "https://github.com/JetBrains/kotlin"
-        source = "{ :git => 'git@github.com:vkormushkin/kmmpodlibrary.git', :tag => '$version' }"
+        homepage = "https://github.com/NNSZ-Yorozuya/mahjong-utils-app"
+        source = "{ :git => 'https://github.com/NNSZ-Yorozuya/mahjong-utils-app.git', :tag => '$version' }"
         license = "Private"
         ios.deploymentTarget = "13.0"
         podfile = project.file("../iosApp/Podfile")
@@ -108,8 +110,8 @@ android {
         applicationId = "io.ssttkkl.mahjongutils.app"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = properties["version.code"].toString().toInt()
+        versionName = properties["version.name"].toString()
     }
     packaging {
         resources {
@@ -139,4 +141,15 @@ multiplatformResources {
     multiplatformResourcesPackage = "io.ssttkkl.mahjongutils.app"
     multiplatformResourcesVisibility = MRVisibility.Internal
     iosBaseLocalizationRegion = "en"
+}
+
+buildkonfig {
+    packageName = "io.ssttkkl.mahjongutils.app"
+    // objectName = 'YourAwesomeConfig'
+    // exposeObjectWithName = 'YourAwesomePublicConfig'
+
+    defaultConfigs {
+        buildConfigField(STRING, "VERSION_NAME", properties["version.name"].toString())
+        buildConfigField(STRING, "VERSION_CODE", properties["version.code"].toString())
+    }
 }

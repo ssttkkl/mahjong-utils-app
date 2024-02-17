@@ -7,7 +7,8 @@
     <string name="title_hora">和了分析</string>
     <string name="title_hora_result">和了分析結果</string>
     <string name="title_hanhu">飜符得点計算</string>
-    <string name="title_about">About</string>
+    <string name="title_about">アーバウ</string>
+    <string name="title_about_opensourcelicenses">オープンソースライセンス</string>
 
     <string name="label_history">ヒストリ</string>
     <string name="label_clear">クリア</string>
