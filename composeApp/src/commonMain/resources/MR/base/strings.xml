@@ -85,8 +85,7 @@
     <string name="desc_hasComplexYakuman">ComplexYakuman</string>
     <string name="label_hora_options_ok">OK</string>
     <string name="label_hora_options_restore">Restore</string>
-    <string name="text_overwrite_hora_options_hint">Do you also want to overwrite hora options?
-    </string>
+    <string name="text_overwrite_hora_options_hint">Do you also want to overwrite hora options?</string>
 
     <string name="label_wind_unspecified">Unspecified</string>
     <string name="label_wind_east">East</string>
@@ -186,16 +185,10 @@
     <string name="text_must_enter_tiles">Input your tiles in hand please.</string>
     <string name="text_must_enter_chance_tile">Input your chance tile please.</string>
     <string name="text_cannot_have_more_than_14_tiles">You cannot have more than 14 tiles.</string>
-    <string name="text_tiles_must_not_be_divided_into_3">Number of tiles must not be divided into
-        3.
-    </string>
-    <string name="text_any_tile_must_not_be_more_than_4">You cannot have any tile more than 4.
-    </string>
-    <string name="text_tiles_are_not_without_got">You must not draw a tile in your hand. (have 4, 7,
-        10 or 13 tiles)
-    </string>
-    <string name="text_hora_hand_tiles_not_enough">Number of tiles you entered is not enough.
-    </string>
+    <string name="text_tiles_must_not_be_divided_into_3">Number of tiles must not be divided into 3.</string>
+    <string name="text_any_tile_must_not_be_more_than_4">You cannot have any tile more than 4.</string>
+    <string name="text_tiles_are_not_without_got">You must not draw a tile in your hand. (having 4, 7, 10 or 13 tiles)</string>
+    <string name="text_hora_hand_tiles_not_enough">Number of tiles you entered is not enough.</string>
     <string name="text_invalid_dora_count">Invalid number of dora.</string>
     <string name="text_invalid_furo">Not a valid furo.</string>
     <string name="text_must_enter_agari">Enter your agari tile please.</string>

@@ -20,9 +20,7 @@
     <string name="label_tiles_in_hand">手牌</string>
     <string name="label_shanten_mode">计算模式</string>
     <string name="label_union_shanten">一般形</string>
-    <string name="text_union_shanten_desc">
-        除四面子+一雀头的标准形外，还考虑七对子与国士无双和牌的情况
-    </string>
+    <string name="text_union_shanten_desc">除四面子+一雀头的标准形外，还考虑七对子与国士无双和牌的情况</string>
     <string name="label_regular_shanten">标准形</string>
     <string name="text_regular_shanten_desc">只考虑四面子+一雀头和牌的情况</string>
     <string name="label_calc">计算</string>
@@ -72,23 +70,22 @@
 
     <string name="label_hora_options">规则设置</string>
     <string name="label_aotenjou">青天井</string>
-    <string name="desc_aotenjou">Aotenjou</string>
+    <string name="desc_aotenjou">移除满贯及以上固定分数限制，不论多少番都以基本点公式计算</string>
     <string name="label_hasKuitan">有食断</string>
-    <string name="desc_hasKuitan">Kuitan</string>
+    <string name="desc_hasKuitan">断幺九是否视为非门前役</string>
     <string name="label_renpuuJyantou4Hu">连风雀头计4符</string>
-    <string name="desc_renpuuJyantou4Hu">RenpuuJyantouHu</string>
+    <string name="desc_renpuuJyantou4Hu">当雀头同时为自风与场风时，是否计4符（关闭该选项则计2符）</string>
     <string name="label_hasKiriageMangan">有切上满贯</string>
-    <string name="desc_hasKiriageMangan">KiriageMangan</string>
+    <string name="desc_hasKiriageMangan">4番30符是否视作满贯</string>
     <string name="label_hasKazoeYakuman">有累计役满</string>
-    <string name="desc_hasKazoeYakuman">KazoeYakuman</string>
+    <string name="desc_hasKazoeYakuman">非役满牌型但番数达13番及以上时，是否视作役满</string>
     <string name="label_hasMultipleYakuman">有多倍役满</string>
-    <string name="desc_hasMultipleYakuman">MultipleYakuman</string>
+    <string name="desc_hasMultipleYakuman">大四喜、国士无双十三面、纯正九莲宝灯是否视为双倍役满</string>
     <string name="label_hasComplexYakuman">有复合役满</string>
-    <string name="desc_hasComplexYakuman">ComplexYakuman</string>
+    <string name="desc_hasComplexYakuman">当牌型满足多个役满役时，是否允许复合（关闭该选项则只计最高倍役满役）</string>
     <string name="label_hora_options_ok">好</string>
     <string name="label_hora_options_restore">恢复默认值</string>
-    <string name="text_overwrite_hora_options_hint">该历史记录使用的规则与当前不一致，是否覆盖？
-    </string>
+    <string name="text_overwrite_hora_options_hint">该历史记录使用的规则与当前不一致，是否覆盖？</string>
 
     <string name="label_wind_unspecified">未指定</string>
     <string name="label_wind_east">东</string>
@@ -196,6 +193,9 @@
     <string name="text_invalid_furo">不是有效的副露。</string>
     <string name="text_must_enter_agari">请输入所和的牌。</string>
     <string name="text_agari_not_in_hand">所和的牌不在你的和牌中。</string>
+    <string name="text_must_enter_han">请输入番数。</string>
     <string name="text_invalid_han_number">输入的番数不合法。</string>
+    <string name="text_must_enter_hu">请输入符数。</string>
     <string name="text_invalid_hu_number">输入的符数不合法。</string>
+    <string name="text_hu_exceeded_maximum">输入的符数超过最大值140。</string>
 </resources>
