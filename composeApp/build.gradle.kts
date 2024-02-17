@@ -15,18 +15,18 @@ plugins {
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
+
 //    @OptIn(ExperimentalWasmDsl::class)
 //    wasmJs {
-//        moduleName = "composeApp"
+//        moduleName = "Riichi Mahjong Calculator"
 //        browser {
 //            commonWebpackConfig {
-//                outputFileName = "composeApp.js"
+//                outputFileName = "riichiMahjongCalculator.js"
 //            }
 //        }
 //        binaries.executable()
 //    }
-
-    applyDefaultHierarchyTemplate()
 
     androidTarget {
         compilations.all {
@@ -42,7 +42,7 @@ kotlin {
 
     cocoapods {
         version = "1.0.0"
-        summary = "Compose App"
+        summary = "Riichi Mahjong Calculator"
         homepage = "https://github.com/NNSZ-Yorozuya/mahjong-utils-app"
         source = "{ :git => 'https://github.com/NNSZ-Yorozuya/mahjong-utils-app.git', :tag => '$version' }"
         license = "Private"

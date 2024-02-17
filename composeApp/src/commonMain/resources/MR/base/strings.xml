@@ -18,19 +18,19 @@
     <string name="text_empty_history">Empty</string>
 
     <string name="label_tiles_in_hand">Tiles in Hand</string>
-    <string name="label_shanten_mode">Shanten Mode</string>
+    <string name="label_shanten_mode">Shanten Rule</string>
     <string name="label_union_shanten">Union</string>
-    <string name="text_union_shanten_desc">Union Shanten</string>
+    <string name="text_union_shanten_desc">In addition to the standard form of Four Mentsu and One Toitsu, also consider Chiitoitsu and Kokushi Musou as winning hand patterns.</string>
     <string name="label_regular_shanten">Regular</string>
-    <string name="text_regular_shanten_desc">Regular Shanten</string>
+    <string name="text_regular_shanten_desc">Only consider the Four Mentsu and One Toitsu as the winning hand pattern.</string>
     <string name="label_calc">Calc</string>
 
-    <string name="text_tiles_without_got">Without got</string>
-    <string name="text_tiles_with_got">With got</string>
+    <string name="text_tiles_without_got">Not Drawn</string>
+    <string name="text_tiles_with_got">Drawn</string>
     <string name="label_shanten_num">Shanten Num</string>
-    <string name="text_shanten_num">%d shanten</string>
+    <string name="text_shanten_num">%d-shanten</string>
     <string name="text_tenpai">Tenpai</string>
-    <string name="text_hora">Hora</string>
+    <string name="text_hora">Win</string>
     <string name="label_advance_tiles">Advance Tiles</string>
     <string name="label_waiting_tiles">Waiting Tiles</string>
     <string name="label_good_shape_advance_tiles">Good-Shape Advance Tiles</string>
@@ -50,7 +50,7 @@
 
     <string name="label_tile_discarded_by_other">Discarded by Other</string>
     <string name="label_tile_discarded_by_other_short">From Other: %s</string>
-    <string name="label_other_options">Other Options</string>
+    <string name="label_other_options">Options</string>
     <string name="label_allow_chi">Allow Chi</string>
 
     <string name="label_furo">Furo</string>
@@ -70,19 +70,19 @@
 
     <string name="label_hora_options">Hora Options</string>
     <string name="label_aotenjou">Aotenjou</string>
-    <string name="desc_aotenjou">Aotenjou</string>
+    <string name="desc_aotenjou">Remove the fixed score limit for Mangan and above; no matter the number of han, calculate using the basic point formula. </string>
     <string name="label_hasKuitan">Kuitan</string>
-    <string name="desc_hasKuitan">Kuitan</string>
-    <string name="label_renpuuJyantou4Hu">RenpuuJyantouHu</string>
-    <string name="desc_renpuuJyantou4Hu">RenpuuJyantouHu</string>
-    <string name="label_hasKiriageMangan">KiriageMangan</string>
-    <string name="desc_hasKiriageMangan">KiriageMangan</string>
-    <string name="label_hasKazoeYakuman">KazoeYakuman</string>
-    <string name="desc_hasKazoeYakuman">KazoeYakuman</string>
-    <string name="label_hasMultipleYakuman">MultipleYakuman</string>
-    <string name="desc_hasMultipleYakuman">MultipleYakuman</string>
-    <string name="label_hasComplexYakuman">ComplexYakuman</string>
-    <string name="desc_hasComplexYakuman">ComplexYakuman</string>
+    <string name="desc_hasKuitan">Whether Tanyao is considered a non-closed hand yaku. </string>
+    <string name="label_renpuuJyantou4Hu">Renpuu Jyantou 4-Hu</string>
+    <string name="desc_renpuuJyantou4Hu">When the pair (Jyantou) is both the player\u0027s wind and the prevailing wind, is it scored as 4 hu. (closing this option scores it as 2 hu)</string>
+    <string name="label_hasKiriageMangan">Kiriage Mangan</string>
+    <string name="desc_hasKiriageMangan">Is 4-han 30-fu considered a mangan.</string>
+    <string name="label_hasKazoeYakuman">Kazoe Yakuman</string>
+    <string name="desc_hasKazoeYakuman">Is a non-Yakuman hand with 13 or more han considered a Yakuman. </string>
+    <string name="label_hasMultipleYakuman">Multiple Yakuman</string>
+    <string name="desc_hasMultipleYakuman">Are Daisushi, Kokushimusou-Juusanmen-Machi, and Junsei-ChurenPoutou considered as double Yakuman. </string>
+    <string name="label_hasComplexYakuman">Complex Yakuman</string>
+    <string name="desc_hasComplexYakuman">When a hand qualifies for multiple Yakuman, is it allowed to be combined. (if this option is turned off, then only the highest multiple Yakuman is counted)</string>
     <string name="label_hora_options_ok">OK</string>
     <string name="label_hora_options_restore">Restore</string>
     <string name="text_overwrite_hora_options_hint">Do you also want to overwrite hora options?</string>

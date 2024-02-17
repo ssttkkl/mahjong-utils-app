@@ -7,7 +7,7 @@
   },
   "authors": "",
   "license": "Private",
-  "summary": "Compose App",
+  "summary": "Riichi Mahjong Calculator",
   "vendored_frameworks": "build/cocoapods/framework/composeApp.framework",
   "libraries": "c++",
   "platforms": {
