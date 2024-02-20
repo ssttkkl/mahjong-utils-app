@@ -61,10 +61,11 @@ class TileImeHostState(
             handlePendingTile: suspend (tile: Tile) -> Unit,
             handleBackspace: suspend () -> Unit
         ) {
+            visible = true
+
             if (!consuming) {
                 consumer += 1
                 consuming = true
-                visible = true
 
                 collectPendingTileJob = coroutineScope.launch {
                     pendingTile.collect { tile ->
