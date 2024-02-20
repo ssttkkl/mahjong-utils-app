@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">麻雀牌理電卓</string>
+
     <string name="title_shanten">牌理</string>
     <string name="title_shanten_result">牌理結果</string>
     <string name="title_furo_shanten">鳴き牌理</string>
