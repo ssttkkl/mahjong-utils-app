@@ -6,7 +6,6 @@ import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -69,14 +68,15 @@ fun Modifier.tapPress(
     }
 } else this
 
-@Composable
 fun Modifier.clickableButNotFocusable(
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    interactionSource: MutableInteractionSource,
     onClick: () -> Unit
 ): Modifier {
-    return this.indication(interactionSource, LocalIndication.current)
-        .hoverable(interactionSource)
-        .tapPress(interactionSource) {
-            onClick()
-        }
+    return composed {
+        this.indication(interactionSource, LocalIndication.current)
+            .hoverable(interactionSource)
+            .tapPress(interactionSource) {
+                onClick()
+            }
+    }
 }

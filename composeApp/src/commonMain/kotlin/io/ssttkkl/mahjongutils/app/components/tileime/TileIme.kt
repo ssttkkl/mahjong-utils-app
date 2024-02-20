@@ -44,7 +44,7 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
                     .padding(4.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color.White)
-                    .clickableButNotFocusable {
+                    .clickableButNotFocusable(interactionSource) {
                         onClick()
                     },
                 Alignment.Center
@@ -66,13 +66,15 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
         override fun display(onClick: () -> Unit) {
             val density = LocalDensity.current
 
+            val interactionSource = remember { MutableInteractionSource() }
+
             Box(
                 Modifier
                     .fillMaxSize()
                     .padding(4.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(MaterialTheme.colorScheme.secondary)
-                    .clickableButNotFocusable {
+                    .clickableButNotFocusable(interactionSource) {
                         onClick()
                     },
                 Alignment.Center
