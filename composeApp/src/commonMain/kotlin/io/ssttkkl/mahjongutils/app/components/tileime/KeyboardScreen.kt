@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,6 +33,7 @@ interface KeyboardKeyItem {
 @Composable
 fun <T : KeyboardKeyItem> KeyboardScreen(
     keysMatrix: List<List<T>>,
+    pendingText: String,
     onCollapse: () -> Unit,
     onCommit: (T) -> Unit,
 ) {
@@ -55,6 +56,10 @@ fun <T : KeyboardKeyItem> KeyboardScreen(
         )
 
         Divider(Modifier.padding(bottom = 8.dp))
+
+        if (pendingText.isNotEmpty()) {
+            Text(pendingText, Modifier.padding(bottom = 8.dp))
+        }
 
         Column(
             modifier = Modifier

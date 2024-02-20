@@ -21,12 +21,19 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.ssttkkl.mahjongutils.app.components.tapPress
+import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import mahjongutils.models.Tile
 
 private fun detectTapPosition(rects: List<Rect>, offset: Offset): Int {
@@ -68,7 +75,6 @@ private fun Modifier.drawCursor(
         val density = LocalDensity.current
 
         drawWithContent {
-
             drawContent()
 
             val height = size.height
@@ -87,6 +93,51 @@ private fun Modifier.drawCursor(
                 )
             }
 
+        }
+    }
+}
+
+private val validKeys = mapOf(
+    Key.One to "1", Key.Two to "2", Key.Three to "3", Key.Four to "4", Key.Five to "5",
+    Key.Six to "6", Key.Seven to "7", Key.Eight to "8", Key.Nine to "9", Key.Zero to "0",
+    Key.M to "m", Key.P to "p", Key.S to "s", Key.Z to "z"
+)
+
+private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState): Modifier {
+    return composed {
+        val ime = LocalTileImeHostState.current
+
+        onKeyEvent {
+            if (it.type != KeyEventType.KeyUp) {
+                return@onKeyEvent false
+            }
+
+            if (it.key == Key.Backspace) {
+                if (ime.pendingText.isNotEmpty()) {
+                    ime.emitBackspacePendingText(1)
+                } else {
+                    ime.emitBackspaceTile()
+                }
+                true
+            } else if (it.key == Key.Delete) {
+                if (ime.pendingText.isNotEmpty()) {
+                    ime.emitBackspacePendingText(1)
+                } else {
+                    ime.emitDeleteTile()
+                }
+                true
+            } else if (it.key == Key.DirectionLeft) {
+                state.selection = TextRange(state.selection.start - 1).coerceIn(0, tilesCount)
+                true
+            } else if (it.key == Key.DirectionRight) {
+                state.selection = TextRange(state.selection.end + 1).coerceIn(0, tilesCount)
+                true
+            } else if (validKeys.containsKey(it.key)) {
+                ime.appendPendingText(validKeys[it.key]!!)
+                true
+            } else {
+                false
+            }
         }
     }
 }
@@ -113,6 +164,7 @@ internal actual fun CoreTileField(
             .tapPress(state.interactionSource) {
                 focusRequester.requestFocus()
             }
+            .handleKeyEvent(value.size, state)
     ) {
         Tiles(
             value,

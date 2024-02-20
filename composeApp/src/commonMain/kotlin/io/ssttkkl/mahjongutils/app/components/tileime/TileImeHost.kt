@@ -17,23 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalTextInputService
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.BackspaceCommand
-import androidx.compose.ui.text.input.CommitTextCommand
-import androidx.compose.ui.text.input.EditCommand
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.ImeOptions
-import androidx.compose.ui.text.input.PlatformTextInputService
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.TextInputService
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import mahjongutils.models.Tile
 import kotlin.time.measureTime
 
@@ -44,9 +32,13 @@ class TileImeHostState(
         private val logger = LoggerFactory.getLogger("TileImeHostState")
     }
 
+    enum class DeleteTile {
+        Backspace, Delete
+    }
+
     var consumer by mutableStateOf(0)
-    val pendingTile = MutableSharedFlow<Tile>()
-    val backspace = MutableSharedFlow<Unit>()
+    val pendingTile = MutableSharedFlow<List<Tile>>()
+    val deleteTile = MutableSharedFlow<DeleteTile>()
 
     var visible by mutableStateOf(false)
 
@@ -55,11 +47,11 @@ class TileImeHostState(
             private set
 
         private var collectPendingTileJob: Job? = null
-        private var collectPendingBackspaceJob: Job? = null
+        private var collectDeleteTileJob: Job? = null
 
         fun consume(
-            handlePendingTile: suspend (tile: Tile) -> Unit,
-            handleBackspace: suspend () -> Unit
+            handlePendingTile: suspend (List<Tile>) -> Unit,
+            handleDeleteTile: suspend (DeleteTile) -> Unit
         ) {
             visible = true
 
@@ -73,9 +65,9 @@ class TileImeHostState(
                     }
                 }
 
-                collectPendingBackspaceJob = coroutineScope.launch {
-                    backspace.collect {
-                        handleBackspace()
+                collectDeleteTileJob = coroutineScope.launch {
+                    deleteTile.collect {
+                        handleDeleteTile(it)
                     }
                 }
 
@@ -89,7 +81,7 @@ class TileImeHostState(
                 consuming = false
 
                 collectPendingTileJob?.cancel()
-                collectPendingBackspaceJob?.cancel()
+                collectDeleteTileJob?.cancel()
 
                 if (consumer == 0) {
                     visible = false
@@ -99,6 +91,76 @@ class TileImeHostState(
             }
         }
     }
+
+    /**
+     * 发送一个退格麻将牌指令（对应Backspace键）
+     */
+    fun emitBackspaceTile() {
+        coroutineScope.launch {
+            deleteTile.emit(DeleteTile.Backspace)
+        }
+    }
+
+    /**
+     * 发送一个删除麻将牌指令（对应Delete键）
+     */
+    fun emitDeleteTile() {
+        coroutineScope.launch {
+            deleteTile.emit(DeleteTile.Delete)
+        }
+    }
+
+    /**
+     * 发送一个添加麻将牌指令
+     */
+    fun emitTile(tile: Tile) {
+        coroutineScope.launch {
+            pendingTile.emit(listOf(tile))
+        }
+    }
+
+    /**
+     * 发送一个添加麻将牌指令
+     */
+    fun emitTile(tiles: List<Tile>) {
+        coroutineScope.launch {
+            pendingTile.emit(tiles)
+        }
+    }
+
+    /**
+     * 用户通过键盘输入的文本，待解析为麻将牌
+     */
+    var pendingText: String by mutableStateOf("")
+        private set
+
+    private fun tryParsePendingText() {
+        val tiles = try {
+            Tile.parseTiles(pendingText)
+        } catch (e: IllegalArgumentException) {
+            null
+        }
+
+        if (tiles != null) {
+            pendingText = ""
+            emitTile(tiles)
+        }
+    }
+
+    fun appendPendingText(str: String) {
+        pendingText += str
+        tryParsePendingText()
+    }
+
+    fun emitBackspacePendingText(count: Int) {
+        if (pendingText.length < count) {
+            pendingText = ""
+        } else {
+            pendingText = pendingText.dropLast(count)
+            tryParsePendingText()
+        }
+    }
+
 }
 
 @Composable
@@ -129,69 +191,15 @@ fun TileImeHost(
             ) {
                 val tileImeRecompositionTime = measureTime {
                     TileIme(
-                        { scope.launch { state.pendingTile.emit(it) } },
-                        { scope.launch { state.backspace.emit(Unit) } },
+                        state.pendingText,
+                        { state.emitTile(it) },
+                        { state.emitBackspaceTile() },
                         { state.visible = false }
                     )
                 }
                 logger.debug("tileImeRecompositionTime: $tileImeRecompositionTime")
             }
         }
-    }
-}
-
-@Composable
-fun UseTileIme(
-    transformTile: (Tile) -> AnnotatedString,
-    content: @Composable () -> Unit
-) {
-    val scope = rememberCoroutineScope()
-    val state = LocalTileImeHostState.current
-
-    val service = remember(scope, state) {
-        var consumer = state.TileImeConsumer()
-
-        val platformService = object : PlatformTextInputService {
-            override fun hideSoftwareKeyboard() {
-                consumer.release()
-            }
-
-            override fun showSoftwareKeyboard() {
-                consumer.consume(handlePendingTile = {}, handleBackspace = {})
-            }
-
-            override fun startInput(
-                value: TextFieldValue,
-                imeOptions: ImeOptions,
-                onEditCommand: (List<EditCommand>) -> Unit,
-                onImeActionPerformed: (ImeAction) -> Unit
-            ) {
-                consumer.consume(handlePendingTile = {
-                    withContext(Dispatchers.Main) {
-                        val str = transformTile(it)
-                        onEditCommand(listOf(CommitTextCommand(str, str.length)))
-                    }
-                }, handleBackspace = {
-                    withContext(Dispatchers.Main) {
-                        onEditCommand(listOf(BackspaceCommand()))
-                    }
-                })
-            }
-
-            override fun stopInput() {
-                hideSoftwareKeyboard()
-            }
-
-            override fun updateState(oldValue: TextFieldValue?, newValue: TextFieldValue) {
-
-            }
-        }
-
-        TextInputService(platformService)
-    }
-
-    CompositionLocalProvider(LocalTextInputService provides service) {
-        content()
     }
 }
 

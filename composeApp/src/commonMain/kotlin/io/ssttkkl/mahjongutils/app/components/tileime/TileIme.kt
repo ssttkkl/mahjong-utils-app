@@ -99,6 +99,7 @@ private val tileImeMatrix = listOf(
 
 @Composable
 fun TileIme(
+    pendingText: String,
     onCommitTile: (Tile) -> Unit,
     onBackspace: () -> Unit,
     onCollapse: () -> Unit,
@@ -125,6 +126,7 @@ fun TileIme(
     }
     KeyboardScreen(
         tileImeMatrix,
+        pendingText,
         currentOnCollapse,
         currentOnCommit
     )

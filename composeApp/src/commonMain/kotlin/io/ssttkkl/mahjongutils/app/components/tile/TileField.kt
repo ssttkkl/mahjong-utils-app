@@ -38,11 +38,11 @@ private fun TileImeHostState.TileImeConsumer.consume(
     val onValueChange by onValueChangeState
 
     this.consume(
-        handlePendingTile = { tile ->
+        handlePendingTile = { tiles ->
             state.selection = state.selection.coerceIn(0, value.size)
             val newValue = buildList {
                 addAll(value.subList(0, state.selection.start))
-                add(tile)
+                addAll(tiles)
 
                 if (state.selection.end != value.size) {
                     addAll(
@@ -54,18 +54,24 @@ private fun TileImeHostState.TileImeConsumer.consume(
                 }
             }
             onValueChange?.invoke(newValue)
-            state.selection = TextRange(state.selection.start + 1)
+            state.selection = TextRange(state.selection.start + tiles.size)
         },
-        handleBackspace = {
+        handleDeleteTile = {
             state.selection = state.selection.coerceIn(0, value.size)
             val curCursor = state.selection.start
             if (state.selection.length == 0) {
-                if (curCursor - 1 in value.indices) {
+                val indexToRemove = if (it == TileImeHostState.DeleteTile.Backspace) {
+                    curCursor - 1
+                } else {
+                    curCursor
+                }
+
+                if (indexToRemove in value.indices) {
                     val newValue = ArrayList(value).apply {
-                        removeAt(curCursor - 1)
+                        removeAt(indexToRemove)
                     }
                     onValueChange?.invoke(newValue)
-                    state.selection = TextRange(curCursor - 1)
+                    state.selection = TextRange(indexToRemove)
                 }
             } else {
                 val newValue = buildList {
