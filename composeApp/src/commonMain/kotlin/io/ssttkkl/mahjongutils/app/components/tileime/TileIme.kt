@@ -2,7 +2,7 @@ package io.ssttkkl.mahjongutils.app.components.tileime
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.painterResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.backhandler.BackHandler
+import io.ssttkkl.mahjongutils.app.components.clickableButNotFocusable
 import io.ssttkkl.mahjongutils.app.components.tile.painterResource
 import mahjongutils.models.Tile
 
@@ -35,13 +36,15 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
         override fun display(onClick: () -> Unit) {
             val density = LocalDensity.current
 
+            val interactionSource = remember { MutableInteractionSource() }
+
             Box(
                 Modifier
                     .fillMaxSize()
                     .padding(4.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color.White)
-                    .clickable {
+                    .clickableButNotFocusable {
                         onClick()
                     },
                 Alignment.Center
@@ -69,7 +72,7 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
                     .padding(4.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(MaterialTheme.colorScheme.secondary)
-                    .clickable {
+                    .clickableButNotFocusable {
                         onClick()
                     },
                 Alignment.Center
