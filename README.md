@@ -1,22 +1,35 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web.
+日麻牌理计算器
+======
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+支持平台：
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+- [x] Android
+- [x] iOS
+- [ ] Desktop
+
+## 功能
+
+- 牌理：包括进张、好形进张（仅一向听）、退向打法
+
+- 副露牌理：吃碰杠PASS四种打法下的进张、好形进张（仅一向听）、退向打法
+
+- 和牌分析：默认为雀魂/天凤规则，可以定制少部分规则
+
+- 番符得点计算：默认为雀魂/天凤规则，可以定制少部分规则
 
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+## App说明
 
-**Note:** Compose/Web is Experimental and may be changed at any time. Use it only for evaluation purposes.
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [GitHub](https://github.com/JetBrains/compose-multiplatform/issues).
+算法为纯手工自制，App无需网络，纯本地计算
 
-You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.
+App基于Kotlin/Multiplatform与Compose Multiplatform技术栈开发，欢迎PR
+
+可能会有些小Bug，欢迎通过GitHub的issue区反馈问题
+
+
+（桌面版还差亿点点适配工作没有完成，咕咕咕）
+（被Compose折磨疯了，等一个熟悉Compose的好心大佬给我PR）
+
+## LICENSE
+
+MIT
