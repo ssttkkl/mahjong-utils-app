@@ -32,12 +32,6 @@ jobs:
         java-version: 17
         cache: 'gradle'
 
-    - name: Install FUSE (linux)
-      if: ${{ matrix.os == 'ubuntu-latest' }}
-      uses: ConorMacBride/install-package@v1.1.0
-      with:
-        apt: libfuse2
-
     - name: Package Distribution
       run: |
         ./gradlew composeApp:packageDistributionForCurrentOS
@@ -56,9 +50,16 @@ jobs:
         name: distribution
         path: composeApp/build/compose/binaries/main/exe/*
 
+    - name: Install FUSE (linux)
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+      uses: ConorMacBride/install-package@v1.1.0
+      with:
+        apt: libfuse2
+
     - name: Package as AppImage (linux)
       if: ${{ matrix.os == 'ubuntu-latest' }}
       run: |
+        chmod +x build_appimage.sh
         ./build_appimage.sh
 
     - name: Upload the Build Artifact (linux)
