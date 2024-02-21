@@ -41,18 +41,18 @@ jobs:
       uses: actions/upload-artifact@v3.1.1
       with:
           name: distribution
-          path: composeApp/build/compose/binaries/main/dmg/*.dmg
+          path: composeApp/build/compose/binaries/main/dmg/*
 
     - name: Upload the Build Artifact (windows)
       if: ${{ matrix.os == 'windows-latest' }}
       uses: actions/upload-artifact@v3.1.1
       with:
         name: distribution
-        path: composeApp/build/compose/binaries/main/msi/*.msi
+        path: composeApp/build/compose/binaries/main/exe/*
 
     - name: Upload the Build Artifact (linux)
       if: ${{ matrix.os == 'ubuntu-latest' }}
       uses: actions/upload-artifact@v3.1.1
       with:
         name: distribution
-        path: composeApp/build/compose/binaries/main/deb/*.deb
+        path: composeApp/build/compose/binaries/main/appImage/*

@@ -47,7 +47,8 @@ kotlin {
         version = "1.0.0"
         summary = "Riichi Mahjong Calculator"
         homepage = "https://github.com/NNSZ-Yorozuya/mahjong-utils-app"
-        source = "{ :git => 'https://github.com/NNSZ-Yorozuya/mahjong-utils-app.git', :tag => '$version' }"
+        source =
+            "{ :git => 'https://github.com/NNSZ-Yorozuya/mahjong-utils-app.git', :tag => '$version' }"
         license = "Private"
         ios.deploymentTarget = "13.0"
         podfile = project.file("../iosApp/Podfile")
@@ -151,17 +152,21 @@ compose.desktop {
         mainClass = "MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "mahjong-utils-app"
             packageVersion = properties["version.name"].toString()
             licenseFile.set(rootProject.file("LICENSE"))
 
             modules("java.base", "java.instrument", "jdk.unsupported", "jdk.xml.dom")
+
+            val hostOs = System.getProperty("os.name")
+            when {
+                hostOs == "Mac OS X" -> targetFormats(TargetFormat.Dmg)
+                hostOs == "Linux" -> targetFormats(TargetFormat.AppImage)
+                hostOs.startsWith("Windows") -> targetFormats(TargetFormat.Exe)
+            }
         }
     }
 }
-
-
 
 
 //compose.experimental {
