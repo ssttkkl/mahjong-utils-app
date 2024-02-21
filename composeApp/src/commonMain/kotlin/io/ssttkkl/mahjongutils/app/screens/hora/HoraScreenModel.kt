@@ -249,7 +249,7 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         if (agari == null) {
             agariErrMsg = MR.strings.text_must_enter_agari
             validAgari = false
-        } else if (agari !in tiles) {
+        } else if (curTilesCount == 14 && agari !in tiles) {
             agariErrMsg = MR.strings.text_agari_not_in_hand
             validAgari = false
         }
