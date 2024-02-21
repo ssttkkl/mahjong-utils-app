@@ -57,7 +57,7 @@ jobs:
         wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
         chmod +x appimagetool-x86_64.AppImage
         cp -r build/compose/binaries/main/app/**/* mahjong-utils-app.AppDir/
-        ./appimagetool-x86_64.AppImage mahjong-utils-app.AppDir mahjong-utils-app.AppImage
+        ./appimagetool-x86_64.AppImage mahjong-utils-app.AppDir mahjong-utils-app.AppImage --appimage-extract
 
     - name: Upload the Build Artifact (linux)
       if: ${{ matrix.os == 'ubuntu-latest' }}
