@@ -165,6 +165,8 @@ compose.desktop {
 
             windows {
                 iconFile.set(file("icon.ico"))
+                shortcut = true
+                menu = true
             }
 
             macOS {
