@@ -159,7 +159,7 @@ compose.desktop {
             val hostOs = System.getProperty("os.name")
             when {
                 hostOs == "Mac OS X" -> targetFormats(TargetFormat.Dmg)
-                hostOs == "Linux" -> targetFormats(TargetFormat.AppImage, TargetFormat.Deb)
+                hostOs == "Linux" -> targetFormats(TargetFormat.AppImage)
                 hostOs.startsWith("Windows") -> targetFormats(TargetFormat.Exe)
             }
 

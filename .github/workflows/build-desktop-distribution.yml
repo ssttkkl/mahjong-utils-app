@@ -56,7 +56,7 @@ jobs:
         cd composeApp
         wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
         chmod +x appimagetool-x86_64.AppImage
-        cp build/compose/binaries/main/app/* mahjong-utils-app.AppDir
+        cp -r build/compose/binaries/main/app/**/* mahjong-utils-app.AppDir/
         ./appimagetool-x86_64.AppImage mahjong-utils-app.AppDir mahjong-utils-app.AppImage
 
     - name: Upload the Build Artifact (linux)
