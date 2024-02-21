@@ -2,6 +2,4 @@
 
 HERE="$(dirname "$(readlink -f "${0}")")"
 
-chmod +x $HERE/bin/mahjong-utils-app
-
 $HERE/bin/mahjong-utils-app

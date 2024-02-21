@@ -59,15 +59,11 @@ jobs:
     - name: Package as AppImage (linux)
       if: ${{ matrix.os == 'ubuntu-latest' }}
       run: |
-        cd composeApp
-        wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-        chmod +x appimagetool-x86_64.AppImage
-        cp -r build/compose/binaries/main/app/**/* mahjong-utils-app.AppDir/
-        ./appimagetool-x86_64.AppImage mahjong-utils-app.AppDir mahjong-utils-app.AppImage
+        ./build_appimage.sh
 
     - name: Upload the Build Artifact (linux)
       if: ${{ matrix.os == 'ubuntu-latest' }}
       uses: actions/upload-artifact@v3.1.1
       with:
         name: distribution
-        path: composeApp/mahjong-utils-app.AppImage
+        path: build/mahjong-utils-app.AppImage
