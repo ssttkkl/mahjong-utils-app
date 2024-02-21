@@ -165,12 +165,6 @@ compose.desktop {
                 hostOs.startsWith("Windows") -> targetFormats(TargetFormat.Exe)
             }
         }
-
-        buildTypes.release {
-            proguard {
-                configurationFiles.from("compose-desktop.pro")
-            }
-        }
     }
 }
 

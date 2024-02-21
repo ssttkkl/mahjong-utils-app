@@ -26,6 +26,8 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
@@ -165,6 +167,7 @@ internal actual fun CoreTileField(
                 focusRequester.requestFocus()
             }
             .handleKeyEvent(value.size, state)
+            .pointerHoverIcon(PointerIcon.Text)
     ) {
         Tiles(
             value,
