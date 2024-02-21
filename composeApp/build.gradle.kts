@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.kotlinxAtomicfu)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
-//    alias(libs.plugins.kotlinNativeCocoapods)
+    alias(libs.plugins.kotlinNativeCocoapods)
     alias(libs.plugins.mokoResources)
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.buildkonfig)
@@ -37,36 +37,36 @@ kotlin {
         }
     }
 
-//    iosX64()
-//    iosArm64()
-//    iosSimulatorArm64()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
     jvm("desktop")
 
-//    cocoapods {
-//        version = "1.0.0"
-//        summary = "Riichi Mahjong Calculator"
-//        homepage = "https://github.com/NNSZ-Yorozuya/mahjong-utils-app"
-//        source = "{ :git => 'https://github.com/NNSZ-Yorozuya/mahjong-utils-app.git', :tag => '$version' }"
-//        license = "Private"
-//        ios.deploymentTarget = "13.0"
-//        podfile = project.file("../iosApp/Podfile")
-//
-//        framework {
-//            baseName = project.name
-//            isStatic = true
-//            @Suppress("OPT_IN_USAGE")
-//            transitiveExport = false
-//        }
-//    }
+    cocoapods {
+        version = "1.0.0"
+        summary = "Riichi Mahjong Calculator"
+        homepage = "https://github.com/NNSZ-Yorozuya/mahjong-utils-app"
+        source = "{ :git => 'https://github.com/NNSZ-Yorozuya/mahjong-utils-app.git', :tag => '$version' }"
+        license = "Private"
+        ios.deploymentTarget = "13.0"
+        podfile = project.file("../iosApp/Podfile")
+
+        framework {
+            baseName = project.name
+            isStatic = true
+            @Suppress("OPT_IN_USAGE")
+            transitiveExport = false
+        }
+    }
 
     sourceSets {
         // https://github.com/icerockdev/moko-resources/issues/618
         getByName("androidMain").dependsOn(commonMain.get())
         getByName("desktopMain").dependsOn(commonMain.get())
-//        getByName("iosArm64Main").dependsOn(commonMain.get())
-//        getByName("iosX64Main").dependsOn(commonMain.get())
-//        getByName("iosSimulatorArm64Main").dependsOn(commonMain.get())
+        getByName("iosArm64Main").dependsOn(commonMain.get())
+        getByName("iosX64Main").dependsOn(commonMain.get())
+        getByName("iosSimulatorArm64Main").dependsOn(commonMain.get())
 
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
@@ -152,11 +152,16 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "io.ssttkkl.mahjongutils.app"
+            packageName = "mahjong-utils-app"
             packageVersion = properties["version.name"].toString()
+            licenseFile.set(rootProject.file("LICENSE"))
+
+            modules("java.base", "java.instrument", "jdk.unsupported", "jdk.xml.dom")
         }
     }
 }
+
+
 
 
 //compose.experimental {
@@ -171,8 +176,6 @@ multiplatformResources {
 
 buildkonfig {
     packageName = "io.ssttkkl.mahjongutils.app"
-    // objectName = 'YourAwesomeConfig'
-    // exposeObjectWithName = 'YourAwesomePublicConfig'
 
     defaultConfigs {
         buildConfigField(STRING, "VERSION_NAME", properties["version.name"].toString())
