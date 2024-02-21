@@ -6,7 +6,6 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -42,8 +41,13 @@ private fun detectTapPosition(rects: List<Rect>, offset: Offset): Int {
     for (i in rects.indices) {
         val rect = rects[i]
         val middle = (rect.right + rect.left) / 2
-        if (offset.x < middle) {
+        if (offset.x < middle && offset.y <= rect.bottom) {
             return i
+        }
+
+        // 点击的是该行的最后一个
+        if (i + 1 in rects.indices && rects[i].left > rects[i + 1].left && offset.x > rects[i].left) {
+            return i + 1
         }
     }
 
@@ -79,7 +83,7 @@ private fun Modifier.drawCursor(
         drawWithContent {
             drawContent()
 
-            val height = size.height
+            val height = rects.value.firstOrNull()?.height ?: size.height
             if (selection.length == 0) {
                 val x = if (selection.start < rects.value.size)
                     rects.value[selection.start].left
@@ -87,10 +91,18 @@ private fun Modifier.drawCursor(
                     rects.value.last().right
                 else
                     0.0f
+
+                val y = if (selection.start < rects.value.size)
+                    rects.value[selection.start].top
+                else if (rects.value.isNotEmpty())
+                    rects.value.last().top
+                else
+                    0.0f
+
                 drawLine(
                     color,
-                    Offset(x, 0.0f),
-                    Offset(x, height),
+                    Offset(x, y),
+                    Offset(x, y + height),
                     with(density) { 2.dp.toPx() }
                 )
             }
@@ -129,10 +141,14 @@ private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState):
                 }
                 true
             } else if (it.key == Key.DirectionLeft) {
-                state.selection = TextRange(state.selection.start - 1).coerceIn(0, tilesCount)
+                if (state.selection.start > 0) {
+                    state.selection = TextRange(state.selection.start - 1).coerceIn(0, tilesCount)
+                }
                 true
             } else if (it.key == Key.DirectionRight) {
-                state.selection = TextRange(state.selection.end + 1).coerceIn(0, tilesCount)
+                if (state.selection.end < tilesCount) {
+                    state.selection = TextRange(state.selection.end + 1).coerceIn(0, tilesCount)
+                }
                 true
             } else if (validKeys.containsKey(it.key)) {
                 ime.appendPendingText(validKeys[it.key]!!)
@@ -160,35 +176,32 @@ internal actual fun CoreTileField(
     var rectsState: MutableState<List<Rect>> = remember { mutableStateOf(emptyList()) }
     val focused by state.interactionSource.collectIsFocusedAsState()
 
-    FlowRow(
-        modifier = modifier.focusRequester(focusRequester)
+    Tiles(
+        value,
+        modifier
+            .focusRequester(focusRequester)
             .focusable(interactionSource = state.interactionSource)
             .tapPress(state.interactionSource) {
                 focusRequester.requestFocus()
             }
             .handleKeyEvent(value.size, state)
             .pointerHoverIcon(PointerIcon.Text)
-    ) {
-        Tiles(
-            value,
-            modifier
-                .onTapChangeCursor(rectsState) {
-                    state.selection = TextRange(it)
-                }
-                .let {
-                    if (focused)
-                        it.drawCursor(
-                            state.selection,
-                            rectsState,
-                            cursorColor
-                        )
-                    else
-                        it
-                },
-            fontSize = fontSizeInSp.sp,
-            onTextLayout = { layoutResult ->
-                rectsState.value = layoutResult.multiParagraph.placeholderRects.filterNotNull()
+            .onTapChangeCursor(rectsState) {
+                state.selection = TextRange(it)
             }
-        )
-    }
+            .let {
+                if (focused)
+                    it.drawCursor(
+                        state.selection,
+                        rectsState,
+                        cursorColor
+                    )
+                else
+                    it
+            },
+        fontSize = fontSizeInSp.sp,
+        onTextLayout = { layoutResult ->
+            rectsState.value = layoutResult.multiParagraph.placeholderRects.filterNotNull()
+        }
+    )
 }
