@@ -58,6 +58,7 @@ import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.SegmentedBut
 import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.SingleChoiceSegmentedButtonGroup
 import io.ssttkkl.mahjongutils.app.components.panel.Caption
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
+import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
@@ -125,214 +126,221 @@ object HoraScreen :
         model: HoraScreenModel,
         modifier: Modifier
     ) {
+        val verticalScrollState = rememberScrollState()
+
         with(Spacing.current) {
-            Column(
-                modifier.verticalScroll(rememberScrollState())
-            ) {
-                VerticalSpacerBetweenPanels()
+            ScrollBox(verticalScrollState = verticalScrollState, modifier = modifier) {
+                Column(
+                    Modifier.verticalScroll(verticalScrollState)
+                ) {
+                    VerticalSpacerBetweenPanels()
 
-                TopPanel {
-                    ValidationField(model.tilesErrMsg) { isError ->
-                        TileField(
-                            value = model.tiles,
-                            onValueChange = { model.tiles = it },
-                            modifier = Modifier.fillMaxWidth(),
-                            isError = isError,
-                            label = stringResource(MR.strings.label_tiles_in_hand)
-                        )
-                    }
-                }
-
-                VerticalSpacerBetweenPanels()
-
-                TopPanel {
-                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        ValidationField(model.agariErrMsg, Modifier.weight(1f)) { isError ->
+                    TopPanel {
+                        ValidationField(model.tilesErrMsg) { isError ->
                             TileField(
-                                value = model.agari?.let { listOf(it) } ?: emptyList(),
-                                onValueChange = { model.agari = it.firstOrNull() },
+                                value = model.tiles,
+                                onValueChange = { model.tiles = it },
                                 modifier = Modifier.fillMaxWidth(),
                                 isError = isError,
-                                label = stringResource(MR.strings.label_agari),
-                                placeholder = {
-                                    model.autoDetectedAgari?.let { autoDetectedAgari ->
-                                        Tiles(
-                                            listOf(autoDetectedAgari),
-                                            Modifier.alpha(0.4f),
-                                            fontSize = TileTextSize.Default.bodyLarge * 0.8
-                                        )
-                                    }
-                                }
-                            )
-                        }
-
-                        SingleChoiceSegmentedButtonGroup(
-                            tsumoOptions(), model.tsumo, { model.tsumo = it },
-                            Modifier.padding(start = 16.dp)
-                        )
-                    }
-                }
-
-                VerticalSpacerBetweenPanels()
-
-                TopPanel(
-                    { Text(stringResource(MR.strings.label_furo)) },
-                    noContentPadding = true
-                ) {
-                    Column(Modifier.fillMaxWidth()) {
-                        model.furo.forEachIndexed { index, furoModel ->
-                            ListItem(
-                                {
-                                    ValidationField(furoModel.errMsg) { isError ->
-                                        TileField(
-                                            furoModel.tiles,
-                                            { furoModel.tiles = it },
-                                            Modifier.fillMaxWidth(),
-                                            isError = isError
-                                        )
-                                    }
-                                },
-                                leadingContent = {
-                                    Icon(Icons.Filled.Close, "", Modifier.clickable {
-                                        model.furo.removeAt(index)
-                                    })
-                                },
-                                trailingContent = {
-                                    AnimatedVisibility(
-                                        furoModel.isKan,
-                                        enter = fadeIn() + expandHorizontally(),
-                                        exit = fadeOut() + shrinkHorizontally(),
-                                    ) {
-                                        ComboBox(
-                                            furoModel.ankan,
-                                            { furoModel.ankan = it },
-                                            ankanOptions(),
-                                            Modifier.width(150.dp)
-                                        )
-                                    }
-                                },
-                            )
-                        }
-
-                        OutlinedButton(
-                            {
-                                model.furo.add(FuroModel())
-                            },
-                            Modifier.fillMaxWidth().windowHorizontalMargin()
-                        ) {
-                            Icon(Icons.Filled.Add, "")
-                        }
-                    }
-                }
-
-                VerticalSpacerBetweenPanels()
-
-                TopPanel(
-                    { Text(stringResource(MR.strings.label_other_information)) },
-                    noContentPadding = true
-                ) {
-                    Row {
-                        TopPanel(modifier = Modifier.weight(1f)) {
-                            ComboBox(
-                                model.selfWind,
-                                { model.selfWind = it },
-                                windComboOptions(),
-                                Modifier.fillMaxWidth(),
-                                label = { Text(stringResource(MR.strings.label_self_wind)) }
-                            )
-                        }
-                        TopPanel(modifier = Modifier.weight(1f)) {
-                            ComboBox(
-                                model.roundWind, { model.roundWind = it }, windComboOptions(),
-                                Modifier.fillMaxWidth(),
-                                label = { Text(stringResource(MR.strings.label_round_wind)) }
+                                label = stringResource(MR.strings.label_tiles_in_hand)
                             )
                         }
                     }
 
                     VerticalSpacerBetweenPanels()
 
-                    Row {
-                        TopPanel(modifier = Modifier.weight(1f)) {
-                            ValidationField(model.doraErrMsg) { isError ->
-                                OutlinedTextField(
-                                    value = model.dora,
-                                    onValueChange = { model.dora = it },
+                    TopPanel {
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            ValidationField(model.agariErrMsg, Modifier.weight(1f)) { isError ->
+                                TileField(
+                                    value = model.agari?.let { listOf(it) } ?: emptyList(),
+                                    onValueChange = { model.agari = it.firstOrNull() },
                                     modifier = Modifier.fillMaxWidth(),
-                                    placeholder = {
-                                        Text(
-                                            "0",
-                                            style = LocalTextStyle.current.withAlpha(0.4f)
-                                        )
-                                    },
-                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                     isError = isError,
-                                    label = { Text(stringResource(MR.strings.label_dora_count)) }
+                                    label = stringResource(MR.strings.label_agari),
+                                    placeholder = {
+                                        model.autoDetectedAgari?.let { autoDetectedAgari ->
+                                            Tiles(
+                                                listOf(autoDetectedAgari),
+                                                Modifier.alpha(0.4f),
+                                                fontSize = TileTextSize.Default.bodyLarge * 0.8
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+
+                            SingleChoiceSegmentedButtonGroup(
+                                tsumoOptions(), model.tsumo, { model.tsumo = it },
+                                Modifier.padding(start = 16.dp)
+                            )
+                        }
+                    }
+
+                    VerticalSpacerBetweenPanels()
+
+                    TopPanel(
+                        { Text(stringResource(MR.strings.label_furo)) },
+                        noContentPadding = true
+                    ) {
+                        Column(Modifier.fillMaxWidth()) {
+                            model.furo.forEachIndexed { index, furoModel ->
+                                ListItem(
+                                    {
+                                        ValidationField(furoModel.errMsg) { isError ->
+                                            TileField(
+                                                furoModel.tiles,
+                                                { furoModel.tiles = it },
+                                                Modifier.fillMaxWidth(),
+                                                isError = isError
+                                            )
+                                        }
+                                    },
+                                    leadingContent = {
+                                        Icon(Icons.Filled.Close, "", Modifier.clickable {
+                                            model.furo.removeAt(index)
+                                        })
+                                    },
+                                    trailingContent = {
+                                        AnimatedVisibility(
+                                            furoModel.isKan,
+                                            enter = fadeIn() + expandHorizontally(),
+                                            exit = fadeOut() + shrinkHorizontally(),
+                                        ) {
+                                            ComboBox(
+                                                furoModel.ankan,
+                                                { furoModel.ankan = it },
+                                                ankanOptions(),
+                                                Modifier.width(150.dp)
+                                            )
+                                        }
+                                    },
+                                )
+                            }
+
+                            OutlinedButton(
+                                {
+                                    model.furo.add(FuroModel())
+                                },
+                                Modifier.fillMaxWidth().windowHorizontalMargin()
+                            ) {
+                                Icon(Icons.Filled.Add, "")
+                            }
+                        }
+                    }
+
+                    VerticalSpacerBetweenPanels()
+
+                    TopPanel(
+                        { Text(stringResource(MR.strings.label_other_information)) },
+                        noContentPadding = true
+                    ) {
+                        Row {
+                            TopPanel(modifier = Modifier.weight(1f)) {
+                                ComboBox(
+                                    model.selfWind,
+                                    { model.selfWind = it },
+                                    windComboOptions(),
+                                    Modifier.fillMaxWidth(),
+                                    label = { Text(stringResource(MR.strings.label_self_wind)) }
+                                )
+                            }
+                            TopPanel(modifier = Modifier.weight(1f)) {
+                                ComboBox(
+                                    model.roundWind, { model.roundWind = it }, windComboOptions(),
+                                    Modifier.fillMaxWidth(),
+                                    label = { Text(stringResource(MR.strings.label_round_wind)) }
                                 )
                             }
                         }
 
-                        TopPanel(modifier = Modifier.weight(1f)) {
-                            val options = yakuComboOptions(model.allExtraYaku)
+                        VerticalSpacerBetweenPanels()
 
-                            // 某些役种被ban后更新选择
-                            LaunchedEffect(model.unavailableYaku) {
-                                model.extraYaku -= model.unavailableYaku
+                        Row {
+                            TopPanel(modifier = Modifier.weight(1f)) {
+                                ValidationField(model.doraErrMsg) { isError ->
+                                    OutlinedTextField(
+                                        value = model.dora,
+                                        onValueChange = { model.dora = it },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        placeholder = {
+                                            Text(
+                                                "0",
+                                                style = LocalTextStyle.current.withAlpha(0.4f)
+                                            )
+                                        },
+                                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                        isError = isError,
+                                        label = { Text(stringResource(MR.strings.label_dora_count)) }
+                                    )
+                                }
                             }
 
-                            MultiComboBox(
-                                model.extraYaku,
-                                {
-                                    when (it) {
-                                        is ChooseAction.OnChoose<Yaku> -> model.extraYaku += it.value
-                                        is ChooseAction.OnNotChoose<Yaku> -> model.extraYaku -= it.value
-                                    }
-                                },
-                                options,
-                                Modifier.fillMaxWidth(),
-                                produceDisplayText = {
-                                    if (it.isEmpty()) {
-                                        stringResource(MR.strings.label_extra_yaku_unspecified)
-                                    } else {
-                                        it.joinToString { it.text }
-                                    }
-                                },
-                                label = { Text(stringResource(MR.strings.label_extra_yaku)) }
-                            )
+                            TopPanel(modifier = Modifier.weight(1f)) {
+                                val options = yakuComboOptions(model.allExtraYaku)
+
+                                // 某些役种被ban后更新选择
+                                LaunchedEffect(model.unavailableYaku) {
+                                    model.extraYaku -= model.unavailableYaku
+                                }
+
+                                MultiComboBox(
+                                    model.extraYaku,
+                                    {
+                                        when (it) {
+                                            is ChooseAction.OnChoose<Yaku> -> model.extraYaku += it.value
+                                            is ChooseAction.OnNotChoose<Yaku> -> model.extraYaku -= it.value
+                                        }
+                                    },
+                                    options,
+                                    Modifier.fillMaxWidth(),
+                                    produceDisplayText = {
+                                        if (it.isEmpty()) {
+                                            stringResource(MR.strings.label_extra_yaku_unspecified)
+                                        } else {
+                                            it.joinToString { it.text }
+                                        }
+                                    },
+                                    label = { Text(stringResource(MR.strings.label_extra_yaku)) }
+                                )
+                            }
                         }
                     }
-                }
 
-                VerticalSpacerBetweenPanels()
+                    VerticalSpacerBetweenPanels()
 
-                var optionsDialogVisible by rememberSaveable { mutableStateOf(false) }
-                if (optionsDialogVisible) {
-                    HoraOptionsDialog(
-                        model.horaOptions,
-                        onChangeOptions = {
-                            model.horaOptions = it
-                        },
-                        onDismissRequest = {
-                            optionsDialogVisible = false
-                        },
-                    )
-                }
-
-                Row {
-                    Button(
-                        modifier = Modifier.windowHorizontalMargin(),
-                        content = { Text(stringResource(MR.strings.label_calc)) },
-                        onClick = {
-                            model.onSubmit()
-                        }
-                    )
-
-                    TextButton({ optionsDialogVisible = true }) {
-                        Text(stringResource(MR.strings.label_hora_options))
+                    var optionsDialogVisible by rememberSaveable { mutableStateOf(false) }
+                    if (optionsDialogVisible) {
+                        HoraOptionsDialog(
+                            model.horaOptions,
+                            onChangeOptions = {
+                                model.horaOptions = it
+                            },
+                            onDismissRequest = {
+                                optionsDialogVisible = false
+                            },
+                        )
                     }
-                }
 
-                VerticalSpacerBetweenPanels()
+                    Row {
+                        Button(
+                            modifier = Modifier.windowHorizontalMargin(),
+                            content = { Text(stringResource(MR.strings.label_calc)) },
+                            onClick = {
+                                model.onSubmit()
+                            }
+                        )
+
+                        TextButton({ optionsDialogVisible = true }) {
+                            Text(stringResource(MR.strings.label_hora_options))
+                        }
+                    }
+
+                    VerticalSpacerBetweenPanels()
+                }
             }
         }
     }

@@ -19,6 +19,7 @@ import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
 import io.ssttkkl.mahjongutils.app.components.panel.Caption
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
+import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.models.base.History
@@ -49,61 +50,65 @@ object FuroShantenScreen :
         model: FuroShantenScreenModel,
         modifier: Modifier
     ) {
+        val verticalScrollState = rememberScrollState()
+
         with(Spacing.current) {
-            Column(
-                modifier.verticalScroll(rememberScrollState())
-            ) {
-                VerticalSpacerBetweenPanels()
-
-                TopPanel {
-                    ValidationField(model.tilesErrMsg) { isError ->
-                        TileField(
-                            value = model.tiles,
-                            onValueChange = { model.tiles = it },
-                            modifier = Modifier.fillMaxWidth(),
-                            isError = isError,
-                            label = stringResource(MR.strings.label_tiles_in_hand)
-                        )
-                    }
-                }
-
-                VerticalSpacerBetweenPanels()
-                TopPanel {
-                    ValidationField(model.chanceTileErrMsg) { isError ->
-                        TileField(
-                            value = model.chanceTile?.let { listOf(it) } ?: emptyList(),
-                            onValueChange = { model.chanceTile = it.firstOrNull() },
-                            modifier = Modifier.fillMaxWidth(),
-                            isError = isError,
-                            label = stringResource(MR.strings.label_tile_discarded_by_other)
-                        )
-                    }
-                }
-
-                VerticalSpacerBetweenPanels()
-
-                TopPanel(
-                    { Text(stringResource(MR.strings.label_other_options)) },
-                    noContentPadding = true
+            ScrollBox(verticalScrollState = verticalScrollState, modifier = modifier) {
+                Column(
+                    Modifier.verticalScroll(verticalScrollState)
                 ) {
-                    SwitchItem(
-                        model.allowChi,
-                        { model.allowChi = it },
-                        stringResource(MR.strings.label_allow_chi)
-                    )
-                }
+                    VerticalSpacerBetweenPanels()
 
-                VerticalSpacerBetweenPanels()
-
-                Button(
-                    modifier = Modifier.windowHorizontalMargin(),
-                    content = { Text(stringResource(MR.strings.label_calc)) },
-                    onClick = {
-                        model.onSubmit()
+                    TopPanel {
+                        ValidationField(model.tilesErrMsg) { isError ->
+                            TileField(
+                                value = model.tiles,
+                                onValueChange = { model.tiles = it },
+                                modifier = Modifier.fillMaxWidth(),
+                                isError = isError,
+                                label = stringResource(MR.strings.label_tiles_in_hand)
+                            )
+                        }
                     }
-                )
 
-                VerticalSpacerBetweenPanels()
+                    VerticalSpacerBetweenPanels()
+                    TopPanel {
+                        ValidationField(model.chanceTileErrMsg) { isError ->
+                            TileField(
+                                value = model.chanceTile?.let { listOf(it) } ?: emptyList(),
+                                onValueChange = { model.chanceTile = it.firstOrNull() },
+                                modifier = Modifier.fillMaxWidth(),
+                                isError = isError,
+                                label = stringResource(MR.strings.label_tile_discarded_by_other)
+                            )
+                        }
+                    }
+
+                    VerticalSpacerBetweenPanels()
+
+                    TopPanel(
+                        { Text(stringResource(MR.strings.label_other_options)) },
+                        noContentPadding = true
+                    ) {
+                        SwitchItem(
+                            model.allowChi,
+                            { model.allowChi = it },
+                            stringResource(MR.strings.label_allow_chi)
+                        )
+                    }
+
+                    VerticalSpacerBetweenPanels()
+
+                    Button(
+                        modifier = Modifier.windowHorizontalMargin(),
+                        content = { Text(stringResource(MR.strings.label_calc)) },
+                        onClick = {
+                            model.onSubmit()
+                        }
+                    )
+
+                    VerticalSpacerBetweenPanels()
+                }
             }
         }
     }

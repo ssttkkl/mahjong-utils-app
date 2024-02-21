@@ -2,6 +2,7 @@ package io.ssttkkl.mahjongutils.app.screens.shanten
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -13,6 +14,7 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsContent
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesWithNumTopCardPanel
+import io.ssttkkl.mahjongutils.app.components.scrollbox.VerticalScrollBox
 import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.utils.Spacing
@@ -99,26 +101,29 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithGot) {
             .sortedBy { it.first }  // 按照向听数排序
     }
 
+    val state = rememberLazyListState()
+
     with(Spacing.current) {
-        LazyColumn(Modifier.fillMaxWidth()) {
-            item {
-                VerticalSpacerBetweenPanels()
-                TilesInHandPanel(args.tiles, true)
-            }
+        VerticalScrollBox(state) {
+            LazyColumn(Modifier.fillMaxWidth(), state = state) {
+                item {
+                    VerticalSpacerBetweenPanels()
+                    TilesInHandPanel(args.tiles, true)
+                }
 
-            item {
-                VerticalSpacerBetweenPanels()
-                ShantenNumCardPanel(shanten.shantenNum)
-            }
+                item {
+                    VerticalSpacerBetweenPanels()
+                    ShantenNumCardPanel(shanten.shantenNum)
+                }
 
-            item {
-                VerticalSpacerBetweenPanels()
-            }
+                item {
+                    VerticalSpacerBetweenPanels()
+                }
 
-            ShantenActionGroupsContent(groups, shanten.shantenNum)
+                ShantenActionGroupsContent(groups, shanten.shantenNum)
+            }
         }
     }
-
 }
 
 @Composable

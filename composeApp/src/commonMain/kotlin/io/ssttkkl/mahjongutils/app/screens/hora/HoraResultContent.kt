@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -17,6 +18,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
+import io.ssttkkl.mahjongutils.app.components.scrollbox.VerticalScrollBox
 import io.ssttkkl.mahjongutils.app.components.tile.FuroTiles
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
@@ -103,38 +105,42 @@ private fun YakuPanel(hora: Hora) {
 
 @Composable
 fun HoraResultContent(args: HoraArgs, hora: Hora) {
+    val state = rememberLazyListState()
+
     with(Spacing.current) {
-        LazyColumn(Modifier.fillMaxWidth()) {
-            item("hand") {
-                VerticalSpacerBetweenPanels()
-
-                HandTilesPanel(args)
-            }
-
-            item("point") {
-                VerticalSpacerBetweenPanels()
-                PointPanel(
-                    hora.han, hora.hu, hora.hasYakuman,
-                    if (hora.selfWind == null || hora.selfWind == Wind.East) hora.parentPoint else null,
-                    if (hora.selfWind == null || hora.selfWind != Wind.East) hora.childPoint else null
-                )
-            }
-
-            val pattern = hora.pattern
-            if (pattern is RegularHoraHandPattern) {
-                item("pattern") {
+        VerticalScrollBox(state) {
+            LazyColumn(Modifier.fillMaxWidth(), state = state) {
+                item("hand") {
                     VerticalSpacerBetweenPanels()
-                    HandDeconstructionPanel(pattern)
+
+                    HandTilesPanel(args)
                 }
-            }
 
-            item("yaku") {
-                VerticalSpacerBetweenPanels()
-                YakuPanel(hora)
-            }
+                item("point") {
+                    VerticalSpacerBetweenPanels()
+                    PointPanel(
+                        hora.han, hora.hu, hora.hasYakuman,
+                        if (hora.selfWind == null || hora.selfWind == Wind.East) hora.parentPoint else null,
+                        if (hora.selfWind == null || hora.selfWind != Wind.East) hora.childPoint else null
+                    )
+                }
 
-            item("bottom_spacer") {
-                VerticalSpacerBetweenPanels()
+                val pattern = hora.pattern
+                if (pattern is RegularHoraHandPattern) {
+                    item("pattern") {
+                        VerticalSpacerBetweenPanels()
+                        HandDeconstructionPanel(pattern)
+                    }
+                }
+
+                item("yaku") {
+                    VerticalSpacerBetweenPanels()
+                    YakuPanel(hora)
+                }
+
+                item("bottom_spacer") {
+                    VerticalSpacerBetweenPanels()
+                }
             }
         }
     }

@@ -10,7 +10,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -21,6 +20,7 @@ import io.ssttkkl.mahjongutils.app.components.basic.RatioGroups
 import io.ssttkkl.mahjongutils.app.components.basic.RatioOption
 import io.ssttkkl.mahjongutils.app.components.panel.Caption
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
+import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
 import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
@@ -76,49 +76,51 @@ object ShantenScreen :
         model: ShantenScreenModel,
         modifier: Modifier
     ) {
-        val coroutineScope = rememberCoroutineScope()
+        val verticalScrollState = rememberScrollState()
 
         with(Spacing.current) {
-            Column(
-                modifier.verticalScroll(rememberScrollState())
-            ) {
-                VerticalSpacerBetweenPanels()
+            ScrollBox(verticalScrollState = verticalScrollState, modifier = modifier) {
+                Column(
+                    Modifier.verticalScroll(verticalScrollState)
+                ) {
+                    VerticalSpacerBetweenPanels()
 
-                TopPanel {
-                    ValidationField(model.tilesErrMsg) { isError ->
-                        TileField(
-                            value = model.tiles,
-                            onValueChange = { model.tiles = it },
-                            modifier = Modifier.fillMaxWidth(),
-                            isError = isError,
-                            label = stringResource(MR.strings.label_tiles_in_hand)
+                    TopPanel {
+                        ValidationField(model.tilesErrMsg) { isError ->
+                            TileField(
+                                value = model.tiles,
+                                onValueChange = { model.tiles = it },
+                                modifier = Modifier.fillMaxWidth(),
+                                isError = isError,
+                                label = stringResource(MR.strings.label_tiles_in_hand)
+                            )
+                        }
+                    }
+
+                    VerticalSpacerBetweenPanels()
+
+                    TopPanel(
+                        { Text(stringResource(MR.strings.label_shanten_mode)) },
+                        noContentPadding = true
+                    ) {
+                        ShantenModeRatioGroups(
+                            model.shantenMode,
+                            { model.shantenMode = it }
                         )
                     }
-                }
 
-                VerticalSpacerBetweenPanels()
+                    VerticalSpacerBetweenPanels()
 
-                TopPanel(
-                    { Text(stringResource(MR.strings.label_shanten_mode)) },
-                    noContentPadding = true
-                ) {
-                    ShantenModeRatioGroups(
-                        model.shantenMode,
-                        { model.shantenMode = it }
+                    Button(
+                        modifier = Modifier.windowHorizontalMargin(),
+                        content = { Text(stringResource(MR.strings.label_calc)) },
+                        onClick = {
+                            model.onSubmit()
+                        }
                     )
+
+                    VerticalSpacerBetweenPanels()
                 }
-
-                VerticalSpacerBetweenPanels()
-
-                Button(
-                    modifier = Modifier.windowHorizontalMargin(),
-                    content = { Text(stringResource(MR.strings.label_calc)) },
-                    onClick = {
-                        model.onSubmit()
-                    }
-                )
-
-                VerticalSpacerBetweenPanels()
             }
         }
     }

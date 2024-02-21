@@ -25,9 +25,9 @@ import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
+import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
-import io.ssttkkl.mahjongutils.app.screens.hora.HoraOptionsDialog
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 
 object HanhuScreen : NavigationScreen() {
@@ -117,31 +117,42 @@ object HanhuScreen : NavigationScreen() {
             }
 
             if (LocalAppState.current.windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                Column(
-                    Modifier.verticalScroll(rememberScrollState())
-                ) {
-                    VerticalSpacerBetweenPanels()
-                    Form()
-                    VerticalSpacerBetweenPanels()
-                    Result()
-                    VerticalSpacerBetweenPanels()
-                }
-            } else {
-                Row {
+                val verticalScrollState = rememberScrollState()
+
+                ScrollBox(verticalScrollState = verticalScrollState) {
                     Column(
-                        Modifier.weight(2f).verticalScroll(rememberScrollState())
+                        Modifier.verticalScroll(verticalScrollState)
                     ) {
                         VerticalSpacerBetweenPanels()
                         Form()
                         VerticalSpacerBetweenPanels()
-                    }
-
-                    Column(
-                        Modifier.weight(3f).verticalScroll(rememberScrollState())
-                    ) {
-                        VerticalSpacerBetweenPanels()
                         Result()
                         VerticalSpacerBetweenPanels()
+                    }
+                }
+            } else {
+                Row {
+                    val formScrollState = rememberScrollState()
+                    val resultScrollState = rememberScrollState()
+
+                    ScrollBox(verticalScrollState = formScrollState, modifier = Modifier.weight(2f)) {
+                        Column(
+                            Modifier.verticalScroll(formScrollState)
+                        ) {
+                            VerticalSpacerBetweenPanels()
+                            Form()
+                            VerticalSpacerBetweenPanels()
+                        }
+                    }
+
+                    ScrollBox(verticalScrollState = resultScrollState, modifier = Modifier.weight(3f)) {
+                        Column(
+                            Modifier.verticalScroll(resultScrollState)
+                        ) {
+                            VerticalSpacerBetweenPanels()
+                            Result()
+                            VerticalSpacerBetweenPanels()
+                        }
                     }
                 }
             }

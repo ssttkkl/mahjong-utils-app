@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.DrawerState
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
@@ -183,10 +186,15 @@ fun AppScaffold(
             if (!useNavigationDrawer) {
                 with(Spacing.current) {
                     Row {
-                        Column(Modifier.width(200.dp)) {
-                            NavigationItems(appState.navigator, navigatableScreens)
+                        val menuScrollState = rememberScrollState()
+                        ScrollBox(menuScrollState) {
+                            Column(Modifier.width(200.dp).verticalScroll(menuScrollState)) {
+                                NavigationItems(appState.navigator, navigatableScreens)
+                            }
                         }
+
                         Spacer(Modifier.width(panesHorizontalSpacing))
+
                         Column(Modifier.weight(1f)) {
                             InnerScaffold()
                         }
@@ -197,18 +205,23 @@ fun AppScaffold(
                     drawerState = appState.drawerState,
                     drawerContent = {
                         ModalDrawerSheet {
-                            IconButton(onClick = {
-                                appState.coroutineScope.launch {
-                                    appState.drawerState.close()
+                            val menuScrollState = rememberScrollState()
+                            ScrollBox(menuScrollState) {
+                                Column(Modifier.verticalScroll(menuScrollState)) {
+                                    IconButton(onClick = {
+                                        appState.coroutineScope.launch {
+                                            appState.drawerState.close()
+                                        }
+                                    }) {
+                                        Icon(Icons.Default.Close, "")
+                                    }
+                                    NavigationItems(
+                                        appState.navigator,
+                                        navigatableScreens,
+                                        appState.drawerState
+                                    )
                                 }
-                            }){
-                                Icon(Icons.Default.Close, "")
                             }
-                            NavigationItems(
-                                appState.navigator,
-                                navigatableScreens,
-                                appState.drawerState
-                            )
                         }
                     }
                 ) {
