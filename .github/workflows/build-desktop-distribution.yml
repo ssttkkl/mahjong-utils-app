@@ -32,6 +32,12 @@ jobs:
         java-version: 17
         cache: 'gradle'
 
+    - name: Install FUSE (linux)
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+      uses: ConorMacBride/install-package@v1.1.0
+      with:
+        apt: libfuse2
+
     - name: Package Distribution
       run: |
         ./gradlew composeApp:packageDistributionForCurrentOS
@@ -57,7 +63,7 @@ jobs:
         wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
         chmod +x appimagetool-x86_64.AppImage
         cp -r build/compose/binaries/main/app/**/* mahjong-utils-app.AppDir/
-        ./appimagetool-x86_64.AppImage mahjong-utils-app.AppDir mahjong-utils-app.AppImage --appimage-extract
+        ./appimagetool-x86_64.AppImage mahjong-utils-app.AppDir mahjong-utils-app.AppImage
 
     - name: Upload the Build Artifact (linux)
       if: ${{ matrix.os == 'ubuntu-latest' }}
