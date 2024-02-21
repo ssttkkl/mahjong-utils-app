@@ -51,7 +51,7 @@ jobs:
         path: composeApp/build/compose/binaries/main/msi/*.msi
 
     - name: Upload the Build Artifact (linux)
-      if: ${{ matrix.os == 'linux-latest' }}
+      if: ${{ matrix.os == 'ubuntu-latest' }}
       uses: actions/upload-artifact@v3.1.1
       with:
         name: distribution
