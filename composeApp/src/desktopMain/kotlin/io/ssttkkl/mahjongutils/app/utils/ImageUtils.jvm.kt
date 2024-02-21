@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import dev.icerock.moko.resources.ImageResource
+import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
 
 
@@ -16,22 +17,27 @@ actual fun ImageResource.toImageBitmap(): ImageBitmap {
 @Composable
 actual fun ImageResource.toLieDownImageBitmap(): ImageBitmap {
     return remember(this) {
-        val imageToRotate = this.image
-        val widthOfImage: Int = imageToRotate.width
-        val heightOfImage: Int = imageToRotate.height
-        val typeOfImage: Int = imageToRotate.type
-
-        val newImageFromBuffer = BufferedImage(widthOfImage, heightOfImage, typeOfImage)
-
-        val graphics2D = newImageFromBuffer.createGraphics()
-
-        graphics2D.rotate(
-            Math.toRadians(90.0),
-            (widthOfImage / 2).toDouble(),
-            (heightOfImage / 2).toDouble()
-        )
-        graphics2D.drawImage(imageToRotate, null, 0, 0)
-
-        newImageFromBuffer.toComposeImageBitmap()
+        this.image.rotateImageByDegrees(-90.0).toComposeImageBitmap()
     }
+}
+
+private fun BufferedImage.rotateImageByDegrees(angle: Double): BufferedImage {
+    val rads = Math.toRadians(angle)
+    val sin = Math.abs(Math.sin(rads))
+    val cos = Math.abs(Math.cos(rads))
+    val w = this.width
+    val h = this.height
+    val newWidth = Math.floor(w * cos + h * sin).toInt()
+    val newHeight = Math.floor(h * cos + w * sin).toInt()
+    val rotated = BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB)
+    val g2d = rotated.createGraphics()
+    val at = AffineTransform()
+    at.translate(((newWidth - w) / 2).toDouble(), ((newHeight - h) / 2).toDouble())
+    val x = w / 2
+    val y = h / 2
+    at.rotate(rads, x.toDouble(), y.toDouble())
+    g2d.transform = at
+    g2d.drawImage(this, null, 0, 0)
+    g2d.dispose()
+    return rotated
 }
