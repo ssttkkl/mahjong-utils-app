@@ -34,25 +34,25 @@ jobs:
 
     - name: Package Distribution
       run: |
-        ./gradlew composeApp:packageDistributionForCurrentOS
+        ./gradlew composeApp:packageReleaseDistributionForCurrentOS
 
     - name: Upload the Build Artifact (macos)
       if: ${{ matrix.os == 'macos-latest' }}
       uses: actions/upload-artifact@v3.1.1
       with:
           name: distribution
-          path: composeApp/build/compose/binaries/main/dmg/*
+          path: composeApp/build/compose/binaries/main-release/dmg/*
 
     - name: Upload the Build Artifact (windows)
       if: ${{ matrix.os == 'windows-latest' }}
       uses: actions/upload-artifact@v3.1.1
       with:
         name: distribution
-        path: composeApp/build/compose/binaries/main/exe/*
+        path: composeApp/build/compose/binaries/main-release/exe/*
 
     - name: Upload the Build Artifact (linux)
       if: ${{ matrix.os == 'ubuntu-latest' }}
       uses: actions/upload-artifact@v3.1.1
       with:
         name: distribution
-        path: composeApp/build/compose/binaries/main/appImage/*
+        path: composeApp/build/compose/binaries/main-release/app/*
