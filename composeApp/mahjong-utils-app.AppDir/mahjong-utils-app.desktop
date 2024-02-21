@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=mahjong-utils-app
+Exec=mahjong-utils-app
+Icon=mahjong-utils-app
+Type=Application
+Categories=Utility
+Terminal=false
+StartupNotify=true
+NoDisplay=false
