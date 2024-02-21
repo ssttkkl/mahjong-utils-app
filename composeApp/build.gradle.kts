@@ -156,13 +156,23 @@ compose.desktop {
             packageVersion = properties["version.name"].toString()
             licenseFile.set(rootProject.file("LICENSE"))
 
-            modules("java.base", "java.instrument", "jdk.unsupported", "jdk.xml.dom")
-
             val hostOs = System.getProperty("os.name")
             when {
                 hostOs == "Mac OS X" -> targetFormats(TargetFormat.Dmg)
                 hostOs == "Linux" -> targetFormats(TargetFormat.AppImage)
                 hostOs.startsWith("Windows") -> targetFormats(TargetFormat.Exe)
+            }
+
+            windows {
+                iconFile.set(file("icon.ico"))
+            }
+
+            macOS {
+                iconFile.set(file("icon.icns"))
+            }
+
+            linux {
+                iconFile.set(file("icon.png"))
             }
         }
     }
