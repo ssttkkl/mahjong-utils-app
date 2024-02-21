@@ -5,6 +5,7 @@ import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -176,32 +177,35 @@ internal actual fun CoreTileField(
     var rectsState: MutableState<List<Rect>> = remember { mutableStateOf(emptyList()) }
     val focused by state.interactionSource.collectIsFocusedAsState()
 
-    Tiles(
-        value,
-        modifier
-            .focusRequester(focusRequester)
-            .focusable(interactionSource = state.interactionSource)
-            .tapPress(state.interactionSource) {
-                focusRequester.requestFocus()
-            }
-            .handleKeyEvent(value.size, state)
-            .pointerHoverIcon(PointerIcon.Text)
-            .onTapChangeCursor(rectsState) {
-                state.selection = TextRange(it)
-            }
-            .let {
-                if (focused)
-                    it.drawCursor(
-                        state.selection,
-                        rectsState,
-                        cursorColor
-                    )
-                else
-                    it
-            },
-        fontSize = fontSizeInSp.sp,
-        onTextLayout = { layoutResult ->
-            rectsState.value = layoutResult.multiParagraph.placeholderRects.filterNotNull()
+    Box(Modifier
+        .focusRequester(focusRequester)
+        .focusable(interactionSource = state.interactionSource)
+        .tapPress(state.interactionSource) {
+            focusRequester.requestFocus()
         }
-    )
+        .handleKeyEvent(value.size, state)
+        .pointerHoverIcon(PointerIcon.Text)
+        .onTapChangeCursor(rectsState) {
+            state.selection = TextRange(it)
+        }
+        .let {
+            if (focused)
+                it.drawCursor(
+                    state.selection,
+                    rectsState,
+                    cursorColor
+                )
+            else
+                it
+        }
+    ) {
+        Tiles(
+            value,
+            modifier,
+            fontSize = fontSizeInSp.sp,
+            onTextLayout = { layoutResult ->
+                rectsState.value = layoutResult.multiParagraph.placeholderRects.filterNotNull()
+            }
+        )
+    }
 }
