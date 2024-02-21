@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
+if [ ! -d build ]; then
+  mkdir build
+fi
+
 cd build
+
 if [ ! -f appimagetool-x86_64.AppImage ]; then
   wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
 fi
