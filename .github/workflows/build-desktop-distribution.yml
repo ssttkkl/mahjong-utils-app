@@ -97,39 +97,34 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout my repository
-      uses: actions/checkout@v3
+      - name: Checkout my repository
+        uses: actions/checkout@v3
 
-    - name: Setup Java JDK
-      uses: actions/setup-java@v3
-      with:
-        distribution: temurin
-        java-version: 17
-        cache: 'gradle'
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: 'gradle'
 
-    - name: Package Distribution
-      run: |
-        ./gradlew composeApp:packageDistributionForCurrentOS
+      - name: Install FUSE (linux)
+        uses: ConorMacBride/install-package@v1.1.0
+        with:
+          apt: libfuse2
 
-    - name: Install FUSE (linux)
-      uses: ConorMacBride/install-package@v1.1.0
-      with:
-        apt: libfuse2
+      - name: Package Distribution
+        run: |
+          ./gradlew composeApp:packageDistributionForCurrentOS
 
-    - name: Package as AppImage
-      run: |
-        chmod +x build_appimage.sh
-        ./build_appimage.sh
-
-    - name: Upload the Build Artifact
-      uses: actions/upload-artifact@v3.1.1
-      with:
-        name: distribution
-        path: build/mahjong-utils-app.AppImage
+      - name: Upload the Build Artifact
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: distribution
+          path: build/appimage/mahjong-utils-app.AppImage
 
     - name: Upload Release Assets
       if: ${{ github.event_name == 'release' }}
       uses: AButler/upload-release-assets@v3.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: build/mahjong-utils-app.AppImage
+        files: build/appimage/mahjong-utils-app.AppImage

@@ -1,5 +1,6 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import dev.icerock.gradle.MRVisibility
+import org.apache.commons.io.FileUtils
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import java.util.Properties
@@ -21,6 +22,7 @@ plugins {
     alias(libs.plugins.mokoResources)
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.undercouch.download)
 }
 
 kotlin {
@@ -121,6 +123,23 @@ kotlin {
     }
 }
 
+multiplatformResources {
+    multiplatformResourcesPackage = "io.ssttkkl.mahjongutils.app"
+    multiplatformResourcesVisibility = MRVisibility.Internal
+    iosBaseLocalizationRegion = "zh"
+}
+
+buildkonfig {
+    packageName = "io.ssttkkl.mahjongutils.app"
+
+    defaultConfigs {
+        buildConfigField(STRING, "VERSION_NAME", properties["version.name"].toString())
+        buildConfigField(STRING, "VERSION_CODE", properties["version.code"].toString())
+        buildConfigField(STRING, "OPENSOURCE_REPO", properties["opensource.repo"].toString())
+        buildConfigField(STRING, "OPENSOURCE_LICENSE", properties["opensource.license"].toString())
+    }
+}
+
 android {
     namespace = "io.ssttkkl.mahjongutils.app"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -205,24 +224,48 @@ compose.desktop {
     }
 }
 
+afterEvaluate {
+    tasks.findByName("packageAppImage")?.doLast {
+        val appDirSrc = project.file("mahjong-utils-app.AppDir")
+        val packageOutput =
+            layout.buildDirectory.dir("compose/binaries/main/app/mahjong-utils-app").get().asFile
+        if (!appDirSrc.exists() || !packageOutput.exists()) {
+            return@doLast
+        }
+
+        val downloadDest = layout.buildDirectory.dir("tmp").get().asFile
+        val appimagetool = downloadDest.resolve("appimagetool-x86_64.AppImage")
+
+        download.run {
+            src("https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage")
+            dest(downloadDest)
+            overwrite(false)
+        }
+
+        if (!appimagetool.canExecute()) {
+            appimagetool.setExecutable(true)
+        }
+
+        val appDir = layout.buildDirectory.dir("appimage/mahjong-utils-app.AppDir").get().asFile
+        if (appDir.exists()) {
+            appDir.deleteRecursively()
+        }
+        FileUtils.copyDirectory(appDirSrc, appDir)
+        FileUtils.copyDirectory(packageOutput, appDir)
+
+        val appExecutable = appDir.resolve("bin/mahjong-utils-app")
+        if (!appExecutable.canExecute()) {
+            appimagetool.setExecutable(true)
+        }
+
+        exec {
+            workingDir = appDir.parentFile
+            executable = appimagetool.canonicalPath
+            args("mahjong-utils-app.AppDir", "mahjong-utils-app.AppImage")
+        }
+    }
+}
 
 //compose.experimental {
 //    web.application {}
 //}
-
-multiplatformResources {
-    multiplatformResourcesPackage = "io.ssttkkl.mahjongutils.app"
-    multiplatformResourcesVisibility = MRVisibility.Internal
-    iosBaseLocalizationRegion = "zh"
-}
-
-buildkonfig {
-    packageName = "io.ssttkkl.mahjongutils.app"
-
-    defaultConfigs {
-        buildConfigField(STRING, "VERSION_NAME", properties["version.name"].toString())
-        buildConfigField(STRING, "VERSION_CODE", properties["version.code"].toString())
-        buildConfigField(STRING, "OPENSOURCE_REPO", properties["opensource.repo"].toString())
-        buildConfigField(STRING, "OPENSOURCE_LICENSE", properties["opensource.license"].toString())
-    }
-}

@@ -5,7 +5,7 @@
 
 - [x] Android
 - [x] iOS
-- [ ] Desktop
+- [x] Desktop
 
 ## 功能
 
@@ -17,7 +17,6 @@
 
 - 番符得点计算：默认为雀魂/天凤规则，可以定制少部分规则
 
-
 ## App说明
 
 算法为纯手工自制，App无需网络，纯本地计算
@@ -25,10 +24,6 @@
 App基于Kotlin/Multiplatform与Compose Multiplatform技术栈开发，欢迎PR
 
 可能会有些小Bug，欢迎通过GitHub的issue区反馈问题
-
-
-（桌面版还差亿点点适配工作没有完成，咕咕咕）
-（被Compose折磨疯了，等一个熟悉Compose的好心大佬给我PR）
 
 ## LICENSE
 

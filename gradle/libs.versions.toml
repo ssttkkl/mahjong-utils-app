@@ -28,6 +28,7 @@ voyager = "1.0.0"
 mokoResources = "0.23.0"
 aboutLibraries = "10.10.0"
 buildkonfig = "0.15.1"
+undercouch-download = "5.5.0"
 
 [libraries]
 androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastoreCore" }
@@ -76,3 +77,4 @@ kotlinxAtomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "
 mokoResources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "mokoResources" }
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
+undercouch-download = { id = "de.undercouch.download", version.ref = "undercouch-download" }
