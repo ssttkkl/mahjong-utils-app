@@ -120,11 +120,11 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with:
           name: distribution
-          path: build/appimage/mahjong-utils-app.AppImage
+          path: composeApp/build/appimage/mahjong-utils-app.AppImage
 
       - name: Upload Release Assets
         if: ${{ github.event_name == 'release' }}
         uses: AButler/upload-release-assets@v3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          files: build/appimage/mahjong-utils-app.AppImage
+          files: composeApp/build/appimage/mahjong-utils-app.AppImage
