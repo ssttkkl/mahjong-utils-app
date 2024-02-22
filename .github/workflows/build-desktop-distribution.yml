@@ -122,9 +122,9 @@ jobs:
           name: distribution
           path: build/appimage/mahjong-utils-app.AppImage
 
-    - name: Upload Release Assets
-      if: ${{ github.event_name == 'release' }}
-      uses: AButler/upload-release-assets@v3.0
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: build/appimage/mahjong-utils-app.AppImage
+      - name: Upload Release Assets
+        if: ${{ github.event_name == 'release' }}
+        uses: AButler/upload-release-assets@v3.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          files: build/appimage/mahjong-utils-app.AppImage
