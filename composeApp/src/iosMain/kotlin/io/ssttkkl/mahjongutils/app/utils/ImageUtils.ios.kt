@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
-import dev.icerock.moko.resources.ImageResource
+import org.jetbrains.compose.resources.DrawableResource
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import platform.CoreFoundation.CFRelease
@@ -30,14 +30,14 @@ import platform.posix.M_PI
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
-actual fun ImageResource.toImageBitmap(): ImageBitmap {
+actual fun DrawableResource.toImageBitmap(): ImageBitmap {
     return this.toUIImage()?.CGImage()?.toSkiaImage()?.toComposeImageBitmap()
         ?: error("fail to convert $this to ImageBitmap")
 }
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
-actual fun ImageResource.toLieDownImageBitmap(): ImageBitmap {
+actual fun DrawableResource.toLieDownImageBitmap(): ImageBitmap {
     return remember(this) {
         // https://gist.github.com/paolonl/6231410
         val imgRef = this.toUIImage()?.CGImage()

@@ -66,7 +66,7 @@ private fun List<Tile>.toNSAttributedString(height: Double): NSAttributedString 
 
     forEach {
         val attachment = NSTextAttachment()
-        attachment.image = it.imageResource.toUIImage()
+        attachment.image = it.drawableResource.toUIImage()
         attachment.bounds = CGRectMake(0.0, 0.0, width, height)
 
         val attrStringWithImage = NSAttributedString.attributedStringWithAttachment(attachment)

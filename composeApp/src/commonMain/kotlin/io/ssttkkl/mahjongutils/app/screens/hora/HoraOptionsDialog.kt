@@ -14,11 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Dialog
-import dev.icerock.moko.resources.compose.stringResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
 import io.ssttkkl.mahjongutils.app.utils.Spacing
+import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.hora.HoraOptions
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun HoraOptionsDialog(
@@ -37,66 +37,66 @@ fun HoraOptionsDialog(
                 SwitchItem(
                     options.aotenjou,
                     { onChangeOptions(options.copy(aotenjou = it)) },
-                    stringResource(MR.strings.label_aotenjou),
-                    stringResource(MR.strings.desc_aotenjou),
+                    stringResource(Res.string.label_aotenjou),
+                    stringResource(Res.string.desc_aotenjou),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.allowKuitan,
                     { onChangeOptions(options.copy(allowKuitan = it)) },
-                    stringResource(MR.strings.label_hasKuitan),
-                    stringResource(MR.strings.desc_hasKuitan),
+                    stringResource(Res.string.label_haskuitan),
+                    stringResource(Res.string.desc_haskuitan),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasRenpuuJyantouHu,
                     { onChangeOptions(options.copy(hasRenpuuJyantouHu = it)) },
-                    stringResource(MR.strings.label_renpuuJyantou4Hu),
-                    stringResource(MR.strings.desc_renpuuJyantou4Hu),
+                    stringResource(Res.string.label_renpuujyantou4hu),
+                    stringResource(Res.string.desc_renpuujyantou4hu),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasKiriageMangan,
                     { onChangeOptions(options.copy(hasKiriageMangan = it)) },
-                    stringResource(MR.strings.label_hasKiriageMangan),
-                    stringResource(MR.strings.desc_hasKiriageMangan),
+                    stringResource(Res.string.label_haskiriagemangan),
+                    stringResource(Res.string.desc_haskiriagemangan),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasKazoeYakuman,
                     { onChangeOptions(options.copy(hasKazoeYakuman = it)) },
-                    stringResource(MR.strings.label_hasKazoeYakuman),
-                    stringResource(MR.strings.desc_hasKazoeYakuman),
+                    stringResource(Res.string.label_haskazoeyakuman),
+                    stringResource(Res.string.desc_haskazoeyakuman),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasMultipleYakuman,
                     { onChangeOptions(options.copy(hasMultipleYakuman = it)) },
-                    stringResource(MR.strings.label_hasMultipleYakuman),
-                    stringResource(MR.strings.desc_hasMultipleYakuman),
+                    stringResource(Res.string.label_hasmultipleyakuman),
+                    stringResource(Res.string.desc_hasmultipleyakuman),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasComplexYakuman,
                     { onChangeOptions(options.copy(hasComplexYakuman = it)) },
-                    stringResource(MR.strings.label_hasComplexYakuman),
-                    stringResource(MR.strings.desc_hasComplexYakuman),
+                    stringResource(Res.string.label_hascomplexyakuman),
+                    stringResource(Res.string.desc_hascomplexyakuman),
                     colors = itemColors
                 )
 
                 Row {
                     Surface(Modifier.weight(1f)) {}
                     TextButton({ onChangeOptions(HoraOptions.Default) }) {
-                        Text(stringResource(MR.strings.label_hora_options_restore))
+                        Text(stringResource(Res.string.label_hora_options_restore))
                     }
                     TextButton({ onDismissRequest() }) {
-                        Text(stringResource(MR.strings.label_hora_options_ok))
+                        Text(stringResource(Res.string.label_hora_options_ok))
                     }
                 }
             }

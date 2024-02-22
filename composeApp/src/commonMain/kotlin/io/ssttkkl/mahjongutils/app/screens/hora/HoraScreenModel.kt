@@ -6,8 +6,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.screenModelScope
-import dev.icerock.moko.resources.StringResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.models.AppOptions
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
@@ -15,6 +13,7 @@ import io.ssttkkl.mahjongutils.app.models.hora.HoraCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.hora.HoraOptions
 import mahjongutils.models.Furo
 import mahjongutils.models.Kan
@@ -22,6 +21,7 @@ import mahjongutils.models.Tile
 import mahjongutils.models.Wind
 import mahjongutils.yaku.Yaku
 import mahjongutils.yaku.Yakus
+import org.jetbrains.compose.resources.StringResource
 
 class FuroModel {
     var tiles: List<Tile> by mutableStateOf(emptyList())
@@ -263,27 +263,27 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
 
         val dora = if (dora.isEmpty()) 0 else dora.toIntOrNull()
         if (dora == null) {
-            doraErrMsg = MR.strings.text_invalid_dora_count
+            doraErrMsg = Res.string.text_invalid_dora_count
             validDora = false
         }
 
         if (tiles.isEmpty()) {
-            tilesErrMsg = MR.strings.text_must_enter_tiles
+            tilesErrMsg = Res.string.text_must_enter_tiles
             validTiles = false
         }
 
         val curTilesCount = tiles.size + furo.size * 3
         if (curTilesCount != 14 && curTilesCount != 13) {
-            tilesErrMsg = MR.strings.text_hora_hand_tiles_not_enough
+            tilesErrMsg = Res.string.text_hora_hand_tiles_not_enough
             validTiles = false
         }
 
         val agari = agari ?: autoDetectedAgari
         if (agari == null) {
-            agariErrMsg = MR.strings.text_must_enter_agari
+            agariErrMsg = Res.string.text_must_enter_agari
             validAgari = false
         } else if (curTilesCount == 14 && agari !in tiles) {
-            agariErrMsg = MR.strings.text_agari_not_in_hand
+            agariErrMsg = Res.string.text_agari_not_in_hand
             validAgari = false
         }
 
@@ -292,7 +292,7 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
                 it.toFuro()
                 it.errMsg = null
             } catch (e: IllegalArgumentException) {
-                it.errMsg = MR.strings.text_invalid_furo
+                it.errMsg = Res.string.text_invalid_furo
             }
         }
         validFuro = furo.all { it.errMsg == null }

@@ -3,28 +3,37 @@ package io.ssttkkl.mahjongutils.app.screens.about
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
-import dev.icerock.moko.resources.StringResource
-import dev.icerock.moko.resources.compose.readTextAsState
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.scrollbox.VerticalScrollBox
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
+import mahjongutils.composeapp.generated.resources.Res
+import org.jetbrains.compose.resources.StringResource
 
 object OpenSourceLicensesScreen : NavigationScreen() {
     override val title: StringResource?
-        get() = MR.strings.title_about_opensource_licenses
+        get() = Res.string.title_about_opensource_licenses
 
     @Composable
     override fun Content() {
-        val aboutlibraries by MR.files.aboutlibraries.readTextAsState()
+        var aboutlibraries by remember {
+            mutableStateOf("")
+        }
+
+        LaunchedEffect(Unit) {
+            aboutlibraries = Res.readBytes("files/aboutlibraries.json").decodeToString()
+        }
 
         val lazyListState = rememberLazyListState()
 
         VerticalScrollBox(lazyListState) {
             LibrariesContainer(
-                aboutlibraries ?: "",
+                aboutlibraries,
                 Modifier.fillMaxSize(),
                 lazyListState
             )

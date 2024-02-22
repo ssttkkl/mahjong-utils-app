@@ -21,13 +21,13 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.TextUnit
-import dev.icerock.moko.resources.compose.stringResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
+import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.models.Tile
 import mahjongutils.models.toTilesString
+import org.jetbrains.compose.resources.stringResource
 
 private fun TileImeHostState.TileImeConsumer.consume(
     state: CoreTileFieldState,
@@ -194,7 +194,7 @@ fun TileField(
             label = label?.let { ({ Text(label) }) },
             trailingIcon = {
                 Text(
-                    stringResource(MR.strings.text_tiles_num_short, value.size),
+                    stringResource(Res.string.text_tiles_num_short, value.size),
                     style = MaterialTheme.typography.labelMedium
                 )
             },

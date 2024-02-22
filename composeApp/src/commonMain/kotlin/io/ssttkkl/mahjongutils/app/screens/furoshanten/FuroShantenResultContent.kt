@@ -9,8 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import dev.icerock.moko.resources.compose.stringResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsContent
@@ -20,12 +18,14 @@ import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
+import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.models.Tile
 import mahjongutils.shanten.ShantenWithFuroChance
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 private fun FuroShantenTilesPanel(tiles: List<Tile>, chanceTile: Tile) {
-    TopCardPanel({ Text(stringResource(MR.strings.label_tiles_in_hand)) }) {
+    TopCardPanel({ Text(stringResource(Res.string.label_tiles_in_hand)) }) {
         CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
             FuroShantenTiles(tiles, chanceTile)
         }

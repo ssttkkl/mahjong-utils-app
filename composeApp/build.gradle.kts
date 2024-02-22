@@ -1,5 +1,4 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
-import dev.icerock.gradle.MRVisibility
 import org.apache.commons.io.FileUtils
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
@@ -19,7 +18,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinNativeCocoapods)
-    alias(libs.plugins.mokoResources)
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.buildkonfig)
     alias(libs.plugins.undercouch.download)
@@ -99,9 +97,6 @@ kotlin {
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.screenmodel)
 
-            implementation(libs.moko.resources)
-            implementation(libs.moko.resources.compose)
-
             implementation(libs.okio)
             implementation(libs.androidx.datastore.core)
             implementation(libs.androidx.datastore.core.okio)
@@ -121,12 +116,11 @@ kotlin {
             }
         }
     }
-}
 
-multiplatformResources {
-    multiplatformResourcesPackage = "io.ssttkkl.mahjongutils.app"
-    multiplatformResourcesVisibility = MRVisibility.Internal
-    iosBaseLocalizationRegion = "zh"
+    @Suppress("OPT_IN_USAGE")
+    compilerOptions {
+        optIn.add("org.jetbrains.compose.resources.ExperimentalResourceApi")
+    }
 }
 
 buildkonfig {
