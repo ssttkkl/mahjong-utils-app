@@ -112,6 +112,10 @@ private val yakuConflictingMatrix = mapOf(
     )
 )
 
+private val combinedYakuConflictingMatrix = mapOf(
+    setOf(Yakus.WRichi, Yakus.Ippatsu) to setOf(Yakus.Haitei, Yakus.Houtei)
+)
+
 class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
     var tiles by mutableStateOf<List<Tile>>(emptyList())
     val furo = mutableStateListOf<FuroModel>()
@@ -169,13 +173,65 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         doraErrMsg = null
     }
 
-    val unavailableYaku by derivedStateOf {
-        var conflictingYaku = extraYaku.mapNotNull { yakuConflictingMatrix[it] }
-            .flatten()
-            .toSet()
-        (Yakus.allExtraYaku - conflictingYaku).filter {
-            !isYakuAvailable(it)
+    private val conflictingYaku by derivedStateOf {
+        buildSet {
+            extraYaku.forEach {
+                yakuConflictingMatrix[it]?.let { addAll(it) }
+            }
+
+            combinedYakuConflictingMatrix.forEach {
+                if (extraYaku.containsAll(it.key)) {
+                    addAll(it.value)
+                }
+            }
         }
+    }
+
+    private fun isYakuAvailable(yaku: Yaku): Boolean {
+        if (conflictingYaku.contains(yaku)) {
+            return false
+        }
+
+        var disabled = false
+        when (yaku) {
+            Yakus.Tenhou -> {
+                disabled = disabled || (selfWind != null && selfWind?.ordinal != 0)
+                disabled = disabled || furo.isNotEmpty()
+                disabled = disabled || !tsumo
+            }
+
+            Yakus.Chihou -> {
+                disabled = disabled || (selfWind != null && selfWind?.ordinal == 0)
+                disabled = disabled || furo.isNotEmpty()
+                disabled = disabled || !tsumo
+            }
+
+            Yakus.Richi, Yakus.WRichi -> {
+                disabled = disabled || furo.any { !(it.isKan && it.ankan) }
+            }
+
+            Yakus.Ippatsu -> {
+                disabled = disabled || (Yakus.Richi !in extraYaku && Yakus.WRichi !in extraYaku)
+            }
+
+            Yakus.Rinshan -> {
+                disabled = disabled || !tsumo || furo.count { it.isKan } == 0
+            }
+
+            Yakus.Chankan -> {
+                disabled = disabled || tsumo
+            }
+
+            Yakus.Haitei -> {
+                disabled = disabled || !tsumo
+            }
+
+            Yakus.Houtei -> {
+                disabled = disabled || tsumo
+            }
+        }
+
+        return !disabled
     }
 
     // yaku to enabled
@@ -195,31 +251,8 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         }
     }
 
-    private fun isYakuAvailable(yaku: Yaku): Boolean {
-        var disabled = false
-        if (yaku == Yakus.Tenhou) {
-            disabled = disabled || selfWind?.ordinal != 0
-            disabled = disabled || furo.isNotEmpty()
-            disabled = disabled || !tsumo
-        } else if (yaku == Yakus.Chihou) {
-            disabled = disabled || selfWind?.ordinal == 0
-            disabled = disabled || furo.isNotEmpty()
-            disabled = disabled || !tsumo
-        } else if (yaku == Yakus.Richi || yaku == Yakus.WRichi) {
-            disabled = disabled || furo.isNotEmpty()
-        } else if (yaku == Yakus.Ippatsu) {
-            disabled = disabled || (Yakus.Richi !in extraYaku && Yakus.WRichi !in extraYaku)
-        } else if (yaku == Yakus.Rinshan) {
-            disabled = disabled || !tsumo || furo.count { it.isKan } == 0
-        } else if (yaku == Yakus.Chankan) {
-            disabled = disabled || tsumo
-        } else if (yaku == Yakus.Haitei) {
-            disabled = disabled || !tsumo
-        } else if (yaku == Yakus.Houtei) {
-            disabled = disabled || tsumo
-        }
-
-        return !disabled
+    val unavailableYaku by derivedStateOf {
+        allExtraYaku.filter { !it.second }.map { it.first }.toSet()
     }
 
     override suspend fun onCheck(): Boolean {
