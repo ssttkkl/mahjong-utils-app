@@ -136,7 +136,7 @@ private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState):
                 true
             } else if (it.key == Key.Delete) {
                 if (ime.pendingText.isNotEmpty()) {
-                    ime.emitBackspacePendingText(1)
+                    ime.emitBackspacePendingText(65535)
                 } else {
                     ime.emitDeleteTile()
                 }
