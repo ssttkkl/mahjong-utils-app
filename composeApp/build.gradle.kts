@@ -145,11 +145,11 @@ android {
         create("release") {
             storeFile = rootProject.file("keystore.jks")
             storePassword = localProperties["android.signing.release.storePassword"]?.toString()
-                ?: System.getProperty("ANDROID_SIGNING_RELEASE_STORE_PASSWORD")
+                ?: System.getenv("ANDROID_SIGNING_RELEASE_STORE_PASSWORD")
             keyAlias = localProperties["android.signing.release.keyAlias"]?.toString()
-                ?: System.getProperty("ANDROID_SIGNING_RELEASE_KEY_ALIAS")
+                ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_ALIAS")
             keyPassword = localProperties["android.signing.release.keyPassword"]?.toString()
-                ?: System.getProperty("ANDROID_SIGNING_RELEASE_KEY_PASSWORD")
+                ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_PASSWORD")
         }
     }
     buildTypes {
