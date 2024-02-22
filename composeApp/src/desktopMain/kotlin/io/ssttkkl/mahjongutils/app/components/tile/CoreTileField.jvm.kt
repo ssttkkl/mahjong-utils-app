@@ -114,7 +114,7 @@ private fun Modifier.drawCursor(
 
 private val validKeys = mapOf(
     Key.One to "1", Key.Two to "2", Key.Three to "3", Key.Four to "4", Key.Five to "5",
-    Key.Six to "6", Key.Seven to "7", Key.Eight to "8", Key.Nine to "9", Key.Zero to "0",
+    Key.Six to "6", Key.Seven to "7", Key.Eight to "8", Key.Nine to "9",
     Key.M to "m", Key.P to "p", Key.S to "s", Key.Z to "z"
 )
 
