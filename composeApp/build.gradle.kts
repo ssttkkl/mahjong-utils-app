@@ -44,7 +44,7 @@ kotlin {
     jvm("desktop")
 
     cocoapods {
-        version = "1.0.0"
+        version = properties["version.name"].toString()
         summary = "Riichi Mahjong Calculator"
         homepage = "https://github.com/NNSZ-Yorozuya/mahjong-utils-app"
         source =
@@ -154,6 +154,7 @@ compose.desktop {
         nativeDistributions {
             packageName = "mahjong-utils-app"
             packageVersion = properties["version.name"].toString()
+            description = "Riichi Mahjong Calculator"
             licenseFile.set(rootProject.file("LICENSE"))
 
             val hostOs = System.getProperty("os.name")
@@ -165,12 +166,15 @@ compose.desktop {
 
             windows {
                 iconFile.set(file("icon.ico"))
+                upgradeUuid = "16b7010f-44eb-4157-9113-3f8e44d72955"
                 shortcut = true
                 menu = true
             }
 
             macOS {
+                dockName = "Riichi Mahjong Calculator"
                 iconFile.set(file("icon.icns"))
+                bundleID = "io.ssttkkl.mahjongutils.app"
             }
 
             linux {
