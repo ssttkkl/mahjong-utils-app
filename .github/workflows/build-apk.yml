@@ -1,0 +1,59 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: Release APK
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout my repository
+        uses: actions/checkout@v3
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Decode keystore.jks
+        shell: bash
+        env:
+          ANDROID_SIGNING_RELEASE_STORE_BASE64: ${{ secrets.ANDROID_SIGNING_RELEASE_STORE_BASE64 }}
+        run: |
+          echo $ANDROID_SIGNING_RELEASE_STORE_BASE64 | base64 --decode > keystore.jks
+
+      - name: Build Apk
+        env:
+          ANDROID_SIGNING_RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_RELEASE_KEY_ALIAS }}
+          ANDROID_SIGNING_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_RELEASE_KEY_PASSWORD }}
+          ANDROID_SIGNING_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_RELEASE_STORE_PASSWORD }}
+        run: |
+          ./gradlew composeApp:assembleRelease
+
+      - name: Upload the Build Artifact
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: distribution
+          path: composeApp/build/outputs/apk/debug/*.apk
+
+      - name: Upload Release Assets
+        if: ${{ github.event_name == 'release' }}
+        uses: AButler/upload-release-assets@v3.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          files: composeApp/build/outputs/apk/debug/*.apk

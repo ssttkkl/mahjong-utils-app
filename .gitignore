@@ -18,3 +18,5 @@ captures
 
 # Project exclude paths
 /.fleet/
+
+*.jks

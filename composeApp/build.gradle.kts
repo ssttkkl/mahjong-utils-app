@@ -2,6 +2,14 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import dev.icerock.gradle.MRVisibility
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.util.Properties
+
+val localProperties = Properties()
+if (rootProject.file("local.properties").exists()) {
+    rootProject.file("local.properties").inputStream().use { inputStream ->
+        localProperties.load(inputStream)
+    }
+}
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -133,9 +141,21 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    signingConfigs {
+        create("release") {
+            storeFile = rootProject.file("keystore.jks")
+            storePassword = localProperties["android.signing.release.storePassword"]?.toString()
+                ?: System.getProperty("ANDROID_SIGNING_RELEASE_STORE_PASSWORD")
+            keyAlias = localProperties["android.signing.release.keyAlias"]?.toString()
+                ?: System.getProperty("ANDROID_SIGNING_RELEASE_KEY_ALIAS")
+            keyPassword = localProperties["android.signing.release.keyPassword"]?.toString()
+                ?: System.getProperty("ANDROID_SIGNING_RELEASE_KEY_PASSWORD")
+        }
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
