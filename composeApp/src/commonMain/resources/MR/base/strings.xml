@@ -11,7 +11,8 @@
     <string name="title_hanhu">Point Calculation By Han and Hu</string>
     <string name="title_about">About</string>
     <string name="title_about_appversion">App Version</string>
-    <string name="title_about_opensource_licenses">Open-Source Licenses</string>
+    <string name="title_about_opensource_repo">Open-Source Repository</string>
+    <string name="title_about_opensource_licenses">Open-Source License</string>
 
     <string name="label_history">History</string>
     <string name="label_clear">Clear</string>

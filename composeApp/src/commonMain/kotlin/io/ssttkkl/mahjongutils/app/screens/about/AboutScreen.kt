@@ -8,6 +8,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import cafe.adriel.voyager.navigator.LocalNavigator
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
@@ -22,6 +23,7 @@ object AboutScreen : NavigationScreen() {
 
     @Composable
     override fun Content() {
+        val uriHandler = LocalUriHandler.current
         val navigator = LocalNavigator.current
 
         val verticalScrollState = rememberScrollState()
@@ -33,7 +35,15 @@ object AboutScreen : NavigationScreen() {
                     supportingContent = { Text(BuildKonfig.VERSION_NAME) }
                 )
                 ListItem(
+                    headlineContent = { Text(stringResource(MR.strings.title_about_opensource_repo)) },
+                    supportingContent = { Text(BuildKonfig.OPENSOURCE_REPO) },
+                    modifier = Modifier.clickable {
+                        uriHandler.openUri(BuildKonfig.OPENSOURCE_REPO)
+                    }
+                )
+                ListItem(
                     headlineContent = { Text(stringResource(MR.strings.title_about_opensource_licenses)) },
+                    supportingContent = { Text(BuildKonfig.OPENSOURCE_LICENSE) },
                     modifier = Modifier.clickable {
                         navigator?.push(OpenSourceLicensesScreen)
                     }

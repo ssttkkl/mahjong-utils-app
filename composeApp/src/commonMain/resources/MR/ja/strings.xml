@@ -11,6 +11,7 @@
     <string name="title_hanhu">飜符得点計算</string>
     <string name="title_about">アーバウ</string>
     <string name="title_about_appversion">アプリバージョン</string>
+    <string name="title_about_opensource_repo">オープンソースレポジトリ</string>
     <string name="title_about_opensource_licenses">オープンソースライセンス</string>
 
     <string name="label_history">ヒストリ</string>

@@ -201,5 +201,7 @@ buildkonfig {
     defaultConfigs {
         buildConfigField(STRING, "VERSION_NAME", properties["version.name"].toString())
         buildConfigField(STRING, "VERSION_CODE", properties["version.code"].toString())
+        buildConfigField(STRING, "OPENSOURCE_REPO", properties["opensource.repo"].toString())
+        buildConfigField(STRING, "OPENSOURCE_LICENSE", properties["opensource.license"].toString())
     }
 }
