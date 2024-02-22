@@ -202,6 +202,7 @@ fun AppScaffold(
                 }
             } else {
                 ModalNavigationDrawer(
+                    gesturesEnabled = !appState.navigator.canPop,
                     drawerState = appState.drawerState,
                     drawerContent = {
                         ModalDrawerSheet {
