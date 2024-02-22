@@ -155,6 +155,7 @@ compose.desktop {
             packageName = "mahjong-utils-app"
             packageVersion = properties["version.name"].toString()
             description = "Riichi Mahjong Calculator"
+            copyright = "Copyright (c) 2024 ssttkkl"
             licenseFile.set(rootProject.file("LICENSE"))
 
             val hostOs = System.getProperty("os.name")
