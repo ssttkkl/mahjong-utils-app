@@ -49,11 +49,11 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with:
           name: distribution
-          path: composeApp/build/outputs/apk/debug/*.apk
+          path: composeApp/build/outputs/apk/release/*.apk
 
       - name: Upload Release Assets
         if: ${{ github.event_name == 'release' }}
         uses: AButler/upload-release-assets@v3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          files: composeApp/build/outputs/apk/debug/*.apk
+          files: composeApp/build/outputs/apk/release/*.apk
