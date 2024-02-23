@@ -95,7 +95,7 @@ kotlin {
             }
         }
 
-        val nonWasmMain by creating {
+        val nonWasmJsMain by creating {
             dependsOn(commonMain)
             dependencies {
                 implementation(libs.androidx.datastore.core)
@@ -108,7 +108,7 @@ kotlin {
         }
 
         val androidMain by getting {
-            dependsOn(nonWasmMain)
+            dependsOn(nonWasmJsMain)
             dependencies {
                 implementation(libs.compose.ui.tooling.preview)
                 implementation(libs.androidx.activity.compose)
@@ -117,11 +117,11 @@ kotlin {
         }
 
         val iosMain by getting {
-            dependsOn(nonWasmMain)
+            dependsOn(nonWasmJsMain)
         }
 
         val desktopMain by getting {
-            dependsOn(nonWasmMain)
+            dependsOn(nonWasmJsMain)
             dependsOn(desktopAndWasmJsMain)
             dependencies {
                 implementation(compose.desktop.currentOs)

@@ -31,28 +31,28 @@
     <string name="text_tiles_without_got">未摸牌</string>
     <string name="text_tiles_with_got">已摸牌</string>
     <string name="label_shanten_num">向听数</string>
-    <string name="text_shanten_num">%d向听</string>
+    <string name="text_shanten_num">%1$d向听</string>
     <string name="text_tenpai">听牌</string>
     <string name="text_hora">和了</string>
     <string name="label_advance_tiles">进张</string>
     <string name="label_waiting_tiles">听牌</string>
     <string name="label_good_shape_advance_tiles">好形进张</string>
     <string name="label_good_shape_improvement_tiles">好形改良</string>
-    <string name="text_tiles_num">共%d枚</string>
-    <string name="text_tiles_num_short">%d枚</string>
-    <string name="text_tiles_num_and_percentile">共%d枚（%s%%）</string>
-    <string name="label_shanten_action">%s打法</string>
-    <string name="label_shanten_action_backwards">%s打法（退向）</string>
-    <string name="text_shanten_action_discard">打%s</string>
-    <string name="text_shanten_action_ankan">暗杠%s</string>
-    <string name="text_shanten_action_minkan">大明杠%s</string>
+    <string name="text_tiles_num">共%1$d枚</string>
+    <string name="text_tiles_num_short">%1$d枚</string>
+    <string name="text_tiles_num_and_percentile">共%1$d枚（%2$s%）</string>
+    <string name="label_shanten_action">%1$s打法</string>
+    <string name="label_shanten_action_backwards">%1$s打法（退向）</string>
+    <string name="text_shanten_action_discard">打%1$s</string>
+    <string name="text_shanten_action_ankan">暗杠%1$s</string>
+    <string name="text_shanten_action_minkan">大明杠%1$s</string>
     <string name="text_shanten_action_pass">跳过</string>
-    <string name="text_shanten_action_chi_and_discard">%s%s吃，打%s</string>
-    <string name="text_shanten_action_pon_and_discard">碰，打%s</string>
-    <string name="text_improvement_desc">摸%s，打%s（听%d枚）</string>
+    <string name="text_shanten_action_chi_and_discard">%1$s%2$s吃，打%3$s</string>
+    <string name="text_shanten_action_pon_and_discard">碰，打%1$s</string>
+    <string name="text_improvement_desc">摸%1$s，打%2$s（听%3$d枚）</string>
 
     <string name="label_tile_discarded_by_other">他家打</string>
-    <string name="label_tile_discarded_by_other_short">他家打%s</string>
+    <string name="label_tile_discarded_by_other_short">他家打%1$s</string>
     <string name="label_other_options">选项</string>
     <string name="label_allow_chi">允许吃</string>
 
@@ -96,13 +96,13 @@
     <string name="label_wind_west">西</string>
     <string name="label_wind_north">北</string>
 
-    <string name="text_x_han_x_hu">%d番%d符</string>
-    <string name="text_x_han_x_hu_with_tag">%d番%d符（%s）</string>
-    <string name="text_x_bai_yakuman">%s倍役满</string>
-    <string name="text_parent_tsumo">亲家自摸：%s ALL（共%s）</string>
-    <string name="text_parent_ron">亲家荣和：%s</string>
-    <string name="text_child_tsumo">子家自摸：%s - %s（共%s）</string>
-    <string name="text_child_ron">子家荣和：%s</string>
+    <string name="text_x_han_x_hu">%1$d番%2$d符</string>
+    <string name="text_x_han_x_hu_with_tag">%1$d番%2$d符（%3$s）</string>
+    <string name="text_x_bai_yakuman">%1$s倍役满</string>
+    <string name="text_parent_tsumo">亲家自摸：%1$s ALL（共%2$s）</string>
+    <string name="text_parent_ron">亲家荣和：%1$s</string>
+    <string name="text_child_tsumo">子家自摸：%1$s - %2$s（共%3$s）</string>
+    <string name="text_child_ron">子家荣和：%1$s</string>
 
     <string name="text_one">一</string>
     <string name="text_two">二</string>
@@ -118,7 +118,7 @@
     <string name="label_sanbaiman">三倍满</string>
     <string name="label_kazoeyakuman">累计役满</string>
     <string name="label_yakuman">役满</string>
-    <string name="label_multiple_yakuman">%s倍役满</string>
+    <string name="label_multiple_yakuman">%1$s倍役满</string>
 
     <string name="label_yaku_tsumo">自摸</string>
     <string name="label_yaku_pinhu">平和</string>
@@ -169,7 +169,7 @@
     <string name="label_yaku_haitei">海底捞月</string>
     <string name="label_yaku_houtei">河底捞鱼</string>
 
-    <string name="label_yaku_dora">宝牌%d</string>
+    <string name="label_yaku_dora">宝牌%1$d</string>
 
     <string name="label_yaku">役种</string>
     <string name="label_hora_point">番符得点</string>

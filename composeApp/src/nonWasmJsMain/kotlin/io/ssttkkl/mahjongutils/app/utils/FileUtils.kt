@@ -9,5 +9,3 @@ expect object FileUtils {
     val sysFileSystem: FileSystem
 }
 
-val FileUtils.historyPath
-    get() = sandboxPath / "history"

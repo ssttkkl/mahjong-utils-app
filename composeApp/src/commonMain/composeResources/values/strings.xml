@@ -31,28 +31,28 @@
     <string name="text_tiles_without_got">Not Drawn</string>
     <string name="text_tiles_with_got">Drawn</string>
     <string name="label_shanten_num">Shanten Num</string>
-    <string name="text_shanten_num">%d-shanten</string>
+    <string name="text_shanten_num">%1$d-shanten</string>
     <string name="text_tenpai">Tenpai</string>
     <string name="text_hora">Win</string>
     <string name="label_advance_tiles">Advance Tiles</string>
     <string name="label_waiting_tiles">Waiting Tiles</string>
     <string name="label_good_shape_advance_tiles">Good-Shape Advance Tiles</string>
     <string name="label_good_shape_improvement_tiles">Good-Shape Improvement Tiles</string>
-    <string name="text_tiles_num">Total: %d</string>
-    <string name="text_tiles_num_short">%d</string>
-    <string name="text_tiles_num_and_percentile">Total: %d (%s%% of all)</string>
-    <string name="label_shanten_action">%s</string>
-    <string name="label_shanten_action_backwards">%s (Backwards)</string>
-    <string name="text_shanten_action_discard">Discard %s</string>
-    <string name="text_shanten_action_ankan">Ankan %s</string>
+    <string name="text_tiles_num">Total: %1$d</string>
+    <string name="text_tiles_num_short">%1$d</string>
+    <string name="text_tiles_num_and_percentile">Total: %1$d (%2$s% of all)</string>
+    <string name="label_shanten_action">%1$s</string>
+    <string name="label_shanten_action_backwards">%1$s (Backwards)</string>
+    <string name="text_shanten_action_discard">Discard %1$s</string>
+    <string name="text_shanten_action_ankan">Ankan %1$s</string>
     <string name="text_shanten_action_minkan">Minkan</string>
     <string name="text_shanten_action_pass">Pass</string>
-    <string name="text_shanten_action_chi_and_discard">%s%s Chi and Discard %s</string>
-    <string name="text_shanten_action_pon_and_discard">Pon and Discard %s</string>
-    <string name="text_improvement_desc">Draw %s then Discard %s (Waiting: %d)</string>
+    <string name="text_shanten_action_chi_and_discard">%1$s%2$s Chi and Discard %1$s</string>
+    <string name="text_shanten_action_pon_and_discard">Pon and Discard %1$s</string>
+    <string name="text_improvement_desc">Draw %1$s then Discard %1$s (Waiting: %1$d)</string>
 
     <string name="label_tile_discarded_by_other">Discarded by Other</string>
-    <string name="label_tile_discarded_by_other_short">From Other: %s</string>
+    <string name="label_tile_discarded_by_other_short">From Other: %1$s</string>
     <string name="label_other_options">Options</string>
     <string name="label_allow_chi">Allow Chi</string>
 
@@ -96,13 +96,13 @@
     <string name="label_wind_west">West</string>
     <string name="label_wind_north">North</string>
 
-    <string name="text_x_han_x_hu">%d Han %d Hu</string>
-    <string name="text_x_han_x_hu_with_tag">%d Han %d Hu (%s)</string>
-    <string name="text_x_bai_yakuman">%s-Times Yakuman</string>
-    <string name="text_parent_tsumo">Oya Tsumo: %s ALL (%s in total)</string>
-    <string name="text_parent_ron">Oya Ron: %s</string>
-    <string name="text_child_tsumo">Ko Tsumo: %s - %s (%s in total)</string>
-    <string name="text_child_ron">Ko Ron: %s</string>
+    <string name="text_x_han_x_hu">%1$d Han %2$d Hu</string>
+    <string name="text_x_han_x_hu_with_tag">%1$d Han %2$d Hu (%3$s)</string>
+    <string name="text_x_bai_yakuman">%1$s-Times Yakuman</string>
+    <string name="text_parent_tsumo">Oya Tsumo: %1$s ALL (%2$s in total)</string>
+    <string name="text_parent_ron">Oya Ron: %1$s</string>
+    <string name="text_child_tsumo">Ko Tsumo: %1$s - %2$s (%3$s in total)</string>
+    <string name="text_child_ron">Ko Ron: %1$s</string>
 
     <string name="text_one">1</string>
     <string name="text_two">2</string>
@@ -118,7 +118,7 @@
     <string name="label_sanbaiman">Sanbaiman</string>
     <string name="label_kazoeyakuman">Kazoe Yakuman</string>
     <string name="label_yakuman">Yakuman</string>
-    <string name="label_multiple_yakuman">%s Times Yakuman</string>
+    <string name="label_multiple_yakuman">%1$s Times Yakuman</string>
 
     <string name="label_yaku_tsumo">Tsumo</string>
     <string name="label_yaku_pinhu">Pinhu</string>
@@ -169,7 +169,7 @@
     <string name="label_yaku_haitei">Haitei</string>
     <string name="label_yaku_houtei">Houtei</string>
 
-    <string name="label_yaku_dora">Dora %d</string>
+    <string name="label_yaku_dora">Dora %1$d</string>
 
     <string name="label_yaku">Yaku</string>
     <string name="label_hora_point">Han, Hu and Point</string>
