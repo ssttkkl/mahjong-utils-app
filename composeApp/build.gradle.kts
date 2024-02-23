@@ -10,12 +10,16 @@ plugins {
         ?.equals("true", ignoreCase = true) != false
             && JavaVersion.current() >= JavaVersion.VERSION_17
 
-    alias(libs.plugins.androidApplication) apply enableAndroid
+    val enableIos = System.getProperty("enable_ios")
+        ?.equals("true", ignoreCase = true) != false
+            && System.getProperty("os.name") == "Mac OS X"
+
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.androidApplication) apply enableAndroid
+    alias(libs.plugins.kotlinNativeCocoapods) apply enableIos
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.kotlinxAtomicfu)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.kotlinNativeCocoapods)
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.buildkonfig)
     alias(libs.plugins.undercouch.download)
@@ -28,6 +32,7 @@ val enableAndroid = System.getProperty("enable_android")
 
 val enableIos = System.getProperty("enable_ios")
     ?.equals("true", ignoreCase = true) != false
+        && System.getProperty("os.name") == "Mac OS X"
 
 val enableDesktop = System.getProperty("enable_desktop")
     ?.equals("true", ignoreCase = true) != false
