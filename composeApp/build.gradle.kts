@@ -12,7 +12,6 @@ plugins {
 
     val enableIos = System.getProperty("enable_ios")
         ?.equals("true", ignoreCase = true) != false
-            && System.getProperty("os.name") == "Mac OS X"
 
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
@@ -32,7 +31,6 @@ val enableAndroid = System.getProperty("enable_android")
 
 val enableIos = System.getProperty("enable_ios")
     ?.equals("true", ignoreCase = true) != false
-        && System.getProperty("os.name") == "Mac OS X"
 
 val enableDesktop = System.getProperty("enable_desktop")
     ?.equals("true", ignoreCase = true) != false
@@ -164,7 +162,7 @@ kotlin {
     }
 
     if (enableIos) {
-        (extensions.getByName("cocoapods") as CocoapodsExtension).apply {
+        cocoapods {
             version = properties["version.name"].toString()
             summary = "Riichi Mahjong Calculator"
             homepage = "https://github.com/NNSZ-Yorozuya/mahjong-utils-app"
