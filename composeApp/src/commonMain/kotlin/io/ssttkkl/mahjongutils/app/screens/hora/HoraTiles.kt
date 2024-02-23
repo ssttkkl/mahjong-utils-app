@@ -1,6 +1,5 @@
 package io.ssttkkl.mahjongutils.app.screens.hora
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -27,7 +26,7 @@ import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 @Composable
 fun HoraTiles(args: HoraArgs) {
     val tilesExcludingAgari = remember(args.tiles, args.agari) { args.tiles - args.agari }
-    Column {
+    FlowRow {
         Row(Modifier.padding(end = 8.dp)) {
             val preferTileSize = LocalTileTextSize.current
             var reducedTileSize by remember { mutableStateOf(preferTileSize) }
@@ -48,11 +47,9 @@ fun HoraTiles(args: HoraArgs) {
         }
         if (args.furo.isNotEmpty()) {
             Spacer(Modifier.height(8.dp))
-            FlowRow {
-                args.furo.forEach {
-                    Spacer(Modifier.width(8.dp))
-                    FuroTiles(it)
-                }
+            args.furo.forEach {
+                Spacer(Modifier.width(8.dp))
+                FuroTiles(it)
             }
         }
     }
