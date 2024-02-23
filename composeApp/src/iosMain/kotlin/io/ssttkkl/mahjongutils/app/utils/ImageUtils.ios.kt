@@ -25,22 +25,22 @@ import platform.CoreGraphics.CGImageGetWidth
 import platform.CoreGraphics.CGRectApplyAffineTransform
 import platform.CoreGraphics.CGRectMake
 import platform.CoreGraphics.kCGInterpolationNone
+import platform.UIKit.UIImage
 import platform.posix.M_PI
 
 
-@OptIn(ExperimentalForeignApi::class)
 @Composable
-actual fun DrawableResource.toImageBitmap(): ImageBitmap {
-    return this.toUIImage()?.CGImage()?.toSkiaImage()?.toComposeImageBitmap()
-        ?: error("fail to convert $this to ImageBitmap")
+fun DrawableResource.toUIImage(): UIImage {
+    TODO()
 }
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
 actual fun DrawableResource.toLieDownImageBitmap(): ImageBitmap {
+    val uiImage = this.toUIImage()
     return remember(this) {
         // https://gist.github.com/paolonl/6231410
-        val imgRef = this.toUIImage()?.CGImage()
+        val imgRef = uiImage.CGImage()
         val angleInRadians = (90) * (M_PI / 180)
         val width = CGImageGetWidth(imgRef).toDouble()
         val height = CGImageGetHeight(imgRef).toDouble()
