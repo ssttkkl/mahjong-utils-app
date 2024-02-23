@@ -32,4 +32,4 @@ jobs:
     - name: Commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: Build DokkaGfm documents
+        commit_message: Update about libraries
