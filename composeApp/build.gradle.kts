@@ -1,6 +1,5 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.apache.commons.io.FileUtils
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import java.util.Properties
 
@@ -87,7 +86,6 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
-            @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             implementation(libs.material3.windowSizeClass)
 
@@ -120,6 +118,7 @@ kotlin {
     @Suppress("OPT_IN_USAGE")
     compilerOptions {
         optIn.add("org.jetbrains.compose.resources.ExperimentalResourceApi")
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 }
 
