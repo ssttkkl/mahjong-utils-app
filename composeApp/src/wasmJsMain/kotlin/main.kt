@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalResourceApi::class)
+
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -8,13 +10,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.window.CanvasBasedWindow
 import io.ssttkkl.mahjongutils.app.App
+import kotlinx.browser.document
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.app_name
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalResourceApi::class)
 suspend fun loadZhFont(): FontFamily {
     return FontFamily(
         Font(
@@ -30,12 +35,32 @@ suspend fun loadZhFont(): FontFamily {
     )
 }
 
+suspend fun loadJaFont(): FontFamily {
+    return FontFamily(
+        Font(
+            identity = "NotoSansJP-Regular",
+            data = Res.readBytes("font/NotoSansJP-Regular.ttf.woff2"),
+            weight = FontWeight.Normal
+        ),
+        Font(
+            identity = "NotoSansJP-Bold",
+            data = Res.readBytes("font/NotoSansJP-Bold.ttf.woff2"),
+            weight = FontWeight.Bold
+        ),
+    )
+}
+
 @Composable
 fun getTypography(): Typography {
+    val locale = Locale.current
+
     var typography by remember { mutableStateOf(Typography()) }
-    LaunchedEffect(Unit) {
-        // TODO: 切换语言
-        val fontFamily = loadZhFont()
+    LaunchedEffect(locale.language) {
+        val fontFamily = when(locale.language) {
+            "ja" -> loadJaFont()
+            else -> loadZhFont()
+        }
+
         typography = Typography(
             displayLarge = typography.displayLarge.copy(fontFamily = fontFamily),
             displayMedium = typography.displayMedium.copy(fontFamily = fontFamily),
@@ -63,7 +88,14 @@ fun getTypography(): Typography {
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-    CanvasBasedWindow(canvasElementId = "ComposeTarget") {
+    CanvasBasedWindow(
+        canvasElementId = "ComposeTarget"
+    ) {
+        val title = stringResource(Res.string.app_name)
+        LaunchedEffect(title) {
+            document.title = title
+        }
+
         App(typography = getTypography())
     }
 }
