@@ -1,25 +1,31 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.apache.commons.io.FileUtils
+import org.gradle.api.JavaVersion
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import java.util.Properties
+
+plugins {
+    if (JavaVersion.current() >= JavaVersion.VERSION_17) {
+        alias(libs.plugins.androidApplication)
+    }
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.kotlinxAtomicfu)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.kotlinNativeCocoapods)
+    alias(libs.plugins.aboutLibraries)
+    alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.undercouch.download)
+}
+
+// vercel自带的Java 11，但是AGP要求17
+val enableAndroid = JavaVersion.current() >= JavaVersion.VERSION_17
 
 val localProperties = Properties()
 if (rootProject.file("local.properties").exists()) {
     rootProject.file("local.properties").inputStream().use { inputStream ->
         localProperties.load(inputStream)
     }
-}
-
-plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.kotlinxAtomicfu)
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.kotlinNativeCocoapods)
-    alias(libs.plugins.aboutLibraries)
-    alias(libs.plugins.buildkonfig)
-    alias(libs.plugins.undercouch.download)
 }
 
 kotlin {
@@ -35,10 +41,12 @@ kotlin {
         binaries.executable()
     }
 
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
+    if (enableAndroid) {
+        androidTarget {
+            compilations.all {
+                kotlinOptions {
+                    jvmTarget = "11"
+                }
             }
         }
     }
@@ -107,12 +115,14 @@ kotlin {
             dependsOn(commonMain)
         }
 
-        val androidMain by getting {
-            dependsOn(nonWasmJsMain)
-            dependencies {
-                implementation(libs.compose.ui.tooling.preview)
-                implementation(libs.androidx.activity.compose)
-                implementation(libs.kotlinx.coroutines.android)
+        if (enableAndroid) {
+            val androidMain by getting {
+                dependsOn(nonWasmJsMain)
+                dependencies {
+                    implementation(libs.compose.ui.tooling.preview)
+                    implementation(libs.androidx.activity.compose)
+                    implementation(libs.kotlinx.coroutines.android)
+                }
             }
         }
 
@@ -153,49 +163,51 @@ buildkonfig {
     }
 }
 
-android {
-    namespace = "io.ssttkkl.mahjongutils.app"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+if (enableAndroid) {
+    android {
+        namespace = "io.ssttkkl.mahjongutils.app"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
 
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+        sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+        sourceSets["main"].res.srcDirs("src/androidMain/res")
+        sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
-    defaultConfig {
-        applicationId = "io.ssttkkl.mahjongutils.app"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = properties["version.code"].toString().toInt()
-        versionName = properties["version.name"].toString()
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        defaultConfig {
+            applicationId = "io.ssttkkl.mahjongutils.app"
+            minSdk = libs.versions.android.minSdk.get().toInt()
+            targetSdk = libs.versions.android.targetSdk.get().toInt()
+            versionCode = properties["version.code"].toString().toInt()
+            versionName = properties["version.name"].toString()
         }
-    }
-    signingConfigs {
-        create("release") {
-            storeFile = rootProject.file("keystore.jks")
-            storePassword = localProperties["android.signing.release.storePassword"]?.toString()
-                ?: System.getenv("ANDROID_SIGNING_RELEASE_STORE_PASSWORD")
-            keyAlias = localProperties["android.signing.release.keyAlias"]?.toString()
-                ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_ALIAS")
-            keyPassword = localProperties["android.signing.release.keyPassword"]?.toString()
-                ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_PASSWORD")
+        packaging {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            }
         }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("release")
+        signingConfigs {
+            create("release") {
+                storeFile = rootProject.file("keystore.jks")
+                storePassword = localProperties["android.signing.release.storePassword"]?.toString()
+                    ?: System.getenv("ANDROID_SIGNING_RELEASE_STORE_PASSWORD")
+                keyAlias = localProperties["android.signing.release.keyAlias"]?.toString()
+                    ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_ALIAS")
+                keyPassword = localProperties["android.signing.release.keyPassword"]?.toString()
+                    ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_PASSWORD")
+            }
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    dependencies {
-        debugImplementation(libs.compose.ui.tooling)
+        buildTypes {
+            getByName("release") {
+                isMinifyEnabled = false
+                signingConfig = signingConfigs.getByName("release")
+            }
+        }
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
+        }
+        dependencies {
+            debugImplementation(libs.compose.ui.tooling)
+        }
     }
 }
 
