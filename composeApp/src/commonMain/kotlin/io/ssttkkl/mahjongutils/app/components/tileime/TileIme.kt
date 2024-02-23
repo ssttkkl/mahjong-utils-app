@@ -26,6 +26,7 @@ import io.ssttkkl.mahjongutils.app.components.backhandler.BackHandler
 import io.ssttkkl.mahjongutils.app.components.clickableButNotFocusable
 import io.ssttkkl.mahjongutils.app.components.tile.painterResource
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.icon_backspace
 import mahjongutils.models.Tile
 import org.jetbrains.compose.resources.painterResource
 

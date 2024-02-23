@@ -17,6 +17,22 @@ import androidx.compose.ui.window.Dialog
 import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.desc_aotenjou
+import mahjongutils.composeapp.generated.resources.desc_hasComplexYakuman
+import mahjongutils.composeapp.generated.resources.desc_hasKazoeYakuman
+import mahjongutils.composeapp.generated.resources.desc_hasKiriageMangan
+import mahjongutils.composeapp.generated.resources.desc_hasKuitan
+import mahjongutils.composeapp.generated.resources.desc_hasMultipleYakuman
+import mahjongutils.composeapp.generated.resources.desc_renpuuJyantou4Hu
+import mahjongutils.composeapp.generated.resources.label_aotenjou
+import mahjongutils.composeapp.generated.resources.label_hasComplexYakuman
+import mahjongutils.composeapp.generated.resources.label_hasKazoeYakuman
+import mahjongutils.composeapp.generated.resources.label_hasKiriageMangan
+import mahjongutils.composeapp.generated.resources.label_hasKuitan
+import mahjongutils.composeapp.generated.resources.label_hasMultipleYakuman
+import mahjongutils.composeapp.generated.resources.label_hora_options_ok
+import mahjongutils.composeapp.generated.resources.label_hora_options_restore
+import mahjongutils.composeapp.generated.resources.label_renpuuJyantou4Hu
 import mahjongutils.hora.HoraOptions
 import org.jetbrains.compose.resources.stringResource
 
@@ -45,48 +61,48 @@ fun HoraOptionsDialog(
                 SwitchItem(
                     options.allowKuitan,
                     { onChangeOptions(options.copy(allowKuitan = it)) },
-                    stringResource(Res.string.label_haskuitan),
-                    stringResource(Res.string.desc_haskuitan),
+                    stringResource(Res.string.label_hasKuitan),
+                    stringResource(Res.string.desc_hasKuitan),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasRenpuuJyantouHu,
                     { onChangeOptions(options.copy(hasRenpuuJyantouHu = it)) },
-                    stringResource(Res.string.label_renpuujyantou4hu),
-                    stringResource(Res.string.desc_renpuujyantou4hu),
+                    stringResource(Res.string.label_renpuuJyantou4Hu),
+                    stringResource(Res.string.desc_renpuuJyantou4Hu),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasKiriageMangan,
                     { onChangeOptions(options.copy(hasKiriageMangan = it)) },
-                    stringResource(Res.string.label_haskiriagemangan),
-                    stringResource(Res.string.desc_haskiriagemangan),
+                    stringResource(Res.string.label_hasKiriageMangan),
+                    stringResource(Res.string.desc_hasKiriageMangan),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasKazoeYakuman,
                     { onChangeOptions(options.copy(hasKazoeYakuman = it)) },
-                    stringResource(Res.string.label_haskazoeyakuman),
-                    stringResource(Res.string.desc_haskazoeyakuman),
+                    stringResource(Res.string.label_hasKazoeYakuman),
+                    stringResource(Res.string.desc_hasKazoeYakuman),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasMultipleYakuman,
                     { onChangeOptions(options.copy(hasMultipleYakuman = it)) },
-                    stringResource(Res.string.label_hasmultipleyakuman),
-                    stringResource(Res.string.desc_hasmultipleyakuman),
+                    stringResource(Res.string.label_hasMultipleYakuman),
+                    stringResource(Res.string.desc_hasMultipleYakuman),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasComplexYakuman,
                     { onChangeOptions(options.copy(hasComplexYakuman = it)) },
-                    stringResource(Res.string.label_hascomplexyakuman),
-                    stringResource(Res.string.desc_hascomplexyakuman),
+                    stringResource(Res.string.label_hasComplexYakuman),
+                    stringResource(Res.string.desc_hasComplexYakuman),
                     colors = itemColors
                 )
 

@@ -12,6 +12,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.text_hu_exceeded_maximum
+import mahjongutils.composeapp.generated.resources.text_invalid_han_number
+import mahjongutils.composeapp.generated.resources.text_invalid_hu_number
 import mahjongutils.hanhu.ChildPoint
 import mahjongutils.hanhu.HanHuOptions
 import mahjongutils.hanhu.ParentPoint

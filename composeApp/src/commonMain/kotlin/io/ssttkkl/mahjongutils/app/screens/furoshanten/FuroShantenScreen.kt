@@ -27,6 +27,14 @@ import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_allow_chi
+import mahjongutils.composeapp.generated.resources.label_calc
+import mahjongutils.composeapp.generated.resources.label_other_options
+import mahjongutils.composeapp.generated.resources.label_tile_discarded_by_other
+import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
+import mahjongutils.composeapp.generated.resources.text_false_symbol
+import mahjongutils.composeapp.generated.resources.title_furo_shanten
+import mahjongutils.composeapp.generated.resources.title_furo_shanten_result
 import org.jetbrains.compose.resources.stringResource
 
 

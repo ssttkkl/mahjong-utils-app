@@ -30,6 +30,15 @@ import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_calc
+import mahjongutils.composeapp.generated.resources.label_regular_shanten
+import mahjongutils.composeapp.generated.resources.label_shanten_mode
+import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
+import mahjongutils.composeapp.generated.resources.label_union_shanten
+import mahjongutils.composeapp.generated.resources.text_regular_shanten_desc
+import mahjongutils.composeapp.generated.resources.text_union_shanten_desc
+import mahjongutils.composeapp.generated.resources.title_shanten
+import mahjongutils.composeapp.generated.resources.title_shanten_result
 import mahjongutils.shanten.ShantenWithoutGot
 import mahjongutils.shanten.asWithGot
 import mahjongutils.shanten.asWithoutGot

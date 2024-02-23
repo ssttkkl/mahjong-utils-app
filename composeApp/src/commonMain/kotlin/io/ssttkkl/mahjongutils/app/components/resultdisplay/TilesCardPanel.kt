@@ -7,6 +7,8 @@ import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.utils.percentile
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.text_tiles_num
+import mahjongutils.composeapp.generated.resources.text_tiles_num_and_percentile
 import mahjongutils.models.Tile
 import org.jetbrains.compose.resources.stringResource
 

@@ -26,6 +26,13 @@ import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.localizedName
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_furo
+import mahjongutils.composeapp.generated.resources.label_hand_deconstruction
+import mahjongutils.composeapp.generated.resources.label_jyantou
+import mahjongutils.composeapp.generated.resources.label_mentsu
+import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
+import mahjongutils.composeapp.generated.resources.label_yaku
+import mahjongutils.composeapp.generated.resources.label_yaku_dora
 import mahjongutils.hora.Hora
 import mahjongutils.hora.RegularHoraHandPattern
 import mahjongutils.models.Wind

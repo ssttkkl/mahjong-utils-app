@@ -27,6 +27,11 @@ import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_calc
+import mahjongutils.composeapp.generated.resources.label_han
+import mahjongutils.composeapp.generated.resources.label_hora_options
+import mahjongutils.composeapp.generated.resources.label_hu
+import mahjongutils.composeapp.generated.resources.title_hanhu
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 

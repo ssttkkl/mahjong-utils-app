@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.utils.shantenNumText
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_shanten_num
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

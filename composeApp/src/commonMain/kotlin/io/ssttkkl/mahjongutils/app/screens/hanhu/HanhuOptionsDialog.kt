@@ -17,6 +17,14 @@ import androidx.compose.ui.window.Dialog
 import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.desc_aotenjou
+import mahjongutils.composeapp.generated.resources.desc_hasKazoeYakuman
+import mahjongutils.composeapp.generated.resources.desc_hasKiriageMangan
+import mahjongutils.composeapp.generated.resources.label_aotenjou
+import mahjongutils.composeapp.generated.resources.label_hasKazoeYakuman
+import mahjongutils.composeapp.generated.resources.label_hasKiriageMangan
+import mahjongutils.composeapp.generated.resources.label_hora_options_ok
+import mahjongutils.composeapp.generated.resources.label_hora_options_restore
 import mahjongutils.hanhu.HanHuOptions
 import org.jetbrains.compose.resources.stringResource
 
@@ -45,16 +53,16 @@ fun HanhuOptionsDialog(
                 SwitchItem(
                     options.hasKiriageMangan,
                     { onChangeOptions(options.copy(hasKiriageMangan = it)) },
-                    stringResource(Res.string.label_haskiriagemangan),
-                    stringResource(Res.string.desc_haskiriagemangan),
+                    stringResource(Res.string.label_hasKiriageMangan),
+                    stringResource(Res.string.desc_hasKiriageMangan),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasKazoeYakuman,
                     { onChangeOptions(options.copy(hasKazoeYakuman = it)) },
-                    stringResource(Res.string.label_haskazoeyakuman),
-                    stringResource(Res.string.desc_haskazoeyakuman),
+                    stringResource(Res.string.label_hasKazoeYakuman),
+                    stringResource(Res.string.desc_hasKazoeYakuman),
                     colors = itemColors
                 )
 

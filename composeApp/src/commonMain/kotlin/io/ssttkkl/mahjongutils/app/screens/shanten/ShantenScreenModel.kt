@@ -13,6 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.text_any_tile_must_not_be_more_than_4
+import mahjongutils.composeapp.generated.resources.text_cannot_have_more_than_14_tiles
+import mahjongutils.composeapp.generated.resources.text_must_enter_tiles
+import mahjongutils.composeapp.generated.resources.text_tiles_must_not_be_divided_into_3
 import mahjongutils.models.Tile
 import mahjongutils.models.countAsCodeArray
 import org.jetbrains.compose.resources.StringResource

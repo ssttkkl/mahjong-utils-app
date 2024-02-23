@@ -6,6 +6,8 @@ import io.ssttkkl.mahjongutils.app.components.panel.LazyTopCardPanel
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.shantenNumText
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_shanten_action
+import mahjongutils.composeapp.generated.resources.label_shanten_action_backwards
 import org.jetbrains.compose.resources.stringResource
 
 fun LazyListScope.ShantenActionGroupsContent(

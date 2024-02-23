@@ -18,6 +18,11 @@ import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_advance_tiles
+import mahjongutils.composeapp.generated.resources.label_good_shape_advance_tiles
+import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
+import mahjongutils.composeapp.generated.resources.text_tiles_with_got
+import mahjongutils.composeapp.generated.resources.text_tiles_without_got
 import mahjongutils.models.Tile
 import mahjongutils.shanten.ShantenWithGot
 import mahjongutils.shanten.ShantenWithoutGot

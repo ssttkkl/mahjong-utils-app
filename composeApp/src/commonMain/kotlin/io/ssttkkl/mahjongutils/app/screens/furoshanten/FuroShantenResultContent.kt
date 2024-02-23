@@ -19,6 +19,7 @@ import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
 import mahjongutils.models.Tile
 import mahjongutils.shanten.ShantenWithFuroChance
 import org.jetbrains.compose.resources.stringResource

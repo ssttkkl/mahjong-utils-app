@@ -25,6 +25,7 @@ import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.text_tiles_num_short
 import mahjongutils.models.Tile
 import mahjongutils.models.toTilesString
 import org.jetbrains.compose.resources.stringResource

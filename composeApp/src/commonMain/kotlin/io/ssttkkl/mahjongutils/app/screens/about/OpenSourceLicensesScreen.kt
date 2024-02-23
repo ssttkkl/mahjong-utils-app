@@ -13,6 +13,7 @@ import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import io.ssttkkl.mahjongutils.app.components.scrollbox.VerticalScrollBox
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.title_about_opensource_licenses
 import org.jetbrains.compose.resources.StringResource
 
 object OpenSourceLicensesScreen : NavigationScreen() {

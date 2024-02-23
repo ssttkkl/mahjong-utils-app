@@ -14,6 +14,12 @@ import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.text_agari_not_in_hand
+import mahjongutils.composeapp.generated.resources.text_hora_hand_tiles_not_enough
+import mahjongutils.composeapp.generated.resources.text_invalid_dora_count
+import mahjongutils.composeapp.generated.resources.text_invalid_furo
+import mahjongutils.composeapp.generated.resources.text_must_enter_agari
+import mahjongutils.composeapp.generated.resources.text_must_enter_tiles
 import mahjongutils.hora.HoraOptions
 import mahjongutils.models.Furo
 import mahjongutils.models.Kan

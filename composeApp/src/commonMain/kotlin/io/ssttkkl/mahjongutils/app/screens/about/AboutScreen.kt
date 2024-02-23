@@ -14,6 +14,10 @@ import io.ssttkkl.mahjongutils.app.BuildKonfig
 import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.title_about
+import mahjongutils.composeapp.generated.resources.title_about_appversion
+import mahjongutils.composeapp.generated.resources.title_about_opensource_licenses
+import mahjongutils.composeapp.generated.resources.title_about_opensource_repo
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 

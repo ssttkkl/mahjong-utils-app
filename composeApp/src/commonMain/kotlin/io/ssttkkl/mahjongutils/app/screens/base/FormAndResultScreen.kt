@@ -37,6 +37,10 @@ import io.ssttkkl.mahjongutils.app.utils.Spacing
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.icon_history_outlined
+import mahjongutils.composeapp.generated.resources.label_clear
+import mahjongutils.composeapp.generated.resources.label_history
+import mahjongutils.composeapp.generated.resources.text_empty_history
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource

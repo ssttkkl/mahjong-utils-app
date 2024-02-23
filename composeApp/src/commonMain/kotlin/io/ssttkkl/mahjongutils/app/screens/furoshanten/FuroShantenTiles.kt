@@ -16,6 +16,7 @@ import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_tile_discarded_by_other_short
 import mahjongutils.models.Tile
 import org.jetbrains.compose.resources.stringResource
 

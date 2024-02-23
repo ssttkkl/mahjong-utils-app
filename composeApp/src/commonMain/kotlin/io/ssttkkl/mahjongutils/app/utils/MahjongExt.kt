@@ -2,6 +2,58 @@ package io.ssttkkl.mahjongutils.app.utils
 
 import androidx.compose.runtime.Composable
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_wind_east
+import mahjongutils.composeapp.generated.resources.label_wind_north
+import mahjongutils.composeapp.generated.resources.label_wind_south
+import mahjongutils.composeapp.generated.resources.label_wind_west
+import mahjongutils.composeapp.generated.resources.label_yaku_chankan
+import mahjongutils.composeapp.generated.resources.label_yaku_chanta
+import mahjongutils.composeapp.generated.resources.label_yaku_chihou
+import mahjongutils.composeapp.generated.resources.label_yaku_chinitsu
+import mahjongutils.composeapp.generated.resources.label_yaku_chinroto
+import mahjongutils.composeapp.generated.resources.label_yaku_chitoi
+import mahjongutils.composeapp.generated.resources.label_yaku_chun
+import mahjongutils.composeapp.generated.resources.label_yaku_churen
+import mahjongutils.composeapp.generated.resources.label_yaku_churenNineWaiting
+import mahjongutils.composeapp.generated.resources.label_yaku_daisangen
+import mahjongutils.composeapp.generated.resources.label_yaku_daisushi
+import mahjongutils.composeapp.generated.resources.label_yaku_haitei
+import mahjongutils.composeapp.generated.resources.label_yaku_haku
+import mahjongutils.composeapp.generated.resources.label_yaku_hatsu
+import mahjongutils.composeapp.generated.resources.label_yaku_honitsu
+import mahjongutils.composeapp.generated.resources.label_yaku_honroto
+import mahjongutils.composeapp.generated.resources.label_yaku_houtei
+import mahjongutils.composeapp.generated.resources.label_yaku_ipe
+import mahjongutils.composeapp.generated.resources.label_yaku_ippatsu
+import mahjongutils.composeapp.generated.resources.label_yaku_ittsu
+import mahjongutils.composeapp.generated.resources.label_yaku_junchan
+import mahjongutils.composeapp.generated.resources.label_yaku_kokushi
+import mahjongutils.composeapp.generated.resources.label_yaku_kokushiThirteenWaiting
+import mahjongutils.composeapp.generated.resources.label_yaku_lyuiso
+import mahjongutils.composeapp.generated.resources.label_yaku_pinhu
+import mahjongutils.composeapp.generated.resources.label_yaku_richi
+import mahjongutils.composeapp.generated.resources.label_yaku_rinshan
+import mahjongutils.composeapp.generated.resources.label_yaku_round_wind
+import mahjongutils.composeapp.generated.resources.label_yaku_ryanpe
+import mahjongutils.composeapp.generated.resources.label_yaku_sananko
+import mahjongutils.composeapp.generated.resources.label_yaku_sandoko
+import mahjongutils.composeapp.generated.resources.label_yaku_sankantsu
+import mahjongutils.composeapp.generated.resources.label_yaku_sanshoku
+import mahjongutils.composeapp.generated.resources.label_yaku_self_wind
+import mahjongutils.composeapp.generated.resources.label_yaku_shosangen
+import mahjongutils.composeapp.generated.resources.label_yaku_shousushi
+import mahjongutils.composeapp.generated.resources.label_yaku_suanko
+import mahjongutils.composeapp.generated.resources.label_yaku_suankoTanki
+import mahjongutils.composeapp.generated.resources.label_yaku_sukantsu
+import mahjongutils.composeapp.generated.resources.label_yaku_tanyao
+import mahjongutils.composeapp.generated.resources.label_yaku_tenhou
+import mahjongutils.composeapp.generated.resources.label_yaku_toitoi
+import mahjongutils.composeapp.generated.resources.label_yaku_tsuiso
+import mahjongutils.composeapp.generated.resources.label_yaku_tsumo
+import mahjongutils.composeapp.generated.resources.label_yaku_wrichi
+import mahjongutils.composeapp.generated.resources.text_hora
+import mahjongutils.composeapp.generated.resources.text_shanten_num
+import mahjongutils.composeapp.generated.resources.text_tenpai
 import mahjongutils.models.Tile
 import mahjongutils.models.TileType
 import mahjongutils.models.Wind
@@ -98,9 +150,9 @@ val Yaku.localizedName
         Yakus.Sukantsu.name -> Res.string.label_yaku_sukantsu
         Yakus.Churen.name -> Res.string.label_yaku_churen
         Yakus.Daisushi.name -> Res.string.label_yaku_daisushi
-        Yakus.ChurenNineWaiting.name -> Res.string.label_yaku_churenninewaiting
-        Yakus.SuankoTanki.name -> Res.string.label_yaku_suankotanki
-        Yakus.KokushiThirteenWaiting.name -> Res.string.label_yaku_kokushithirteenwaiting
+        Yakus.ChurenNineWaiting.name -> Res.string.label_yaku_churenNineWaiting
+        Yakus.SuankoTanki.name -> Res.string.label_yaku_suankoTanki
+        Yakus.KokushiThirteenWaiting.name -> Res.string.label_yaku_kokushiThirteenWaiting
         Yakus.Tenhou.name -> Res.string.label_yaku_tenhou
         Yakus.Chihou.name -> Res.string.label_yaku_chihou
         Yakus.WRichi.name -> Res.string.label_yaku_wrichi
