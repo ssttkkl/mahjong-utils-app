@@ -1,5 +1,5 @@
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,44 +12,58 @@ import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.window.CanvasBasedWindow
 import io.ssttkkl.mahjongutils.app.App
 import mahjongutils.composeapp.generated.resources.Res
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-suspend fun loadCjkFont(): FontFamily {
-    val regular = Res.readBytes("font/NotoSansSC-Regular.ttf")
-
+@OptIn(ExperimentalResourceApi::class)
+suspend fun loadZhFont(): FontFamily {
     return FontFamily(
-        Font(identity = "CJKRegular", data = regular, weight = FontWeight.Normal),
+        Font(
+            identity = "NotoSansSC-Regular",
+            data = Res.readBytes("font/NotoSansSC-Regular.ttf.woff2"),
+            weight = FontWeight.Normal
+        ),
+        Font(
+            identity = "NotoSansSC-Bold",
+            data = Res.readBytes("font/NotoSansSC-Bold.ttf.woff2"),
+            weight = FontWeight.Bold
+        ),
     )
+}
+
+@Composable
+fun getTypography(): Typography {
+    var typography by remember { mutableStateOf(Typography()) }
+    LaunchedEffect(Unit) {
+        // TODO: 切换语言
+        val fontFamily = loadZhFont()
+        typography = Typography(
+            displayLarge = typography.displayLarge.copy(fontFamily = fontFamily),
+            displayMedium = typography.displayMedium.copy(fontFamily = fontFamily),
+            displaySmall = typography.displaySmall.copy(fontFamily = fontFamily),
+
+            headlineLarge = typography.headlineLarge.copy(fontFamily = fontFamily),
+            headlineMedium = typography.headlineMedium.copy(fontFamily = fontFamily),
+            headlineSmall = typography.headlineSmall.copy(fontFamily = fontFamily),
+
+            titleLarge = typography.titleLarge.copy(fontFamily = fontFamily),
+            titleMedium = typography.titleMedium.copy(fontFamily = fontFamily),
+            titleSmall = typography.titleSmall.copy(fontFamily = fontFamily),
+
+            bodyLarge = typography.bodyLarge.copy(fontFamily = fontFamily),
+            bodyMedium = typography.bodyMedium.copy(fontFamily = fontFamily),
+            bodySmall = typography.bodySmall.copy(fontFamily = fontFamily),
+
+            labelLarge = typography.labelLarge.copy(fontFamily = fontFamily),
+            labelMedium = typography.labelMedium.copy(fontFamily = fontFamily),
+            labelSmall = typography.labelSmall.copy(fontFamily = fontFamily)
+        )
+    }
+    return typography
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     CanvasBasedWindow(canvasElementId = "ComposeTarget") {
-        var typography by remember { mutableStateOf<Typography?>(null) }
-        LaunchedEffect(Unit) {
-            val fontFamily = loadCjkFont()
-            val defaultTypography = Typography()
-            typography = Typography(
-                displayLarge = defaultTypography.displayLarge.copy(fontFamily = fontFamily),
-                displayMedium = defaultTypography.displayMedium.copy(fontFamily = fontFamily),
-                displaySmall = defaultTypography.displaySmall.copy(fontFamily = fontFamily),
-
-                headlineLarge = defaultTypography.headlineLarge.copy(fontFamily = fontFamily),
-                headlineMedium = defaultTypography.headlineMedium.copy(fontFamily = fontFamily),
-                headlineSmall = defaultTypography.headlineSmall.copy(fontFamily = fontFamily),
-
-                titleLarge = defaultTypography.titleLarge.copy(fontFamily = fontFamily),
-                titleMedium = defaultTypography.titleMedium.copy(fontFamily = fontFamily),
-                titleSmall = defaultTypography.titleSmall.copy(fontFamily = fontFamily),
-
-                bodyLarge = defaultTypography.bodyLarge.copy(fontFamily = fontFamily),
-                bodyMedium = defaultTypography.bodyMedium.copy(fontFamily = fontFamily),
-                bodySmall = defaultTypography.bodySmall.copy(fontFamily = fontFamily),
-
-                labelLarge = defaultTypography.labelLarge.copy(fontFamily = fontFamily),
-                labelMedium = defaultTypography.labelMedium.copy(fontFamily = fontFamily),
-                labelSmall = defaultTypography.labelSmall.copy(fontFamily = fontFamily)
-            )
-        }
-        App(typography = typography ?: MaterialTheme.typography)
+        App(typography = getTypography())
     }
 }
