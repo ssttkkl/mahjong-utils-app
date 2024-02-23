@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
-import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
+import org.jetbrains.compose.resources.StringResource
 
 abstract class NavigationScreen : Screen {
     abstract val title: StringResource?

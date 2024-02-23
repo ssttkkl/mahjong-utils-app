@@ -14,11 +14,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Dialog
-import dev.icerock.moko.resources.compose.stringResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
 import io.ssttkkl.mahjongutils.app.utils.Spacing
+import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.desc_aotenjou
+import mahjongutils.composeapp.generated.resources.desc_hasKazoeYakuman
+import mahjongutils.composeapp.generated.resources.desc_hasKiriageMangan
+import mahjongutils.composeapp.generated.resources.label_aotenjou
+import mahjongutils.composeapp.generated.resources.label_hasKazoeYakuman
+import mahjongutils.composeapp.generated.resources.label_hasKiriageMangan
+import mahjongutils.composeapp.generated.resources.label_hora_options_ok
+import mahjongutils.composeapp.generated.resources.label_hora_options_restore
 import mahjongutils.hanhu.HanHuOptions
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun HanhuOptionsDialog(
@@ -37,34 +45,34 @@ fun HanhuOptionsDialog(
                 SwitchItem(
                     options.aotenjou,
                     { onChangeOptions(options.copy(aotenjou = it)) },
-                    stringResource(MR.strings.label_aotenjou),
-                    stringResource(MR.strings.desc_aotenjou),
+                    stringResource(Res.string.label_aotenjou),
+                    stringResource(Res.string.desc_aotenjou),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasKiriageMangan,
                     { onChangeOptions(options.copy(hasKiriageMangan = it)) },
-                    stringResource(MR.strings.label_hasKiriageMangan),
-                    stringResource(MR.strings.desc_hasKiriageMangan),
+                    stringResource(Res.string.label_hasKiriageMangan),
+                    stringResource(Res.string.desc_hasKiriageMangan),
                     colors = itemColors
                 )
 
                 SwitchItem(
                     options.hasKazoeYakuman,
                     { onChangeOptions(options.copy(hasKazoeYakuman = it)) },
-                    stringResource(MR.strings.label_hasKazoeYakuman),
-                    stringResource(MR.strings.desc_hasKazoeYakuman),
+                    stringResource(Res.string.label_hasKazoeYakuman),
+                    stringResource(Res.string.desc_hasKazoeYakuman),
                     colors = itemColors
                 )
 
                 Row {
                     Surface(Modifier.weight(1f)) {}
                     TextButton({ onChangeOptions(HanHuOptions.Default) }) {
-                        Text(stringResource(MR.strings.label_hora_options_restore))
+                        Text(stringResource(Res.string.label_hora_options_restore))
                     }
                     TextButton({ onDismissRequest() }) {
-                        Text(stringResource(MR.strings.label_hora_options_ok))
+                        Text(stringResource(Res.string.label_hora_options_ok))
                     }
                 }
             }

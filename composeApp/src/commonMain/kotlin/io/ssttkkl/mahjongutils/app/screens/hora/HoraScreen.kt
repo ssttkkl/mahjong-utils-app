@@ -46,8 +46,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import dev.icerock.moko.resources.compose.stringResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppDialogState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.basic.ChooseAction
@@ -71,20 +69,44 @@ import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
 import io.ssttkkl.mahjongutils.app.utils.localizedName
 import io.ssttkkl.mahjongutils.app.utils.withAlpha
+import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_agari
+import mahjongutils.composeapp.generated.resources.label_ankan
+import mahjongutils.composeapp.generated.resources.label_calc
+import mahjongutils.composeapp.generated.resources.label_dora_count
+import mahjongutils.composeapp.generated.resources.label_extra_yaku
+import mahjongutils.composeapp.generated.resources.label_extra_yaku_unspecified
+import mahjongutils.composeapp.generated.resources.label_furo
+import mahjongutils.composeapp.generated.resources.label_hora_options
+import mahjongutils.composeapp.generated.resources.label_minkan
+import mahjongutils.composeapp.generated.resources.label_no
+import mahjongutils.composeapp.generated.resources.label_other_information
+import mahjongutils.composeapp.generated.resources.label_ron
+import mahjongutils.composeapp.generated.resources.label_round_wind
+import mahjongutils.composeapp.generated.resources.label_self_wind
+import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
+import mahjongutils.composeapp.generated.resources.label_tsumo
+import mahjongutils.composeapp.generated.resources.label_wind_unspecified
+import mahjongutils.composeapp.generated.resources.label_yes
+import mahjongutils.composeapp.generated.resources.text_comma
+import mahjongutils.composeapp.generated.resources.text_overwrite_hora_options_hint
+import mahjongutils.composeapp.generated.resources.title_hora
+import mahjongutils.composeapp.generated.resources.title_hora_result
 import mahjongutils.models.Wind
 import mahjongutils.yaku.Yaku
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 private fun ankanOptions(): List<ComboOption<Boolean>> =
     listOf<ComboOption<Boolean>>(
-        ComboOption(stringResource(MR.strings.label_ankan), true),
-        ComboOption(stringResource(MR.strings.label_minkan), false)
+        ComboOption(stringResource(Res.string.label_ankan), true),
+        ComboOption(stringResource(Res.string.label_minkan), false)
     )
 
 @Composable
 private fun windComboOptions(): List<ComboOption<Wind?>> =
     listOf<ComboOption<Wind?>>(
-        ComboOption(stringResource(MR.strings.label_wind_unspecified), null),
+        ComboOption(stringResource(Res.string.label_wind_unspecified), null),
         ComboOption(stringResource(Wind.East.localizedName), Wind.East),
         ComboOption(stringResource(Wind.South.localizedName), Wind.South),
         ComboOption(stringResource(Wind.West.localizedName), Wind.West),
@@ -101,18 +123,18 @@ private fun yakuComboOptions(allExtraYaku: List<Pair<Yaku, Boolean>>) =
 @Composable
 private fun tsumoOptions(): List<SegmentedButtonOption<Boolean>> =
     listOf<SegmentedButtonOption<Boolean>>(
-        SegmentedButtonOption(stringResource(MR.strings.label_tsumo), true),
-        SegmentedButtonOption(stringResource(MR.strings.label_ron), false)
+        SegmentedButtonOption(stringResource(Res.string.label_tsumo), true),
+        SegmentedButtonOption(stringResource(Res.string.label_ron), false)
     )
 
 
 object HoraScreen :
     FormAndResultScreen<HoraScreenModel, HoraArgs, HoraCalcResult>() {
     override val title
-        get() = MR.strings.title_hora
+        get() = Res.string.title_hora
 
     override val resultTitle
-        get() = MR.strings.title_hora_result
+        get() = Res.string.title_hora_result
 
     @Composable
     override fun getScreenModel(): HoraScreenModel {
@@ -142,7 +164,7 @@ object HoraScreen :
                                 onValueChange = { model.tiles = it },
                                 modifier = Modifier.fillMaxWidth(),
                                 isError = isError,
-                                label = stringResource(MR.strings.label_tiles_in_hand)
+                                label = stringResource(Res.string.label_tiles_in_hand)
                             )
                         }
                     }
@@ -160,7 +182,7 @@ object HoraScreen :
                                     onValueChange = { model.agari = it.firstOrNull() },
                                     modifier = Modifier.fillMaxWidth(),
                                     isError = isError,
-                                    label = stringResource(MR.strings.label_agari),
+                                    label = stringResource(Res.string.label_agari),
                                     placeholder = {
                                         model.autoDetectedAgari?.let { autoDetectedAgari ->
                                             Tiles(
@@ -183,7 +205,7 @@ object HoraScreen :
                     VerticalSpacerBetweenPanels()
 
                     TopPanel(
-                        { Text(stringResource(MR.strings.label_furo)) },
+                        { Text(stringResource(Res.string.label_furo)) },
                         noContentPadding = true
                     ) {
                         Column(Modifier.fillMaxWidth()) {
@@ -235,7 +257,7 @@ object HoraScreen :
                     VerticalSpacerBetweenPanels()
 
                     TopPanel(
-                        { Text(stringResource(MR.strings.label_other_information)) },
+                        { Text(stringResource(Res.string.label_other_information)) },
                         noContentPadding = true
                     ) {
                         Row {
@@ -245,14 +267,14 @@ object HoraScreen :
                                     { model.selfWind = it },
                                     windComboOptions(),
                                     Modifier.fillMaxWidth(),
-                                    label = { Text(stringResource(MR.strings.label_self_wind)) }
+                                    label = { Text(stringResource(Res.string.label_self_wind)) }
                                 )
                             }
                             TopPanel(modifier = Modifier.weight(1f)) {
                                 ComboBox(
                                     model.roundWind, { model.roundWind = it }, windComboOptions(),
                                     Modifier.fillMaxWidth(),
-                                    label = { Text(stringResource(MR.strings.label_round_wind)) }
+                                    label = { Text(stringResource(Res.string.label_round_wind)) }
                                 )
                             }
                         }
@@ -274,7 +296,7 @@ object HoraScreen :
                                         },
                                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                         isError = isError,
-                                        label = { Text(stringResource(MR.strings.label_dora_count)) }
+                                        label = { Text(stringResource(Res.string.label_dora_count)) }
                                     )
                                 }
                             }
@@ -299,12 +321,12 @@ object HoraScreen :
                                     Modifier.fillMaxWidth(),
                                     produceDisplayText = {
                                         if (it.isEmpty()) {
-                                            stringResource(MR.strings.label_extra_yaku_unspecified)
+                                            stringResource(Res.string.label_extra_yaku_unspecified)
                                         } else {
                                             it.joinToString { it.text }
                                         }
                                     },
-                                    label = { Text(stringResource(MR.strings.label_extra_yaku)) }
+                                    label = { Text(stringResource(Res.string.label_extra_yaku)) }
                                 )
                             }
                         }
@@ -328,14 +350,14 @@ object HoraScreen :
                     Row {
                         Button(
                             modifier = Modifier.windowHorizontalMargin(),
-                            content = { Text(stringResource(MR.strings.label_calc)) },
+                            content = { Text(stringResource(Res.string.label_calc)) },
                             onClick = {
                                 model.onSubmit()
                             }
                         )
 
                         TextButton({ optionsDialogVisible = true }) {
-                            Text(stringResource(MR.strings.label_hora_options))
+                            Text(stringResource(Res.string.label_hora_options))
                         }
                     }
 
@@ -365,16 +387,16 @@ object HoraScreen :
             FlowRow {
                 Caption(title = {
                     if (item.args.tsumo) {
-                        Text(stringResource(MR.strings.label_tsumo))
+                        Text(stringResource(Res.string.label_tsumo))
                     } else {
-                        Text(stringResource(MR.strings.label_ron))
+                        Text(stringResource(Res.string.label_ron))
                     }
                 })
 
                 if (item.args.selfWind != null) {
                     Spacer(Modifier.width(24.dp))
                     Caption(
-                        title = { Text(stringResource(MR.strings.label_self_wind)) },
+                        title = { Text(stringResource(Res.string.label_self_wind)) },
                         content = { Text(stringResource(item.args.selfWind.localizedName)) }
                     )
                 }
@@ -382,7 +404,7 @@ object HoraScreen :
                 if (item.args.roundWind != null) {
                     Spacer(Modifier.width(24.dp))
                     Caption(
-                        title = { Text(stringResource(MR.strings.label_round_wind)) },
+                        title = { Text(stringResource(Res.string.label_round_wind)) },
                         content = { Text(stringResource(item.args.roundWind.localizedName)) }
                     )
                 }
@@ -390,7 +412,7 @@ object HoraScreen :
                 if (item.args.dora > 0) {
                     Spacer(Modifier.width(24.dp))
                     Caption(
-                        title = { Text(stringResource(MR.strings.label_dora_count)) },
+                        title = { Text(stringResource(Res.string.label_dora_count)) },
                         content = { Text(item.args.dora.toString()) }
                     )
                 }
@@ -398,11 +420,11 @@ object HoraScreen :
                 if (item.args.extraYaku.isNotEmpty()) {
                     Spacer(Modifier.width(24.dp))
                     Caption(
-                        title = { Text(stringResource(MR.strings.label_extra_yaku)) },
+                        title = { Text(stringResource(Res.string.label_extra_yaku)) },
                         content = {
                             Text(
                                 item.args.extraYaku.map { stringResource(it.localizedName) }
-                                    .joinToString(stringResource(MR.strings.text_comma))
+                                    .joinToString(stringResource(Res.string.text_comma))
                             )
                         }
                     )
@@ -462,15 +484,15 @@ private fun OverwriteHoraOptionsAlertDialog(
             Column(
                 Modifier.padding(Spacing.current.cardInnerPadding)
             ) {
-                Text(stringResource(MR.strings.text_overwrite_hora_options_hint))
+                Text(stringResource(Res.string.text_overwrite_hora_options_hint))
 
                 Row {
                     Surface(Modifier.weight(1f)) {}
                     TextButton({ onDismissRequest() }) {
-                        Text(stringResource(MR.strings.label_no))
+                        Text(stringResource(Res.string.label_no))
                     }
                     TextButton({ onConfirmation();onDismissRequest() }) {
-                        Text(stringResource(MR.strings.label_yes))
+                        Text(stringResource(Res.string.label_yes))
                     }
                 }
             }

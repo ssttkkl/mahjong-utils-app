@@ -13,8 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import dev.icerock.moko.resources.compose.stringResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
 import io.ssttkkl.mahjongutils.app.components.panel.Caption
@@ -28,16 +26,26 @@ import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenCalcResul
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
+import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_allow_chi
+import mahjongutils.composeapp.generated.resources.label_calc
+import mahjongutils.composeapp.generated.resources.label_other_options
+import mahjongutils.composeapp.generated.resources.label_tile_discarded_by_other
+import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
+import mahjongutils.composeapp.generated.resources.text_false_symbol
+import mahjongutils.composeapp.generated.resources.title_furo_shanten
+import mahjongutils.composeapp.generated.resources.title_furo_shanten_result
+import org.jetbrains.compose.resources.stringResource
 
 
 object FuroShantenScreen :
     FormAndResultScreen<FuroShantenScreenModel, FuroChanceShantenArgs, FuroChanceShantenCalcResult>() {
 
     override val title
-        get() = MR.strings.title_furo_shanten
+        get() = Res.string.title_furo_shanten
 
     override val resultTitle
-        get() = MR.strings.title_furo_shanten_result
+        get() = Res.string.title_furo_shanten_result
 
     @Composable
     override fun getScreenModel(): FuroShantenScreenModel {
@@ -66,7 +74,7 @@ object FuroShantenScreen :
                                 onValueChange = { model.tiles = it },
                                 modifier = Modifier.fillMaxWidth(),
                                 isError = isError,
-                                label = stringResource(MR.strings.label_tiles_in_hand)
+                                label = stringResource(Res.string.label_tiles_in_hand)
                             )
                         }
                     }
@@ -79,7 +87,7 @@ object FuroShantenScreen :
                                 onValueChange = { model.chanceTile = it.firstOrNull() },
                                 modifier = Modifier.fillMaxWidth(),
                                 isError = isError,
-                                label = stringResource(MR.strings.label_tile_discarded_by_other)
+                                label = stringResource(Res.string.label_tile_discarded_by_other)
                             )
                         }
                     }
@@ -87,13 +95,13 @@ object FuroShantenScreen :
                     VerticalSpacerBetweenPanels()
 
                     TopPanel(
-                        { Text(stringResource(MR.strings.label_other_options)) },
+                        { Text(stringResource(Res.string.label_other_options)) },
                         noContentPadding = true
                     ) {
                         SwitchItem(
                             model.allowChi,
                             { model.allowChi = it },
-                            stringResource(MR.strings.label_allow_chi)
+                            stringResource(Res.string.label_allow_chi)
                         )
                     }
 
@@ -101,7 +109,7 @@ object FuroShantenScreen :
 
                     Button(
                         modifier = Modifier.windowHorizontalMargin(),
-                        content = { Text(stringResource(MR.strings.label_calc)) },
+                        content = { Text(stringResource(Res.string.label_calc)) },
                         onClick = {
                             model.onSubmit()
                         }
@@ -131,8 +139,8 @@ object FuroShantenScreen :
                 Spacer(Modifier.height(8.dp))
 
                 Caption(
-                    title = { Text(stringResource(MR.strings.label_allow_chi)) },
-                    content = { Text(stringResource(MR.strings.text_false_symbol)) }
+                    title = { Text(stringResource(Res.string.label_allow_chi)) },
+                    content = { Text(stringResource(Res.string.text_false_symbol)) }
                 )
             }
 

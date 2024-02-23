@@ -13,8 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import dev.icerock.moko.resources.compose.stringResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.basic.RatioGroups
 import io.ssttkkl.mahjongutils.app.components.basic.RatioOption
@@ -31,9 +29,20 @@ import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
+import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_calc
+import mahjongutils.composeapp.generated.resources.label_regular_shanten
+import mahjongutils.composeapp.generated.resources.label_shanten_mode
+import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
+import mahjongutils.composeapp.generated.resources.label_union_shanten
+import mahjongutils.composeapp.generated.resources.text_regular_shanten_desc
+import mahjongutils.composeapp.generated.resources.text_union_shanten_desc
+import mahjongutils.composeapp.generated.resources.title_shanten
+import mahjongutils.composeapp.generated.resources.title_shanten_result
 import mahjongutils.shanten.ShantenWithoutGot
 import mahjongutils.shanten.asWithGot
 import mahjongutils.shanten.asWithoutGot
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 private fun ShantenModeRatioGroups(
@@ -44,13 +53,13 @@ private fun ShantenModeRatioGroups(
     val radioOptions = listOf(
         RatioOption(
             ShantenMode.Union,
-            stringResource(MR.strings.label_union_shanten),
-            stringResource(MR.strings.text_union_shanten_desc)
+            stringResource(Res.string.label_union_shanten),
+            stringResource(Res.string.text_union_shanten_desc)
         ),
         RatioOption(
             ShantenMode.Regular,
-            stringResource(MR.strings.label_regular_shanten),
-            stringResource(MR.strings.text_regular_shanten_desc)
+            stringResource(Res.string.label_regular_shanten),
+            stringResource(Res.string.text_regular_shanten_desc)
         ),
     )
 
@@ -60,10 +69,10 @@ private fun ShantenModeRatioGroups(
 object ShantenScreen :
     FormAndResultScreen<ShantenScreenModel, ShantenArgs, ShantenCalcResult>() {
     override val title
-        get() = MR.strings.title_shanten
+        get() = Res.string.title_shanten
 
     override val resultTitle
-        get() = MR.strings.title_shanten_result
+        get() = Res.string.title_shanten_result
 
     @Composable
     override fun getScreenModel(): ShantenScreenModel {
@@ -92,7 +101,7 @@ object ShantenScreen :
                                 onValueChange = { model.tiles = it },
                                 modifier = Modifier.fillMaxWidth(),
                                 isError = isError,
-                                label = stringResource(MR.strings.label_tiles_in_hand)
+                                label = stringResource(Res.string.label_tiles_in_hand)
                             )
                         }
                     }
@@ -100,7 +109,7 @@ object ShantenScreen :
                     VerticalSpacerBetweenPanels()
 
                     TopPanel(
-                        { Text(stringResource(MR.strings.label_shanten_mode)) },
+                        { Text(stringResource(Res.string.label_shanten_mode)) },
                         noContentPadding = true
                     ) {
                         ShantenModeRatioGroups(
@@ -113,7 +122,7 @@ object ShantenScreen :
 
                     Button(
                         modifier = Modifier.windowHorizontalMargin(),
-                        content = { Text(stringResource(MR.strings.label_calc)) },
+                        content = { Text(stringResource(Res.string.label_calc)) },
                         onClick = {
                             model.onSubmit()
                         }
@@ -148,8 +157,8 @@ object ShantenScreen :
             Caption(title = {
                 Text(
                     when (item.args.mode) {
-                        ShantenMode.Union -> stringResource(MR.strings.label_union_shanten)
-                        ShantenMode.Regular -> stringResource(MR.strings.label_regular_shanten)
+                        ShantenMode.Union -> stringResource(Res.string.label_union_shanten)
+                        ShantenMode.Regular -> stringResource(Res.string.label_regular_shanten)
                     }
                 )
             })
