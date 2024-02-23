@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.text_agari_not_in_hand
+import mahjongutils.composeapp.generated.resources.text_any_tile_must_not_be_more_than_4
 import mahjongutils.composeapp.generated.resources.text_hora_hand_tiles_not_enough
 import mahjongutils.composeapp.generated.resources.text_invalid_dora_count
 import mahjongutils.composeapp.generated.resources.text_invalid_furo
@@ -286,7 +287,7 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         }
 
         if ((tiles + furo.flatMap { it.tiles }).countAsCodeArray().any { it > 4 }) {
-            tilesErrMsg = MR.strings.text_any_tile_must_not_be_more_than_4
+            tilesErrMsg = Res.string.text_any_tile_must_not_be_more_than_4
             validTiles = false
         }
 
