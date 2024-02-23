@@ -8,6 +8,7 @@ import java.util.Properties
 plugins {
     val enableAndroid = System.getProperty("enable_android")
         ?.equals("true", ignoreCase = true) != false
+            && JavaVersion.current() >= JavaVersion.VERSION_17
 
     alias(libs.plugins.androidApplication) apply enableAndroid
     alias(libs.plugins.kotlinMultiplatform)
@@ -23,6 +24,7 @@ plugins {
 // vercel自带的Java 11，但是AGP要求17，所以添加开关
 val enableAndroid = System.getProperty("enable_android")
     ?.equals("true", ignoreCase = true) != false
+        && JavaVersion.current() >= JavaVersion.VERSION_17
 
 val enableIos = System.getProperty("enable_ios")
     ?.equals("true", ignoreCase = true) != false
