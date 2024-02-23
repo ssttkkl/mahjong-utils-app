@@ -37,12 +37,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
+import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
 import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.stringResource
 
 
 @Composable

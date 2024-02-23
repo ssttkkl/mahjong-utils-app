@@ -20,7 +20,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
-import io.ssttkkl.mahjongutils.app.utils.toUIImage
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import kotlinx.coroutines.launch
@@ -60,7 +59,6 @@ private fun Color.toUIColor(): UIColor {
 }
 
 @OptIn(ExperimentalForeignApi::class)
-@Composable
 private fun List<Tile>.toNSAttributedString(height: Double): NSAttributedString {
     val width = height / 1.4  // 牌的比例是1.4:1
 
@@ -68,7 +66,7 @@ private fun List<Tile>.toNSAttributedString(height: Double): NSAttributedString 
 
     forEach {
         val attachment = NSTextAttachment()
-        attachment.image = it.drawableResource.toUIImage()
+        attachment.image = it.imageResource.toUIImage()
         attachment.bounds = CGRectMake(0.0, 0.0, width, height)
 
         val attrStringWithImage = NSAttributedString.attributedStringWithAttachment(attachment)
@@ -100,7 +98,6 @@ internal actual fun CoreTileField(
     val tileHeight = with(density) {
         fontSizeInSp.sp.toDp().value.toDouble()
     }
-    val attributedString = value.toNSAttributedString(tileHeight)
     val placeholderFontSize =
         UIFont.systemFontOfSize(MaterialTheme.typography.bodyLarge.fontSize.value.toDouble())
     val placeholderFontColor = MaterialTheme.colorScheme.onSurfaceVariant.toUIColor()
@@ -129,7 +126,7 @@ internal actual fun CoreTileField(
 
             override fun textViewDidChange(textView: UITextView) {
                 logger.debug("textViewDidChange")
-                val textShouldBe = attributedString
+                val textShouldBe = value.toNSAttributedString(tileHeight)
                 if (!textView.attributedText.isEqual(textShouldBe)) {
                     // 防止用户输入了什么奇怪的东西，重新渲染下
                     scope.invalidate()
@@ -215,7 +212,7 @@ internal actual fun CoreTileField(
                 // setText的时候会调用onSelectionChanged把选择区域置为[n,n]，所以需要暂时不同步状态
                 if (currentValue != value) {
                     notifySelectionChange = false
-                    attributedText = attributedString
+                    attributedText = value.toNSAttributedString(tileHeight)
                     notifySelectionChange = true
                     currentValue = value
 

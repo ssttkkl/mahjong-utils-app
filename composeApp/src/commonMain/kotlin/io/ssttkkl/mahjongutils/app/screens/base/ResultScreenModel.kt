@@ -5,8 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
+import dev.icerock.moko.resources.StringResource
 import kotlinx.coroutines.Deferred
-import org.jetbrains.compose.resources.StringResource
 
 class ResultHolder<RES>(
     var result: Deferred<RES>?,

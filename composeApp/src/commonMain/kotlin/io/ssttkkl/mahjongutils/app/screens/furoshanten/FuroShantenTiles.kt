@@ -11,14 +11,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
 import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.emoji
-import mahjongutils.composeapp.generated.resources.Res
-import mahjongutils.composeapp.generated.resources.label_tile_discarded_by_other_short
 import mahjongutils.models.Tile
-import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -36,7 +35,7 @@ fun FuroShantenTiles(tiles: List<Tile>, chanceTile: Tile) {
 
         TileInlineText(
             stringResource(
-                Res.string.label_tile_discarded_by_other_short,
+                MR.strings.label_tile_discarded_by_other_short,
                 chanceTile.emoji
             ),
             tileSize = reducedTileSize

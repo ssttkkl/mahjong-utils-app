@@ -6,11 +6,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
+import dev.icerock.moko.resources.StringResource
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowSnackbarOnFailure
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen.Companion.isTwoPanes
-import org.jetbrains.compose.resources.StringResource
 import kotlin.jvm.Transient
 
 class ResultScreen(
