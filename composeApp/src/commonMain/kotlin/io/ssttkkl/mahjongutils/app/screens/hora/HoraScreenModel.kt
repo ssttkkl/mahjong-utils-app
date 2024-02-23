@@ -25,6 +25,7 @@ import mahjongutils.models.Furo
 import mahjongutils.models.Kan
 import mahjongutils.models.Tile
 import mahjongutils.models.Wind
+import mahjongutils.models.countAsCodeArray
 import mahjongutils.yaku.Yaku
 import mahjongutils.yaku.Yakus
 import org.jetbrains.compose.resources.StringResource
@@ -281,6 +282,11 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         val curTilesCount = tiles.size + furo.size * 3
         if (curTilesCount != 14 && curTilesCount != 13) {
             tilesErrMsg = Res.string.text_hora_hand_tiles_not_enough
+            validTiles = false
+        }
+
+        if ((tiles + furo.flatMap { it.tiles }).countAsCodeArray().any { it > 4 }) {
+            tilesErrMsg = MR.strings.text_any_tile_must_not_be_more_than_4
             validTiles = false
         }
 
