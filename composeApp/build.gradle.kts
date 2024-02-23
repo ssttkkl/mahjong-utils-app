@@ -1,6 +1,8 @@
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.apache.commons.io.FileUtils
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import java.util.Properties
 
 plugins {
@@ -22,6 +24,15 @@ plugins {
 val enableAndroid = System.getProperty("enable_android")
     ?.equals("true", ignoreCase = true) != false
 
+val enableIos = System.getProperty("enable_ios")
+    ?.equals("true", ignoreCase = true) != false
+
+val enableDesktop = System.getProperty("enable_desktop")
+    ?.equals("true", ignoreCase = true) != false
+
+val enableWeb = System.getProperty("enable_web")
+    ?.equals("true", ignoreCase = true) != false
+
 val localProperties = Properties()
 if (rootProject.file("local.properties").exists()) {
     rootProject.file("local.properties").inputStream().use { inputStream ->
@@ -31,16 +42,6 @@ if (rootProject.file("local.properties").exists()) {
 
 kotlin {
     applyDefaultHierarchyTemplate()
-
-    wasmJs {
-        moduleName = "mahjong-utils-app"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-            }
-        }
-        binaries.executable()
-    }
 
     if (enableAndroid) {
         androidTarget {
@@ -52,27 +53,25 @@ kotlin {
         }
     }
 
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    if (enableIos) {
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
+    }
 
-    jvm("desktop")
+    if (enableDesktop) {
+        jvm("desktop")
+    }
 
-    cocoapods {
-        version = properties["version.name"].toString()
-        summary = "Riichi Mahjong Calculator"
-        homepage = "https://github.com/NNSZ-Yorozuya/mahjong-utils-app"
-        source =
-            "{ :git => 'https://github.com/NNSZ-Yorozuya/mahjong-utils-app.git', :tag => '$version' }"
-        license = "Private"
-        ios.deploymentTarget = "13.0"
-        podfile = project.file("../iosApp/Podfile")
-
-        framework {
-            baseName = project.name
-            isStatic = true
-            @Suppress("OPT_IN_USAGE")
-            transitiveExport = false
+    if (enableWeb) {
+        wasmJs {
+            moduleName = "mahjong-utils-app"
+            browser {
+                commonWebpackConfig {
+                    outputFileName = "composeApp.js"
+                }
+            }
+            binaries.executable()
         }
     }
 
@@ -126,23 +125,28 @@ kotlin {
                 }
             }
         }
-
-        val iosMain by getting {
-            dependsOn(nonWasmJsMain)
-        }
-
-        val desktopMain by getting {
-            dependsOn(nonWasmJsMain)
-            dependsOn(desktopAndWasmJsMain)
-            dependencies {
-                implementation(compose.desktop.currentOs)
-                implementation(libs.kotlinx.coroutines.swing)
-                implementation(libs.appdirs)
+        if (enableIos) {
+            val iosMain by getting {
+                dependsOn(nonWasmJsMain)
             }
         }
 
-        val wasmJsMain by getting {
-            dependsOn(desktopAndWasmJsMain)
+        if (enableDesktop) {
+            val desktopMain by getting {
+                dependsOn(nonWasmJsMain)
+                dependsOn(desktopAndWasmJsMain)
+                dependencies {
+                    implementation(compose.desktop.currentOs)
+                    implementation(libs.kotlinx.coroutines.swing)
+                    implementation(libs.appdirs)
+                }
+            }
+        }
+
+        if (enableWeb) {
+            val wasmJsMain by getting {
+                dependsOn(desktopAndWasmJsMain)
+            }
         }
     }
 
@@ -150,6 +154,26 @@ kotlin {
     compilerOptions {
         optIn.add("org.jetbrains.compose.resources.ExperimentalResourceApi")
         freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
+    if (enableIos) {
+        (extensions.getByName("cocoapods") as CocoapodsExtension).apply {
+            version = properties["version.name"].toString()
+            summary = "Riichi Mahjong Calculator"
+            homepage = "https://github.com/NNSZ-Yorozuya/mahjong-utils-app"
+            source =
+                "{ :git => 'https://github.com/NNSZ-Yorozuya/mahjong-utils-app.git', :tag => '$version' }"
+            license = "Private"
+            ios.deploymentTarget = "13.0"
+            podfile = project.file("../iosApp/Podfile")
+
+            framework {
+                baseName = project.name
+                isStatic = true
+                @Suppress("OPT_IN_USAGE")
+                transitiveExport = false
+            }
+        }
     }
 }
 
@@ -165,7 +189,7 @@ buildkonfig {
 }
 
 if (enableAndroid) {
-    android {
+    (extensions.getByName("android") as BaseAppModuleExtension).apply {
         namespace = "io.ssttkkl.mahjongutils.app"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
 
@@ -206,93 +230,97 @@ if (enableAndroid) {
             sourceCompatibility = JavaVersion.VERSION_11
             targetCompatibility = JavaVersion.VERSION_11
         }
-        dependencies {
-            debugImplementation(libs.compose.ui.tooling)
+//        dependencies {
+//            debugImplementation(libs.compose.ui.tooling)
+//        }
+    }
+}
+
+if (enableDesktop) {
+    compose.desktop {
+        application {
+            mainClass = "MainKt"
+
+            nativeDistributions {
+                packageName = "mahjong-utils-app"
+                packageVersion = properties["version.name"].toString()
+                description = "Riichi Mahjong Calculator"
+                copyright = "Copyright (c) 2024 ssttkkl"
+                licenseFile.set(rootProject.file("LICENSE"))
+
+                val hostOs = System.getProperty("os.name")
+                when {
+                    hostOs == "Mac OS X" -> targetFormats(TargetFormat.Dmg)
+                    hostOs == "Linux" -> targetFormats(TargetFormat.AppImage)
+                    hostOs.startsWith("Windows") -> targetFormats(TargetFormat.Exe)
+                }
+
+                windows {
+                    iconFile.set(file("icon.ico"))
+                    upgradeUuid = "16b7010f-44eb-4157-9113-3f8e44d72955"
+                    shortcut = true
+                    menu = true
+                }
+
+                macOS {
+                    dockName = "Riichi Mahjong Calculator"
+                    iconFile.set(file("icon.icns"))
+                    bundleID = "io.ssttkkl.mahjongutils.app"
+                }
+
+                linux {
+                    iconFile.set(file("icon.png"))
+                }
+            }
+        }
+    }
+
+    afterEvaluate {
+        tasks.findByName("packageAppImage")?.doLast {
+            val appDirSrc = project.file("mahjong-utils-app.AppDir")
+            val packageOutput =
+                layout.buildDirectory.dir("compose/binaries/main/app/mahjong-utils-app").get().asFile
+            if (!appDirSrc.exists() || !packageOutput.exists()) {
+                return@doLast
+            }
+
+            val downloadDest = layout.buildDirectory.dir("tmp").get().asFile
+            val appimagetool = downloadDest.resolve("appimagetool-x86_64.AppImage")
+
+            download.run {
+                src("https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage")
+                dest(downloadDest)
+                overwrite(false)
+            }
+
+            if (!appimagetool.canExecute()) {
+                appimagetool.setExecutable(true)
+            }
+
+            val appDir = layout.buildDirectory.dir("appimage/mahjong-utils-app.AppDir").get().asFile
+            if (appDir.exists()) {
+                appDir.deleteRecursively()
+            }
+            FileUtils.copyDirectory(appDirSrc, appDir)
+            FileUtils.copyDirectory(packageOutput, appDir)
+
+            val appExecutable = appDir.resolve("bin/mahjong-utils-app")
+            if (!appExecutable.canExecute()) {
+                appimagetool.setExecutable(true)
+            }
+
+            exec {
+                workingDir = appDir.parentFile
+                executable = appimagetool.canonicalPath
+                environment("ARCH", "x86_64")  // TODO: 支持arm64
+                args("mahjong-utils-app.AppDir", "mahjong-utils-app.AppImage")
+            }
         }
     }
 }
 
-compose.desktop {
-    application {
-        mainClass = "MainKt"
-
-        nativeDistributions {
-            packageName = "mahjong-utils-app"
-            packageVersion = properties["version.name"].toString()
-            description = "Riichi Mahjong Calculator"
-            copyright = "Copyright (c) 2024 ssttkkl"
-            licenseFile.set(rootProject.file("LICENSE"))
-
-            val hostOs = System.getProperty("os.name")
-            when {
-                hostOs == "Mac OS X" -> targetFormats(TargetFormat.Dmg)
-                hostOs == "Linux" -> targetFormats(TargetFormat.AppImage)
-                hostOs.startsWith("Windows") -> targetFormats(TargetFormat.Exe)
-            }
-
-            windows {
-                iconFile.set(file("icon.ico"))
-                upgradeUuid = "16b7010f-44eb-4157-9113-3f8e44d72955"
-                shortcut = true
-                menu = true
-            }
-
-            macOS {
-                dockName = "Riichi Mahjong Calculator"
-                iconFile.set(file("icon.icns"))
-                bundleID = "io.ssttkkl.mahjongutils.app"
-            }
-
-            linux {
-                iconFile.set(file("icon.png"))
-            }
-        }
+if (enableWeb) {
+    compose.experimental {
+        web.application {}
     }
-}
-
-afterEvaluate {
-    tasks.findByName("packageAppImage")?.doLast {
-        val appDirSrc = project.file("mahjong-utils-app.AppDir")
-        val packageOutput =
-            layout.buildDirectory.dir("compose/binaries/main/app/mahjong-utils-app").get().asFile
-        if (!appDirSrc.exists() || !packageOutput.exists()) {
-            return@doLast
-        }
-
-        val downloadDest = layout.buildDirectory.dir("tmp").get().asFile
-        val appimagetool = downloadDest.resolve("appimagetool-x86_64.AppImage")
-
-        download.run {
-            src("https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage")
-            dest(downloadDest)
-            overwrite(false)
-        }
-
-        if (!appimagetool.canExecute()) {
-            appimagetool.setExecutable(true)
-        }
-
-        val appDir = layout.buildDirectory.dir("appimage/mahjong-utils-app.AppDir").get().asFile
-        if (appDir.exists()) {
-            appDir.deleteRecursively()
-        }
-        FileUtils.copyDirectory(appDirSrc, appDir)
-        FileUtils.copyDirectory(packageOutput, appDir)
-
-        val appExecutable = appDir.resolve("bin/mahjong-utils-app")
-        if (!appExecutable.canExecute()) {
-            appimagetool.setExecutable(true)
-        }
-
-        exec {
-            workingDir = appDir.parentFile
-            executable = appimagetool.canonicalPath
-            environment("ARCH", "x86_64")  // TODO: 支持arm64
-            args("mahjong-utils-app.AppDir", "mahjong-utils-app.AppImage")
-        }
-    }
-}
-
-compose.experimental {
-    web.application {}
 }
