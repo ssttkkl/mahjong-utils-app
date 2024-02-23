@@ -6,21 +6,40 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.stringResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
+import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.label_baiman
+import mahjongutils.composeapp.generated.resources.label_haneman
+import mahjongutils.composeapp.generated.resources.label_hora_point
+import mahjongutils.composeapp.generated.resources.label_kazoeyakuman
+import mahjongutils.composeapp.generated.resources.label_mangan
+import mahjongutils.composeapp.generated.resources.label_sanbaiman
+import mahjongutils.composeapp.generated.resources.text_child_ron
+import mahjongutils.composeapp.generated.resources.text_child_tsumo
+import mahjongutils.composeapp.generated.resources.text_five
+import mahjongutils.composeapp.generated.resources.text_four
+import mahjongutils.composeapp.generated.resources.text_one
+import mahjongutils.composeapp.generated.resources.text_parent_ron
+import mahjongutils.composeapp.generated.resources.text_parent_tsumo
+import mahjongutils.composeapp.generated.resources.text_six
+import mahjongutils.composeapp.generated.resources.text_three
+import mahjongutils.composeapp.generated.resources.text_two
+import mahjongutils.composeapp.generated.resources.text_x_bai_yakuman
+import mahjongutils.composeapp.generated.resources.text_x_han_x_hu
+import mahjongutils.composeapp.generated.resources.text_x_han_x_hu_with_tag
 import mahjongutils.hanhu.ChildPoint
 import mahjongutils.hanhu.ParentPoint
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 private fun digitText(digit: Int): String {
     return when (digit) {
-        1 -> stringResource(MR.strings.text_one)
-        2 -> stringResource(MR.strings.text_two)
-        3 -> stringResource(MR.strings.text_three)
-        4 -> stringResource(MR.strings.text_four)
-        5 -> stringResource(MR.strings.text_five)
-        6 -> stringResource(MR.strings.text_six)
+        1 -> stringResource(Res.string.text_one)
+        2 -> stringResource(Res.string.text_two)
+        3 -> stringResource(Res.string.text_three)
+        4 -> stringResource(Res.string.text_four)
+        5 -> stringResource(Res.string.text_five)
+        6 -> stringResource(Res.string.text_six)
         else -> digit.toString()
     }
 }
@@ -29,14 +48,14 @@ private fun digitText(digit: Int): String {
 private fun hanhuText(han: Int, hu: Int, hasYakuman: Boolean) {
     when {
         hasYakuman -> {
-            Text(stringResource(MR.strings.text_x_bai_yakuman, digitText(han / 13)))
+            Text(stringResource(Res.string.text_x_bai_yakuman, digitText(han / 13)))
         }
 
         han >= 13 -> {
             Text(
                 stringResource(
-                    MR.strings.text_x_han_x_hu_with_tag, han, hu,
-                    stringResource(MR.strings.label_kazoeyakuman)
+                    Res.string.text_x_han_x_hu_with_tag, han, hu,
+                    stringResource(Res.string.label_kazoeyakuman)
                 )
             )
         }
@@ -44,8 +63,8 @@ private fun hanhuText(han: Int, hu: Int, hasYakuman: Boolean) {
         han >= 11 -> {
             Text(
                 stringResource(
-                    MR.strings.text_x_han_x_hu_with_tag, han, hu,
-                    stringResource(MR.strings.label_sanbaiman)
+                    Res.string.text_x_han_x_hu_with_tag, han, hu,
+                    stringResource(Res.string.label_sanbaiman)
                 )
             )
         }
@@ -53,8 +72,8 @@ private fun hanhuText(han: Int, hu: Int, hasYakuman: Boolean) {
         han >= 8 -> {
             Text(
                 stringResource(
-                    MR.strings.text_x_han_x_hu_with_tag, han, hu,
-                    stringResource(MR.strings.label_baiman)
+                    Res.string.text_x_han_x_hu_with_tag, han, hu,
+                    stringResource(Res.string.label_baiman)
                 )
             )
         }
@@ -62,8 +81,8 @@ private fun hanhuText(han: Int, hu: Int, hasYakuman: Boolean) {
         han >= 6 -> {
             Text(
                 stringResource(
-                    MR.strings.text_x_han_x_hu_with_tag, han, hu,
-                    stringResource(MR.strings.label_haneman)
+                    Res.string.text_x_han_x_hu_with_tag, han, hu,
+                    stringResource(Res.string.label_haneman)
                 )
             )
         }
@@ -71,14 +90,14 @@ private fun hanhuText(han: Int, hu: Int, hasYakuman: Boolean) {
         han >= 5 || han == 4 && hu >= 40 || han == 3 && hu >= 70 -> {
             Text(
                 stringResource(
-                    MR.strings.text_x_han_x_hu_with_tag, han, hu,
-                    stringResource(MR.strings.label_mangan)
+                    Res.string.text_x_han_x_hu_with_tag, han, hu,
+                    stringResource(Res.string.label_mangan)
                 )
             )
         }
 
         else -> {
-            Text(stringResource(MR.strings.text_x_han_x_hu, han, hu))
+            Text(stringResource(Res.string.text_x_han_x_hu, han, hu))
         }
     }
 }
@@ -86,7 +105,7 @@ private fun hanhuText(han: Int, hu: Int, hasYakuman: Boolean) {
 @Composable
 private fun textParentTsumo(parentPoint: ParentPoint) =
     stringResource(
-        MR.strings.text_parent_tsumo,
+        Res.string.text_parent_tsumo,
         parentPoint.tsumo.toString(),
         parentPoint.tsumoTotal.toString()
     )
@@ -94,14 +113,14 @@ private fun textParentTsumo(parentPoint: ParentPoint) =
 @Composable
 private fun textParentRon(parentPoint: ParentPoint) =
     stringResource(
-        MR.strings.text_parent_ron,
+        Res.string.text_parent_ron,
         parentPoint.ron.toString()
     )
 
 @Composable
 private fun textChildTsumo(childPoint: ChildPoint) =
     stringResource(
-        MR.strings.text_child_tsumo,
+        Res.string.text_child_tsumo,
         childPoint.tsumoChild.toString(),
         childPoint.tsumoParent.toString(),
         childPoint.tsumoTotal.toString(),
@@ -110,7 +129,7 @@ private fun textChildTsumo(childPoint: ChildPoint) =
 @Composable
 private fun textChildRon(childPoint: ChildPoint) =
     stringResource(
-        MR.strings.text_child_ron,
+        Res.string.text_child_ron,
         childPoint.ron.toString()
     )
 
@@ -142,7 +161,7 @@ fun PointPanel(
     parentPoint: ParentPoint?,
     childPoint: ChildPoint?
 ) {
-    TopCardPanel({ Text(stringResource(MR.strings.label_hora_point)) }) {
+    TopCardPanel({ Text(stringResource(Res.string.label_hora_point)) }) {
         hanhuText(han, hu, hasYakuman)
     }
     Spacer(Modifier.height(8.dp))

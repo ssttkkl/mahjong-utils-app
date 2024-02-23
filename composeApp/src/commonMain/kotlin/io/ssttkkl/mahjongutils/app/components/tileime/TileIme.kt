@@ -22,12 +22,13 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.icerock.moko.resources.compose.painterResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.backhandler.BackHandler
 import io.ssttkkl.mahjongutils.app.components.clickableButNotFocusable
 import io.ssttkkl.mahjongutils.app.components.tile.painterResource
+import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.icon_backspace
 import mahjongutils.models.Tile
+import org.jetbrains.compose.resources.painterResource
 
 @Immutable
 sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
@@ -80,7 +81,7 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
                 Alignment.Center
             ) {
                 Image(
-                    painterResource(MR.images.icon_backspace),
+                    painterResource(Res.drawable.icon_backspace),
                     "",
                     Modifier.size(with(density) { 36.sp.toDp() }),
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)

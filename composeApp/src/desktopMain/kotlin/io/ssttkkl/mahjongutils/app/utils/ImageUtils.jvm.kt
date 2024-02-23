@@ -1,23 +1,24 @@
+@file:OptIn(ExperimentalResourceApi::class)
+
 package io.ssttkkl.mahjongutils.app.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toAwtImage
 import androidx.compose.ui.graphics.toComposeImageBitmap
-import dev.icerock.moko.resources.ImageResource
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.imageResource
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
 
 
 @Composable
-actual fun ImageResource.toImageBitmap(): ImageBitmap {
-    return this.image.toComposeImageBitmap()
-}
-
-@Composable
-actual fun ImageResource.toLieDownImageBitmap(): ImageBitmap {
-    return remember(this) {
-        this.image.rotateImageByDegrees(-90.0).toComposeImageBitmap()
+actual fun DrawableResource.toLieDownImageBitmap(): ImageBitmap {
+    val bitmap = imageResource(this)
+    return remember(bitmap) {
+        bitmap.toAwtImage().rotateImageByDegrees(-90.0).toComposeImageBitmap()
     }
 }
 
