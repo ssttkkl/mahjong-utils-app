@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -35,8 +36,8 @@ private val navigatableScreens: List<NavigationScreen> = listOf(
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
-fun App() {
-    AppTheme {
+fun App(typography: Typography = MaterialTheme.typography) {
+    AppTheme(typography = typography) {
         Navigator(ShantenScreen) { navigator ->
             val windowSizeClass: WindowSizeClass = calculateWindowSizeClass()
             val useNavigationDrawer =
