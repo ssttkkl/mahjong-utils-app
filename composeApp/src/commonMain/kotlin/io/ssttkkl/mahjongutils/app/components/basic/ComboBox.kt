@@ -5,7 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuBoxScope
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,7 +14,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -39,7 +38,7 @@ private fun ExposedDropdownMenuBoxScope.ComboBoxTextField(
 ) {
     OutlinedTextField(
         modifier = Modifier.menuAnchor().then(modifier),
-        textStyle = TextStyle.Default.copy(
+        textStyle = LocalTextStyle.current.copy(
             fontSize = 14.sp,
             fontWeight = FontWeight.Light
         ),
@@ -47,12 +46,6 @@ private fun ExposedDropdownMenuBoxScope.ComboBoxTextField(
         value = text,
         onValueChange = {},
         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-        colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
-            focusedBorderColor = if (!expanded)
-                MaterialTheme.colorScheme.onSurface
-            else
-                MaterialTheme.colorScheme.primary,
-        ),
         maxLines = 1,
         label = label,
     )
