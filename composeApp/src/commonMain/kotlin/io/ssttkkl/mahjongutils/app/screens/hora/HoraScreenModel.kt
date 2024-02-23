@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.screenModelScope
+import dev.icerock.moko.resources.StringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.models.AppOptions
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
@@ -13,14 +15,6 @@ import io.ssttkkl.mahjongutils.app.models.hora.HoraCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import mahjongutils.composeapp.generated.resources.Res
-import mahjongutils.composeapp.generated.resources.text_agari_not_in_hand
-import mahjongutils.composeapp.generated.resources.text_any_tile_must_not_be_more_than_4
-import mahjongutils.composeapp.generated.resources.text_hora_hand_tiles_not_enough
-import mahjongutils.composeapp.generated.resources.text_invalid_dora_count
-import mahjongutils.composeapp.generated.resources.text_invalid_furo
-import mahjongutils.composeapp.generated.resources.text_must_enter_agari
-import mahjongutils.composeapp.generated.resources.text_must_enter_tiles
 import mahjongutils.hora.HoraOptions
 import mahjongutils.models.Furo
 import mahjongutils.models.Kan
@@ -29,7 +23,6 @@ import mahjongutils.models.Wind
 import mahjongutils.models.countAsCodeArray
 import mahjongutils.yaku.Yaku
 import mahjongutils.yaku.Yakus
-import org.jetbrains.compose.resources.StringResource
 
 class FuroModel {
     var tiles: List<Tile> by mutableStateOf(emptyList())
@@ -271,32 +264,32 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
 
         val dora = if (dora.isEmpty()) 0 else dora.toIntOrNull()
         if (dora == null) {
-            doraErrMsg = Res.string.text_invalid_dora_count
+            doraErrMsg = MR.strings.text_invalid_dora_count
             validDora = false
         }
 
         if (tiles.isEmpty()) {
-            tilesErrMsg = Res.string.text_must_enter_tiles
+            tilesErrMsg = MR.strings.text_must_enter_tiles
             validTiles = false
         }
 
         val curTilesCount = tiles.size + furo.size * 3
         if (curTilesCount != 14 && curTilesCount != 13) {
-            tilesErrMsg = Res.string.text_hora_hand_tiles_not_enough
+            tilesErrMsg = MR.strings.text_hora_hand_tiles_not_enough
             validTiles = false
         }
 
         if ((tiles + furo.flatMap { it.tiles }).countAsCodeArray().any { it > 4 }) {
-            tilesErrMsg = Res.string.text_any_tile_must_not_be_more_than_4
+            tilesErrMsg = MR.strings.text_any_tile_must_not_be_more_than_4
             validTiles = false
         }
 
         val agari = agari ?: autoDetectedAgari
         if (agari == null) {
-            agariErrMsg = Res.string.text_must_enter_agari
+            agariErrMsg = MR.strings.text_must_enter_agari
             validAgari = false
         } else if (curTilesCount == 14 && agari !in tiles) {
-            agariErrMsg = Res.string.text_agari_not_in_hand
+            agariErrMsg = MR.strings.text_agari_not_in_hand
             validAgari = false
         }
 
@@ -305,7 +298,7 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
                 it.toFuro()
                 it.errMsg = null
             } catch (e: IllegalArgumentException) {
-                it.errMsg = Res.string.text_invalid_furo
+                it.errMsg = MR.strings.text_invalid_furo
             }
         }
         validFuro = furo.all { it.errMsg == null }

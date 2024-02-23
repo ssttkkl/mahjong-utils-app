@@ -7,6 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsContent
@@ -17,16 +19,9 @@ import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
-import mahjongutils.composeapp.generated.resources.Res
-import mahjongutils.composeapp.generated.resources.label_advance_tiles
-import mahjongutils.composeapp.generated.resources.label_good_shape_advance_tiles
-import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
-import mahjongutils.composeapp.generated.resources.text_tiles_with_got
-import mahjongutils.composeapp.generated.resources.text_tiles_without_got
 import mahjongutils.models.Tile
 import mahjongutils.shanten.ShantenWithGot
 import mahjongutils.shanten.ShantenWithoutGot
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithoutGot) {
@@ -45,7 +40,7 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithoutGot) {
             item("advance") {
                 VerticalSpacerBetweenPanels()
                 TilesWithNumTopCardPanel(
-                    stringResource(Res.string.label_advance_tiles),
+                    stringResource(MR.strings.label_advance_tiles),
                     shanten.advance,
                     shanten.advanceNum
                 )
@@ -56,7 +51,7 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithoutGot) {
                     shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
                         VerticalSpacerBetweenPanels()
                         TilesWithNumTopCardPanel(
-                            stringResource(Res.string.label_good_shape_advance_tiles),
+                            stringResource(MR.strings.label_good_shape_advance_tiles),
                             goodShapeAdvance,
                             goodShapeAdvanceNum,
                             1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
@@ -134,14 +129,14 @@ fun ShantenResultContent(args: ShantenArgs, shanten: ShantenWithGot) {
 @Composable
 private fun TilesInHandPanel(tiles: List<Tile>, withGot: Boolean) {
     TopCardPanel(
-        { Text(stringResource(Res.string.label_tiles_in_hand)) },
+        { Text(stringResource(MR.strings.label_tiles_in_hand)) },
         caption = {
             Text(
                 stringResource(
                     if (withGot)
-                        Res.string.text_tiles_with_got
+                        MR.strings.text_tiles_with_got
                     else
-                        Res.string.text_tiles_without_got
+                        MR.strings.text_tiles_without_got
                 )
             )
         }

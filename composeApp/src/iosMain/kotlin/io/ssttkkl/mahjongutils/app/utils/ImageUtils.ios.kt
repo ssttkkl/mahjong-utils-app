@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
-import org.jetbrains.compose.resources.DrawableResource
+import dev.icerock.moko.resources.ImageResource
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import platform.CoreFoundation.CFRelease
@@ -25,22 +25,22 @@ import platform.CoreGraphics.CGImageGetWidth
 import platform.CoreGraphics.CGRectApplyAffineTransform
 import platform.CoreGraphics.CGRectMake
 import platform.CoreGraphics.kCGInterpolationNone
-import platform.UIKit.UIImage
 import platform.posix.M_PI
 
 
+@OptIn(ExperimentalForeignApi::class)
 @Composable
-fun DrawableResource.toUIImage(): UIImage {
-    TODO()
+actual fun ImageResource.toImageBitmap(): ImageBitmap {
+    return this.toUIImage()?.CGImage()?.toSkiaImage()?.toComposeImageBitmap()
+        ?: error("fail to convert $this to ImageBitmap")
 }
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
-actual fun DrawableResource.toLieDownImageBitmap(): ImageBitmap {
-    val uiImage = this.toUIImage()
+actual fun ImageResource.toLieDownImageBitmap(): ImageBitmap {
     return remember(this) {
         // https://gist.github.com/paolonl/6231410
-        val imgRef = uiImage.CGImage()
+        val imgRef = this.toUIImage()?.CGImage()
         val angleInRadians = (90) * (M_PI / 180)
         val width = CGImageGetWidth(imgRef).toDouble()
         val height = CGImageGetHeight(imgRef).toDouble()
