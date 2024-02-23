@@ -1,22 +1,17 @@
-@file:OptIn(ExperimentalResourceApi::class)
-
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
 import io.ssttkkl.mahjongutils.app.App
-import mahjongutils.composeapp.generated.resources.Res
-import mahjongutils.composeapp.generated.resources.app_name
-import mahjongutils.composeapp.generated.resources.icon_app
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = stringResource(Res.string.app_name),
-        icon = painterResource(Res.drawable.icon_app)
+        title = stringResource(MR.strings.app_name),
+        icon = painterResource(MR.images.icon_app)
     ) {
         App()
     }

@@ -13,6 +13,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
+import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.basic.VerticalDivider
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
@@ -20,24 +22,10 @@ import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.emoji
-import mahjongutils.composeapp.generated.resources.Res
-import mahjongutils.composeapp.generated.resources.label_advance_tiles
-import mahjongutils.composeapp.generated.resources.label_good_shape_advance_tiles
-import mahjongutils.composeapp.generated.resources.label_good_shape_improvement_tiles
-import mahjongutils.composeapp.generated.resources.label_waiting_tiles
-import mahjongutils.composeapp.generated.resources.text_improvement_desc
-import mahjongutils.composeapp.generated.resources.text_shanten_action_ankan
-import mahjongutils.composeapp.generated.resources.text_shanten_action_chi_and_discard
-import mahjongutils.composeapp.generated.resources.text_shanten_action_discard
-import mahjongutils.composeapp.generated.resources.text_shanten_action_minkan
-import mahjongutils.composeapp.generated.resources.text_shanten_action_pass
-import mahjongutils.composeapp.generated.resources.text_shanten_action_pon_and_discard
-import mahjongutils.composeapp.generated.resources.text_tiles_num
 import mahjongutils.models.Tatsu
 import mahjongutils.models.Tile
 import mahjongutils.shanten.Improvement
 import mahjongutils.shanten.ShantenWithoutGot
-import org.jetbrains.compose.resources.stringResource
 
 sealed class ShantenAction {
     abstract val shantenAfterAction: ShantenWithoutGot
@@ -117,9 +105,9 @@ fun ShantenActionCardContent(
                 TilesWithNumPanel(
                     stringResource(
                         if (shanten.shantenNum == 0)
-                            Res.string.label_waiting_tiles
+                            MR.strings.label_waiting_tiles
                         else
-                            Res.string.label_advance_tiles
+                            MR.strings.label_advance_tiles
                     ),
                     shanten.advance.sorted(),
                     shanten.advanceNum
@@ -129,7 +117,7 @@ fun ShantenActionCardContent(
                     VerticalSpacerBetweenPanels()
 
                     TilesWithNumPanel(
-                        stringResource(Res.string.label_good_shape_advance_tiles),
+                        stringResource(MR.strings.label_good_shape_advance_tiles),
                         goodShapeAdvance.sorted(),
                         shanten.goodShapeAdvanceNum ?: 0,
                         1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
@@ -140,7 +128,7 @@ fun ShantenActionCardContent(
                     VerticalSpacerBetweenPanels()
 
                     ImprovementsPanel(
-                        stringResource(Res.string.label_good_shape_improvement_tiles),
+                        stringResource(MR.strings.label_good_shape_improvement_tiles),
                         goodShapeImprovement,
                         shanten.goodShapeImprovementNum ?: 0
                     )
@@ -163,7 +151,7 @@ private fun ShantenActionContent(
                 is ShantenAction.Discard -> {
                     TileInlineText(
                         stringResource(
-                            Res.string.text_shanten_action_discard,
+                            MR.strings.text_shanten_action_discard,
                             action.tile.emoji
                         )
                     )
@@ -172,7 +160,7 @@ private fun ShantenActionContent(
                 is ShantenAction.Ankan -> {
                     TileInlineText(
                         stringResource(
-                            Res.string.text_shanten_action_ankan,
+                            MR.strings.text_shanten_action_ankan,
                             action.tile.emoji
                         )
                     )
@@ -181,7 +169,7 @@ private fun ShantenActionContent(
                 is ShantenAction.Chi -> {
                     TileInlineText(
                         stringResource(
-                            Res.string.text_shanten_action_chi_and_discard,
+                            MR.strings.text_shanten_action_chi_and_discard,
                             action.tatsu.first.emoji,
                             action.tatsu.second.emoji,
                             action.discard.emoji
@@ -192,7 +180,7 @@ private fun ShantenActionContent(
                 is ShantenAction.Pon -> {
                     TileInlineText(
                         stringResource(
-                            Res.string.text_shanten_action_pon_and_discard,
+                            MR.strings.text_shanten_action_pon_and_discard,
                             action.discard.emoji
                         )
                     )
@@ -201,14 +189,14 @@ private fun ShantenActionContent(
                 is ShantenAction.Minkan -> {
                     TileInlineText(
                         stringResource(
-                            Res.string.text_shanten_action_minkan,
+                            MR.strings.text_shanten_action_minkan,
                             action.tile.emoji
                         )
                     )
                 }
 
                 is ShantenAction.Pass -> {
-                    TileInlineText(stringResource(Res.string.text_shanten_action_pass))
+                    TileInlineText(stringResource(MR.strings.text_shanten_action_pass))
                 }
             }
         }
@@ -233,7 +221,7 @@ private fun ImprovementsPanel(
         }.forEach { (tile, discardTiles, advanceNum) ->
             TileInlineText(
                 stringResource(
-                    Res.string.text_improvement_desc,
+                    MR.strings.text_improvement_desc,
                     tile.emoji,
                     discardTiles.joinToString("") { it.emoji },
                     advanceNum
@@ -242,7 +230,7 @@ private fun ImprovementsPanel(
             Spacer(Modifier.height(8.dp))
         }
         Text(
-            stringResource(Res.string.text_tiles_num, improvementNum),
+            stringResource(MR.strings.text_tiles_num, improvementNum),
             style = MaterialTheme.typography.labelMedium
         )
     }

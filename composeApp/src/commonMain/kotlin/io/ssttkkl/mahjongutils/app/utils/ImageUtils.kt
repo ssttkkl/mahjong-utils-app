@@ -2,13 +2,10 @@ package io.ssttkkl.mahjongutils.app.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
-import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.imageResource
+import dev.icerock.moko.resources.ImageResource
 
 @Composable
-fun DrawableResource.toImageBitmap(): ImageBitmap {
-    return imageResource(this)
-}
+expect fun ImageResource.toImageBitmap(): ImageBitmap
 
 @Composable
-expect fun DrawableResource.toLieDownImageBitmap(): ImageBitmap
+expect fun ImageResource.toLieDownImageBitmap(): ImageBitmap
