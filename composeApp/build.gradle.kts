@@ -1,13 +1,13 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.apache.commons.io.FileUtils
-import org.gradle.api.JavaVersion
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import java.util.Properties
 
 plugins {
-    if (JavaVersion.current() >= JavaVersion.VERSION_17) {
-        alias(libs.plugins.androidApplication)
-    }
+    val enableAndroid = System.getProperty("enable_android")
+        ?.equals("true", ignoreCase = true) != false
+
+    alias(libs.plugins.androidApplication) apply enableAndroid
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.kotlinxAtomicfu)
@@ -18,8 +18,9 @@ plugins {
     alias(libs.plugins.undercouch.download)
 }
 
-// vercel自带的Java 11，但是AGP要求17
-val enableAndroid = JavaVersion.current() >= JavaVersion.VERSION_17
+// vercel自带的Java 11，但是AGP要求17，所以添加开关
+val enableAndroid = System.getProperty("enable_android")
+    ?.equals("true", ignoreCase = true) != false
 
 val localProperties = Properties()
 if (rootProject.file("local.properties").exists()) {
