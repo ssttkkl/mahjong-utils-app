@@ -1,0 +1,35 @@
+name: Update About Libraries
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  dokka-gfm:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Java JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: 17
+        cache: 'gradle'
+
+    - name: Update About Libraries
+      run: |
+        chmod +x export_about_libraries.sh
+        ./export_about_libraries.sh
+
+    - name: Commit
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Build DokkaGfm documents
