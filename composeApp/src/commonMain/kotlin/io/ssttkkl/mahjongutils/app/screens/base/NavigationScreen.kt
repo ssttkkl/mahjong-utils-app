@@ -1,6 +1,5 @@
 package io.ssttkkl.mahjongutils.app.screens.base
 
-import androidx.annotation.CallSuper
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
@@ -17,7 +16,6 @@ abstract class NavigationScreen : Screen {
     }
 
     @Composable
-    @CallSuper
     override fun Content() {
         val appState = LocalAppState.current
         LifecycleEffect(

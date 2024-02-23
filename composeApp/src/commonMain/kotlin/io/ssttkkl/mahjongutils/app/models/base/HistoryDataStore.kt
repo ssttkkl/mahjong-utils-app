@@ -1,6 +1,6 @@
 package io.ssttkkl.mahjongutils.app.models.base
 
-import androidx.datastore.core.DataStore
+import io.ssttkkl.mahjongutils.app.utils.DataStore
 import io.ssttkkl.mahjongutils.app.utils.FileUtils
 import io.ssttkkl.mahjongutils.app.utils.createDatastore
 import io.ssttkkl.mahjongutils.app.utils.historyPath

@@ -26,10 +26,10 @@ kotlin {
     applyDefaultHierarchyTemplate()
 
     wasmJs {
-        moduleName = "Riichi Mahjong Calculator"
+        moduleName = "mahjong-utils-app"
         browser {
             commonWebpackConfig {
-                outputFileName = "riichiMahjongCalculator.js"
+                outputFileName = "composeApp.js"
             }
         }
         binaries.executable()
