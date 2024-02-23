@@ -25,16 +25,15 @@ plugins {
 kotlin {
     applyDefaultHierarchyTemplate()
 
-//    @OptIn(ExperimentalWasmDsl::class)
-//    wasmJs {
-//        moduleName = "Riichi Mahjong Calculator"
-//        browser {
-//            commonWebpackConfig {
-//                outputFileName = "riichiMahjongCalculator.js"
-//            }
-//        }
-//        binaries.executable()
-//    }
+    wasmJs {
+        moduleName = "Riichi Mahjong Calculator"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "riichiMahjongCalculator.js"
+            }
+        }
+        binaries.executable()
+    }
 
     androidTarget {
         compilations.all {
@@ -69,49 +68,70 @@ kotlin {
     }
 
     sourceSets {
-        // https://github.com/icerockdev/moko-resources/issues/618
-        getByName("androidMain").dependsOn(commonMain.get())
-        getByName("desktopMain").dependsOn(commonMain.get())
-        getByName("iosArm64Main").dependsOn(commonMain.get())
-        getByName("iosX64Main").dependsOn(commonMain.get())
-        getByName("iosSimulatorArm64Main").dependsOn(commonMain.get())
+        val commonMain by getting {
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(libs.material3.windowSizeClass)
 
-        androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.androidx.activity.compose)
-            implementation(libs.kotlinx.coroutines.android)
+                implementation(libs.about.libraries.core)
+                implementation(libs.about.libraries.compose)
+
+                implementation(libs.voyager.navigator)
+                implementation(libs.voyager.screenmodel)
+
+                implementation(libs.okio)
+
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.serialization.json.okio)
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.kotlinx.atomicfu)
+                implementation(libs.kotlinx.coroutines.core)
+
+                implementation(libs.mahjong.utils)
+            }
         }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(libs.material3.windowSizeClass)
 
-            implementation(libs.about.libraries.core)
-            implementation(libs.about.libraries.compose)
-
-            implementation(libs.voyager.navigator)
-            implementation(libs.voyager.screenmodel)
-
-            implementation(libs.okio)
-            implementation(libs.androidx.datastore.core)
-            implementation(libs.androidx.datastore.core.okio)
-            implementation(libs.kotlinx.serialization.json)
-            implementation(libs.kotlinx.serialization.json.okio)
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.atomicfu)
-            implementation(libs.kotlinx.coroutines.core)
-
-            implementation(libs.mahjong.utils)
+        val nonWasmMain by creating {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(libs.androidx.datastore.core)
+                implementation(libs.androidx.datastore.core.okio)
+            }
         }
+
+        val desktopAndWasmJsMain by creating {
+            dependsOn(commonMain)
+        }
+
+        val androidMain by getting {
+            dependsOn(nonWasmMain)
+            dependencies {
+                implementation(libs.compose.ui.tooling.preview)
+                implementation(libs.androidx.activity.compose)
+                implementation(libs.kotlinx.coroutines.android)
+            }
+        }
+
+        val iosMain by getting {
+            dependsOn(nonWasmMain)
+        }
+
         val desktopMain by getting {
+            dependsOn(nonWasmMain)
+            dependsOn(desktopAndWasmJsMain)
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation(libs.kotlinx.coroutines.swing)
                 implementation(libs.appdirs)
             }
+        }
+
+        val wasmJsMain by getting {
+            dependsOn(desktopAndWasmJsMain)
         }
     }
 
@@ -260,6 +280,6 @@ afterEvaluate {
     }
 }
 
-//compose.experimental {
-//    web.application {}
-//}
+compose.experimental {
+    web.application {}
+}
