@@ -1,7 +1,7 @@
 from pathlib import Path
 from fontTools import subset
 
-subset_dest = "composeApp/src/wasmJsMain/composeResources/font"
+subset_dest = "composeApp/src/desktopAndWasmJsMain/composeResources/font"
 
 basic_extra_text = "".join(map(chr,range(0x00,0x7f)))  # 基本拉丁字母
 
@@ -43,8 +43,8 @@ for lang in res:
             font,
             "--text=" + text,
             "--no-layout-closure",
-            f"--output-file={subset_dest}/{font_name}.woff2",
-            "--flavor=woff2",
+            f"--output-file={subset_dest}/{font_name}",
+#             "--flavor=woff2",
         ]
 
         subset.main(args)
