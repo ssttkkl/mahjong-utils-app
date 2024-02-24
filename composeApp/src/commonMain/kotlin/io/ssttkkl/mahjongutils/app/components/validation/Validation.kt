@@ -40,3 +40,21 @@ fun ValidationField(
         modifier, content
     )
 }
+
+
+@Composable
+fun ValidationField(
+    errMsg: List<StringResource>,
+    modifier: Modifier = Modifier,
+    content: @Composable (isError: Boolean) -> Unit
+) {
+    ValidationField(
+        if (errMsg.isEmpty())
+            null
+        else
+            @Suppress("SimplifiableCallChain")
+            errMsg.map { stringResource(it) }
+                .joinToString("\n"),
+        modifier, content
+    )
+}

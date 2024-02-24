@@ -26,13 +26,13 @@ abstract class FormAndResultScreenModel<ARG, RES> : ScreenModel {
         }
     }
 
-    open suspend fun onCheck(): Boolean = true
+    open fun onCheck(): Boolean = true
 
     abstract suspend fun onCalc(): RES
 
     fun onSubmit() {
-        screenModelScope.launch(Dispatchers.Default) {
-            if (onCheck()) {
+        if (onCheck()) {
+            screenModelScope.launch(Dispatchers.Default) {
                 result.value = screenModelScope.async(Dispatchers.Default) {
                     onCalc()
                 }

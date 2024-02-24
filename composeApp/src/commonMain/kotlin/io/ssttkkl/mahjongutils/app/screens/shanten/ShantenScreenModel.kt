@@ -1,6 +1,7 @@
 package io.ssttkkl.mahjongutils.app.screens.shanten
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -18,44 +19,51 @@ import mahjongutils.composeapp.generated.resources.text_cannot_have_more_than_14
 import mahjongutils.composeapp.generated.resources.text_must_enter_tiles
 import mahjongutils.composeapp.generated.resources.text_tiles_must_not_be_divided_into_3
 import mahjongutils.models.Tile
-import mahjongutils.models.countAsCodeArray
+import mahjongutils.shanten.CommonShantenArgs
+import mahjongutils.shanten.CommonShantenArgsErrorInfo
+import mahjongutils.shanten.validate
 import org.jetbrains.compose.resources.StringResource
 
 class ShantenScreenModel : FormAndResultScreenModel<ShantenArgs, ShantenCalcResult>() {
     var tiles by mutableStateOf<List<Tile>>(emptyList())
     var shantenMode by mutableStateOf(ShantenMode.Union)
 
-    var tilesErrMsg by mutableStateOf<StringResource?>(null)
+    val tilesErrMsg = mutableStateListOf<StringResource>()
 
     override fun resetForm() {
         tiles = emptyList()
         shantenMode = ShantenMode.Union
-        tilesErrMsg = null
+        tilesErrMsg.clear()
     }
 
-    override suspend fun onCheck(): Boolean {
-        if (tiles.isEmpty()) {
-            tilesErrMsg = Res.string.text_must_enter_tiles
-            return false
+    override fun onCheck(): Boolean {
+        tilesErrMsg.clear()
+
+        val muArgs = CommonShantenArgs(tiles)
+        val errors = muArgs.validate()
+        for (it in errors) {
+            when (it) {
+                CommonShantenArgsErrorInfo.tilesIsEmpty -> {
+                    tilesErrMsg.add(Res.string.text_must_enter_tiles)
+                }
+
+                CommonShantenArgsErrorInfo.tooManyTiles -> {
+                    tilesErrMsg.add(Res.string.text_cannot_have_more_than_14_tiles)
+                }
+
+                CommonShantenArgsErrorInfo.tilesNumIllegal -> {
+                    tilesErrMsg.add(Res.string.text_tiles_must_not_be_divided_into_3)
+                }
+
+                CommonShantenArgsErrorInfo.anyTileMoreThan4 -> {
+                    tilesErrMsg.add(Res.string.text_any_tile_must_not_be_more_than_4)
+                }
+
+                CommonShantenArgsErrorInfo.tooManyFuro -> {}
+            }
         }
 
-        if (tiles.size > 14) {
-            tilesErrMsg = Res.string.text_cannot_have_more_than_14_tiles
-            return false
-        }
-
-        if (tiles.size % 3 == 0) {
-            tilesErrMsg = Res.string.text_tiles_must_not_be_divided_into_3
-            return false
-        }
-
-        if (tiles.countAsCodeArray().any { it > 4 }) {
-            tilesErrMsg = Res.string.text_any_tile_must_not_be_more_than_4
-            return false
-        }
-
-        tilesErrMsg = null
-        return true
+        return tilesErrMsg.isEmpty()
     }
 
     override suspend fun onCalc(): ShantenCalcResult {

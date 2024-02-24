@@ -21,12 +21,14 @@ import mahjongutils.composeapp.generated.resources.text_invalid_dora_count
 import mahjongutils.composeapp.generated.resources.text_invalid_furo
 import mahjongutils.composeapp.generated.resources.text_must_enter_agari
 import mahjongutils.composeapp.generated.resources.text_must_enter_tiles
+import mahjongutils.composeapp.generated.resources.text_too_many_furo
+import mahjongutils.hora.HoraArgsErrorInfo
 import mahjongutils.hora.HoraOptions
+import mahjongutils.hora.validate
 import mahjongutils.models.Furo
 import mahjongutils.models.Kan
 import mahjongutils.models.Tile
 import mahjongutils.models.Wind
-import mahjongutils.models.countAsCodeArray
 import mahjongutils.yaku.Yaku
 import mahjongutils.yaku.Yakus
 import org.jetbrains.compose.resources.StringResource
@@ -142,9 +144,10 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         }
     }
 
-    var tilesErrMsg by mutableStateOf<StringResource?>(null)
-    var agariErrMsg by mutableStateOf<StringResource?>(null)
-    var doraErrMsg by mutableStateOf<StringResource?>(null)
+    val tilesErrMsg = mutableStateListOf<StringResource>()
+    val furoErrMsg = mutableStateListOf<StringResource>()
+    val agariErrMsg = mutableStateListOf<StringResource>()
+    val doraErrMsg = mutableStateListOf<StringResource>()
 
     private var horaOptionsState = mutableStateOf(HoraOptions.Default)
     var horaOptions: HoraOptions
@@ -176,9 +179,10 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         roundWind = null
         extraYaku = emptySet()
 
-        tilesErrMsg = null
-        agariErrMsg = null
-        doraErrMsg = null
+        tilesErrMsg.clear()
+        furoErrMsg.clear()
+        agariErrMsg.clear()
+        doraErrMsg.clear()
     }
 
     private val conflictingYaku by derivedStateOf {
@@ -263,63 +267,77 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         allExtraYaku.filter { !it.second }.map { it.first }.toSet()
     }
 
-    override suspend fun onCheck(): Boolean {
-        var validTiles = true
-        var validAgari = true
-        var validDora = true
-        var validFuro = true
+    @Suppress("UNCHECKED_CAST")
+    override fun onCheck(): Boolean {
+        tilesErrMsg.clear()
+        furoErrMsg.clear()
+        agariErrMsg.clear()
+        doraErrMsg.clear()
+
+        // 事前校验
+        val agari = agari ?: autoDetectedAgari
+        if (agari == null) {
+            agariErrMsg.add(Res.string.text_must_enter_agari)
+        }
 
         val dora = if (dora.isEmpty()) 0 else dora.toIntOrNull()
         if (dora == null) {
-            doraErrMsg = Res.string.text_invalid_dora_count
-            validDora = false
+            doraErrMsg.add(Res.string.text_invalid_dora_count)
         }
 
-        if (tiles.isEmpty()) {
-            tilesErrMsg = Res.string.text_must_enter_tiles
-            validTiles = false
-        }
-
-        val curTilesCount = tiles.size + furo.size * 3
-        if (curTilesCount != 14 && curTilesCount != 13) {
-            tilesErrMsg = Res.string.text_hora_hand_tiles_not_enough
-            validTiles = false
-        }
-
-        if ((tiles + furo.flatMap { it.tiles }).countAsCodeArray().any { it > 4 }) {
-            tilesErrMsg = Res.string.text_any_tile_must_not_be_more_than_4
-            validTiles = false
-        }
-
-        val agari = agari ?: autoDetectedAgari
-        if (agari == null) {
-            agariErrMsg = Res.string.text_must_enter_agari
-            validAgari = false
-        } else if (curTilesCount == 14 && agari !in tiles) {
-            agariErrMsg = Res.string.text_agari_not_in_hand
-            validAgari = false
-        }
-
-        furo.forEach {
+        var validFuro = true
+        val parsedFuro = furo.map {
             try {
-                it.toFuro()
+                val fr = it.toFuro()
                 it.errMsg = null
+                fr
             } catch (e: IllegalArgumentException) {
                 it.errMsg = Res.string.text_invalid_furo
+                validFuro = false
+                null
             }
         }
-        validFuro = furo.all { it.errMsg == null }
 
-        if (validTiles) {
-            tilesErrMsg = null
+        // 调库校验
+        if (tilesErrMsg.isEmpty() && furoErrMsg.isEmpty() && agariErrMsg.isEmpty() && validFuro) {
+            val muArgs = mahjongutils.hora.HoraArgs(
+                tiles,
+                parsedFuro as List<Furo>,
+                agari!!,
+                tsumo,
+                dora ?: 0,
+                selfWind,
+                roundWind,
+                extraYaku
+            )
+            val errors = muArgs.validate()
+            for (it in errors) {
+                when (it) {
+                    HoraArgsErrorInfo.tilesIsEmpty -> {
+                        tilesErrMsg.add(Res.string.text_must_enter_tiles)
+                    }
+
+                    HoraArgsErrorInfo.tooManyFuro -> {
+                        furoErrMsg.add(Res.string.text_too_many_furo)
+                    }
+
+                    HoraArgsErrorInfo.anyTileMoreThan4 -> {
+                        tilesErrMsg.add(Res.string.text_any_tile_must_not_be_more_than_4)
+                    }
+
+                    HoraArgsErrorInfo.tilesNumIllegal -> {
+                        tilesErrMsg.add(Res.string.text_hora_hand_tiles_not_enough)
+                    }
+
+                    HoraArgsErrorInfo.agariNotInTiles -> {
+                        agariErrMsg.add(Res.string.text_agari_not_in_hand)
+                    }
+
+                    else -> {}
+                }
+            }
         }
-        if (validAgari) {
-            agariErrMsg = null
-        }
-        if (validDora) {
-            doraErrMsg = null
-        }
-        return validTiles && validAgari && validDora && validFuro
+        return tilesErrMsg.isEmpty() && furoErrMsg.isEmpty() && agariErrMsg.isEmpty() && doraErrMsg.isEmpty() && validFuro
     }
 
     override suspend fun onCalc(): HoraCalcResult {

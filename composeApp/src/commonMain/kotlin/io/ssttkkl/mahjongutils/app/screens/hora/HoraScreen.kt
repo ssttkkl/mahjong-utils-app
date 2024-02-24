@@ -43,6 +43,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -157,6 +158,7 @@ object HoraScreen :
                 ) {
                     VerticalSpacerBetweenPanels()
 
+                    // 手牌
                     TopPanel {
                         ValidationField(model.tilesErrMsg) { isError ->
                             TileField(
@@ -176,6 +178,7 @@ object HoraScreen :
                             Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            // 所和的牌
                             ValidationField(model.agariErrMsg, Modifier.weight(1f)) { isError ->
                                 TileField(
                                     value = model.agari?.let { listOf(it) } ?: emptyList(),
@@ -195,6 +198,7 @@ object HoraScreen :
                                 )
                             }
 
+                            // 自摸/荣和
                             SingleChoiceSegmentedButtonGroup(
                                 tsumoOptions(), model.tsumo, { model.tsumo = it },
                                 Modifier.padding(start = 16.dp)
@@ -204,52 +208,63 @@ object HoraScreen :
 
                     VerticalSpacerBetweenPanels()
 
-                    TopPanel(
-                        { Text(stringResource(Res.string.label_furo)) },
-                        noContentPadding = true
-                    ) {
-                        Column(Modifier.fillMaxWidth()) {
-                            model.furo.forEachIndexed { index, furoModel ->
-                                ListItem(
-                                    {
-                                        ValidationField(furoModel.errMsg) { isError ->
-                                            TileField(
-                                                furoModel.tiles,
-                                                { furoModel.tiles = it },
-                                                Modifier.fillMaxWidth(),
-                                                isError = isError
-                                            )
-                                        }
-                                    },
-                                    leadingContent = {
-                                        Icon(Icons.Filled.Close, "", Modifier.clickable {
-                                            model.furo.removeAt(index)
-                                        })
-                                    },
-                                    trailingContent = {
-                                        AnimatedVisibility(
-                                            furoModel.isKan,
-                                            enter = fadeIn() + expandHorizontally(),
-                                            exit = fadeOut() + shrinkHorizontally(),
-                                        ) {
-                                            ComboBox(
-                                                furoModel.ankan,
-                                                { furoModel.ankan = it },
-                                                ankanOptions(),
-                                                Modifier.width(150.dp)
-                                            )
-                                        }
-                                    },
+                    // 副露
+                    ValidationField(model.furoErrMsg) { isError ->
+                        TopPanel(
+                            {
+                                Text(
+                                    stringResource(Res.string.label_furo),
+                                    color = if (isError)
+                                        MaterialTheme.colorScheme.error
+                                    else
+                                        Color.Unspecified
                                 )
-                            }
+                            },
+                            noContentPadding = true
+                        ) {
+                            Column(Modifier.fillMaxWidth()) {
+                                model.furo.forEachIndexed { index, furoModel ->
+                                    ListItem(
+                                        {
+                                            ValidationField(furoModel.errMsg) { isError ->
+                                                TileField(
+                                                    furoModel.tiles,
+                                                    { furoModel.tiles = it },
+                                                    Modifier.fillMaxWidth(),
+                                                    isError = isError
+                                                )
+                                            }
+                                        },
+                                        leadingContent = {
+                                            Icon(Icons.Filled.Close, "", Modifier.clickable {
+                                                model.furo.removeAt(index)
+                                            })
+                                        },
+                                        trailingContent = {
+                                            AnimatedVisibility(
+                                                furoModel.isKan,
+                                                enter = fadeIn() + expandHorizontally(),
+                                                exit = fadeOut() + shrinkHorizontally(),
+                                            ) {
+                                                ComboBox(
+                                                    furoModel.ankan,
+                                                    { furoModel.ankan = it },
+                                                    ankanOptions(),
+                                                    Modifier.width(150.dp)
+                                                )
+                                            }
+                                        },
+                                    )
+                                }
 
-                            OutlinedButton(
-                                {
-                                    model.furo.add(FuroModel())
-                                },
-                                Modifier.fillMaxWidth().windowHorizontalMargin()
-                            ) {
-                                Icon(Icons.Filled.Add, "")
+                                OutlinedButton(
+                                    {
+                                        model.furo.add(FuroModel())
+                                    },
+                                    Modifier.fillMaxWidth().windowHorizontalMargin()
+                                ) {
+                                    Icon(Icons.Filled.Add, "")
+                                }
                             }
                         }
                     }
@@ -261,6 +276,7 @@ object HoraScreen :
                         noContentPadding = true
                     ) {
                         Row {
+                            // 自风
                             TopPanel(modifier = Modifier.weight(1f)) {
                                 ComboBox(
                                     model.selfWind,
@@ -270,6 +286,7 @@ object HoraScreen :
                                     label = { Text(stringResource(Res.string.label_self_wind)) }
                                 )
                             }
+                            // 场风
                             TopPanel(modifier = Modifier.weight(1f)) {
                                 ComboBox(
                                     model.roundWind, { model.roundWind = it }, windComboOptions(),
@@ -282,6 +299,7 @@ object HoraScreen :
                         VerticalSpacerBetweenPanels()
 
                         Row {
+                            // dora
                             TopPanel(modifier = Modifier.weight(1f)) {
                                 ValidationField(model.doraErrMsg) { isError ->
                                     OutlinedTextField(
@@ -301,6 +319,7 @@ object HoraScreen :
                                 }
                             }
 
+                            // 额外役种
                             TopPanel(modifier = Modifier.weight(1f)) {
                                 val options = yakuComboOptions(model.allExtraYaku)
 
@@ -334,6 +353,7 @@ object HoraScreen :
 
                     VerticalSpacerBetweenPanels()
 
+                    // 选项对话框
                     var optionsDialogVisible by rememberSaveable { mutableStateOf(false) }
                     if (optionsDialogVisible) {
                         HoraOptionsDialog(

@@ -191,14 +191,15 @@
     <string name="text_tiles_must_not_be_divided_into_3">手牌の数は３n＋１または３n＋２を満足するべきです。</string>
     <string name="text_any_tile_must_not_be_more_than_4">同じ牌は４枚以下（４枚含む）にするべきです。</string>
     <string name="text_tiles_are_not_without_got">手牌の数は４、７、１０、１３枚にしてください。</string>
-    <string name="text_hora_hand_tiles_not_enough">牌の数は少ないので和了ができません。</string>
+    <string name="text_hora_hand_tiles_not_enough">牌の数は和了ができません。</string>
     <string name="text_invalid_dora_count">有効な数ではありません。</string>
     <string name="text_invalid_furo">有効な副露ではありません。</string>
+    <string name="text_too_many_furo">副露の数が多い過ぎます。</string>
     <string name="text_must_enter_agari">アガリ牌を入力してください。</string>
     <string name="text_agari_not_in_hand">手牌の中にはアガリ牌が見つかりません。</string>
-    <string name="text_must_enter_han">Input the han please.</string>
-    <string name="text_invalid_han_number">The han you inputted is invalid.</string>
-    <string name="text_must_enter_hu">Input the hu please.</string>
-    <string name="text_invalid_hu_number">The hu you inputted is invalid.</string>
-    <string name="text_hu_exceeded_maximum">The hu exceeds the maximum value of 140.</string>
+    <string name="text_must_enter_han">飜数を入力してください。</string>
+    <string name="text_invalid_han_number">有効な飜数ではありません。</string>
+    <string name="text_must_enter_hu">符数を入力してください。</string>
+    <string name="text_invalid_hu_number">有効な符数ではありません。</string>
+    <string name="text_hu_exceeded_maximum">符数は140以下（140枚含む）にするべきです。</string>
 </resources>

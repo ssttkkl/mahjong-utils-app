@@ -1,6 +1,7 @@
 package io.ssttkkl.mahjongutils.app.screens.furoshanten
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -18,7 +19,8 @@ import mahjongutils.composeapp.generated.resources.text_must_enter_chance_tile
 import mahjongutils.composeapp.generated.resources.text_must_enter_tiles
 import mahjongutils.composeapp.generated.resources.text_tiles_are_not_without_got
 import mahjongutils.models.Tile
-import mahjongutils.models.countAsCodeArray
+import mahjongutils.shanten.FuroChanceShantenArgsErrorInfo
+import mahjongutils.shanten.validate
 import org.jetbrains.compose.resources.StringResource
 
 class FuroShantenScreenModel :
@@ -28,54 +30,57 @@ class FuroShantenScreenModel :
     var chanceTile by mutableStateOf<Tile?>(null)
     var allowChi by mutableStateOf(true)
 
-    var tilesErrMsg by mutableStateOf<StringResource?>(null)
-    var chanceTileErrMsg by mutableStateOf<StringResource?>(null)
+    val tilesErrMsg = mutableStateListOf<StringResource>()
+    val chanceTileErrMsg = mutableStateListOf<StringResource>()
 
     override fun resetForm() {
         tiles = emptyList()
         chanceTile = null
         allowChi = true
 
-        tilesErrMsg = null
-        chanceTileErrMsg = null
+        tilesErrMsg.clear()
+        chanceTileErrMsg.clear()
     }
 
-    override suspend fun onCheck(): Boolean {
-        var validTiles = true
-        var validChanceTile = true
+    override fun onCheck(): Boolean {
+        tilesErrMsg.clear()
+        chanceTileErrMsg.clear()
 
-        if (tiles.isEmpty()) {
-            tilesErrMsg = Res.string.text_must_enter_tiles
-            validTiles = false
-        }
-
+        // 事前校验
         if (chanceTile == null) {
-            chanceTileErrMsg = Res.string.text_must_enter_chance_tile
-            validChanceTile = false
+            chanceTileErrMsg.add(Res.string.text_must_enter_chance_tile)
         }
 
-        if (validTiles && tiles.size > 14) {
-            tilesErrMsg = Res.string.text_cannot_have_more_than_14_tiles
-            validTiles = false
+        // 调库校验
+        if (tilesErrMsg.isEmpty() && chanceTileErrMsg.isEmpty()) {
+            val muArgs = mahjongutils.shanten.FuroChanceShantenArgs(
+                tiles,
+                chanceTile!!,
+                allowChi
+            )
+            val errors = muArgs.validate()
+            for (it in errors) {
+                when (it) {
+                    FuroChanceShantenArgsErrorInfo.tilesIsEmpty -> {
+                        tilesErrMsg.add(Res.string.text_must_enter_tiles)
+                    }
+
+                    FuroChanceShantenArgsErrorInfo.tooManyTiles -> {
+                        tilesErrMsg.add(Res.string.text_cannot_have_more_than_14_tiles)
+                    }
+
+                    FuroChanceShantenArgsErrorInfo.tilesNumIllegal -> {
+                        tilesErrMsg.add(Res.string.text_tiles_are_not_without_got)
+                    }
+
+                    FuroChanceShantenArgsErrorInfo.anyTileMoreThan4 -> {
+                        tilesErrMsg.add(Res.string.text_any_tile_must_not_be_more_than_4)
+                    }
+                }
+            }
         }
 
-        if (validTiles && tiles.size !in setOf(4, 7, 10, 13)) {
-            tilesErrMsg = Res.string.text_tiles_are_not_without_got
-            validTiles = false
-        }
-
-        if (validTiles && tiles.countAsCodeArray().any { it > 4 }) {
-            tilesErrMsg = Res.string.text_any_tile_must_not_be_more_than_4
-            validTiles = false
-        }
-
-        if (validTiles) {
-            tilesErrMsg = null
-        }
-        if (validChanceTile) {
-            chanceTileErrMsg = null
-        }
-        return validTiles && validChanceTile
+        return tilesErrMsg.isEmpty() && chanceTileErrMsg.isEmpty()
     }
 
     override suspend fun onCalc(): FuroChanceShantenCalcResult {
