@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.components.basic.VerticalDivider
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize

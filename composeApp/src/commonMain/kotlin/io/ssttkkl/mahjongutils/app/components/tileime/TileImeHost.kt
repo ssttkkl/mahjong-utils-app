@@ -5,162 +5,100 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.launch
-import mahjongutils.models.Tile
-import kotlin.time.measureTime
+import androidx.compose.ui.unit.dp
+import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
+import io.ssttkkl.mahjongutils.app.components.feather.FloatingDraggableContainer
+import io.ssttkkl.mahjongutils.app.components.feather.FloatingDraggableItem
+import io.ssttkkl.mahjongutils.app.components.feather.FloatingDraggableState
 
-class TileImeHostState(
-    private val coroutineScope: CoroutineScope
+@Composable
+private fun TileImeHostOnBottom(
+    state: TileImeHostState,
+    content: @Composable () -> Unit
 ) {
-    companion object {
-        private val logger = LoggerFactory.getLogger("TileImeHostState")
-    }
+    Column {
+        Row(Modifier.weight(1f)) {
+            content()
+        }
 
-    enum class DeleteTile {
-        Backspace, Delete
-    }
-
-    var consumer by mutableStateOf(0)
-    val pendingTile = MutableSharedFlow<List<Tile>>()
-    val deleteTile = MutableSharedFlow<DeleteTile>()
-
-    var visible by mutableStateOf(false)
-
-    inner class TileImeConsumer {
-        var consuming by mutableStateOf(false)
-            private set
-
-        private var collectPendingTileJob: Job? = null
-        private var collectDeleteTileJob: Job? = null
-
-        fun consume(
-            handlePendingTile: suspend (List<Tile>) -> Unit,
-            handleDeleteTile: suspend (DeleteTile) -> Unit
+        AnimatedVisibility(
+            state.visible,
+            enter = slideInVertically { it } + fadeIn(),
+            exit = slideOutVertically { it } + fadeOut()
         ) {
-            visible = true
+            val collapsed = state.specifiedCollapsed ?: state.defaultCollapsed
 
-            if (!consuming) {
-                consumer += 1
-                consuming = true
+            TileIme(
+                pendingText = state.pendingText,
+                collapsed = collapsed,
+                modifier = Modifier.fillMaxWidth(),
+                onCommitTile = { state.emitTile(it) },
+                onBackspace = { state.emitBackspaceTile() },
+                onChangeCollapsed = { state.specifiedCollapsed = it }
+            )
+        }
+    }
+}
 
-                collectPendingTileJob = coroutineScope.launch {
-                    pendingTile.collect { tile ->
-                        handlePendingTile(tile)
-                    }
-                }
+@Composable
+private fun TileImeHostFloating(
+    state: TileImeHostState,
+    content: @Composable () -> Unit
+) {
+    val floatingDraggableState = remember { FloatingDraggableState() }
+    FloatingDraggableContainer(floatingDraggableState) {
+        content()
 
-                collectDeleteTileJob = coroutineScope.launch {
-                    deleteTile.collect {
-                        handleDeleteTile(it)
-                    }
-                }
+        FloatingDraggableItem {
+            AnimatedVisibility(
+                state.visible,
+                enter = slideInVertically { it } + fadeIn(),
+                exit = slideOutVertically { it } + fadeOut()
+            ) {
+                val collapsed = state.specifiedCollapsed ?: state.defaultCollapsed
 
-                logger.debug("start consuming")
+                TileIme(
+                    pendingText = state.pendingText,
+                    collapsed = collapsed,
+                    modifier = Modifier.widthIn(0.dp, 500.dp)
+                        .background(MaterialTheme.colorScheme.background),
+                    headerContainer = {
+                        draggableArea {
+                            if (state.pendingText.isEmpty()) {
+                                Icon(
+                                    Icons.Outlined.Menu,
+                                    "",
+                                    Modifier.align(Alignment.Center)
+                                )
+                            }
+                            it()
+                        }
+                    },
+                    onCommitTile = { state.emitTile(it) },
+                    onBackspace = { state.emitBackspaceTile() },
+                    onChangeCollapsed = { state.specifiedCollapsed = it }
+                )
             }
         }
-
-        fun release() {
-            if (consuming) {
-                consumer -= 1
-                consuming = false
-
-                collectPendingTileJob?.cancel()
-                collectDeleteTileJob?.cancel()
-
-                if (consumer == 0) {
-                    visible = false
-                }
-
-                logger.debug("stop consuming")
-            }
-        }
     }
-
-    /**
-     * 发送一个退格麻将牌指令（对应Backspace键）
-     */
-    fun emitBackspaceTile() {
-        coroutineScope.launch {
-            deleteTile.emit(DeleteTile.Backspace)
-        }
-    }
-
-    /**
-     * 发送一个删除麻将牌指令（对应Delete键）
-     */
-    fun emitDeleteTile() {
-        coroutineScope.launch {
-            deleteTile.emit(DeleteTile.Delete)
-        }
-    }
-
-    /**
-     * 发送一个添加麻将牌指令
-     */
-    fun emitTile(tile: Tile) {
-        coroutineScope.launch {
-            pendingTile.emit(listOf(tile))
-        }
-    }
-
-    /**
-     * 发送一个添加麻将牌指令
-     */
-    fun emitTile(tiles: List<Tile>) {
-        coroutineScope.launch {
-            pendingTile.emit(tiles)
-        }
-    }
-
-    /**
-     * 用户通过键盘输入的文本，待解析为麻将牌
-     */
-    var pendingText: String by mutableStateOf("")
-        private set
-
-    private fun tryParsePendingText() {
-        val tiles = try {
-            Tile.parseTiles(pendingText)
-        } catch (e: IllegalArgumentException) {
-            null
-        }
-
-        if (tiles != null) {
-            pendingText = ""
-            emitTile(tiles)
-        }
-    }
-
-    fun appendPendingText(str: String) {
-        pendingText += str
-        tryParsePendingText()
-    }
-
-    fun emitBackspacePendingText(count: Int) {
-        if (pendingText.length < count) {
-            pendingText = ""
-        } else {
-            pendingText = pendingText.dropLast(count)
-            tryParsePendingText()
-        }
-    }
-
 }
 
 @Composable
@@ -170,35 +108,15 @@ fun TileImeHost(
     val scope = rememberCoroutineScope()
     val state = remember { TileImeHostState(scope) }
 
-    val logger = remember { LoggerFactory.getLogger("TileImeHost") }
-
-    LaunchedEffect(state.visible) {
-        logger.debug("visible: ${state.visible}")
-    }
-
     CompositionLocalProvider(
         LocalTileImeHostState provides state,
     ) {
-        Column {
-            Row(Modifier.weight(1f)) {
-                content()
-            }
-
-            AnimatedVisibility(
-                state.visible,
-                enter = slideInVertically { it } + fadeIn(),
-                exit = slideOutVertically { it } + fadeOut()
-            ) {
-                val tileImeRecompositionTime = measureTime {
-                    TileIme(
-                        state.pendingText,
-                        { state.emitTile(it) },
-                        { state.emitBackspaceTile() },
-                        { state.visible = false }
-                    )
-                }
-                logger.debug("tileImeRecompositionTime: $tileImeRecompositionTime")
-            }
+        if (LocalAppState.current.windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
+            && LocalAppState.current.windowSizeClass.heightSizeClass >= WindowHeightSizeClass.Medium
+        ) {
+            TileImeHostFloating(state, content)
+        } else {
+            TileImeHostOnBottom(state, content)
         }
     }
 }
