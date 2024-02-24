@@ -4,11 +4,20 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
@@ -101,13 +110,14 @@ private val tileImeMatrix = listOf(
 @Composable
 fun TileIme(
     pendingText: String,
+    collapsed: Boolean,
     onCommitTile: (Tile) -> Unit,
     onBackspace: () -> Unit,
-    onCollapse: () -> Unit,
+    onChangeCollapsed: (Boolean) -> Unit,
 ) {
     val currentOnCommitTile by rememberUpdatedState(onCommitTile)
     val currentOnBackspace by rememberUpdatedState(onBackspace)
-    val currentOnCollapse by rememberUpdatedState(onCollapse)
+    val currentOnChangeCollapsed by rememberUpdatedState(onChangeCollapsed)
     val currentOnCommit = remember {
         { it: TileImeKey<*> ->
             when (it) {
@@ -123,12 +133,41 @@ fun TileIme(
     }
 
     BackHandler {
-        currentOnCollapse()
+        currentOnChangeCollapsed(true)
     }
-    KeyboardScreen(
-        tileImeMatrix,
-        pendingText,
-        currentOnCollapse,
-        currentOnCommit
-    )
+
+    Column(
+        Modifier.fillMaxWidth()
+            .background(Color.LightGray.copy(alpha = 0.4f)),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            if (!collapsed)
+                Icons.Filled.KeyboardArrowDown
+            else
+                Icons.Filled.KeyboardArrowUp,
+            "",
+            Modifier.clickableButNotFocusable(remember { MutableInteractionSource() }) {
+                onChangeCollapsed(!collapsed)
+            }.fillMaxWidth()
+                .padding(4.dp)
+                .height(24.dp),
+            alignment = Alignment.Center,
+        )
+
+        HorizontalDivider(Modifier)
+
+        if (pendingText.isNotEmpty()) {
+            Text(pendingText, Modifier.padding(vertical = 8.dp))
+        }
+
+        if (!collapsed) {
+            Spacer(Modifier.height(8.dp))
+
+            KeyboardScreen(
+                tileImeMatrix,
+                currentOnCommit
+            )
+        }
+    }
 }

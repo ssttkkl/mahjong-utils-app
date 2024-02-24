@@ -6,7 +6,6 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -27,6 +26,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.PointerType
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.ssttkkl.mahjongutils.app.components.tapPress
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
+import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import mahjongutils.models.Tile
 
 private fun detectTapPosition(rects: List<Rect>, offset: Offset): Int {
@@ -71,6 +72,25 @@ private fun Modifier.onTapChangeCursor(
         }
     }
 }
+
+// 点击时更改键盘的默认折叠
+private fun Modifier.onPressDetectTileImeDefaultCollapsed(
+    state: TileImeHostState,
+): Modifier {
+    return pointerInput(Unit) {
+        awaitEachGesture {
+            val e = awaitFirstDown()
+            // 如果是鼠标点击，默认折叠。否则默认展开
+            state.defaultCollapsed = e.type == PointerType.Mouse
+            // 如果是触摸点击，强制展开键盘
+            if (e.type == PointerType.Touch) {
+                state.specifiedCollapsed = false
+            }
+            waitForUpOrCancellation()
+        }
+    }
+}
+
 
 // 绘制指针
 private fun Modifier.drawCursor(
@@ -161,7 +181,6 @@ private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState):
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal actual fun CoreTileField(
     value: List<Tile>,
@@ -188,6 +207,7 @@ internal actual fun CoreTileField(
         .onTapChangeCursor(rectsState) {
             state.selection = TextRange(it)
         }
+        .onPressDetectTileImeDefaultCollapsed(LocalTileImeHostState.current)
         .let {
             if (focused)
                 it.drawCursor(

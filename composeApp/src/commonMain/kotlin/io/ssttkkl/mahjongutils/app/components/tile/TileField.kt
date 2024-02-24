@@ -2,7 +2,6 @@ package io.ssttkkl.mahjongutils.app.components.tile
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -129,14 +128,7 @@ fun BaseTileField(
         }
     }
 
-    // 用户收起键盘后再点击输入框，重新弹出
     val focused by interactionSource.collectIsFocusedAsState()
-    val pressed by interactionSource.collectIsPressedAsState()
-    LaunchedEffect(pressed && consumer.consuming, tileImeHostState) {
-        if (pressed && consumer.consuming) {
-            tileImeHostState.visible = true
-        }
-    }
 
     // 绑定键盘到该输入框
     DisposableEffect(enabled && focused, consumer) {

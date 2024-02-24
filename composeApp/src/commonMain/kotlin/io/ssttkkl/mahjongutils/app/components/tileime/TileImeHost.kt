@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +41,17 @@ class TileImeHostState(
     val pendingTile = MutableSharedFlow<List<Tile>>()
     val deleteTile = MutableSharedFlow<DeleteTile>()
 
-    var visible by mutableStateOf(false)
+    val visible by derivedStateOf {
+        consumer != 0
+    }
+
+    // 通过检测鼠标/触摸来判断默认是否展开软键盘
+    // 鼠标：默认不展开
+    // 触摸：默认展开
+    var defaultCollapsed by mutableStateOf(false)
+
+    // 用户如果点击过折叠按钮，则遵循用户的意图
+    var specifiedCollapsed by mutableStateOf<Boolean?>(null)
 
     inner class TileImeConsumer {
         var consuming by mutableStateOf(false)
@@ -53,8 +64,6 @@ class TileImeHostState(
             handlePendingTile: suspend (List<Tile>) -> Unit,
             handleDeleteTile: suspend (DeleteTile) -> Unit
         ) {
-            visible = true
-
             if (!consuming) {
                 consumer += 1
                 consuming = true
@@ -82,10 +91,6 @@ class TileImeHostState(
 
                 collectPendingTileJob?.cancel()
                 collectDeleteTileJob?.cancel()
-
-                if (consumer == 0) {
-                    visible = false
-                }
 
                 logger.debug("stop consuming")
             }
@@ -190,11 +195,14 @@ fun TileImeHost(
                 exit = slideOutVertically { it } + fadeOut()
             ) {
                 val tileImeRecompositionTime = measureTime {
+                    val collapsed = state.specifiedCollapsed ?: state.defaultCollapsed
+
                     TileIme(
                         state.pendingText,
+                        collapsed,
                         { state.emitTile(it) },
                         { state.emitBackspaceTile() },
-                        { state.visible = false }
+                        { state.specifiedCollapsed = it }
                     )
                 }
                 logger.debug("tileImeRecompositionTime: $tileImeRecompositionTime")
