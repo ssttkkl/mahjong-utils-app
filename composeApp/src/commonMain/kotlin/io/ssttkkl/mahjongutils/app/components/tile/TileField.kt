@@ -12,14 +12,21 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
+import io.ssttkkl.mahjongutils.app.components.feather.LocalFloatingDraggableState
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
@@ -102,7 +109,7 @@ fun BaseTileField(
     enabled: Boolean = true,
     fontSize: TextUnit = TileTextSize.Default.bodyLarge,
     isError: Boolean = false,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    interactionSource: MutableInteractionSource,
 ) {
     val state = remember(interactionSource) {
         CoreTileFieldState(interactionSource)
@@ -128,9 +135,8 @@ fun BaseTileField(
         }
     }
 
-    val focused by interactionSource.collectIsFocusedAsState()
-
     // 绑定键盘到该输入框
+    val focused by interactionSource.collectIsFocusedAsState()
     DisposableEffect(enabled && focused, consumer) {
         if (enabled && focused) {
             consumer.consume(state, currentValueState, currentOnValueChangeState)
@@ -144,12 +150,38 @@ fun BaseTileField(
         }
     }
 
+    // 设置键盘浮窗的位置
+    val draggableState = LocalFloatingDraggableState.current
+    var layoutCoordinates: LayoutCoordinates? by remember { mutableStateOf(null) }
+    var wasOffsetSet by remember { mutableStateOf(false) }
+    LaunchedEffect(focused, layoutCoordinates, draggableState, wasOffsetSet) {
+        if (focused && !wasOffsetSet
+            && layoutCoordinates != null
+            && draggableState?.containerLayoutCoordinates != null
+        ) {
+            val fieldBounds = layoutCoordinates!!.boundsInWindow()
+            val containerBounds = draggableState.containerLayoutCoordinates!!.boundsInWindow()
+            draggableState.defaultOffset = IntOffset(
+                (fieldBounds.left - containerBounds.left).toInt(),
+                (fieldBounds.bottom - containerBounds.top).toInt(),
+            )
+            wasOffsetSet = true
+        }
+    }
+    LaunchedEffect(focused) {
+        if (!focused) {
+            wasOffsetSet = false
+        }
+    }
+
     val cursorColor: Color = MaterialTheme.colorScheme.primary
     val errorCursorColor: Color = MaterialTheme.colorScheme.error
 
     CoreTileField(
         value = value,
-        modifier = modifier,
+        modifier = modifier.onGloballyPositioned {
+            layoutCoordinates = it
+        },
         state = state,
         cursorColor = if (isError) errorCursorColor else cursorColor,
         fontSizeInSp = if (fontSize.isSp)

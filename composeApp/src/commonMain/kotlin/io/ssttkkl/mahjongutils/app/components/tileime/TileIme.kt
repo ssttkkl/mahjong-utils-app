@@ -5,17 +5,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -111,6 +108,8 @@ private val tileImeMatrix = listOf(
 fun TileIme(
     pendingText: String,
     collapsed: Boolean,
+    modifier: Modifier = Modifier,
+    headerContainer: @Composable (@Composable () -> Unit) -> Unit = { it() },
     onCommitTile: (Tile) -> Unit,
     onBackspace: () -> Unit,
     onChangeCollapsed: (Boolean) -> Unit,
@@ -137,33 +136,37 @@ fun TileIme(
     }
 
     Column(
-        Modifier.fillMaxWidth()
+        modifier
             .background(Color.LightGray.copy(alpha = 0.4f)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            if (!collapsed)
-                Icons.Filled.KeyboardArrowDown
-            else
-                Icons.Filled.KeyboardArrowUp,
-            "",
-            Modifier.clickableButNotFocusable(remember { MutableInteractionSource() }) {
-                onChangeCollapsed(!collapsed)
-            }.fillMaxWidth()
-                .padding(4.dp)
-                .height(24.dp),
-            alignment = Alignment.Center,
-        )
+        headerContainer {
+            Box(Modifier.fillMaxWidth()) {
+                Text(
+                    pendingText,
+                    Modifier.align(Alignment.Center)
+                )
 
-        HorizontalDivider(Modifier)
-
-        if (pendingText.isNotEmpty()) {
-            Text(pendingText, Modifier.padding(vertical = 8.dp))
+                Image(
+                    if (!collapsed)
+                        Icons.Filled.KeyboardArrowDown
+                    else
+                        Icons.Filled.KeyboardArrowUp,
+                    "",
+                    Modifier
+                        .padding(start = 8.dp)
+                        .clickableButNotFocusable(remember { MutableInteractionSource() }) {
+                            onChangeCollapsed(!collapsed)
+                        }
+                        .padding(4.dp)
+                        .size(24.dp, 24.dp)
+                        .align(Alignment.CenterStart),
+                    alignment = Alignment.Center,
+                )
+            }
         }
 
         if (!collapsed) {
-            Spacer(Modifier.height(8.dp))
-
             KeyboardScreen(
                 tileImeMatrix,
                 currentOnCommit
