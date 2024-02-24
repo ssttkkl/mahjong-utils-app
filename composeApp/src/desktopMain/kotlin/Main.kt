@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import io.ssttkkl.mahjongutils.app.App
+import io.ssttkkl.mahjongutils.app.getAppTypography
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.app_name
 import mahjongutils.composeapp.generated.resources.icon_app
@@ -18,12 +19,12 @@ fun main() = application {
         title = stringResource(Res.string.app_name),
         icon = painterResource(Res.drawable.icon_app)
     ) {
-        App()
+        App(typography = getAppTypography())
     }
 }
 
 @Preview
 @Composable
 fun AppDesktopPreview() {
-    App()
+    App(typography = getAppTypography())
 }
