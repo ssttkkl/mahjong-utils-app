@@ -19,11 +19,8 @@ data class FuroChanceShantenArgs(
     }
 
     companion object {
-        private const val DATASTORE_FILENAME = "furoChanceShanten.json"
-
-        val history: HistoryDataStore<FuroChanceShantenArgs> by lazy {
-            HistoryDataStore(typeOf<FuroChanceShantenArgs>()) { it / DATASTORE_FILENAME }
-        }
+        val history: HistoryDataStore<FuroChanceShantenArgs> =
+            HistoryDataStore("furoChanceShanten", typeOf<FuroChanceShantenArgs>())
     }
 }
 

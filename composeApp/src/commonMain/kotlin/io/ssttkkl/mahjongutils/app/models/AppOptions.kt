@@ -1,7 +1,5 @@
 package io.ssttkkl.mahjongutils.app.models
 
-import io.ssttkkl.mahjongutils.app.utils.FileUtils
-import io.ssttkkl.mahjongutils.app.utils.createDatastore
 import kotlinx.serialization.Serializable
 import mahjongutils.hanhu.HanHuOptions
 import mahjongutils.hora.HoraOptions
@@ -12,9 +10,10 @@ data class AppOptions(
     val hanHuOptions: HanHuOptions = HanHuOptions.Default
 ) {
     companion object {
-        val datastore = createDatastore(
+        val datastore = createDataStore(
+            "app_options",
+            null,
             AppOptions(),
-            producePath = { FileUtils.sandboxPath / "app_options.json" }
         )
     }
 }

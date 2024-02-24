@@ -1,20 +1,17 @@
 package io.ssttkkl.mahjongutils.app.models.base
 
-import androidx.datastore.core.DataStore
-import io.ssttkkl.mahjongutils.app.utils.FileUtils
-import io.ssttkkl.mahjongutils.app.utils.createDatastore
-import io.ssttkkl.mahjongutils.app.utils.historyPath
+import io.ssttkkl.mahjongutils.app.models.DataStore
+import io.ssttkkl.mahjongutils.app.models.createDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
-import okio.Path
 import kotlin.reflect.KType
 
 class HistoryDataStore<T>(
+    val identifier: String,
     type: KType,
     private val maxItem: Int = DEFAULT_MAX_ITEM,
-    producePath: (Path) -> Path
 ) {
     companion object {
         const val DEFAULT_MAX_ITEM = 100
@@ -27,12 +24,12 @@ class HistoryDataStore<T>(
         val historySerializer = serializer(History::class, listOf(tSerializer), false)
         val listSerializer = serializer(List::class, listOf(historySerializer), false)
 
-        createDatastore(
+        createDataStore(
+            identifier,
+            "history",
             emptyList(),
             listSerializer as KSerializer<List<History<T>>>
-        ) {
-            producePath(FileUtils.historyPath)
-        }
+        )
     }
 
     suspend fun insert(args: T) {

@@ -4,8 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.screenModelScope
-import dev.icerock.moko.resources.StringResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenCalcResult
@@ -13,8 +11,15 @@ import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreenModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
+import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.text_any_tile_must_not_be_more_than_4
+import mahjongutils.composeapp.generated.resources.text_cannot_have_more_than_14_tiles
+import mahjongutils.composeapp.generated.resources.text_must_enter_chance_tile
+import mahjongutils.composeapp.generated.resources.text_must_enter_tiles
+import mahjongutils.composeapp.generated.resources.text_tiles_are_not_without_got
 import mahjongutils.models.Tile
 import mahjongutils.models.countAsCodeArray
+import org.jetbrains.compose.resources.StringResource
 
 class FuroShantenScreenModel :
     FormAndResultScreenModel<FuroChanceShantenArgs, FuroChanceShantenCalcResult>() {
@@ -40,27 +45,27 @@ class FuroShantenScreenModel :
         var validChanceTile = true
 
         if (tiles.isEmpty()) {
-            tilesErrMsg = MR.strings.text_must_enter_tiles
+            tilesErrMsg = Res.string.text_must_enter_tiles
             validTiles = false
         }
 
         if (chanceTile == null) {
-            chanceTileErrMsg = MR.strings.text_must_enter_chance_tile
+            chanceTileErrMsg = Res.string.text_must_enter_chance_tile
             validChanceTile = false
         }
 
         if (validTiles && tiles.size > 14) {
-            tilesErrMsg = MR.strings.text_cannot_have_more_than_14_tiles
+            tilesErrMsg = Res.string.text_cannot_have_more_than_14_tiles
             validTiles = false
         }
 
         if (validTiles && tiles.size !in setOf(4, 7, 10, 13)) {
-            tilesErrMsg = MR.strings.text_tiles_are_not_without_got
+            tilesErrMsg = Res.string.text_tiles_are_not_without_got
             validTiles = false
         }
 
         if (validTiles && tiles.countAsCodeArray().any { it > 4 }) {
-            tilesErrMsg = MR.strings.text_any_tile_must_not_be_more_than_4
+            tilesErrMsg = Res.string.text_any_tile_must_not_be_more_than_4
             validTiles = false
         }
 

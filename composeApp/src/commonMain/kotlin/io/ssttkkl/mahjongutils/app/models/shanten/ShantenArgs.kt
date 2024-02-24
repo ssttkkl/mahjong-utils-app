@@ -26,11 +26,8 @@ data class ShantenArgs(
     }
 
     companion object {
-        private const val DATASTORE_FILENAME = "shanten.json"
-
-        val history: HistoryDataStore<ShantenArgs> by lazy {
-            HistoryDataStore(typeOf<ShantenArgs>()) { it / DATASTORE_FILENAME }
-        }
+        val history: HistoryDataStore<ShantenArgs> =
+            HistoryDataStore("shanten", typeOf<ShantenArgs>())
     }
 }
 

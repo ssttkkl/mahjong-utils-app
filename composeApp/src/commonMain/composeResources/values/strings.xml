@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Riichi Mahjong Calculator</string>
+
+    <string name="title_shanten">Shanten</string>
+    <string name="title_shanten_result">Shanten Result</string>
+    <string name="title_furo_shanten">Furo Shanten</string>
+    <string name="title_furo_shanten_result">Furo Shanten Result</string>
+    <string name="title_hora">Hora Analyses</string>
+    <string name="title_hora_result">Hora Analyses Result</string>
+    <string name="title_hanhu">Point Calculation By Han and Hu</string>
+    <string name="title_about">About</string>
+    <string name="title_about_appversion">App Version</string>
+    <string name="title_about_opensource_repo">Open-Source Repository</string>
+    <string name="title_about_opensource_licenses">Open-Source License</string>
+
+    <string name="label_history">History</string>
+    <string name="label_clear">Clear</string>
+    <string name="label_share">Share</string>
+
+    <string name="text_empty_history">Empty</string>
+
+    <string name="label_tiles_in_hand">Tiles in Hand</string>
+    <string name="label_shanten_mode">Shanten Rule</string>
+    <string name="label_union_shanten">Union</string>
+    <string name="text_union_shanten_desc">In addition to the standard form of Four Mentsu and One Toitsu, also consider Chiitoitsu and Kokushi Musou as winning hand patterns.</string>
+    <string name="label_regular_shanten">Regular</string>
+    <string name="text_regular_shanten_desc">Only consider the Four Mentsu and One Toitsu as the winning hand pattern.</string>
+    <string name="label_calc">Calc</string>
+
+    <string name="text_tiles_without_got">Not Drawn</string>
+    <string name="text_tiles_with_got">Drawn</string>
+    <string name="label_shanten_num">Shanten Num</string>
+    <string name="text_shanten_num">%1$d-shanten</string>
+    <string name="text_tenpai">Tenpai</string>
+    <string name="text_hora">Win</string>
+    <string name="label_advance_tiles">Advance Tiles</string>
+    <string name="label_waiting_tiles">Waiting Tiles</string>
+    <string name="label_good_shape_advance_tiles">Good-Shape Advance Tiles</string>
+    <string name="label_good_shape_improvement_tiles">Good-Shape Improvement Tiles</string>
+    <string name="text_tiles_num">Total: %1$d</string>
+    <string name="text_tiles_num_short">%1$d</string>
+    <string name="text_tiles_num_and_percentile">Total: %1$d (%2$s% of all)</string>
+    <string name="label_shanten_action">%1$s</string>
+    <string name="label_shanten_action_backwards">%1$s (Backwards)</string>
+    <string name="text_shanten_action_discard">Discard %1$s</string>
+    <string name="text_shanten_action_ankan">Ankan %1$s</string>
+    <string name="text_shanten_action_minkan">Minkan</string>
+    <string name="text_shanten_action_pass">Pass</string>
+    <string name="text_shanten_action_chi_and_discard">%1$s%2$s Chi and Discard %1$s</string>
+    <string name="text_shanten_action_pon_and_discard">Pon and Discard %1$s</string>
+    <string name="text_improvement_desc">Draw %1$s then Discard %1$s (Waiting: %1$d)</string>
+
+    <string name="label_tile_discarded_by_other">Discarded by Other</string>
+    <string name="label_tile_discarded_by_other_short">From Other: %1$s</string>
+    <string name="label_other_options">Options</string>
+    <string name="label_allow_chi">Allow Chi</string>
+
+    <string name="label_furo">Furo</string>
+    <string name="label_mentsu">Mentsu</string>
+    <string name="label_jyantou">Jyantou</string>
+    <string name="label_ankan">Ankan</string>
+    <string name="label_minkan">Minkan</string>
+    <string name="label_agari">Agari</string>
+    <string name="label_tsumo">Tsumo</string>
+    <string name="label_ron">Ron</string>
+    <string name="label_other_information">Other Information</string>
+    <string name="label_dora_count">Number of Dora</string>
+    <string name="label_self_wind">Self Wind</string>
+    <string name="label_round_wind">Round Wind</string>
+    <string name="label_extra_yaku">Extra Yaku</string>
+    <string name="label_extra_yaku_unspecified">None</string>
+
+    <string name="label_hora_options">Hora Options</string>
+    <string name="label_aotenjou">Aotenjou</string>
+    <string name="desc_aotenjou">Remove the fixed score limit for Mangan and above; no matter the number of han, calculate using the basic point formula. </string>
+    <string name="label_hasKuitan">Kuitan</string>
+    <string name="desc_hasKuitan">Tanyao will be considered a non-closed hand yaku. </string>
+    <string name="label_renpuuJyantou4Hu">Renpuu Jyantou 4-Hu</string>
+    <string name="desc_renpuuJyantou4Hu">When the pair (Jyantou) is both the player\u0027s wind and the prevailing wind, it will be scored as 4 hu. (if turned-off, it will be scored as 2 hu)</string>
+    <string name="label_hasKiriageMangan">Kiriage Mangan</string>
+    <string name="desc_hasKiriageMangan">4-han 30-fu will be considered a mangan.</string>
+    <string name="label_hasKazoeYakuman">Kazoe Yakuman</string>
+    <string name="desc_hasKazoeYakuman">A non-Yakuman hand with 13 or more han will be considered a Yakuman. </string>
+    <string name="label_hasMultipleYakuman">Multiple Yakuman</string>
+    <string name="desc_hasMultipleYakuman">Daisushi, Kokushimusou-Juusanmen-Machi, and Junsei-ChurenPoutou will be considered as only single Yakuman. </string>
+    <string name="label_hasComplexYakuman">Complex Yakuman</string>
+    <string name="desc_hasComplexYakuman">Multiple Yakuman will be combined. (if turned-off, only the highest Yakuman will be counted)</string>
+    <string name="label_hora_options_ok">OK</string>
+    <string name="label_hora_options_restore">Restore</string>
+    <string name="text_overwrite_hora_options_hint">Do you also want to overwrite hora options?</string>
+
+    <string name="label_wind_unspecified">Unspecified</string>
+    <string name="label_wind_east">East</string>
+    <string name="label_wind_south">South</string>
+    <string name="label_wind_west">West</string>
+    <string name="label_wind_north">North</string>
+
+    <string name="text_x_han_x_hu">%1$d Han %2$d Hu</string>
+    <string name="text_x_han_x_hu_with_tag">%1$d Han %2$d Hu (%3$s)</string>
+    <string name="text_x_bai_yakuman">%1$s-Times Yakuman</string>
+    <string name="text_parent_tsumo">Oya Tsumo: %1$s ALL (%2$s in total)</string>
+    <string name="text_parent_ron">Oya Ron: %1$s</string>
+    <string name="text_child_tsumo">Ko Tsumo: %1$s - %2$s (%3$s in total)</string>
+    <string name="text_child_ron">Ko Ron: %1$s</string>
+
+    <string name="text_one">1</string>
+    <string name="text_two">2</string>
+    <string name="text_three">3</string>
+    <string name="text_four">4</string>
+    <string name="text_five">5</string>
+    <string name="text_six">6</string>
+
+    <string name="label_kiriagemangan">Kiriage Mangan</string>
+    <string name="label_mangan">Mangan</string>
+    <string name="label_haneman">Haneman</string>
+    <string name="label_baiman">Baiman</string>
+    <string name="label_sanbaiman">Sanbaiman</string>
+    <string name="label_kazoeyakuman">Kazoe Yakuman</string>
+    <string name="label_yakuman">Yakuman</string>
+    <string name="label_multiple_yakuman">%1$s Times Yakuman</string>
+
+    <string name="label_yaku_tsumo">Tsumo</string>
+    <string name="label_yaku_pinhu">Pinhu</string>
+    <string name="label_yaku_tanyao">Tanyao</string>
+    <string name="label_yaku_ipe">Ipe</string>
+    <string name="label_yaku_self_wind">SelfWind</string>
+    <string name="label_yaku_round_wind">RoundWind</string>
+    <string name="label_yaku_chankan">Chankan</string>
+    <string name="label_yaku_haku">Haku</string>
+    <string name="label_yaku_hatsu">Hatsu</string>
+    <string name="label_yaku_chun">Chun</string>
+    <string name="label_yaku_sanshoku">Sanshoku</string>
+    <string name="label_yaku_ittsu">Ittsu</string>
+    <string name="label_yaku_chanta">Chanta</string>
+    <string name="label_yaku_chitoi">Chitoi</string>
+    <string name="label_yaku_toitoi">Toitoi</string>
+    <string name="label_yaku_sananko">Sananko</string>
+    <string name="label_yaku_honroto">Honroto</string>
+    <string name="label_yaku_sandoko">Sandoko</string>
+    <string name="label_yaku_sankantsu">Sankantsu</string>
+    <string name="label_yaku_shosangen">Shosangen</string>
+    <string name="label_yaku_honitsu">Honitsu</string>
+    <string name="label_yaku_junchan">Junchan</string>
+    <string name="label_yaku_ryanpe">Ryanpe</string>
+    <string name="label_yaku_chinitsu">Chinitsu</string>
+
+    <string name="label_yaku_kokushi">Kokushi</string>
+    <string name="label_yaku_suanko">Suanko</string>
+    <string name="label_yaku_daisangen">Daisangen</string>
+    <string name="label_yaku_tsuiso">Tsuiso</string>
+    <string name="label_yaku_shousushi">Shousushi</string>
+    <string name="label_yaku_lyuiso">Lyuiso</string>
+    <string name="label_yaku_chinroto">Chinroto</string>
+    <string name="label_yaku_sukantsu">Sukantsu</string>
+    <string name="label_yaku_churen">Churen</string>
+    <string name="label_yaku_daisushi">Daisushi</string>
+    <string name="label_yaku_churenNineWaiting">ChurenNineWaiting</string>
+    <string name="label_yaku_suankoTanki">SuankoTanki</string>
+    <string name="label_yaku_kokushiThirteenWaiting">KokushiThirteenWaiting</string>
+
+    <string name="label_yaku_tenhou">Tenhou</string>
+    <string name="label_yaku_chihou">Chihou</string>
+    <string name="label_yaku_wrichi">WRichi</string>
+    <string name="label_yaku_richi">Richi</string>
+    <string name="label_yaku_ippatsu">Ippatsu</string>
+    <string name="label_yaku_rinshan">Rinshan</string>
+    <string name="label_yaku_chankan">Chankan</string>
+    <string name="label_yaku_haitei">Haitei</string>
+    <string name="label_yaku_houtei">Houtei</string>
+
+    <string name="label_yaku_dora">Dora %1$d</string>
+
+    <string name="label_yaku">Yaku</string>
+    <string name="label_hora_point">Han, Hu and Point</string>
+    <string name="label_hand_deconstruction">Hand Deconstruction</string>
+
+    <string name="label_han">Han</string>
+    <string name="label_hu">Hu</string>
+
+    <string name="label_yes">Yes</string>
+    <string name="label_no">No</string>
+    <string name="text_true_symbol">Yes</string>
+    <string name="text_false_symbol">No</string>
+    <string name="text_comma">,</string>
+
+    <string name="text_unknown_error">Unknown error</string>
+    <string name="text_must_enter_tiles">Input your tiles in hand please.</string>
+    <string name="text_must_enter_chance_tile">Input your chance tile please.</string>
+    <string name="text_cannot_have_more_than_14_tiles">You cannot have more than 14 tiles.</string>
+    <string name="text_tiles_must_not_be_divided_into_3">Number of tiles must not be divided into 3.</string>
+    <string name="text_any_tile_must_not_be_more_than_4">You cannot have any tile more than 4.</string>
+    <string name="text_tiles_are_not_without_got">You must not draw a tile in your hand. (having 4, 7, 10 or 13 tiles)</string>
+    <string name="text_hora_hand_tiles_not_enough">Number of tiles you entered is not enough.</string>
+    <string name="text_invalid_dora_count">Invalid number of dora.</string>
+    <string name="text_invalid_furo">Not a valid furo.</string>
+    <string name="text_must_enter_agari">Enter your agari tile please.</string>
+    <string name="text_agari_not_in_hand">The agari tile is not in your tiles in hand.</string>
+    <string name="text_must_enter_han">Input the han please.</string>
+    <string name="text_invalid_han_number">The han you inputted is invalid.</string>
+    <string name="text_must_enter_hu">Input the hu please.</string>
+    <string name="text_invalid_hu_number">The hu you inputted is invalid.</string>
+    <string name="text_hu_exceeded_maximum">The hu exceeds the maximum value of 140.</string>
+</resources>

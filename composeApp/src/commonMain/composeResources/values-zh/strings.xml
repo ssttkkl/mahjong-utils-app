@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">日麻牌理计算器</string>
+
+    <string name="title_shanten">牌理</string>
+    <string name="title_shanten_result">牌理计算结果</string>
+    <string name="title_furo_shanten">副露牌理</string>
+    <string name="title_furo_shanten_result">副露牌理计算</string>
+    <string name="title_hora">和牌分析</string>
+    <string name="title_hora_result">和牌分析结果</string>
+    <string name="title_hanhu">番符得点计算</string>
+    <string name="title_about">关于</string>
+    <string name="title_about_appversion">应用程序版本</string>
+    <string name="title_about_opensource_repo">开放源代码仓库</string>
+    <string name="title_about_opensource_licenses">开放源代码许可</string>
+
+    <string name="label_history">历史记录</string>
+    <string name="label_clear">清空</string>
+    <string name="label_share">分享</string>
+
+    <string name="text_empty_history">空</string>
+
+    <string name="label_tiles_in_hand">手牌</string>
+    <string name="label_shanten_mode">计算模式</string>
+    <string name="label_union_shanten">一般形</string>
+    <string name="text_union_shanten_desc">除四面子+一雀头的标准形外，还考虑七对子与国士无双和牌的情况</string>
+    <string name="label_regular_shanten">标准形</string>
+    <string name="text_regular_shanten_desc">只考虑四面子+一雀头和牌的情况</string>
+    <string name="label_calc">计算</string>
+
+    <string name="text_tiles_without_got">未摸牌</string>
+    <string name="text_tiles_with_got">已摸牌</string>
+    <string name="label_shanten_num">向听数</string>
+    <string name="text_shanten_num">%1$d向听</string>
+    <string name="text_tenpai">听牌</string>
+    <string name="text_hora">和了</string>
+    <string name="label_advance_tiles">进张</string>
+    <string name="label_waiting_tiles">听牌</string>
+    <string name="label_good_shape_advance_tiles">好形进张</string>
+    <string name="label_good_shape_improvement_tiles">好形改良</string>
+    <string name="text_tiles_num">共%1$d枚</string>
+    <string name="text_tiles_num_short">%1$d枚</string>
+    <string name="text_tiles_num_and_percentile">共%1$d枚（%2$s%）</string>
+    <string name="label_shanten_action">%1$s打法</string>
+    <string name="label_shanten_action_backwards">%1$s打法（退向）</string>
+    <string name="text_shanten_action_discard">打%1$s</string>
+    <string name="text_shanten_action_ankan">暗杠%1$s</string>
+    <string name="text_shanten_action_minkan">大明杠%1$s</string>
+    <string name="text_shanten_action_pass">跳过</string>
+    <string name="text_shanten_action_chi_and_discard">%1$s%2$s吃，打%3$s</string>
+    <string name="text_shanten_action_pon_and_discard">碰，打%1$s</string>
+    <string name="text_improvement_desc">摸%1$s，打%2$s（听%3$d枚）</string>
+
+    <string name="label_tile_discarded_by_other">他家打</string>
+    <string name="label_tile_discarded_by_other_short">他家打%1$s</string>
+    <string name="label_other_options">选项</string>
+    <string name="label_allow_chi">允许吃</string>
+
+    <string name="label_furo">副露</string>
+    <string name="label_mentsu">面子</string>
+    <string name="label_jyantou">雀头</string>
+    <string name="label_ankan">暗杠</string>
+    <string name="label_minkan">大明杠</string>
+    <string name="label_agari">所和的牌</string>
+    <string name="label_tsumo">自摸</string>
+    <string name="label_ron">荣和</string>
+    <string name="label_other_information">其他信息</string>
+    <string name="label_dora_count">宝牌数量</string>
+    <string name="label_self_wind">自风</string>
+    <string name="label_round_wind">场风</string>
+    <string name="label_extra_yaku">额外役</string>
+    <string name="label_extra_yaku_unspecified">无</string>
+
+    <string name="label_hora_options">规则设置</string>
+    <string name="label_aotenjou">青天井</string>
+    <string name="desc_aotenjou">移除满贯及以上固定分数限制，不论多少番都以基本点公式计算</string>
+    <string name="label_hasKuitan">有食断</string>
+    <string name="desc_hasKuitan">断幺九是否视为非门前役</string>
+    <string name="label_renpuuJyantou4Hu">连风雀头计4符</string>
+    <string name="desc_renpuuJyantou4Hu">当雀头同时为自风与场风时，是否计4符（关闭该选项则计2符）</string>
+    <string name="label_hasKiriageMangan">有切上满贯</string>
+    <string name="desc_hasKiriageMangan">4番30符是否视作满贯</string>
+    <string name="label_hasKazoeYakuman">有累计役满</string>
+    <string name="desc_hasKazoeYakuman">非役满牌型但番数达13番及以上时，是否视作役满</string>
+    <string name="label_hasMultipleYakuman">有多倍役满</string>
+    <string name="desc_hasMultipleYakuman">大四喜、国士无双十三面、纯正九莲宝灯是否视为双倍役满</string>
+    <string name="label_hasComplexYakuman">有复合役满</string>
+    <string name="desc_hasComplexYakuman">当牌型满足多个役满役时，是否允许复合（关闭该选项则只计最高倍役满役）</string>
+    <string name="label_hora_options_ok">好</string>
+    <string name="label_hora_options_restore">恢复默认值</string>
+    <string name="text_overwrite_hora_options_hint">该历史记录使用的规则与当前不一致，是否覆盖？</string>
+
+    <string name="label_wind_unspecified">未指定</string>
+    <string name="label_wind_east">东</string>
+    <string name="label_wind_south">南</string>
+    <string name="label_wind_west">西</string>
+    <string name="label_wind_north">北</string>
+
+    <string name="text_x_han_x_hu">%1$d番%2$d符</string>
+    <string name="text_x_han_x_hu_with_tag">%1$d番%2$d符（%3$s）</string>
+    <string name="text_x_bai_yakuman">%1$s倍役满</string>
+    <string name="text_parent_tsumo">亲家自摸：%1$s ALL（共%2$s）</string>
+    <string name="text_parent_ron">亲家荣和：%1$s</string>
+    <string name="text_child_tsumo">子家自摸：%1$s - %2$s（共%3$s）</string>
+    <string name="text_child_ron">子家荣和：%1$s</string>
+
+    <string name="text_one">一</string>
+    <string name="text_two">二</string>
+    <string name="text_three">三</string>
+    <string name="text_four">四</string>
+    <string name="text_five">五</string>
+    <string name="text_six">六</string>
+
+    <string name="label_kiriagemangan">切上满贯</string>
+    <string name="label_mangan">满贯</string>
+    <string name="label_haneman">跳满</string>
+    <string name="label_baiman">倍满</string>
+    <string name="label_sanbaiman">三倍满</string>
+    <string name="label_kazoeyakuman">累计役满</string>
+    <string name="label_yakuman">役满</string>
+    <string name="label_multiple_yakuman">%1$s倍役满</string>
+
+    <string name="label_yaku_tsumo">自摸</string>
+    <string name="label_yaku_pinhu">平和</string>
+    <string name="label_yaku_tanyao">断幺</string>
+    <string name="label_yaku_ipe">一杯口</string>
+    <string name="label_yaku_self_wind">自风</string>
+    <string name="label_yaku_round_wind">场风</string>
+    <string name="label_yaku_chankan">枪杠</string>
+    <string name="label_yaku_haku">白</string>
+    <string name="label_yaku_hatsu">发</string>
+    <string name="label_yaku_chun">中</string>
+    <string name="label_yaku_sanshoku">三色同顺</string>
+    <string name="label_yaku_ittsu">一气通贯</string>
+    <string name="label_yaku_chanta">混全带幺九</string>
+    <string name="label_yaku_chitoi">七对子</string>
+    <string name="label_yaku_toitoi">对对和</string>
+    <string name="label_yaku_sananko">三暗刻</string>
+    <string name="label_yaku_honroto">混老头</string>
+    <string name="label_yaku_sandoko">三色同刻</string>
+    <string name="label_yaku_sankantsu">三杠子</string>
+    <string name="label_yaku_shosangen">小三元</string>
+    <string name="label_yaku_honitsu">混一色</string>
+    <string name="label_yaku_junchan">纯全带幺九</string>
+    <string name="label_yaku_ryanpe">两杯口</string>
+    <string name="label_yaku_chinitsu">清一色</string>
+
+    <string name="label_yaku_kokushi">国士无双</string>
+    <string name="label_yaku_suanko">四暗刻</string>
+    <string name="label_yaku_daisangen">大三元</string>
+    <string name="label_yaku_tsuiso">字一色</string>
+    <string name="label_yaku_shousushi">小四喜</string>
+    <string name="label_yaku_lyuiso">绿一色</string>
+    <string name="label_yaku_chinroto">清老头</string>
+    <string name="label_yaku_sukantsu">四杠子</string>
+    <string name="label_yaku_churen">九莲宝灯</string>
+    <string name="label_yaku_daisushi">大四喜</string>
+    <string name="label_yaku_churenNineWaiting">纯正九莲宝灯</string>
+    <string name="label_yaku_suankoTanki">四暗刻单骑</string>
+    <string name="label_yaku_kokushiThirteenWaiting">国士无双十三面</string>
+
+    <string name="label_yaku_tenhou">天和</string>
+    <string name="label_yaku_chihou">地和</string>
+    <string name="label_yaku_wrichi">两立直</string>
+    <string name="label_yaku_richi">立直</string>
+    <string name="label_yaku_ippatsu">一发</string>
+    <string name="label_yaku_rinshan">岭上开花</string>
+    <string name="label_yaku_chankan">枪杠</string>
+    <string name="label_yaku_haitei">海底捞月</string>
+    <string name="label_yaku_houtei">河底捞鱼</string>
+
+    <string name="label_yaku_dora">宝牌%1$d</string>
+
+    <string name="label_yaku">役种</string>
+    <string name="label_hora_point">番符得点</string>
+    <string name="label_hand_deconstruction">手牌分解</string>
+
+    <string name="label_han">番</string>
+    <string name="label_hu">符</string>
+
+    <string name="label_yes">是</string>
+    <string name="label_no">否</string>
+    <string name="text_true_symbol">√</string>
+    <string name="text_false_symbol">×</string>
+    <string name="text_comma">、</string>
+
+    <string name="text_unknown_error">未知错误</string>
+    <string name="text_must_enter_tiles">请输入手牌。</string>
+    <string name="text_must_enter_chance_tile">请输入他家打的牌。</string>
+    <string name="text_cannot_have_more_than_14_tiles">手牌数量不能超过14枚。</string>
+    <string name="text_tiles_must_not_be_divided_into_3">手牌数量不能为3的倍数。</string>
+    <string name="text_any_tile_must_not_be_more_than_4">每种牌的数量不能超过4枚。</string>
+    <string name="text_tiles_are_not_without_got">手牌必须为未摸牌的状态。（4、7、10或13张）</string>
+    <string name="text_hora_hand_tiles_not_enough">输入的手牌数量不足以构成和牌。</string>
+    <string name="text_invalid_dora_count">不是有效的宝牌数量。</string>
+    <string name="text_invalid_furo">不是有效的副露。</string>
+    <string name="text_must_enter_agari">请输入所和的牌。</string>
+    <string name="text_agari_not_in_hand">所和的牌不在你的和牌中。</string>
+    <string name="text_must_enter_han">请输入番数。</string>
+    <string name="text_invalid_han_number">输入的番数不合法。</string>
+    <string name="text_must_enter_hu">请输入符数。</string>
+    <string name="text_invalid_hu_number">输入的符数不合法。</string>
+    <string name="text_hu_exceeded_maximum">输入的符数超过最大值140。</string>
+</resources>

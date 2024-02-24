@@ -1,7 +1,8 @@
+@file:OptIn(ExperimentalResourceApi::class)
+
 package io.ssttkkl.mahjongutils.app.components.tile
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
@@ -34,9 +35,11 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.buildSpannedString
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.imageResource
 
-
-private fun List<Tile>.toSpannedString(context: Context, height: Int): SpannedString {
+@Composable
+private fun List<Tile>.toSpannedString(height: Int): SpannedString {
     return buildSpannedString {
         this@toSpannedString.forEach {
             val text = "p"
@@ -45,7 +48,7 @@ private fun List<Tile>.toSpannedString(context: Context, height: Int): SpannedSt
 
             append(text)
 
-            val drawable = it.imageResource.getDrawable(context) as? BitmapDrawable
+            val drawable = imageResource(it.drawableResource) as? BitmapDrawable
             if (drawable != null) {
                 // 牌的比例是1.4:1
                 val width = (height / 1.4).toInt()
@@ -110,6 +113,8 @@ actual fun CoreTileField(
     val tileHeight = with(LocalDensity.current) {
         fontSizeInSp.sp.toPx().toInt()
     }
+
+    val spannedString = value.toSpannedString(tileHeight)
 
     AndroidView(
         modifier = modifier,
@@ -196,9 +201,7 @@ actual fun CoreTileField(
             edittext.apply {
                 // setText的时候会调用onSelectionChanged把选择区域置为[0,0]，所以需要暂时不同步状态
                 notifySelectionChange = false
-                setText(
-                    value.toSpannedString(context, tileHeight)
-                )
+                setText(spannedString)
                 val textRange = state.selection.coerceIn(0, text.length)
                 setSelection(textRange.start, textRange.end)
                 notifySelectionChange = true

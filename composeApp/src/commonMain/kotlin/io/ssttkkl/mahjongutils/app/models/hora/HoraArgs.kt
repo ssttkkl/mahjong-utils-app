@@ -30,11 +30,8 @@ data class HoraArgs(
     }
 
     companion object {
-        private const val DATASTORE_FILENAME = "hora.json"
-
-        val history: HistoryDataStore<HoraArgs> by lazy {
-            HistoryDataStore(typeOf<HoraArgs>()) { it / DATASTORE_FILENAME }
-        }
+        val history: HistoryDataStore<HoraArgs> =
+            HistoryDataStore("hora", typeOf<HoraArgs>())
     }
 }
 

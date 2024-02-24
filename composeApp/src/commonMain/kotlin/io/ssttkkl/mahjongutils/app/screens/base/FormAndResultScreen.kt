@@ -25,10 +25,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.screenModelScope
-import dev.icerock.moko.resources.StringResource
-import dev.icerock.moko.resources.compose.painterResource
-import dev.icerock.moko.resources.compose.stringResource
-import io.ssttkkl.mahjongutils.app.MR
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppBottomSheetState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
@@ -40,6 +36,14 @@ import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.icon_history_outlined
+import mahjongutils.composeapp.generated.resources.label_clear
+import mahjongutils.composeapp.generated.resources.label_history
+import mahjongutils.composeapp.generated.resources.text_empty_history
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, RES> :
     NavigationScreen() {
@@ -72,15 +76,15 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
                 appState.appBottomSheetState.visible = true
             }) {
                 Icon(
-                    painterResource(MR.images.icon_history_outlined),
-                    stringResource(MR.strings.label_history)
+                    painterResource(Res.drawable.icon_history_outlined),
+                    stringResource(Res.string.label_history)
                 )
             }
 
             IconButton(onClick = {
                 model.resetForm()
             }) {
-                Icon(Icons.Filled.Clear, stringResource(MR.strings.label_clear))
+                Icon(Icons.Filled.Clear, stringResource(Res.string.label_clear))
             }
         }
     }
@@ -106,7 +110,7 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
         @Composable
         fun PanelHeader() {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(stringResource(MR.strings.label_history))
+                Text(stringResource(Res.string.label_history))
                 TextButton(
                     onClick = {
                         model.screenModelScope.launch {
@@ -115,7 +119,7 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
                     },
                     enabled = history.isNotEmpty()
                 ) {
-                    Text(stringResource(MR.strings.label_clear))
+                    Text(stringResource(Res.string.label_clear))
                 }
             }
         }
@@ -126,7 +130,7 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
                     item {
                         Panel(header = { PanelHeader() }) {
                             Text(
-                                stringResource(MR.strings.text_empty_history),
+                                stringResource(Res.string.text_empty_history),
                                 style = MaterialTheme.typography.labelLarge,
                             )
                         }
