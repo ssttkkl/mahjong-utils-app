@@ -194,6 +194,7 @@
     <string name="text_hora_hand_tiles_not_enough">输入的手牌数量不足以构成和牌。</string>
     <string name="text_invalid_dora_count">不是有效的宝牌数量。</string>
     <string name="text_invalid_furo">不是有效的副露。</string>
+    <string name="text_too_many_furo">副露数量不能超过4个。</string>
     <string name="text_must_enter_agari">请输入所和的牌。</string>
     <string name="text_agari_not_in_hand">所和的牌不在你的和牌中。</string>
     <string name="text_must_enter_han">请输入番数。</string>
