@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import cafe.adriel.voyager.navigator.LocalNavigator
 import io.ssttkkl.mahjongutils.app.BuildKonfig
 import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
-import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
+import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.title_about
 import mahjongutils.composeapp.generated.resources.title_about_appversion

@@ -28,6 +28,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppBottomSheetState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
+import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowSnackbarOnFailure
 import io.ssttkkl.mahjongutils.app.components.panel.LazyCardPanel
@@ -162,8 +163,6 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
 
     @Composable
     override fun Content() {
-        super.Content()
-
         val appState = LocalAppState.current
         val model = getScreenModel()
 
