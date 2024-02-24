@@ -39,7 +39,6 @@ import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
-import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
@@ -123,24 +122,25 @@ private fun AppBottomSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppBar(
-    state: AppBarState,
-    navigator: Navigator,
+    appState: AppState,
     navigationIcon: @Composable (canGoBack: Boolean) -> Unit
 ) {
     TopAppBar(
         title = {
             Text(
-                (navigator.lastItem as? NavigationScreen)
+                (appState.navigator.lastItem as? NavigationScreen)
                     ?.title
                     ?.let { stringResource(it) } ?: ""
             )
         },
         navigationIcon = {
-            navigationIcon(navigator.canPop)
+            navigationIcon(appState.navigator.canPop)
         },
         actions = {
-            with(state) {
-                Actions()
+            (appState.navigator.lastItemOrNull as? NavigationScreen)?.let {
+                with(it) {
+                    TopBarActions(appState)
+                }
             }
         },
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -159,7 +159,7 @@ fun AppScaffold(
         Scaffold(
             modifier = Modifier.safeDrawingPadding(),
             topBar = {
-                AppBar(appState.appBarState, appState.navigator, navigationIcon)
+                AppBar(appState, navigationIcon)
             },
             snackbarHost = {
                 SnackbarHost(appState.snackbarHostState)

@@ -18,7 +18,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppScaffold
 import io.ssttkkl.mahjongutils.app.components.appscaffold.rememberAppState
 import io.ssttkkl.mahjongutils.app.screens.about.AboutScreen
-import io.ssttkkl.mahjongutils.app.screens.base.NavigationScreen
+import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
 import io.ssttkkl.mahjongutils.app.screens.furoshanten.FuroShantenScreen
 import io.ssttkkl.mahjongutils.app.screens.hanhu.HanhuScreen
 import io.ssttkkl.mahjongutils.app.screens.hora.HoraScreen
