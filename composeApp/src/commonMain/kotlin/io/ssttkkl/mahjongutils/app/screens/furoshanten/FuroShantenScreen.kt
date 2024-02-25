@@ -2,7 +2,6 @@ package io.ssttkkl.mahjongutils.app.screens.furoshanten
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,16 +9,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
-import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
 import io.ssttkkl.mahjongutils.app.components.panel.Caption
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
-import io.ssttkkl.mahjongutils.app.components.tile.TileField
-import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenCalcResult
@@ -30,8 +27,6 @@ import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_allow_chi
 import mahjongutils.composeapp.generated.resources.label_calc
 import mahjongutils.composeapp.generated.resources.label_other_options
-import mahjongutils.composeapp.generated.resources.label_tile_discarded_by_other
-import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
 import mahjongutils.composeapp.generated.resources.text_false_symbol
 import mahjongutils.composeapp.generated.resources.title_furo_shanten
 import mahjongutils.composeapp.generated.resources.title_furo_shanten_result
@@ -58,6 +53,7 @@ object FuroShantenScreen :
         model: FuroShantenScreenModel,
         modifier: Modifier
     ) {
+        val components = remember(model.form) { FuroShantenComponents(model.form) }
         val verticalScrollState = rememberScrollState()
 
         with(Spacing.current) {
@@ -68,28 +64,12 @@ object FuroShantenScreen :
                     VerticalSpacerBetweenPanels()
 
                     TopPanel {
-                        ValidationField(model.tilesErrMsg) { isError ->
-                            TileField(
-                                value = model.tiles,
-                                onValueChange = { model.tiles = it },
-                                modifier = Modifier.fillMaxWidth(),
-                                isError = isError,
-                                label = stringResource(Res.string.label_tiles_in_hand)
-                            )
-                        }
+                        components.Tiles()
                     }
 
                     VerticalSpacerBetweenPanels()
                     TopPanel {
-                        ValidationField(model.chanceTileErrMsg) { isError ->
-                            TileField(
-                                value = model.chanceTile?.let { listOf(it) } ?: emptyList(),
-                                onValueChange = { model.chanceTile = it.firstOrNull() },
-                                modifier = Modifier.fillMaxWidth(),
-                                isError = isError,
-                                label = stringResource(Res.string.label_tile_discarded_by_other)
-                            )
-                        }
+                        components.ChanceTile()
                     }
 
                     VerticalSpacerBetweenPanels()
@@ -98,11 +78,7 @@ object FuroShantenScreen :
                         { Text(stringResource(Res.string.label_other_options)) },
                         noContentPadding = true
                     ) {
-                        SwitchItem(
-                            model.allowChi,
-                            { model.allowChi = it },
-                            stringResource(Res.string.label_allow_chi)
-                        )
+                        components.AllowChi()
                     }
 
                     VerticalSpacerBetweenPanels()
