@@ -6,11 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -23,9 +20,7 @@ import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.composeapp.generated.resources.Res
-import mahjongutils.composeapp.generated.resources.icon_arrow_outward
 import mahjongutils.composeapp.generated.resources.label_advance_tiles
-import mahjongutils.composeapp.generated.resources.label_fillback
 import mahjongutils.composeapp.generated.resources.label_good_shape_advance_tiles
 import mahjongutils.composeapp.generated.resources.label_good_shape_improvement_tiles
 import mahjongutils.composeapp.generated.resources.label_waiting_tiles
@@ -41,7 +36,6 @@ import mahjongutils.models.Tatsu
 import mahjongutils.models.Tile
 import mahjongutils.shanten.Improvement
 import mahjongutils.shanten.ShantenWithoutGot
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 sealed class ShantenAction {
@@ -114,11 +108,12 @@ fun ShantenActionCardContent(
         Row(modifier) {
             ShantenActionContent(
                 action,
-                fillbackHandler,
-                Modifier.width(120.dp)
+                Modifier.width(100.dp).clickable {
+                    fillbackHandler.fillbackAction(action)
+                }
             )
 
-            VerticalDivider()
+            Spacer(Modifier.width(windowHorizontalMargin))
 
             Column(Modifier.weight(1f)) {
                 TilesWithNumPanel(
@@ -130,7 +125,7 @@ fun ShantenActionCardContent(
                     ),
                     shanten.advance.sorted(),
                     shanten.advanceNum
-                ) { 
+                ) {
                     TileImage(it, Modifier.clickable {
                         fillbackHandler.fillbackActionAndDraw(action, it)
                     })
@@ -144,7 +139,7 @@ fun ShantenActionCardContent(
                         goodShapeAdvance.sorted(),
                         shanten.goodShapeAdvanceNum ?: 0,
                         1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
-                    ) { 
+                    ) {
                         TileImage(it, Modifier.clickable {
                             fillbackHandler.fillbackActionAndDraw(action, it)
                         })
@@ -169,70 +164,67 @@ fun ShantenActionCardContent(
 @Composable
 private fun ShantenActionContent(
     action: ShantenAction,
-    fillbackHandler: FillbackHandler,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier) {
-        CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
-            when (action) {
-                is ShantenAction.Discard -> {
-                    TileInlineText(
-                        stringResource(
-                            Res.string.text_shanten_action_discard,
-                            action.tile.emoji
-                        )
-                    )
-                }
-
-                is ShantenAction.Ankan -> {
-                    TileInlineText(
-                        stringResource(
-                            Res.string.text_shanten_action_ankan,
-                            action.tile.emoji
-                        )
-                    )
-                }
-
-                is ShantenAction.Chi -> {
-                    TileInlineText(
-                        stringResource(
-                            Res.string.text_shanten_action_chi_and_discard,
-                            action.tatsu.first.emoji,
-                            action.tatsu.second.emoji,
-                            action.discard.emoji
-                        )
-                    )
-                }
-
-                is ShantenAction.Pon -> {
-                    TileInlineText(
-                        stringResource(
-                            Res.string.text_shanten_action_pon_and_discard,
-                            action.discard.emoji
-                        )
-                    )
-                }
-
-                is ShantenAction.Minkan -> {
-                    TileInlineText(
-                        stringResource(
-                            Res.string.text_shanten_action_minkan,
-                            action.tile.emoji
-                        )
-                    )
-                }
-
-                is ShantenAction.Pass -> {
-                    TileInlineText(stringResource(Res.string.text_shanten_action_pass))
-                }
+    CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
+        when (action) {
+            is ShantenAction.Discard -> {
+                TileInlineText(
+                    stringResource(
+                        Res.string.text_shanten_action_discard,
+                        action.tile.emoji
+                    ),
+                    modifier
+                )
             }
-        }
 
-        if (action !is ShantenAction.Pass) {
-            Spacer(Modifier.height(8.dp))
-            TextButton({ fillbackHandler.fillbackAction(action) }) {
-                Icon(painterResource(Res.drawable.icon_arrow_outward), "")
-                Text(stringResource(Res.string.label_fillback))
+            is ShantenAction.Ankan -> {
+                TileInlineText(
+                    stringResource(
+                        Res.string.text_shanten_action_ankan,
+                        action.tile.emoji
+                    ),
+                    modifier
+                )
+            }
+
+            is ShantenAction.Chi -> {
+                TileInlineText(
+                    stringResource(
+                        Res.string.text_shanten_action_chi_and_discard,
+                        action.tatsu.first.emoji,
+                        action.tatsu.second.emoji,
+                        action.discard.emoji
+                    ),
+                    modifier
+                )
+            }
+
+            is ShantenAction.Pon -> {
+                TileInlineText(
+                    stringResource(
+                        Res.string.text_shanten_action_pon_and_discard,
+                        action.discard.emoji
+                    ),
+                    modifier
+                )
+            }
+
+            is ShantenAction.Minkan -> {
+                TileInlineText(
+                    stringResource(
+                        Res.string.text_shanten_action_minkan,
+                        action.tile.emoji
+                    ),
+                    modifier
+                )
+            }
+
+            is ShantenAction.Pass -> {
+                TileInlineText(
+                    stringResource(Res.string.text_shanten_action_pass),
+                    modifier
+                )
             }
         }
     }
@@ -262,7 +254,7 @@ private fun ImprovementsPanel(
                     discardTiles.joinToString("") { it.emoji },
                     advanceNum
                 ),
-                tileImage = { 
+                tileImage = {
                     TileImage(it, Modifier.clickable {
                         if (it == tile) {
                             fillbackHandler.fillbackActionAndDraw(action, tile)

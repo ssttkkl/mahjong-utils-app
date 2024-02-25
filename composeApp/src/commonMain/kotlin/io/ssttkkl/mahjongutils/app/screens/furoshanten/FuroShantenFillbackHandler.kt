@@ -42,7 +42,7 @@ class FuroShantenFillbackHandler(
             }
 
             else -> {
-                arrayListOf()
+                return
             }
         }
 

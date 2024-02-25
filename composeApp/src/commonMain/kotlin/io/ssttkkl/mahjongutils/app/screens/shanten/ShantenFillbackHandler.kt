@@ -23,7 +23,7 @@ class ShantenFillbackHandler(
                 args.tiles.removeLast(action.tile, action.tile, action.tile, action.tile).toMutableList()
             }
             else -> {
-                arrayListOf()
+                return
             }
         }
         draw?.let { newTiles.add(draw) }
