@@ -216,10 +216,13 @@ private fun ShantenActionContent(
                 }
             }
         }
-        Spacer(Modifier.height(8.dp))
-        TextButton({ fillbackHandler.fillbackShantenAction(action) }) {
-            Icon(painterResource(Res.drawable.icon_arrow_outward), "")
-            Text(stringResource(Res.string.label_fillback))
+
+        if (action !is ShantenAction.Pass) {
+            Spacer(Modifier.height(8.dp))
+            TextButton({ fillbackHandler.fillbackShantenAction(action) }) {
+                Icon(painterResource(Res.drawable.icon_arrow_outward), "")
+                Text(stringResource(Res.string.label_fillback))
+            }
         }
     }
 }

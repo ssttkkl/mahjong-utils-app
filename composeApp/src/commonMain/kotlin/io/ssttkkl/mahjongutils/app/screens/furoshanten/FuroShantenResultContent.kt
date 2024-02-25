@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
-import io.ssttkkl.mahjongutils.app.components.resultdisplay.FillbackHandler
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsContent
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
@@ -23,6 +23,7 @@ import io.ssttkkl.mahjongutils.app.screens.common.TilesPanelHeader
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
+import kotlinx.coroutines.launch
 import mahjongutils.shanten.ShantenWithFuroChance
 
 @Composable
@@ -81,11 +82,20 @@ fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFu
             .sortedBy { it.first }  // 按照向听数排序
     }
 
+    val scope = rememberCoroutineScope()
+    val lazyListState = rememberLazyListState()
+
     val panelState = remember { EditablePanelState(args, FuroShantenFormState()) }
     LaunchedEffect(args) {
         panelState.originArgs = args
     }
-    val lazyListState = rememberLazyListState()
+    val fillbackHandler = remember {
+        FuroShantenFillbackHandler(panelState) {
+            scope.launch {
+                lazyListState.animateScrollToItem(0)
+            }
+        }
+    }
 
     with(Spacing.current) {
         VerticalScrollBox(lazyListState) {
@@ -104,11 +114,7 @@ fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFu
                     VerticalSpacerBetweenPanels()
                 }
 
-                ShantenActionGroupsContent(groups, shanten.shantenNum, object :FillbackHandler{
-                    override fun fillbackShantenAction(action: ShantenAction) {
-                        TODO("Not yet implemented")
-                    }
-                })
+                ShantenActionGroupsContent(groups, shanten.shantenNum, fillbackHandler)
             }
         }
     }
@@ -120,10 +126,6 @@ private fun FuroShantenTilesPanel(
     state: EditablePanelState<FuroShantenFormState, FuroChanceShantenArgs>,
     requestChangeArgs: (FuroChanceShantenArgs) -> Unit
 ) {
-    LaunchedEffect(args) {
-        state.form.fillFormWithArgs(args)
-    }
-
     val components = remember(state.form) { FuroShantenComponents(state.form) }
 
     TopCardPanel({

@@ -4,6 +4,7 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.FillbackHandler
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.screens.common.EditablePanelState
+import io.ssttkkl.mahjongutils.app.utils.remove
 
 class ShantenFillbackHandler(
     val panelState: EditablePanelState<ShantenFormState, ShantenArgs>,
@@ -15,18 +16,16 @@ class ShantenFillbackHandler(
         requestFocus()
         when (action) {
             is ShantenAction.Discard -> {
-                val lastIndexOfTile = args.tiles.lastIndexOf(action.tile)
-                val newTiles = args.tiles.toMutableList().apply {
-                    removeAt(lastIndexOfTile)
-                }
+                val newTiles = args.tiles.remove(action.tile)
                 panelState.form.fillFormWithArgs(
                     args.copy(tiles = newTiles)
                 )
             }
 
             is ShantenAction.Ankan -> {
+                val newTiles = args.tiles.remove(action.tile, action.tile, action.tile, action.tile)
                 panelState.form.fillFormWithArgs(
-                    args.copy(tiles = args.tiles.filter { it != action.tile })
+                    args.copy(tiles = newTiles)
                 )
             }
 

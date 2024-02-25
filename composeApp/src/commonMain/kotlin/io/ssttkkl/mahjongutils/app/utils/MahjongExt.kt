@@ -164,3 +164,14 @@ val Yaku.localizedName
         Yakus.Houtei.name -> Res.string.label_yaku_houtei
         else -> error("unknown yaku: $this")
     }
+
+fun List<Tile>.remove(vararg tile: Tile): List<Tile> {
+    return toMutableList().apply {
+        tile.forEach { t ->
+            val lastIndexOfTile = lastIndexOf(t)
+            if (lastIndexOfTile != -1) {
+                removeAt(lastIndexOfTile)
+            }
+        }
+    }
+}
