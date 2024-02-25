@@ -16,8 +16,8 @@ class FuroShantenComponents(
     val form: FuroShantenFormState
 ) {
     @Composable
-    fun Tiles() {
-        ValidationField(form.tilesErrMsg) { isError ->
+    fun Tiles(modifier: Modifier = Modifier) {
+        ValidationField(form.tilesErrMsg, modifier) { isError ->
             TileField(
                 value = form.tiles,
                 onValueChange = { form.tiles = it },
@@ -29,8 +29,8 @@ class FuroShantenComponents(
     }
 
     @Composable
-    fun ChanceTile() {
-        ValidationField(form.chanceTileErrMsg) { isError ->
+    fun ChanceTile(modifier: Modifier = Modifier) {
+        ValidationField(form.chanceTileErrMsg, modifier) { isError ->
             TileField(
                 value = form.chanceTile?.let { listOf(it) } ?: emptyList(),
                 onValueChange = { form.chanceTile = it.firstOrNull() },

@@ -103,7 +103,10 @@ object FuroShantenScreen :
         result: FuroChanceShantenCalcResult,
         modifier: Modifier
     ) {
-        FuroShantenResultContent(result.args, result.result.shantenInfo)
+        val handler = getChangeArgsByResultContentHandler()
+        FuroShantenResultContent(result.args, result.result.shantenInfo) {
+            handler(it)
+        }
     }
 
     @Composable
