@@ -198,7 +198,7 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         horaOptions = args.options
 
         if (check) {
-            postCheck()
+            onCheck()
         }
     }
 

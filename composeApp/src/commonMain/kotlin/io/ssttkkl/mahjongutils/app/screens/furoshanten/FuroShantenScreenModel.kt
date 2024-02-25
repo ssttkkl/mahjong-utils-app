@@ -47,7 +47,7 @@ class FuroShantenScreenModel :
         chanceTile = args.chanceTile
         allowChi = args.allowChi
         if (check) {
-            postCheck()
+            onCheck()
         }
     }
 

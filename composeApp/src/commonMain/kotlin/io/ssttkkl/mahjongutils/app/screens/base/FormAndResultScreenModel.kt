@@ -9,28 +9,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-abstract class FormAndResultScreenModel<ARG, RES> : ScreenModel {
+abstract class FormAndResultScreenModel<ARG, RES> : ScreenModel, FormState<ARG> {
     val result = MutableStateFlow<Deferred<RES>?>(null)
-
-    open fun fillFormWithArgs(args: ARG, check: Boolean = true) {
-
-    }
-
-    open fun resetForm() {
-
-    }
 
     fun resetResult() {
         result.value = null
     }
-
-    fun postCheck() {
-        screenModelScope.launch(Dispatchers.Main) {
-            onCheck()
-        }
-    }
-
-    open fun onCheck(): ARG? = null
 
     abstract suspend fun onCalc(args: ARG): RES
 
@@ -46,5 +30,4 @@ abstract class FormAndResultScreenModel<ARG, RES> : ScreenModel {
     }
 
     abstract val history: HistoryDataStore<ARG>
-
 }

@@ -1,6 +1,5 @@
 package io.ssttkkl.mahjongutils.app.screens.shanten
 
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -8,17 +7,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -29,7 +29,6 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesWithNumTopCardPanel
 import io.ssttkkl.mahjongutils.app.components.scrollbox.VerticalScrollBox
 import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
-import io.ssttkkl.mahjongutils.app.components.tile.TileField
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
@@ -39,7 +38,6 @@ import mahjongutils.composeapp.generated.resources.label_good_shape_advance_tile
 import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
 import mahjongutils.composeapp.generated.resources.text_tiles_with_got
 import mahjongutils.composeapp.generated.resources.text_tiles_without_got
-import mahjongutils.models.Tile
 import mahjongutils.shanten.CommonShanten
 import mahjongutils.shanten.ShantenWithGot
 import mahjongutils.shanten.ShantenWithoutGot
@@ -49,7 +47,8 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ShantenResultContent(
-    args: ShantenArgs, shanten: CommonShanten,
+    args: ShantenArgs,
+    shanten: CommonShanten,
     requestChangeArgs: (ShantenArgs) -> Unit
 ) {
     if (shanten is ShantenWithoutGot) {
@@ -174,36 +173,37 @@ private fun TilesInHandPanel(
     withGot: Boolean,
     requestChangeArgs: (ShantenArgs) -> Unit
 ) {
-    var editing: Boolean by rememberSaveable { mutableStateOf(false) }
-    var editingTiles: List<Tile> by rememberSaveable { mutableStateOf(emptyList()) }
+    var editing = rememberSaveable { mutableStateOf(false) }
+    if (editing.value) {
+        TilesInHandPanelEditing(editing, args, requestChangeArgs)
+    } else {
+        TilesInHandPanelShowing(editing, args, withGot)
+    }
+}
 
-    val header: @Composable () -> Unit = {
-        Row(Modifier.height(24.dp)) {
-            Text(
-                stringResource(Res.string.label_tiles_in_hand),
-                Modifier.align(Alignment.CenterVertically)
-            )
+@Composable
+private fun TilesInHandPanelShowing(
+    editingState: MutableState<Boolean>,
+    args: ShantenArgs,
+    withGot: Boolean
+) {
+    TopCardPanel(
+        header = {
+            Row(Modifier.height(24.dp)) {
+                Text(
+                    stringResource(Res.string.label_tiles_in_hand),
+                    Modifier.align(Alignment.CenterVertically)
+                )
 
-            if (!editing) {
                 IconButton(
-                    { editing = true; editingTiles = args.tiles },
+                    { editingState.value = true },
                     Modifier.align(Alignment.CenterVertically)
                 ) {
                     Icon(Icons.Outlined.Edit, "", tint = MaterialTheme.colorScheme.primary)
                 }
-            } else {
-                IconButton(
-                    { editing = false; requestChangeArgs(args.copy(tiles = editingTiles)) },
-                    Modifier.align(Alignment.CenterVertically)
-                ) {
-                    Icon(Icons.Outlined.Check, "", tint = MaterialTheme.colorScheme.primary)
-                }
             }
-        }
-    }
-
-    val caption: @Composable ColumnScope.() -> Unit = {
-        if (!editing) {
+        },
+        caption = {
             Text(
                 stringResource(
                     if (withGot)
@@ -212,20 +212,63 @@ private fun TilesInHandPanel(
                         Res.string.text_tiles_without_got
                 )
             )
-        }
+        },
+        content = {
+            AutoSingleLineTiles(args.tiles, fontSize = TileTextSize.Default.bodyLarge)
+        },
+    )
+}
+
+@Composable
+private fun TilesInHandPanelEditing(
+    editingState: MutableState<Boolean>,
+    args: ShantenArgs,
+    requestChangeArgs: (ShantenArgs) -> Unit
+) {
+    val form = remember { ShantenFormState() }
+    LaunchedEffect(args) {
+        form.fillFormWithArgs(args)
     }
 
-    val content: @Composable ColumnScope.() -> Unit = {
-        if (!editing) {
-            AutoSingleLineTiles(args.tiles, fontSize = TileTextSize.Default.bodyLarge)
-        } else {
-            TileField(editingTiles, { editingTiles = it })
-        }
-    }
+    val components = remember(form) { ShantenFormComponents(form) }
 
     TopCardPanel(
-        header = header,
-        caption = caption,
-        content = content,
+        header = {
+            Row(Modifier.height(24.dp)) {
+                Text(
+                    stringResource(Res.string.label_tiles_in_hand),
+                    Modifier.align(Alignment.CenterVertically)
+                )
+
+                IconButton(
+                    {
+                        val newArgs = form.onCheck()
+                        if (newArgs != null) {
+                            editingState.value = false
+
+                            if (newArgs != args) {
+                                requestChangeArgs(newArgs)
+                            }
+                        }
+                    },
+                    Modifier.align(Alignment.CenterVertically)
+                ) {
+                    Icon(Icons.Outlined.Check, "", tint = MaterialTheme.colorScheme.primary)
+                }
+
+                IconButton(
+                    {
+                        editingState.value = false
+                        form.fillFormWithArgs(args)
+                    },
+                    Modifier.align(Alignment.CenterVertically)
+                ) {
+                    Icon(Icons.Outlined.Clear, "", tint = MaterialTheme.colorScheme.primary)
+                }
+            }
+        },
+        content = {
+            components.Tiles()
+        },
     )
 }
