@@ -25,6 +25,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.screenModelScope
+import cafe.adriel.voyager.navigator.LocalNavigator
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppBottomSheetState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
@@ -52,6 +53,11 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
         fun isTwoPanes(windowSizeClass: WindowSizeClass): Boolean {
             return windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
                     && windowSizeClass.heightSizeClass != WindowHeightSizeClass.Compact
+        }
+
+        @Composable
+        fun isTwoPanes(): Boolean {
+            return isTwoPanes(LocalAppState.current.windowSizeClass)
         }
     }
 
@@ -230,6 +236,20 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    fun getChangeArgsByResultContentHandler(): (args: ARG) -> Unit {
+        val model = getScreenModel()
+        val navigator = LocalNavigator.current ?: return {}
+        return { args ->
+            while (navigator.lastItem !is FormAndResultScreen<*, *, *>) {
+                navigator.pop()
+            }
+
+            model.fillFormWithArgs(args)
+            model.onSubmit()
         }
     }
 }

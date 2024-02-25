@@ -2,7 +2,6 @@ package io.ssttkkl.mahjongutils.app.screens.shanten
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,18 +9,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
-import io.ssttkkl.mahjongutils.app.components.basic.RatioGroups
-import io.ssttkkl.mahjongutils.app.components.basic.RatioOption
 import io.ssttkkl.mahjongutils.app.components.panel.Caption
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
 import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
-import io.ssttkkl.mahjongutils.app.components.tile.TileField
-import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenCalcResult
@@ -33,38 +29,10 @@ import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_calc
 import mahjongutils.composeapp.generated.resources.label_regular_shanten
 import mahjongutils.composeapp.generated.resources.label_shanten_mode
-import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
 import mahjongutils.composeapp.generated.resources.label_union_shanten
-import mahjongutils.composeapp.generated.resources.text_regular_shanten_desc
-import mahjongutils.composeapp.generated.resources.text_union_shanten_desc
 import mahjongutils.composeapp.generated.resources.title_shanten
 import mahjongutils.composeapp.generated.resources.title_shanten_result
-import mahjongutils.shanten.ShantenWithoutGot
-import mahjongutils.shanten.asWithGot
-import mahjongutils.shanten.asWithoutGot
 import org.jetbrains.compose.resources.stringResource
-
-@Composable
-private fun ShantenModeRatioGroups(
-    value: ShantenMode,
-    onValueChanged: (ShantenMode) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val radioOptions = listOf(
-        RatioOption(
-            ShantenMode.Union,
-            stringResource(Res.string.label_union_shanten),
-            stringResource(Res.string.text_union_shanten_desc)
-        ),
-        RatioOption(
-            ShantenMode.Regular,
-            stringResource(Res.string.label_regular_shanten),
-            stringResource(Res.string.text_regular_shanten_desc)
-        ),
-    )
-
-    RatioGroups(radioOptions, value, onValueChanged, modifier)
-}
 
 object ShantenScreen :
     FormAndResultScreen<ShantenScreenModel, ShantenArgs, ShantenCalcResult>() {
@@ -85,6 +53,7 @@ object ShantenScreen :
         model: ShantenScreenModel,
         modifier: Modifier
     ) {
+        val components = remember(model.form) { ShantenFormComponents(model.form) }
         val verticalScrollState = rememberScrollState()
 
         with(Spacing.current) {
@@ -95,15 +64,7 @@ object ShantenScreen :
                     VerticalSpacerBetweenPanels()
 
                     TopPanel {
-                        ValidationField(model.tilesErrMsg) { isError ->
-                            TileField(
-                                value = model.tiles,
-                                onValueChange = { model.tiles = it },
-                                modifier = Modifier.fillMaxWidth(),
-                                isError = isError,
-                                label = stringResource(Res.string.label_tiles_in_hand)
-                            )
-                        }
+                        components.Tiles()
                     }
 
                     VerticalSpacerBetweenPanels()
@@ -112,10 +73,7 @@ object ShantenScreen :
                         { Text(stringResource(Res.string.label_shanten_mode)) },
                         noContentPadding = true
                     ) {
-                        ShantenModeRatioGroups(
-                            model.shantenMode,
-                            { model.shantenMode = it }
-                        )
+                        components.ShantenMode()
                     }
 
                     VerticalSpacerBetweenPanels()
@@ -140,10 +98,9 @@ object ShantenScreen :
         result: ShantenCalcResult,
         modifier: Modifier
     ) {
-        if (result.result.shantenInfo is ShantenWithoutGot) {
-            ShantenResultContent(result.args, result.result.shantenInfo.asWithoutGot)
-        } else {
-            ShantenResultContent(result.args, result.result.shantenInfo.asWithGot)
+        val handler = getChangeArgsByResultContentHandler()
+        ShantenResultContent(result.args, result.result.shantenInfo) {
+            handler(it)
         }
     }
 
@@ -177,9 +134,6 @@ object ShantenScreen :
         model: ShantenScreenModel,
         appState: AppState
     ) {
-        model.tiles = item.args.tiles
-        model.shantenMode = item.args.mode
-
-        model.postCheck()
+        model.fillFormWithArgs(item.args)
     }
 }

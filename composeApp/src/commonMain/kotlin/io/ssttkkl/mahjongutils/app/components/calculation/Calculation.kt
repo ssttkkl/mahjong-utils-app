@@ -1,5 +1,8 @@
 package io.ssttkkl.mahjongutils.app.components.calculation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
@@ -65,8 +68,24 @@ fun <U, V> Calculation(
         }
     }
 
-    result?.let {
-        it.onSuccess { onSuccess(it) }
-            .onFailure { onFailure(it) }
-    } ?: onCalculating()
+    val calculating = result == null
+
+    AnimatedVisibility(
+        calculating,
+        enter = fadeIn(),
+        exit = fadeOut(),
+    ) {
+        onCalculating()
+    }
+
+    AnimatedVisibility(
+        !calculating,
+        enter = fadeIn(),
+        exit = fadeOut(),
+    ) {
+        result?.let {
+            it.onSuccess { onSuccess(it) }
+                .onFailure { onFailure(it) }
+        }
+    }
 }

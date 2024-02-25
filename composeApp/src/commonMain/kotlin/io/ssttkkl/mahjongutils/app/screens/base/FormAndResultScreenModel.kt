@@ -9,37 +9,25 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-abstract class FormAndResultScreenModel<ARG, RES> : ScreenModel {
+abstract class FormAndResultScreenModel<ARG, RES> : ScreenModel, FormState<ARG> {
     val result = MutableStateFlow<Deferred<RES>?>(null)
-
-    open fun resetForm() {
-
-    }
 
     fun resetResult() {
         result.value = null
     }
 
-    fun postCheck() {
-        screenModelScope.launch(Dispatchers.Default) {
-            onCheck()
-        }
-    }
-
-    open fun onCheck(): Boolean = true
-
-    abstract suspend fun onCalc(): RES
+    abstract suspend fun onCalc(args: ARG): RES
 
     fun onSubmit() {
-        if (onCheck()) {
+        val args = onCheck()
+        if (args != null) {
             screenModelScope.launch(Dispatchers.Default) {
                 result.value = screenModelScope.async(Dispatchers.Default) {
-                    onCalc()
+                    onCalc(args)
                 }
             }
         }
     }
 
     abstract val history: HistoryDataStore<ARG>
-
 }
