@@ -8,17 +8,17 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
+import io.ssttkkl.mahjongutils.app.components.resultdisplay.FillbackHandler
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsContent
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.scrollbox.VerticalScrollBox
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
+import io.ssttkkl.mahjongutils.app.screens.common.EditablePanelState
 import io.ssttkkl.mahjongutils.app.screens.common.TilesPanelHeader
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
@@ -81,14 +81,18 @@ fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFu
             .sortedBy { it.first }  // 按照向听数排序
     }
 
-    val state = rememberLazyListState()
+    val panelState = remember { EditablePanelState(args, FuroShantenFormState()) }
+    LaunchedEffect(args) {
+        panelState.originArgs = args
+    }
+    val lazyListState = rememberLazyListState()
 
     with(Spacing.current) {
-        VerticalScrollBox(state) {
-            LazyColumn(Modifier.fillMaxWidth(), state = state) {
+        VerticalScrollBox(lazyListState) {
+            LazyColumn(Modifier.fillMaxWidth(), state = lazyListState) {
                 item {
                     VerticalSpacerBetweenPanels()
-                    FuroShantenTilesPanel(args, requestChangeArgs)
+                    FuroShantenTilesPanel(args, panelState, requestChangeArgs)
                 }
 
                 item {
@@ -100,7 +104,11 @@ fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFu
                     VerticalSpacerBetweenPanels()
                 }
 
-                ShantenActionGroupsContent(groups, shanten.shantenNum)
+                ShantenActionGroupsContent(groups, shanten.shantenNum, object :FillbackHandler{
+                    override fun fillbackShantenAction(action: ShantenAction) {
+                        TODO("Not yet implemented")
+                    }
+                })
             }
         }
     }
@@ -109,28 +117,26 @@ fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFu
 @Composable
 private fun FuroShantenTilesPanel(
     args: FuroChanceShantenArgs,
+    state: EditablePanelState<FuroShantenFormState, FuroChanceShantenArgs>,
     requestChangeArgs: (FuroChanceShantenArgs) -> Unit
 ) {
-    val editingState = rememberSaveable { mutableStateOf(false) }
-
-    val form = remember { FuroShantenFormState() }
     LaunchedEffect(args) {
-        form.fillFormWithArgs(args)
+        state.form.fillFormWithArgs(args)
     }
 
-    val components = remember(form) { FuroShantenComponents(form) }
+    val components = remember(state.form) { FuroShantenComponents(state.form) }
 
     TopCardPanel({
         TilesPanelHeader(
-            editingState,
+            state,
             onCancel = {
-                editingState.value = false
-                form.fillFormWithArgs(args)
+                state.editing = false
+                state.form.fillFormWithArgs(args)
             },
             onSubmit = {
-                val newArgs = form.onCheck()
+                val newArgs = state.form.onCheck()
                 if (newArgs != null) {
-                    editingState.value = false
+                    state.editing = false
 
                     if (newArgs != args) {
                         requestChangeArgs(newArgs)
@@ -139,7 +145,7 @@ private fun FuroShantenTilesPanel(
             }
         )
     }) {
-        if (editingState.value) {
+        if (state.editing) {
             components.Tiles()
             Spacer(Modifier.height(8.dp))
             components.ChanceTile()

@@ -11,17 +11,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.ssttkkl.mahjongutils.app.screens.base.FormState
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun TilesPanelHeader(
-    editingState: MutableState<Boolean>,
+fun <F : FormState<ARG>, ARG> TilesPanelHeader(
+    panelState: EditablePanelState<F, ARG>,
     onCancel: () -> Unit,
     onSubmit: () -> Unit
 ) {
@@ -31,9 +31,12 @@ fun TilesPanelHeader(
             Modifier.align(Alignment.CenterVertically)
         )
 
-        if (!editingState.value) {
+        if (!panelState.editing) {
             IconButton(
-                { editingState.value = true },
+                {
+                    panelState.editing = true;
+                    panelState.form.fillFormWithArgs(panelState.originArgs)
+                },
                 Modifier.align(Alignment.CenterVertically)
             ) {
                 Icon(Icons.Outlined.Edit, "", tint = MaterialTheme.colorScheme.primary)

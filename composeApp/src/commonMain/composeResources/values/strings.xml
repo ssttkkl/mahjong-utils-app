@@ -38,6 +38,7 @@
     <string name="label_waiting_tiles">Waiting Tiles</string>
     <string name="label_good_shape_advance_tiles">Good-Shape Advance Tiles</string>
     <string name="label_good_shape_improvement_tiles">Good-Shape Improvement Tiles</string>
+    <string name="label_fillback">Fill Back</string>
     <string name="text_tiles_num">Total: %1$d</string>
     <string name="text_tiles_num_short">%1$d</string>
     <string name="text_tiles_num_and_percentile">Total: %1$d (%2$s% of all)</string>

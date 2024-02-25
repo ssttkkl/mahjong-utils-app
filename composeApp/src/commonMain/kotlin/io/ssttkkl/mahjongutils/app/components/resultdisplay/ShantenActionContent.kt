@@ -1,17 +1,17 @@
 package io.ssttkkl.mahjongutils.app.components.resultdisplay
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
@@ -21,7 +21,9 @@ import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.icon_arrow_outward
 import mahjongutils.composeapp.generated.resources.label_advance_tiles
+import mahjongutils.composeapp.generated.resources.label_fillback
 import mahjongutils.composeapp.generated.resources.label_good_shape_advance_tiles
 import mahjongutils.composeapp.generated.resources.label_good_shape_improvement_tiles
 import mahjongutils.composeapp.generated.resources.label_waiting_tiles
@@ -37,6 +39,7 @@ import mahjongutils.models.Tatsu
 import mahjongutils.models.Tile
 import mahjongutils.shanten.Improvement
 import mahjongutils.shanten.ShantenWithoutGot
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 sealed class ShantenAction {
@@ -101,6 +104,7 @@ sealed class ShantenAction {
 @Composable
 fun ShantenActionCardContent(
     action: ShantenAction,
+    fillbackHandler: FillbackHandler,
     modifier: Modifier = Modifier
 ) {
     val shanten = action.shantenAfterAction
@@ -108,6 +112,7 @@ fun ShantenActionCardContent(
         Row(modifier) {
             ShantenActionContent(
                 action,
+                fillbackHandler,
                 Modifier.width(120.dp)
             )
 
@@ -153,11 +158,10 @@ fun ShantenActionCardContent(
 @Composable
 private fun ShantenActionContent(
     action: ShantenAction,
+    fillbackHandler: FillbackHandler,
     modifier: Modifier = Modifier,
-    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
-    verticalAlignment: Alignment.Vertical = Alignment.Top,
 ) {
-    Row(modifier, horizontalArrangement, verticalAlignment) {
+    Column(modifier) {
         CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
             when (action) {
                 is ShantenAction.Discard -> {
@@ -211,6 +215,11 @@ private fun ShantenActionContent(
                     TileInlineText(stringResource(Res.string.text_shanten_action_pass))
                 }
             }
+        }
+        Spacer(Modifier.height(8.dp))
+        TextButton({ fillbackHandler.fillbackShantenAction(action) }) {
+            Icon(painterResource(Res.drawable.icon_arrow_outward), "")
+            Text(stringResource(Res.string.label_fillback))
         }
     }
 }

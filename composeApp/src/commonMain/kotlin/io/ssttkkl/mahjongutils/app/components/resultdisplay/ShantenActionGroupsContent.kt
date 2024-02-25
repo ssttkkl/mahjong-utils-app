@@ -13,6 +13,7 @@ import org.jetbrains.compose.resources.stringResource
 fun LazyListScope.ShantenActionGroupsContent(
     groups: List<Pair<Int, List<ShantenAction>>>,  // shanten to actions (asc sorted)
     minShantenNum: Int,
+    fillbackHandler: FillbackHandler,
 ) {
     groups.forEach { (shantenNum, actions) ->
         LazyTopCardPanel(
@@ -30,7 +31,7 @@ fun LazyListScope.ShantenActionGroupsContent(
                 )
             },
             content = { action ->
-                ShantenActionCardContent(action)
+                ShantenActionCardContent(action, fillbackHandler)
             }
         )
 

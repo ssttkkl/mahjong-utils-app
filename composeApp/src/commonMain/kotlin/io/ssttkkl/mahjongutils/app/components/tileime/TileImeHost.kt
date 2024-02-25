@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
@@ -28,6 +26,9 @@ import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.feather.FloatingDraggableContainer
 import io.ssttkkl.mahjongutils.app.components.feather.FloatingDraggableItem
 import io.ssttkkl.mahjongutils.app.components.feather.FloatingDraggableState
+import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.icon_drag_handle
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 private fun TileImeHostOnBottom(
@@ -84,7 +85,7 @@ private fun TileImeHostFloating(
                         draggableArea {
                             if (state.pendingText.isEmpty()) {
                                 Icon(
-                                    Icons.Outlined.Menu,
+                                    painterResource(Res.drawable.icon_drag_handle),
                                     "",
                                     Modifier.align(Alignment.Center)
                                 )
