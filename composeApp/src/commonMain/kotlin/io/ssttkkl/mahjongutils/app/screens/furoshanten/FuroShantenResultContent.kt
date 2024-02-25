@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.ssttkkl.mahjongutils.app.components.onEnterKeyDown
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsContent
@@ -27,8 +28,10 @@ import kotlinx.coroutines.launch
 import mahjongutils.shanten.ShantenWithFuroChance
 
 @Composable
-fun FuroShantenResultContent(args: FuroChanceShantenArgs, shanten: ShantenWithFuroChance,
-                             requestChangeArgs: (FuroChanceShantenArgs) -> Unit) {
+fun FuroShantenResultContent(
+    args: FuroChanceShantenArgs, shanten: ShantenWithFuroChance,
+    requestChangeArgs: (FuroChanceShantenArgs) -> Unit
+) {
     // shanten to actions (asc sorted)
     val groups: List<Pair<Int, List<ShantenAction>>> = remember(shanten) {
         val groupedShanten = mutableMapOf<Int, MutableList<ShantenAction>>()
@@ -128,30 +131,30 @@ private fun FuroShantenTilesPanel(
 ) {
     val components = remember(state.form) { FuroShantenComponents(state.form) }
 
-    TopCardPanel({
-        TilesPanelHeader(
-            state,
-            onCancel = {
-                state.editing = false
-                state.form.fillFormWithArgs(args)
-            },
-            onSubmit = {
-                val newArgs = state.form.onCheck()
-                if (newArgs != null) {
-                    state.editing = false
+    val onSubmit = {
+        val newArgs = state.form.onCheck()
+        if (newArgs != null) {
+            state.editing = false
 
-                    if (newArgs != args) {
-                        requestChangeArgs(newArgs)
-                    }
-                }
+            if (newArgs != args) {
+                requestChangeArgs(newArgs)
             }
-        )
+        }
+    }
+
+    val onCancel = {
+        state.editing = false
+        state.form.fillFormWithArgs(args)
+    }
+
+    TopCardPanel({
+        TilesPanelHeader(panelState = state, onCancel = onCancel, onSubmit = onSubmit)
     }) {
         if (state.editing) {
-            components.Tiles()
+            components.Tiles(Modifier.onEnterKeyDown(onSubmit))
             Spacer(Modifier.height(8.dp))
-            components.ChanceTile()
-        }else {
+            components.ChanceTile(Modifier.onEnterKeyDown(onSubmit))
+        } else {
             CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
                 FuroShantenTiles(args.tiles, args.chanceTile)
             }

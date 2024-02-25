@@ -116,6 +116,7 @@ fun CardPanel(
 @Composable
 fun TopCardPanel(
     header: (@Composable () -> Unit)? = null,
+    modifier: Modifier = Modifier,
     caption: (@Composable ColumnScope.() -> Unit)? = null,
     noContentPadding: Boolean = false,
     content: @Composable ColumnScope.() -> Unit
@@ -123,7 +124,7 @@ fun TopCardPanel(
     with(Spacing.current) {
         CardPanel(
             header = header,
-            modifier = Modifier.fillMaxWidth().windowHorizontalMargin(),
+            modifier = modifier.fillMaxWidth().windowHorizontalMargin(),
             cardInnerModifier = if (!noContentPadding)
                 Modifier.padding(cardInnerPadding)
             else

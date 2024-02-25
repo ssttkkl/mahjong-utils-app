@@ -9,6 +9,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import io.ssttkkl.mahjongutils.app.components.onEnterKeyDown
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsContent
@@ -185,25 +188,24 @@ private fun TilesInHandPanel(
 ) {
     val components = remember(state.form) { ShantenFormComponents(state.form) }
 
+    val onSubmit = {
+        val newArgs = state.form.onCheck()
+        if (newArgs != null) {
+            state.editing = false
+
+            if (newArgs != args) {
+                requestChangeArgs(newArgs)
+            }
+        }
+    }
+    val onCancel = {
+        state.editing = false
+        state.form.fillFormWithArgs(args)
+    }
+
     TopCardPanel(
         header = {
-            TilesPanelHeader(
-                state,
-                onCancel = {
-                    state.editing = false
-                    state.form.fillFormWithArgs(args)
-                },
-                onSubmit = {
-                    val newArgs = state.form.onCheck()
-                    if (newArgs != null) {
-                        state.editing = false
-
-                        if (newArgs != args) {
-                            requestChangeArgs(newArgs)
-                        }
-                    }
-                }
-            )
+            TilesPanelHeader(panelState = state, onCancel = onCancel, onSubmit = onSubmit)
         },
         caption = {
             if (!state.editing) {
@@ -219,7 +221,7 @@ private fun TilesInHandPanel(
         }
     ) {
         if (state.editing) {
-            components.Tiles()
+            components.Tiles(Modifier.onEnterKeyDown(onSubmit))
         } else {
             AutoSingleLineTiles(args.tiles, fontSize = TileTextSize.Default.bodyLarge)
         }

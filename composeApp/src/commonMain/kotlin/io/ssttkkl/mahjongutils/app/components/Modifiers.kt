@@ -14,6 +14,11 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
 import kotlinx.coroutines.launch
 
@@ -78,5 +83,18 @@ fun Modifier.clickableButNotFocusable(
             .tapPress(interactionSource) {
                 onClick()
             }
+    }
+}
+
+fun Modifier.onEnterKeyDown(
+    action: () -> Unit
+): Modifier {
+    return onKeyEvent {
+        if (it.type == KeyEventType.KeyUp && it.key == Key.Enter) {
+            action()
+            true
+        } else {
+            false
+        }
     }
 }
