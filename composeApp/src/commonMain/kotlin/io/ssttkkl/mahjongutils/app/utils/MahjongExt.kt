@@ -165,7 +165,7 @@ val Yaku.localizedName
         else -> error("unknown yaku: $this")
     }
 
-fun List<Tile>.remove(vararg tile: Tile): List<Tile> {
+fun List<Tile>.removeLast(vararg tile: Tile): List<Tile> {
     return toMutableList().apply {
         tile.forEach { t ->
             val lastIndexOfTile = lastIndexOf(t)

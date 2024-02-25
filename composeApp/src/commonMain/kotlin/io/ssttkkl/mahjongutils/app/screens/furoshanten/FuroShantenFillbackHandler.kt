@@ -4,49 +4,63 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.FillbackHandler
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
 import io.ssttkkl.mahjongutils.app.screens.common.EditablePanelState
-import io.ssttkkl.mahjongutils.app.utils.remove
+import io.ssttkkl.mahjongutils.app.utils.removeLast
+import mahjongutils.models.Tile
 
 class FuroShantenFillbackHandler(
     val panelState: EditablePanelState<FuroShantenFormState, FuroChanceShantenArgs>,
     val requestFocus: () -> Unit
 ) : FillbackHandler {
-    override fun fillbackShantenAction(action: ShantenAction) {
+    private fun fillbackAction(action: ShantenAction, draw: Tile?, discard: Tile?) {
         val args = panelState.originArgs
         panelState.editing = true
         panelState.form.fillFormWithArgs(args)
         requestFocus()
-        when (action) {
+        val newTiles = when (action) {
             is ShantenAction.Chi -> {
-                val newTiles = args.tiles.remove(
+                args.tiles.removeLast(
                     action.tatsu.first,
                     action.tatsu.second,
                     action.discard
-                )
-                panelState.form.tiles = newTiles
-                panelState.form.chanceTile = null
+                ).toMutableList()
             }
 
             is ShantenAction.Pon -> {
-                val newTiles = args.tiles.remove(
+                args.tiles.removeLast(
                     action.tile,
                     action.tile,
                     action.discard
-                )
-                panelState.form.tiles = newTiles
-                panelState.form.chanceTile = null
+                ).toMutableList()
             }
 
             is ShantenAction.Minkan -> {
-                val newTiles = args.tiles.remove(
+                args.tiles.removeLast(
                     action.tile,
                     action.tile,
                     action.tile
-                )
-                panelState.form.tiles = newTiles
-                panelState.form.chanceTile = null
+                ).toMutableList()
             }
 
-            else -> {}
+            else -> {
+                arrayListOf()
+            }
         }
+
+        draw?.let { newTiles.add(draw) }
+        discard?.let { newTiles.removeLast(discard) }
+        panelState.form.tiles = newTiles
+        panelState.form.chanceTile = null
+    }
+
+    override fun fillbackAction(action: ShantenAction) {
+        fillbackAction(action, null, null)
+    }
+
+    override fun fillbackActionAndDraw(action: ShantenAction, draw: Tile) {
+        fillbackAction(action, draw, null)
+    }
+
+    override fun fillbackActionAndDrawAndDiscard(action: ShantenAction, draw: Tile, discard: Tile) {
+        fillbackAction(action, draw, discard)
     }
 }

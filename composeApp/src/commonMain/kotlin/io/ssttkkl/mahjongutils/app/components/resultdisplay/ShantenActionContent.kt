@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.components.resultdisplay
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
+import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
@@ -128,7 +130,11 @@ fun ShantenActionCardContent(
                     ),
                     shanten.advance.sorted(),
                     shanten.advanceNum
-                )
+                ) { 
+                    TileImage(it, Modifier.clickable {
+                        fillbackHandler.fillbackActionAndDraw(action, it)
+                    })
+                }
 
                 shanten.goodShapeAdvance?.let { goodShapeAdvance ->
                     VerticalSpacerBetweenPanels()
@@ -138,16 +144,21 @@ fun ShantenActionCardContent(
                         goodShapeAdvance.sorted(),
                         shanten.goodShapeAdvanceNum ?: 0,
                         1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
-                    )
+                    ) { 
+                        TileImage(it, Modifier.clickable {
+                            fillbackHandler.fillbackActionAndDraw(action, it)
+                        })
+                    }
                 }
 
                 shanten.goodShapeImprovement?.let { goodShapeImprovement ->
                     VerticalSpacerBetweenPanels()
 
                     ImprovementsPanel(
-                        stringResource(Res.string.label_good_shape_improvement_tiles),
+                        action,
                         goodShapeImprovement,
-                        shanten.goodShapeImprovementNum ?: 0
+                        shanten.goodShapeImprovementNum ?: 0,
+                        fillbackHandler
                     )
                 }
             }
@@ -219,7 +230,7 @@ private fun ShantenActionContent(
 
         if (action !is ShantenAction.Pass) {
             Spacer(Modifier.height(8.dp))
-            TextButton({ fillbackHandler.fillbackShantenAction(action) }) {
+            TextButton({ fillbackHandler.fillbackAction(action) }) {
                 Icon(painterResource(Res.drawable.icon_arrow_outward), "")
                 Text(stringResource(Res.string.label_fillback))
             }
@@ -229,11 +240,12 @@ private fun ShantenActionContent(
 
 @Composable
 private fun ImprovementsPanel(
-    label: String,
+    action: ShantenAction,
     improvement: Map<Tile, List<Improvement>>,
-    improvementNum: Int
+    improvementNum: Int,
+    fillbackHandler: FillbackHandler
 ) {
-    Panel({ Text(label) }) {
+    Panel({ Text(stringResource(Res.string.label_good_shape_improvement_tiles)) }) {
         improvement.map {
             // tile, discard_tiles, advance_num
             // 摸tile, 打discard_tiles, 进advance_num张
@@ -249,7 +261,16 @@ private fun ImprovementsPanel(
                     tile.emoji,
                     discardTiles.joinToString("") { it.emoji },
                     advanceNum
-                )
+                ),
+                tileImage = { 
+                    TileImage(it, Modifier.clickable {
+                        if (it == tile) {
+                            fillbackHandler.fillbackActionAndDraw(action, tile)
+                        } else if (discardTiles.contains(it)) {
+                            fillbackHandler.fillbackActionAndDrawAndDiscard(action, tile, it!!)
+                        }
+                    })
+                }
             )
             Spacer(Modifier.height(8.dp))
         }

@@ -132,8 +132,9 @@ fun LieDownTileImage(
 
 @Composable
 fun Tiles(
-    tiles: Iterable<Tile>,
+    tiles: Iterable<Tile?>,
     modifier: Modifier = Modifier,
+    tileImage: @Composable (Tile?) -> Unit = { TileImage(it) },
     color: Color = Color.Unspecified,
     fontSize: TextUnit = LocalTileTextSize.current,
     fontStyle: FontStyle? = null,
@@ -153,47 +154,7 @@ fun Tiles(
     TileInlineText(
         text = tiles.annotatedAsInline(),
         modifier = modifier,
-        color = color,
-        fontSize = fontSize,
-        fontStyle = fontStyle,
-        fontWeight = fontWeight,
-        fontFamily = fontFamily,
-        letterSpacing = letterSpacing,
-        textDecoration = textDecoration,
-        textAlign = textAlign,
-        lineHeight = lineHeight,
-        overflow = overflow,
-        softWrap = softWrap,
-        maxLines = maxLines,
-        minLines = minLines,
-        onTextLayout = onTextLayout,
-        style = style
-    )
-}
-
-@Composable
-fun LieDownTiles(
-    tiles: Iterable<Tile>,
-    modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified,
-    fontSize: TextUnit = LocalTileTextSize.current,
-    fontStyle: FontStyle? = null,
-    fontWeight: FontWeight? = null,
-    fontFamily: FontFamily? = null,
-    letterSpacing: TextUnit = TextUnit.Unspecified,
-    textDecoration: TextDecoration? = null,
-    textAlign: TextAlign? = null,
-    lineHeight: TextUnit = TextUnit.Unspecified,
-    overflow: TextOverflow = TextOverflow.Clip,
-    softWrap: Boolean = true,
-    maxLines: Int = Int.MAX_VALUE,
-    minLines: Int = 1,
-    onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current
-) {
-    LieDownTileInlineText(
-        text = tiles.annotatedAsInline(),
-        modifier = modifier,
+        tileImage = tileImage,
         color = color,
         fontSize = fontSize,
         fontStyle = fontStyle,
@@ -216,6 +177,7 @@ fun LieDownTiles(
 fun AutoSingleLineTiles(
     tiles: Iterable<Tile>,
     modifier: Modifier = Modifier,
+    tileImage: @Composable (Tile?) -> Unit = { TileImage(it) },
     color: Color = Color.Unspecified,
     fontSize: TextUnit = LocalTileTextSize.current,
     fontStyle: FontStyle? = null,
@@ -233,6 +195,7 @@ fun AutoSingleLineTiles(
     TileInlineAutoSingleLineText(
         text = tiles.annotatedAsInline(),
         modifier = modifier,
+        tileImage = tileImage,
         color = color,
         fontSize = fontSize,
         fontStyle = fontStyle,

@@ -36,7 +36,7 @@ fun ChiTiles(
     fontSize: TextUnit = LocalTileTextSize.current,
 ) {
     FlowRow(modifier) {
-        LieDownTiles(listOf(chi.tile), fontSize = fontSize)
+        Tiles(listOf(chi.tile), fontSize = fontSize, tileImage = { LieDownTileImage(it) })
         Tiles(chi.tiles - chi.tile, fontSize = fontSize)
     }
 }
@@ -49,7 +49,7 @@ fun PonTiles(
     fontSize: TextUnit = LocalTileTextSize.current,
 ) {
     FlowRow(modifier) {
-        LieDownTiles(listOf(pon.tile), fontSize = fontSize)
+        Tiles(listOf(pon.tile), fontSize = fontSize, tileImage = { LieDownTileImage(it) })
         Tiles(listOf(pon.tile, pon.tile), fontSize = fontSize)
     }
 }
@@ -62,7 +62,7 @@ fun MinkanTiles(
     fontSize: TextUnit = LocalTileTextSize.current,
 ) {
     FlowRow(modifier) {
-        LieDownTiles(listOf(kan.tile), fontSize = fontSize)
+        Tiles(listOf(kan.tile), fontSize = fontSize, tileImage = { LieDownTileImage(it) })
         Tiles(listOf(kan.tile, kan.tile, kan.tile), fontSize = fontSize)
     }
 }
