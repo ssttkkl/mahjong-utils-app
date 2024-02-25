@@ -42,7 +42,16 @@ class FuroShantenScreenModel :
         chanceTileErrMsg.clear()
     }
 
-    override fun onCheck(): Boolean {
+    override fun fillFormWithArgs(args: FuroChanceShantenArgs, check: Boolean) {
+        tiles = args.tiles
+        chanceTile = args.chanceTile
+        allowChi = args.allowChi
+        if (check) {
+            postCheck()
+        }
+    }
+
+    override fun onCheck(): FuroChanceShantenArgs? {
         tilesErrMsg.clear()
         chanceTileErrMsg.clear()
 
@@ -80,12 +89,14 @@ class FuroShantenScreenModel :
             }
         }
 
-        return tilesErrMsg.isEmpty() && chanceTileErrMsg.isEmpty()
+        if (tilesErrMsg.isEmpty() && chanceTileErrMsg.isEmpty()) {
+            return FuroChanceShantenArgs(tiles, chanceTile!!, allowChi)
+        } else {
+            return null
+        }
     }
 
-    override suspend fun onCalc(): FuroChanceShantenCalcResult {
-        val chanceTile = chanceTile!!
-        val args = FuroChanceShantenArgs(tiles, chanceTile, allowChi)
+    override suspend fun onCalc(args: FuroChanceShantenArgs): FuroChanceShantenCalcResult {
         screenModelScope.launch(Dispatchers.Default + NonCancellable) {
             FuroChanceShantenArgs.history.insert(args)
         }

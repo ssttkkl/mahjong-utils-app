@@ -185,6 +185,23 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
         doraErrMsg.clear()
     }
 
+    override fun fillFormWithArgs(args: HoraArgs, check: Boolean) {
+        tiles = args.tiles
+        furo.clear()
+        furo.addAll(args.furo.map(FuroModel::fromFuro))
+        agari = args.agari
+        tsumo = args.tsumo
+        dora = args.dora.toString()
+        selfWind = args.selfWind
+        roundWind = args.roundWind
+        extraYaku = args.extraYaku
+        horaOptions = args.options
+
+        if (check) {
+            postCheck()
+        }
+    }
+
     private val conflictingYaku by derivedStateOf {
         buildSet {
             extraYaku.forEach {
@@ -268,7 +285,7 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun onCheck(): Boolean {
+    override fun onCheck(): HoraArgs? {
         tilesErrMsg.clear()
         furoErrMsg.clear()
         agariErrMsg.clear()
@@ -337,21 +354,24 @@ class HoraScreenModel : FormAndResultScreenModel<HoraArgs, HoraCalcResult>() {
                 }
             }
         }
-        return tilesErrMsg.isEmpty() && furoErrMsg.isEmpty() && agariErrMsg.isEmpty() && doraErrMsg.isEmpty() && validFuro
+        if (tilesErrMsg.isEmpty() && furoErrMsg.isEmpty() && agariErrMsg.isEmpty() && doraErrMsg.isEmpty() && validFuro) {
+            return HoraArgs(
+                tiles,
+                furo.map { it.toFuro() },
+                (agari ?: autoDetectedAgari)!!,
+                tsumo,
+                dora ?: 0,
+                selfWind,
+                roundWind,
+                extraYaku,
+                horaOptions
+            )
+        } else {
+            return null
+        }
     }
 
-    override suspend fun onCalc(): HoraCalcResult {
-        val args = HoraArgs(
-            tiles,
-            furo.map { it.toFuro() },
-            (agari ?: autoDetectedAgari)!!,
-            tsumo,
-            dora.toIntOrNull() ?: 0,
-            selfWind,
-            roundWind,
-            extraYaku,
-            horaOptions
-        )
+    override suspend fun onCalc(args: HoraArgs): HoraCalcResult {
         HoraArgs.history.insert(args)
         return args.calc()
     }

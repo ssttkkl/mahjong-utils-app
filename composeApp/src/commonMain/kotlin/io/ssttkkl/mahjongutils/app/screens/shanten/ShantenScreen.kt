@@ -39,9 +39,6 @@ import mahjongutils.composeapp.generated.resources.text_regular_shanten_desc
 import mahjongutils.composeapp.generated.resources.text_union_shanten_desc
 import mahjongutils.composeapp.generated.resources.title_shanten
 import mahjongutils.composeapp.generated.resources.title_shanten_result
-import mahjongutils.shanten.ShantenWithoutGot
-import mahjongutils.shanten.asWithGot
-import mahjongutils.shanten.asWithoutGot
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -140,10 +137,9 @@ object ShantenScreen :
         result: ShantenCalcResult,
         modifier: Modifier
     ) {
-        if (result.result.shantenInfo is ShantenWithoutGot) {
-            ShantenResultContent(result.args, result.result.shantenInfo.asWithoutGot)
-        } else {
-            ShantenResultContent(result.args, result.result.shantenInfo.asWithGot)
+        val handler = getChangeArgsByResultContentHandler()
+        ShantenResultContent(result.args, result.result.shantenInfo) {
+            handler(it)
         }
     }
 
@@ -177,9 +173,6 @@ object ShantenScreen :
         model: ShantenScreenModel,
         appState: AppState
     ) {
-        model.tiles = item.args.tiles
-        model.shantenMode = item.args.mode
-
-        model.postCheck()
+        model.fillFormWithArgs(item.args)
     }
 }

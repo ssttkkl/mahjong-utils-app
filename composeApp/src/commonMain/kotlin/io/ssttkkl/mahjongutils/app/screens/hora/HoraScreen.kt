@@ -465,29 +465,22 @@ object HoraScreen :
         model: HoraScreenModel,
         appState: AppState
     ) {
-        with(item.args) {
-            model.tiles = tiles
-            model.furo.clear()
-            model.furo.addAll(furo.map(FuroModel::fromFuro))
-            model.agari = agari
-            model.tsumo = tsumo
-            model.dora = dora.toString()
-            model.selfWind = selfWind
-            model.roundWind = roundWind
-            model.extraYaku = extraYaku
-
-            if (model.horaOptions != options) {
-                appState.appDialogState = AppDialogState { onDismissRequest ->
-                    OverwriteHoraOptionsAlertDialog(onDismissRequest) {
-                        model.horaOptions = options
+        val args = item.args
+        if (model.horaOptions != args.options) {
+            appState.appDialogState = AppDialogState { onDismissRequest ->
+                OverwriteHoraOptionsAlertDialog(onDismissRequest) { yes ->
+                    if (yes) {
+                        model.fillFormWithArgs(args)
+                    } else {
+                        model.fillFormWithArgs(args.copy(options = model.horaOptions))
                     }
-                }.also {
-                    it.visible = true
                 }
+            }.also {
+                it.visible = true
             }
+        } else {
+            model.fillFormWithArgs(args)
         }
-
-        model.postCheck()
     }
 }
 
@@ -495,7 +488,7 @@ object HoraScreen :
 @Composable
 private fun OverwriteHoraOptionsAlertDialog(
     onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit
+    onConfirmation: (yes: Boolean) -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
@@ -508,10 +501,10 @@ private fun OverwriteHoraOptionsAlertDialog(
 
                 Row {
                     Surface(Modifier.weight(1f)) {}
-                    TextButton({ onDismissRequest() }) {
+                    TextButton({ onConfirmation(false);onDismissRequest() }) {
                         Text(stringResource(Res.string.label_no))
                     }
-                    TextButton({ onConfirmation();onDismissRequest() }) {
+                    TextButton({ onConfirmation(true);onDismissRequest() }) {
                         Text(stringResource(Res.string.label_yes))
                     }
                 }

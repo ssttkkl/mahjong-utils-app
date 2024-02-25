@@ -12,6 +12,10 @@ import kotlinx.coroutines.launch
 abstract class FormAndResultScreenModel<ARG, RES> : ScreenModel {
     val result = MutableStateFlow<Deferred<RES>?>(null)
 
+    open fun fillFormWithArgs(args: ARG, check: Boolean = true) {
+
+    }
+
     open fun resetForm() {
 
     }
@@ -21,20 +25,21 @@ abstract class FormAndResultScreenModel<ARG, RES> : ScreenModel {
     }
 
     fun postCheck() {
-        screenModelScope.launch(Dispatchers.Default) {
+        screenModelScope.launch(Dispatchers.Main) {
             onCheck()
         }
     }
 
-    open fun onCheck(): Boolean = true
+    open fun onCheck(): ARG? = null
 
-    abstract suspend fun onCalc(): RES
+    abstract suspend fun onCalc(args: ARG): RES
 
     fun onSubmit() {
-        if (onCheck()) {
+        val args = onCheck()
+        if (args != null) {
             screenModelScope.launch(Dispatchers.Default) {
                 result.value = screenModelScope.async(Dispatchers.Default) {
-                    onCalc()
+                    onCalc(args)
                 }
             }
         }

@@ -158,11 +158,7 @@ object FuroShantenScreen :
         model: FuroShantenScreenModel,
         appState: AppState
     ) {
-        model.tiles = item.args.tiles
-        model.chanceTile = item.args.chanceTile
-        model.allowChi = item.args.allowChi
-
-        model.postCheck()
+        model.fillFormWithArgs(item.args)
     }
 }
 

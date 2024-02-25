@@ -30,13 +30,21 @@ class ShantenScreenModel : FormAndResultScreenModel<ShantenArgs, ShantenCalcResu
 
     val tilesErrMsg = mutableStateListOf<StringResource>()
 
+    override fun fillFormWithArgs(args: ShantenArgs, check: Boolean) {
+        tiles = args.tiles
+        shantenMode = args.mode
+        if (check) {
+            postCheck()
+        }
+    }
+
     override fun resetForm() {
         tiles = emptyList()
         shantenMode = ShantenMode.Union
         tilesErrMsg.clear()
     }
 
-    override fun onCheck(): Boolean {
+    override fun onCheck(): ShantenArgs? {
         tilesErrMsg.clear()
 
         val muArgs = CommonShantenArgs(tiles)
@@ -63,11 +71,14 @@ class ShantenScreenModel : FormAndResultScreenModel<ShantenArgs, ShantenCalcResu
             }
         }
 
-        return tilesErrMsg.isEmpty()
+        return if (!tilesErrMsg.isEmpty()) {
+            null
+        } else {
+            ShantenArgs(tiles, shantenMode)
+        }
     }
 
-    override suspend fun onCalc(): ShantenCalcResult {
-        val args = ShantenArgs(tiles, shantenMode)
+    override suspend fun onCalc(args: ShantenArgs): ShantenCalcResult {
         screenModelScope.launch(Dispatchers.Default + NonCancellable) {
             ShantenArgs.history.insert(args)
         }
