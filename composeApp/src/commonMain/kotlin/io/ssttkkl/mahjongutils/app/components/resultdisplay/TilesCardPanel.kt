@@ -4,6 +4,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
+import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.utils.percentile
 import mahjongutils.composeapp.generated.resources.Res
@@ -32,14 +33,20 @@ fun TilesWithNumTopCardPanel(
     label: String,
     tiles: Collection<Tile>,
     tileNum: Int,
-    percentile: Double? = null
+    percentile: Double? = null,
+    tileImage: @Composable (Tile) -> Unit = { TileImage(it) },
 ) {
     TopCardPanel(
         { Text(label) },
         caption = { TilesNumCaption(tileNum, percentile) }
     ) {
         if (tiles.isNotEmpty()) {
-            Tiles(tiles.sorted())
+            Tiles(
+                tiles.sorted(),
+                tileImage = {
+                    it?.let { tileImage(it) }
+                },
+            )
         }
     }
 }
@@ -50,14 +57,20 @@ fun TilesWithNumPanel(
     label: String,
     tiles: Collection<Tile>,
     tileNum: Int,
-    percentile: Double? = null
+    percentile: Double? = null,
+    tileImage: @Composable (Tile) -> Unit = { TileImage(it) },
 ) {
     Panel(
         { Text(label) },
         caption = { TilesNumCaption(tileNum, percentile) }
     ) {
         if (tiles.isNotEmpty()) {
-            Tiles(tiles.sorted())
+            Tiles(
+                tiles.sorted(),
+                tileImage = {
+                    it?.let { tileImage(it) }
+                },
+            )
         }
     }
 }

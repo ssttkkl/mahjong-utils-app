@@ -1,6 +1,6 @@
 package io.ssttkkl.mahjongutils.app.components.resultdisplay
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,13 +8,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
+import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.Spacing
@@ -101,6 +100,7 @@ sealed class ShantenAction {
 @Composable
 fun ShantenActionCardContent(
     action: ShantenAction,
+    fillbackHandler: FillbackHandler,
     modifier: Modifier = Modifier
 ) {
     val shanten = action.shantenAfterAction
@@ -108,10 +108,12 @@ fun ShantenActionCardContent(
         Row(modifier) {
             ShantenActionContent(
                 action,
-                Modifier.width(120.dp)
+                Modifier.width(100.dp).clickable {
+                    fillbackHandler.fillbackAction(action)
+                }
             )
 
-            VerticalDivider()
+            Spacer(Modifier.width(windowHorizontalMargin))
 
             Column(Modifier.weight(1f)) {
                 TilesWithNumPanel(
@@ -123,7 +125,11 @@ fun ShantenActionCardContent(
                     ),
                     shanten.advance.sorted(),
                     shanten.advanceNum
-                )
+                ) {
+                    TileImage(it, Modifier.clickable {
+                        fillbackHandler.fillbackActionAndDraw(action, it)
+                    })
+                }
 
                 shanten.goodShapeAdvance?.let { goodShapeAdvance ->
                     VerticalSpacerBetweenPanels()
@@ -133,16 +139,21 @@ fun ShantenActionCardContent(
                         goodShapeAdvance.sorted(),
                         shanten.goodShapeAdvanceNum ?: 0,
                         1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
-                    )
+                    ) {
+                        TileImage(it, Modifier.clickable {
+                            fillbackHandler.fillbackActionAndDraw(action, it)
+                        })
+                    }
                 }
 
                 shanten.goodShapeImprovement?.let { goodShapeImprovement ->
                     VerticalSpacerBetweenPanels()
 
                     ImprovementsPanel(
-                        stringResource(Res.string.label_good_shape_improvement_tiles),
+                        action,
                         goodShapeImprovement,
-                        shanten.goodShapeImprovementNum ?: 0
+                        shanten.goodShapeImprovementNum ?: 0,
+                        fillbackHandler
                     )
                 }
             }
@@ -154,62 +165,66 @@ fun ShantenActionCardContent(
 private fun ShantenActionContent(
     action: ShantenAction,
     modifier: Modifier = Modifier,
-    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
-    verticalAlignment: Alignment.Vertical = Alignment.Top,
 ) {
-    Row(modifier, horizontalArrangement, verticalAlignment) {
-        CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
-            when (action) {
-                is ShantenAction.Discard -> {
-                    TileInlineText(
-                        stringResource(
-                            Res.string.text_shanten_action_discard,
-                            action.tile.emoji
-                        )
-                    )
-                }
+    CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
+        when (action) {
+            is ShantenAction.Discard -> {
+                TileInlineText(
+                    stringResource(
+                        Res.string.text_shanten_action_discard,
+                        action.tile.emoji
+                    ),
+                    modifier
+                )
+            }
 
-                is ShantenAction.Ankan -> {
-                    TileInlineText(
-                        stringResource(
-                            Res.string.text_shanten_action_ankan,
-                            action.tile.emoji
-                        )
-                    )
-                }
+            is ShantenAction.Ankan -> {
+                TileInlineText(
+                    stringResource(
+                        Res.string.text_shanten_action_ankan,
+                        action.tile.emoji
+                    ),
+                    modifier
+                )
+            }
 
-                is ShantenAction.Chi -> {
-                    TileInlineText(
-                        stringResource(
-                            Res.string.text_shanten_action_chi_and_discard,
-                            action.tatsu.first.emoji,
-                            action.tatsu.second.emoji,
-                            action.discard.emoji
-                        )
-                    )
-                }
+            is ShantenAction.Chi -> {
+                TileInlineText(
+                    stringResource(
+                        Res.string.text_shanten_action_chi_and_discard,
+                        action.tatsu.first.emoji,
+                        action.tatsu.second.emoji,
+                        action.discard.emoji
+                    ),
+                    modifier
+                )
+            }
 
-                is ShantenAction.Pon -> {
-                    TileInlineText(
-                        stringResource(
-                            Res.string.text_shanten_action_pon_and_discard,
-                            action.discard.emoji
-                        )
-                    )
-                }
+            is ShantenAction.Pon -> {
+                TileInlineText(
+                    stringResource(
+                        Res.string.text_shanten_action_pon_and_discard,
+                        action.discard.emoji
+                    ),
+                    modifier
+                )
+            }
 
-                is ShantenAction.Minkan -> {
-                    TileInlineText(
-                        stringResource(
-                            Res.string.text_shanten_action_minkan,
-                            action.tile.emoji
-                        )
-                    )
-                }
+            is ShantenAction.Minkan -> {
+                TileInlineText(
+                    stringResource(
+                        Res.string.text_shanten_action_minkan,
+                        action.tile.emoji
+                    ),
+                    modifier
+                )
+            }
 
-                is ShantenAction.Pass -> {
-                    TileInlineText(stringResource(Res.string.text_shanten_action_pass))
-                }
+            is ShantenAction.Pass -> {
+                TileInlineText(
+                    stringResource(Res.string.text_shanten_action_pass),
+                    modifier
+                )
             }
         }
     }
@@ -217,11 +232,12 @@ private fun ShantenActionContent(
 
 @Composable
 private fun ImprovementsPanel(
-    label: String,
+    action: ShantenAction,
     improvement: Map<Tile, List<Improvement>>,
-    improvementNum: Int
+    improvementNum: Int,
+    fillbackHandler: FillbackHandler
 ) {
-    Panel({ Text(label) }) {
+    Panel({ Text(stringResource(Res.string.label_good_shape_improvement_tiles)) }) {
         improvement.map {
             // tile, discard_tiles, advance_num
             // 摸tile, 打discard_tiles, 进advance_num张
@@ -237,7 +253,16 @@ private fun ImprovementsPanel(
                     tile.emoji,
                     discardTiles.joinToString("") { it.emoji },
                     advanceNum
-                )
+                ),
+                tileImage = {
+                    TileImage(it, Modifier.clickable {
+                        if (it == tile) {
+                            fillbackHandler.fillbackActionAndDraw(action, tile)
+                        } else if (discardTiles.contains(it)) {
+                            fillbackHandler.fillbackActionAndDrawAndDiscard(action, tile, it!!)
+                        }
+                    })
+                }
             )
             Spacer(Modifier.height(8.dp))
         }

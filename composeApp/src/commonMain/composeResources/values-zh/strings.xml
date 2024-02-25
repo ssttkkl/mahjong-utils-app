@@ -38,6 +38,7 @@
     <string name="label_waiting_tiles">听牌</string>
     <string name="label_good_shape_advance_tiles">好形进张</string>
     <string name="label_good_shape_improvement_tiles">好形改良</string>
+    <string name="label_fillback">回填</string>
     <string name="text_tiles_num">共%1$d枚</string>
     <string name="text_tiles_num_short">%1$d枚</string>
     <string name="text_tiles_num_and_percentile">共%1$d枚（%2$s%）</string>

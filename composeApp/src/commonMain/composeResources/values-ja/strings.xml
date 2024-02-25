@@ -38,6 +38,7 @@
     <string name="label_waiting_tiles">当たり牌</string>
     <string name="label_good_shape_advance_tiles">好形受け入れ</string>
     <string name="label_good_shape_improvement_tiles">好形変化</string>
+    <string name="label_fillback">Fill Back</string>
     <string name="text_tiles_num">%1$d枚</string>
     <string name="text_tiles_num_short">%1$d枚</string>
     <string name="text_tiles_num_and_percentile">%1$d枚（%1$s%）</string>

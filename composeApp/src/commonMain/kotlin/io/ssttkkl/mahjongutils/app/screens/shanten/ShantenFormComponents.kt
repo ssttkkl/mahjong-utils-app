@@ -18,8 +18,8 @@ import org.jetbrains.compose.resources.stringResource
 
 class ShantenFormComponents(val form: ShantenFormState) {
     @Composable
-    fun Tiles() {
-        ValidationField(form.tilesErrMsg) { isError ->
+    fun Tiles(modifier: Modifier = Modifier) {
+        ValidationField(form.tilesErrMsg, modifier) { isError ->
             TileField(
                 value = form.tiles,
                 onValueChange = { form.tiles = it },

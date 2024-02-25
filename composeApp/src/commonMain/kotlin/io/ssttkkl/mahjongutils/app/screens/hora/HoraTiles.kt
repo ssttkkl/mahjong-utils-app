@@ -16,8 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.tile.FuroTiles
-import io.ssttkkl.mahjongutils.app.components.tile.LieDownTiles
+import io.ssttkkl.mahjongutils.app.components.tile.LieDownTileImage
 import io.ssttkkl.mahjongutils.app.components.tile.TileInlineAutoSingleLineText
+import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.components.tile.annotatedAsInline
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
@@ -40,9 +41,10 @@ fun HoraTiles(args: HoraArgs) {
                     reducedTileSize = it.textSize
                 }
             )
-            LieDownTiles(
+            Tiles(
                 listOf(args.agari),
-                fontSize = reducedTileSize
+                fontSize = reducedTileSize,
+                tileImage = { LieDownTileImage(it) }
             )
         }
         if (args.furo.isNotEmpty()) {

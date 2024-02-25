@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -40,16 +41,19 @@ private val tileContentIdRevMapping = tileContentIdMapping.entries.associate {
 
 private const val tileBackContentId = "tile-back"
 
-fun Tile.annotatedAsInline(
+fun Tile?.annotatedAsInline(
     fontSize: TextUnit = TextUnit.Unspecified
 ): AnnotatedString = buildAnnotatedString {
     val tile = this@annotatedAsInline
     pushStyle(SpanStyle(fontSize = fontSize))
-    appendInlineContent(tileContentIdRevMapping[tile]!!, tile.toString())
+    appendInlineContent(
+        tileContentIdRevMapping[tile] ?: tileBackContentId,
+        tile?.toString() ?: "0z"
+    )
     pop()
 }
 
-fun Iterable<Tile>.annotatedAsInline(
+fun Iterable<Tile?>.annotatedAsInline(
     fontSize: TextUnit = TextUnit.Unspecified
 ): AnnotatedString =
     buildAnnotatedString {
@@ -60,11 +64,7 @@ fun Iterable<Tile>.annotatedAsInline(
 
 fun tileBackInline(
     fontSize: TextUnit = TextUnit.Unspecified
-): AnnotatedString = buildAnnotatedString {
-    pushStyle(SpanStyle(fontSize = fontSize))
-    appendInlineContent(tileBackContentId, "0z")
-    pop()
-}
+): AnnotatedString = (null as Tile?).annotatedAsInline(fontSize)
 
 private fun annotateTileFromEmoji(
     charSeq: CharSequence,
@@ -101,46 +101,49 @@ private fun annotateTileFromEmoji(
     }
 }
 
-private val tileInlineTextContent = TileModel.all.associate { tile ->
-    tileContentIdRevMapping[tile]!! to InlineTextContent(
-        Placeholder(
-            1.em, 1.4.em, // 牌图片的比例是1.4:1
-            PlaceholderVerticalAlign.TextCenter
-        )
-    ) {
-        TileImage(tile)
+@Composable
+private fun getTileInlineTextContent(
+    tile: Tile?,
+    tileImage: @Composable (Tile?) -> Unit
+): InlineTextContent {
+    // TODO: 不要写死
+    val placeholderHeight = 1.4.em  // 牌的比例是1:1.4
+    return remember(placeholderHeight, tile) {
+        InlineTextContent(
+            Placeholder(
+                1.em, placeholderHeight,
+                PlaceholderVerticalAlign.TextCenter
+            )
+        ) {
+            tileImage(tile)
+        }
     }
-} + Pair(tileBackContentId, InlineTextContent(
-    Placeholder(
-        1.em, 1.4.em, // 牌图片的比例是1.4:1
-        PlaceholderVerticalAlign.TextCenter
-    )
-) {
-    TileImage(null)
-})
+}
 
-private val lieDownTileInlineTextContent = TileModel.all.associate { tile ->
-    tileContentIdRevMapping[tile]!! to InlineTextContent(
-        Placeholder(
-            1.4.em, 1.em, // 牌图片的比例是1.4:1
-            PlaceholderVerticalAlign.TextBottom
+@Composable
+private fun tileInlineTextContent(
+    tileImage: @Composable (Tile?) -> Unit
+): Map<String, InlineTextContent> {
+    return buildMap {
+        TileModel.all.forEach { tile ->
+            put(
+                tileContentIdRevMapping[tile]!!,
+                getTileInlineTextContent(tile, tileImage)
+            )
+        }
+
+        put(
+            tileBackContentId,
+            getTileInlineTextContent(null, tileImage)
         )
-    ) {
-        LieDownTileImage(tile)
     }
-} + Pair(tileBackContentId, InlineTextContent(
-    Placeholder(
-        1.4.em, 1.em, // 牌图片的比例是1.4:1
-        PlaceholderVerticalAlign.TextBottom
-    )
-) {
-    LieDownTileImage(null)
-})
+}
 
 @Composable
 fun TileInlineText(
     text: CharSequence,
     modifier: Modifier = Modifier,
+    tileImage: @Composable (Tile?) -> Unit = { TileImage(it) },
     color: Color = Color.Unspecified,
     fontSize: TextUnit = TextUnit.Unspecified,
     tileSize: TextUnit = LocalTileTextSize.current,
@@ -160,50 +163,7 @@ fun TileInlineText(
 ) {
     Text(
         text = annotateTileFromEmoji(text, tileSize),
-        inlineContent = tileInlineTextContent,
-        modifier = modifier,
-        color = color,
-        fontSize = fontSize,
-        fontStyle = fontStyle,
-        fontWeight = fontWeight,
-        fontFamily = fontFamily,
-        letterSpacing = letterSpacing,
-        textDecoration = textDecoration,
-        textAlign = textAlign,
-        lineHeight = lineHeight,
-        overflow = overflow,
-        softWrap = softWrap,
-        maxLines = maxLines,
-        minLines = minLines,
-        onTextLayout = onTextLayout,
-        style = style,
-    )
-}
-
-@Composable
-fun LieDownTileInlineText(
-    text: CharSequence,
-    modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified,
-    fontSize: TextUnit = TextUnit.Unspecified,
-    tileSize: TextUnit = LocalTileTextSize.current,
-    fontStyle: FontStyle? = null,
-    fontWeight: FontWeight? = null,
-    fontFamily: FontFamily? = null,
-    letterSpacing: TextUnit = TextUnit.Unspecified,
-    textDecoration: TextDecoration? = null,
-    textAlign: TextAlign? = null,
-    lineHeight: TextUnit = TextUnit.Unspecified,
-    overflow: TextOverflow = TextOverflow.Clip,
-    softWrap: Boolean = true,
-    maxLines: Int = Int.MAX_VALUE,
-    minLines: Int = 1,
-    onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current,
-) {
-    Text(
-        text = annotateTileFromEmoji(text, tileSize),
-        inlineContent = lieDownTileInlineTextContent,
+        inlineContent = tileInlineTextContent(tileImage),
         modifier = modifier,
         color = color,
         fontSize = fontSize,
@@ -227,6 +187,7 @@ fun LieDownTileInlineText(
 fun TileInlineAutoSingleLineText(
     text: CharSequence,
     modifier: Modifier = Modifier,
+    tileImage: @Composable (Tile?) -> Unit = { TileImage(it) },
     color: Color = Color.Unspecified,
     fontSize: TextUnit = TextUnit.Unspecified,
     tileSize: TextUnit = LocalTileTextSize.current,
@@ -244,7 +205,7 @@ fun TileInlineAutoSingleLineText(
 ) {
     AutoSingleLineText(
         text = annotateTileFromEmoji(text, tileSize),
-        inlineContent = tileInlineTextContent,
+        inlineContent = tileInlineTextContent(tileImage),
         modifier = modifier,
         color = color,
         fontSize = fontSize,
