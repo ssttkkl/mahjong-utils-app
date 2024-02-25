@@ -108,7 +108,7 @@ fun ShantenActionCardContent(
         Row(modifier) {
             ShantenActionContent(
                 action,
-                Modifier.width(150.dp)
+                Modifier.width(120.dp)
             )
 
             VerticalDivider()
