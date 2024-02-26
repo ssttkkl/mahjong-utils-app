@@ -3,10 +3,12 @@
 package io.ssttkkl.mahjongutils.app.components.tile
 
 import androidx.compose.foundation.interaction.FocusInteraction
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +23,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import io.ssttkkl.mahjongutils.app.utils.toUIImage
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -100,7 +103,6 @@ internal actual fun CoreTileField(
     val scope = currentRecomposeScope
     val coroutineContext = rememberCoroutineScope()
 
-    val logger = remember { LoggerFactory.getLogger("CoreTileField") }
     val focusManager = LocalFocusManager.current
     val density = LocalDensity.current
 
@@ -137,7 +139,6 @@ internal actual fun CoreTileField(
             }
 
             override fun textViewDidChange(textView: UITextView) {
-                logger.debug("textViewDidChange")
                 val textShouldBe = attributedString
                 if (!textView.attributedText.isEqual(textShouldBe)) {
                     // 防止用户输入了什么奇怪的东西，重新渲染下
@@ -146,7 +147,6 @@ internal actual fun CoreTileField(
             }
 
             override fun textViewDidBeginEditing(textView: UITextView) {
-                logger.debug("textViewDidBeginEditing")
                 focusManager.clearFocus()  // 如果当前焦点在compose编辑框，不会自动清除焦点
                 prevFocusInteraction = FocusInteraction.Focus()
                     .also {
@@ -161,7 +161,6 @@ internal actual fun CoreTileField(
             }
 
             override fun textViewDidEndEditing(textView: UITextView) {
-                logger.debug("textViewDidEndEditing")
                 prevFocusInteraction?.let { prevFocusInteraction ->
                     coroutineContext.launch {
                         state.interactionSource.emit(FocusInteraction.Unfocus(prevFocusInteraction))
@@ -175,10 +174,18 @@ internal actual fun CoreTileField(
 
             override fun textViewDidChangeSelection(textView: UITextView) {
                 if (notifySelectionChange) {
-                    logger.debug("textViewDidChangeSelection")
                     syncSelection(textView)
                 }
             }
+        }
+    }
+
+    // 用户收起键盘后再点击输入框，重新弹出
+    val tileImeHostState = LocalTileImeHostState.current
+    val pressed by state.interactionSource.collectIsPressedAsState()
+    LaunchedEffect(pressed, tileImeHostState) {
+        if (pressed) {
+            tileImeHostState.specifiedCollapsed = false
         }
     }
 
