@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalForeignApi::class)
+
 package io.ssttkkl.mahjongutils.app.components.tile
 
 import androidx.compose.foundation.interaction.FocusInteraction
@@ -25,6 +27,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
+import org.jetbrains.compose.resources.imageResource
 import platform.CoreGraphics.CGRectMake
 import platform.CoreGraphics.CGSizeMake
 import platform.Foundation.NSAttributedString
@@ -59,18 +62,24 @@ private fun Color.toUIColor(): UIColor {
     )
 }
 
-@OptIn(ExperimentalForeignApi::class)
+@Composable
+private fun Tile.getAttachment(height: Double): NSTextAttachment {
+    val width = height / 1.4  // TODO: 牌的比例是1.4:1
+    val imgRes = imageResource(drawableResource)
+
+    return remember(this, height) {
+        val attachment = NSTextAttachment()
+        attachment.image = imgRes.toUIImage()
+        attachment.bounds = CGRectMake(0.0, 0.0, width, height)
+        attachment
+    }
+}
+
 @Composable
 private fun List<Tile>.toNSAttributedString(height: Double): NSAttributedString {
-    val width = height / 1.4  // 牌的比例是1.4:1
-
     val attributedString = NSMutableAttributedString()
-
     forEach {
-        val attachment = NSTextAttachment()
-        attachment.image = it.drawableResource.toUIImage()
-        attachment.bounds = CGRectMake(0.0, 0.0, width, height)
-
+        val attachment = it.getAttachment(height)
         val attrStringWithImage = NSAttributedString.attributedStringWithAttachment(attachment)
         attributedString.appendAttributedString(attrStringWithImage)
     }
