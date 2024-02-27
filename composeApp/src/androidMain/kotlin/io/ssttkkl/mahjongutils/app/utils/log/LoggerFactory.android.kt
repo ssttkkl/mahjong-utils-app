@@ -1,9 +1,10 @@
 package io.ssttkkl.mahjongutils.app.utils.log
 
 import android.util.Log
+import kotlin.reflect.KClass
 
-object AndroidLoggerFactory : ILoggerFactory {
-    override fun getLogger(tag: String): Logger {
+actual object LoggerFactory {
+    actual fun getLogger(tag: String): Logger {
         return object : Logger {
             override fun trace(msg: String) {
                 Log.v(tag, msg)
@@ -30,5 +31,9 @@ object AndroidLoggerFactory : ILoggerFactory {
             }
 
         }
+    }
+
+    actual fun getLogger(clazz: KClass<*>): Logger {
+        return getLogger(clazz.simpleName ?: "")
     }
 }

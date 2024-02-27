@@ -1,8 +1,9 @@
 package io.ssttkkl.mahjongutils.app.utils.log
 
+import kotlin.reflect.KClass
 
-object WasmJsLoggerFactory : ILoggerFactory {
-    override fun getLogger(tag: String): Logger {
+object ConsoleLoggerFactory {
+    fun getLogger(tag: String): Logger {
         return object : Logger {
             override fun trace(msg: String) {
                 println("TRACE|[${tag}]${msg}")
@@ -28,5 +29,9 @@ object WasmJsLoggerFactory : ILoggerFactory {
                 println("ERROR|[${tag}]${msg}\n${throwable?.stackTraceToString() ?: ""}")
             }
         }
+    }
+
+    fun getLogger(clazz: KClass<*>): Logger {
+        return getLogger(clazz.simpleName ?: "")
     }
 }
