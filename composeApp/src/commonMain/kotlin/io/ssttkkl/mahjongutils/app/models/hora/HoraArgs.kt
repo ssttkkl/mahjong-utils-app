@@ -1,6 +1,7 @@
 package io.ssttkkl.mahjongutils.app.models.hora
 
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
+import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.serialization.Serializable
 import mahjongutils.hora.Hora
 import mahjongutils.hora.HoraOptions
@@ -25,11 +26,14 @@ data class HoraArgs(
     val options: HoraOptions = HoraOptions.Default
 ) {
     fun calc(): HoraCalcResult {
+        logger.info("hora calc args: ${this}")
         val result = hora(tiles, furo, agari, tsumo, dora, selfWind, roundWind, extraYaku, options)
+        logger.info("hora calc result: ${result}")
         return HoraCalcResult(this, result)
     }
 
     companion object {
+        private val logger = LoggerFactory.getLogger(HoraArgs::class)
         val history: HistoryDataStore<HoraArgs> =
             HistoryDataStore("hora", typeOf<HoraArgs>())
     }

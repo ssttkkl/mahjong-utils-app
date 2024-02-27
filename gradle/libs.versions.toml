@@ -20,10 +20,12 @@ kotlin = "1.9.21"
 kotlinx-serialization = "1.6.2"
 kotlinx-datetime = "0.5.0"
 kotlinx-atomicfu = "0.23.2"
+logbackClassic = "1.4.11"
 mahjongUtils = "0.6.4"
 kotlinx-coroutines = "1.8.0"
 material3-windowSizeClass = "0.5.0-alpha03"
 okio = "3.8.0"
+slf4jApi = "2.0.12"
 voyager = "1.1.0-alpha03"
 mokoResources = "0.23.0"
 aboutLibraries = "10.10.0"
@@ -56,9 +58,11 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
 mahjong-utils = { module = "io.github.ssttkkl:mahjong-utils", version.ref = "mahjongUtils" }
 material3-windowSizeClass = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "material3-windowSizeClass" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenmodel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "mokoResources" }

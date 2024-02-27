@@ -2,6 +2,7 @@ package io.ssttkkl.mahjongutils.app.models.base
 
 import io.ssttkkl.mahjongutils.app.models.DataStore
 import io.ssttkkl.mahjongutils.app.models.createDataStore
+import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -15,6 +16,7 @@ class HistoryDataStore<T>(
 ) {
     companion object {
         const val DEFAULT_MAX_ITEM = 100
+        private val logger = LoggerFactory.getLogger(HistoryDataStore::class)
     }
 
     @OptIn(ExperimentalSerializationApi::class)
@@ -33,18 +35,21 @@ class HistoryDataStore<T>(
     }
 
     suspend fun insert(args: T) {
+        val history = History(args)
+        logger.info("${identifier} insert: $history")
         dataStore.updateData {
             if (it.firstOrNull()?.args == args) {
                 // 要插入的和第一条记录一样，更新第一条记录的时间，其他不变
-                listOf(History(args)) + it.drop(1)
+                listOf(history) + it.drop(1)
             } else {
                 // 插入最前面，并留下前100条
-                (listOf(History(args)) + it).take(maxItem)
+                (listOf(history) + it).take(maxItem)
             }
         }
     }
 
     suspend fun clear() {
+        logger.info("${identifier} clear")
         dataStore.updateData { emptyList() }
     }
 
