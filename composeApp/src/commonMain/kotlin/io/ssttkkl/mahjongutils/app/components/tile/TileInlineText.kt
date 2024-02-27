@@ -43,6 +43,26 @@ private val tileContentIdRevMapping = tileContentIdMapping.entries.associate {
 
 private const val tileBackContentId = "tile-back"
 
+/** The annotation tag used by inline content. */
+internal const val INLINE_CONTENT_TAG = "androidx.compose.foundation.text.inlineContent"
+
+private fun AnnotatedString.getTiles(): List<Tile?> {
+    val str = this
+    return buildList {
+        str.getStringAnnotations(0, str.length).forEach {
+            if (it.tag != INLINE_CONTENT_TAG) {
+                return@forEach
+            }
+
+            if (tileContentIdMapping.containsKey(it.item)) {
+                add(tileContentIdMapping[it.item]!!)
+            } else if (tileBackContentId == it.item) {
+                add(null)
+            }
+        }
+    }
+}
+
 fun Tile?.annotatedAsInline(
     fontSize: TextUnit = TextUnit.Unspecified
 ): AnnotatedString = buildAnnotatedString {
@@ -181,12 +201,13 @@ private fun tileInlineTextContent(
 
 @Composable
 private fun MeasureTileImageRatio(
+    tileSet: Set<Tile?>,
     modifier: Modifier = Modifier,
     tileImage: @Composable (Tile?) -> Unit = { TileImage(it) },
     content: @Composable (Map<Tile?, Float>) -> Unit,
 ) {
     SubcomposeLayout(modifier) { constraints ->
-        val measuredTileRatio = (Tile.all + null).associate {
+        val measuredTileRatio = tileSet.associate {
             val measurable = subcompose(it) { tileImage(it) }
             it to (measurable.firstOrNull()
                 ?.measure(constraints)?.let {
@@ -226,9 +247,11 @@ fun TileInlineText(
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
 ) {
-    MeasureTileImageRatio(modifier, tileImage) { measuredTileRatio ->
+    val text = annotateTileFromEmoji(text, tileSize)
+    val tileSet = text.getTiles().toSet()
+    MeasureTileImageRatio(tileSet, modifier, tileImage) { measuredTileRatio ->
         Text(
-            text = annotateTileFromEmoji(text, tileSize),
+            text = text,
             inlineContent = tileInlineTextContent(tileImage, measuredTileRatio),
             color = color,
             fontSize = fontSize,
@@ -269,9 +292,11 @@ fun TileInlineAutoSingleLineText(
     style: TextStyle = LocalTextStyle.current,
     onTextSizeConstrained: ((TextSizeConstrainedResult) -> Unit)? = null
 ) {
-    MeasureTileImageRatio(modifier, tileImage) { measuredTileRatio ->
+    val text = annotateTileFromEmoji(text, tileSize)
+    val tileSet = text.getTiles().toSet()
+    MeasureTileImageRatio(tileSet, modifier, tileImage) { measuredTileRatio ->
         AutoSingleLineText(
-            text = annotateTileFromEmoji(text, tileSize),
+            text = text,
             inlineContent = tileInlineTextContent(tileImage, measuredTileRatio),
             color = color,
             fontSize = fontSize,
