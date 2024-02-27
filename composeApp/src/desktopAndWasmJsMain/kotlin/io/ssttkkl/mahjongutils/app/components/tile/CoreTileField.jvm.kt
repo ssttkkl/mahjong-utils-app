@@ -196,7 +196,7 @@ internal actual fun CoreTileField(
     var rectsState: MutableState<List<Rect>> = remember { mutableStateOf(emptyList()) }
     val focused by state.interactionSource.collectIsFocusedAsState()
 
-    Box(Modifier
+    Box(modifier
         .focusRequester(focusRequester)
         .focusable(interactionSource = state.interactionSource)
         .tapPress(state.interactionSource) {
@@ -221,7 +221,6 @@ internal actual fun CoreTileField(
     ) {
         Tiles(
             value,
-            modifier,
             fontSize = fontSizeInSp.sp,
             onTextLayout = { layoutResult ->
                 rectsState.value = layoutResult.multiParagraph.placeholderRects.filterNotNull()
