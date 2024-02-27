@@ -2,7 +2,6 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.apache.commons.io.FileUtils
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import java.util.Properties
 
 plugins {
@@ -165,10 +164,10 @@ kotlin {
         cocoapods {
             version = properties["version.name"].toString()
             summary = "Riichi Mahjong Calculator"
-            homepage = "https://github.com/NNSZ-Yorozuya/mahjong-utils-app"
+            homepage = properties["opensource.repo"].toString()
             source =
-                "{ :git => 'https://github.com/NNSZ-Yorozuya/mahjong-utils-app.git', :tag => '$version' }"
-            license = "Private"
+                "{ :git => '${properties["opensource.repo"].toString()}.git', :tag => '$version' }"
+            license = properties["opensource.license"].toString()
             ios.deploymentTarget = "13.0"
             podfile = project.file("../iosApp/Podfile")
 
@@ -206,8 +205,11 @@ if (enableAndroid) {
             applicationId = "io.ssttkkl.mahjongutils.app"
             minSdk = libs.versions.android.minSdk.get().toInt()
             targetSdk = libs.versions.android.targetSdk.get().toInt()
-            versionCode = properties["version.code"].toString().toInt()
             versionName = properties["version.name"].toString()
+
+            val codeInVersionName = versionName!!.split(".").map { it.toInt() }
+            versionCode =
+                codeInVersionName[0] * 10000 + codeInVersionName[1] * 100 + codeInVersionName[2]
         }
         packaging {
             resources {
@@ -284,7 +286,8 @@ if (enableDesktop) {
         tasks.findByName("packageAppImage")?.doLast {
             val appDirSrc = project.file("mahjong-utils-app.AppDir")
             val packageOutput =
-                layout.buildDirectory.dir("compose/binaries/main/app/mahjong-utils-app").get().asFile
+                layout.buildDirectory.dir("compose/binaries/main/app/mahjong-utils-app")
+                    .get().asFile
             if (!appDirSrc.exists() || !packageOutput.exists()) {
                 return@doLast
             }
