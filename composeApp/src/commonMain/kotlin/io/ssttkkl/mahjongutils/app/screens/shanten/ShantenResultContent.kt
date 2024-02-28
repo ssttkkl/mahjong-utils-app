@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.screens.shanten
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -9,8 +10,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import io.ssttkkl.mahjongutils.app.components.onEnterKeyDown
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
@@ -19,6 +18,7 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesWithNumTopCardPanel
 import io.ssttkkl.mahjongutils.app.components.scrollbox.VerticalScrollBox
 import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
+import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.screens.common.EditablePanelState
 import io.ssttkkl.mahjongutils.app.screens.common.TilesPanelHeader
@@ -55,49 +55,70 @@ private fun ShantenWithoutGotResultContent(
     args: ShantenArgs, shanten: ShantenWithoutGot,
     requestChangeArgs: (ShantenArgs) -> Unit
 ) {
+    val scope = rememberCoroutineScope()
+    val lazyListState = rememberLazyListState()
+
     val panelState = remember { EditablePanelState(args, ShantenFormState()) }
     LaunchedEffect(args) {
         panelState.originArgs = args
     }
-
+    val fillbackHandler = remember {
+        ShantenFillbackHandler(panelState) {
+            scope.launch {
+                lazyListState.animateScrollToItem(0)
+            }
+        }
+    }
 
     with(Spacing.current) {
-        LazyColumn(Modifier.fillMaxWidth()) {
-            item("hand") {
-                VerticalSpacerBetweenPanels()
-                TilesInHandPanel(args, false, panelState, requestChangeArgs)
-            }
+        VerticalScrollBox(lazyListState) {
+            LazyColumn(Modifier.fillMaxWidth(), lazyListState) {
+                item("hand") {
+                    VerticalSpacerBetweenPanels()
+                    TilesInHandPanel(args, false, panelState, requestChangeArgs)
+                }
 
-            item("shantenNum") {
-                VerticalSpacerBetweenPanels()
-                ShantenNumCardPanel(shanten.shantenNum)
-            }
+                item("shantenNum") {
+                    VerticalSpacerBetweenPanels()
+                    ShantenNumCardPanel(shanten.shantenNum)
+                }
 
-            item("advance") {
-                VerticalSpacerBetweenPanels()
-                TilesWithNumTopCardPanel(
-                    stringResource(Res.string.label_advance_tiles),
-                    shanten.advance,
-                    shanten.advanceNum
-                )
-            }
+                item("advance") {
+                    VerticalSpacerBetweenPanels()
+                    TilesWithNumTopCardPanel(
+                        stringResource(Res.string.label_advance_tiles),
+                        shanten.advance,
+                        shanten.advanceNum,
+                        tileImage = {
+                            TileImage(it, Modifier.clickable {
+                                fillbackHandler.fillbackDraw(it)
+                            })
+                        }
+                    )
+                }
 
-            item("goodShapeAdvance") {
-                shanten.goodShapeAdvance?.let { goodShapeAdvance ->
-                    shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
-                        VerticalSpacerBetweenPanels()
-                        TilesWithNumTopCardPanel(
-                            stringResource(Res.string.label_good_shape_advance_tiles),
-                            goodShapeAdvance,
-                            goodShapeAdvanceNum,
-                            1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
-                        )
+                item("goodShapeAdvance") {
+                    shanten.goodShapeAdvance?.let { goodShapeAdvance ->
+                        shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
+                            VerticalSpacerBetweenPanels()
+                            TilesWithNumTopCardPanel(
+                                stringResource(Res.string.label_good_shape_advance_tiles),
+                                goodShapeAdvance,
+                                goodShapeAdvanceNum,
+                                1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum,
+                                tileImage = {
+                                    TileImage(it, Modifier.clickable {
+                                        fillbackHandler.fillbackDraw(it)
+                                    })
+                                }
+                            )
+                        }
                     }
                 }
-            }
 
-            item("footer") {
-                VerticalSpacerBetweenPanels()
+                item("footer") {
+                    VerticalSpacerBetweenPanels()
+                }
             }
         }
     }

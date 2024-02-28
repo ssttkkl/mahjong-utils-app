@@ -26,8 +26,20 @@ class ShantenFillbackHandler(
                 return
             }
         }
+        newTiles.sort()
         draw?.let { newTiles.add(draw) }
         discard?.let { newTiles.remove(discard) }
+
+        panelState.form.fillFormWithArgs(
+            args.copy(tiles = newTiles)
+        )
+    }
+
+    fun fillbackDraw(draw: Tile) {
+        panelState.editing = true
+        requestFocus()
+        val args = panelState.originArgs
+        val newTiles = args.tiles + draw
 
         panelState.form.fillFormWithArgs(
             args.copy(tiles = newTiles)

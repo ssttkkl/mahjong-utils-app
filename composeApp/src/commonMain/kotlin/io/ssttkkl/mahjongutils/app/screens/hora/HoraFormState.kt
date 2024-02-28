@@ -295,6 +295,9 @@ class HoraFormState(
         doraErrMsg.clear()
 
         // 事前校验
+        if (tiles.isEmpty()) {
+            tilesErrMsg.add(Res.string.text_must_enter_tiles)
+        }
         val agari = agari ?: autoDetectedAgari
         if (agari == null) {
             agariErrMsg.add(Res.string.text_must_enter_agari)

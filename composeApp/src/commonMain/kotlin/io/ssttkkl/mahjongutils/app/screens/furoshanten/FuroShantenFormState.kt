@@ -48,9 +48,13 @@ class FuroShantenFormState : FormState<FuroChanceShantenArgs> {
         chanceTileErrMsg.clear()
 
         // 事前校验
+        if (tiles.isEmpty()) {
+            tilesErrMsg.add(Res.string.text_must_enter_tiles)
+        }
         if (chanceTile == null) {
             chanceTileErrMsg.add(Res.string.text_must_enter_chance_tile)
         }
+
 
         // 调库校验
         if (tilesErrMsg.isEmpty() && chanceTileErrMsg.isEmpty()) {
