@@ -48,11 +48,11 @@ import org.jetbrains.compose.resources.imageResource
 private fun Tile.getDrawable(height: Int): Drawable {
     val ctx = LocalContext.current
     val imgRes = imageResource(drawableResource)
+    val ratio = imgRes.height.toFloat() / imgRes.width
 
-    return remember(this, height) {
+    return remember(this, height, ratio) {
         val drawable = BitmapDrawable(ctx.resources, imgRes.asAndroidBitmap())
-        // 牌的比例是1.4:1
-        val width = (height / 1.4).toInt()
+        val width = (height / ratio).toInt()
 
         drawable.setBounds(
             0,

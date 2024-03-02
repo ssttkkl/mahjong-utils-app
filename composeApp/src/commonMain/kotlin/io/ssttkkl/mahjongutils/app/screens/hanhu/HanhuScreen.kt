@@ -1,6 +1,7 @@
 package io.ssttkkl.mahjongutils.app.screens.hanhu
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
@@ -42,14 +43,15 @@ object HanhuScreen : NavigationScreen() {
     @Composable
     override fun Content() {
         val model = rememberScreenModel { HanhuScreenModel() }
+        val form = model.form
 
         with(Spacing.current) {
             @Composable
-            fun Form() {
+            fun ColumnScope.Form() {
                 TopPanel {
-                    ValidationField(model.hanErr, Modifier.fillMaxWidth()) { isError ->
+                    ValidationField(form.hanErr, Modifier.fillMaxWidth()) { isError ->
                         OutlinedTextField(
-                            model.han, { model.han = it }, Modifier.fillMaxWidth(),
+                            form.han, { form.han = it }, Modifier.fillMaxWidth(),
                             label = { Text(stringResource(Res.string.label_han)) },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             isError = isError
@@ -60,9 +62,9 @@ object HanhuScreen : NavigationScreen() {
                 VerticalSpacerBetweenPanels()
 
                 TopPanel {
-                    ValidationField(model.huErr, Modifier.fillMaxWidth()) { isError ->
+                    ValidationField(form.huErr, Modifier.fillMaxWidth()) { isError ->
                         OutlinedTextField(
-                            model.hu, { model.hu = it }, Modifier.fillMaxWidth(),
+                            form.hu, { form.hu = it }, Modifier.fillMaxWidth(),
                             label = { Text(stringResource(Res.string.label_hu)) },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             isError = isError
@@ -75,9 +77,9 @@ object HanhuScreen : NavigationScreen() {
                 var optionsDialogVisible by rememberSaveable { mutableStateOf(false) }
                 if (optionsDialogVisible) {
                     HanhuOptionsDialog(
-                        model.hanhuOptions,
+                        form.hanhuOptions,
                         onChangeOptions = {
-                            model.hanhuOptions = it
+                            form.hanhuOptions = it
                         },
                         onDismissRequest = {
                             optionsDialogVisible = false
@@ -101,22 +103,20 @@ object HanhuScreen : NavigationScreen() {
             }
 
             @Composable
-            fun Result() {
+            fun ColumnScope.Result() {
                 Calculation(
-                    model.result,
-                    { Triple(it, it?.parentPoint?.await(), it?.childPoint?.await()) },
+                    Pair(model.lastArgs, model.result),
+                    { Pair(it.first, it.second?.await()) },
                     onCalculating = {}
-                ) { (result, parentPoint, childPoint) ->
+                ) { (lastArgs, result) ->
                     if (result != null) {
                         PointPanel(
-                            result.han,
-                            result.hu,
+                            lastArgs?.han ?: 0,
+                            lastArgs?.hu ?: 0,
                             false,
-                            parentPoint,
-                            childPoint
+                            result.parentPoint,
+                            result.childPoint
                         )
-
-                        VerticalSpacerBetweenPanels()
                     }
                 }
             }

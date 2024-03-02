@@ -6,9 +6,7 @@ data class InitModule(
 )
 
 object AppInit {
-    var commonModules = listOf(
-        LogInit
-    )
+    var commonModules = listOf<InitModule>()
 
     fun doInit() {
         (commonModules + platformModules).sortedBy { it.priority }
@@ -19,5 +17,3 @@ object AppInit {
 }
 
 internal expect val AppInit.platformModules: List<InitModule>
-
-internal expect val LogInit: InitModule

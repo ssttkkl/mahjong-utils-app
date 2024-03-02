@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 import io.ssttkkl.mahjongutils.app.components.autosizetext.AutoSingleLineText
@@ -40,6 +42,26 @@ private val tileContentIdRevMapping = tileContentIdMapping.entries.associate {
 }
 
 private const val tileBackContentId = "tile-back"
+
+/** The annotation tag used by inline content. */
+internal const val INLINE_CONTENT_TAG = "androidx.compose.foundation.text.inlineContent"
+
+private fun AnnotatedString.getTiles(): List<Tile?> {
+    val str = this
+    return buildList {
+        str.getStringAnnotations(0, str.length).forEach {
+            if (it.tag != INLINE_CONTENT_TAG) {
+                return@forEach
+            }
+
+            if (tileContentIdMapping.containsKey(it.item)) {
+                add(tileContentIdMapping[it.item]!!)
+            } else if (tileBackContentId == it.item) {
+                add(null)
+            }
+        }
+    }
+}
 
 fun Tile?.annotatedAsInline(
     fontSize: TextUnit = TextUnit.Unspecified
@@ -102,16 +124,53 @@ private fun annotateTileFromEmoji(
 }
 
 @Composable
+fun MeasureViewSize(
+    viewToMeasure: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable (DpSize) -> Unit,
+) {
+    SubcomposeLayout(modifier = modifier) { constraints ->
+        val measuredSize = subcompose("viewToMeasure") {
+            viewToMeasure()
+        }[0].measure(constraints)
+            .let {
+                DpSize(
+                    width = it.width.toDp(),
+                    height = it.height.toDp()
+                )
+            }
+
+        val contentPlaceable = subcompose("content") {
+            content(measuredSize)
+        }.firstOrNull()?.measure(constraints)
+
+        layout(contentPlaceable?.width ?: 0, contentPlaceable?.height ?: 0) {
+            contentPlaceable?.place(0, 0)
+        }
+    }
+}
+
+@Composable
 private fun getTileInlineTextContent(
     tile: Tile?,
-    tileImage: @Composable (Tile?) -> Unit
+    tileImage: @Composable (Tile?) -> Unit,
+    ratio: Float,
 ): InlineTextContent {
-    // TODO: 不要写死
-    val placeholderHeight = 1.4.em  // 牌的比例是1:1.4
-    return remember(placeholderHeight, tile) {
+    val width: TextUnit
+    val height: TextUnit
+
+    if (ratio > 1) {
+        width = 1.em
+        height = ratio.em
+    } else {
+        width = (1 / ratio).em
+        height = 1.em
+    }
+
+    return remember(tile, tileImage, ratio) {
         InlineTextContent(
             Placeholder(
-                1.em, placeholderHeight,
+                width, height,
                 PlaceholderVerticalAlign.TextCenter
             )
         ) {
@@ -122,20 +181,47 @@ private fun getTileInlineTextContent(
 
 @Composable
 private fun tileInlineTextContent(
-    tileImage: @Composable (Tile?) -> Unit
+    tileImage: @Composable (Tile?) -> Unit,
+    ratio: Map<Tile?, Float>,
 ): Map<String, InlineTextContent> {
     return buildMap {
         TileModel.all.forEach { tile ->
             put(
                 tileContentIdRevMapping[tile]!!,
-                getTileInlineTextContent(tile, tileImage)
+                getTileInlineTextContent(tile, tileImage, ratio[tile] ?: 1f)
             )
         }
 
         put(
             tileBackContentId,
-            getTileInlineTextContent(null, tileImage)
+            getTileInlineTextContent(null, tileImage, ratio[null] ?: 1f)
         )
+    }
+}
+
+@Composable
+private fun MeasureTileImageRatio(
+    tileSet: Set<Tile?>,
+    modifier: Modifier = Modifier,
+    tileImage: @Composable (Tile?) -> Unit = { TileImage(it) },
+    content: @Composable (Map<Tile?, Float>) -> Unit,
+) {
+    SubcomposeLayout(modifier) { constraints ->
+        val measuredTileRatio = tileSet.associate {
+            val measurable = subcompose(it) { tileImage(it) }
+            it to (measurable.firstOrNull()
+                ?.measure(constraints)?.let {
+                    it.height.toFloat() / it.width
+                } ?: 1f)
+        }
+
+        val contentPlaceable = subcompose("content") {
+            content(measuredTileRatio)
+        }.firstOrNull()?.measure(constraints)
+
+        layout(contentPlaceable?.width ?: 0, contentPlaceable?.height ?: 0) {
+            contentPlaceable?.place(0, 0)
+        }
     }
 }
 
@@ -161,26 +247,29 @@ fun TileInlineText(
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
 ) {
-    Text(
-        text = annotateTileFromEmoji(text, tileSize),
-        inlineContent = tileInlineTextContent(tileImage),
-        modifier = modifier,
-        color = color,
-        fontSize = fontSize,
-        fontStyle = fontStyle,
-        fontWeight = fontWeight,
-        fontFamily = fontFamily,
-        letterSpacing = letterSpacing,
-        textDecoration = textDecoration,
-        textAlign = textAlign,
-        lineHeight = lineHeight,
-        overflow = overflow,
-        softWrap = softWrap,
-        maxLines = maxLines,
-        minLines = minLines,
-        onTextLayout = onTextLayout,
-        style = style,
-    )
+    val text = annotateTileFromEmoji(text, tileSize)
+    val tileSet = text.getTiles().toSet()
+    MeasureTileImageRatio(tileSet, modifier, tileImage) { measuredTileRatio ->
+        Text(
+            text = text,
+            inlineContent = tileInlineTextContent(tileImage, measuredTileRatio),
+            color = color,
+            fontSize = fontSize,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            fontFamily = fontFamily,
+            letterSpacing = letterSpacing,
+            textDecoration = textDecoration,
+            textAlign = textAlign,
+            lineHeight = lineHeight,
+            overflow = overflow,
+            softWrap = softWrap,
+            maxLines = maxLines,
+            minLines = minLines,
+            onTextLayout = onTextLayout,
+            style = style,
+        )
+    }
 }
 
 @Composable
@@ -203,22 +292,25 @@ fun TileInlineAutoSingleLineText(
     style: TextStyle = LocalTextStyle.current,
     onTextSizeConstrained: ((TextSizeConstrainedResult) -> Unit)? = null
 ) {
-    AutoSingleLineText(
-        text = annotateTileFromEmoji(text, tileSize),
-        inlineContent = tileInlineTextContent(tileImage),
-        modifier = modifier,
-        color = color,
-        fontSize = fontSize,
-        fontStyle = fontStyle,
-        fontWeight = fontWeight,
-        fontFamily = fontFamily,
-        letterSpacing = letterSpacing,
-        textDecoration = textDecoration,
-        textAlign = textAlign,
-        lineHeight = lineHeight,
-        overflow = overflow,
-        softWrap = softWrap,
-        style = style,
-        onTextSizeConstrained = onTextSizeConstrained
-    )
+    val text = annotateTileFromEmoji(text, tileSize)
+    val tileSet = text.getTiles().toSet()
+    MeasureTileImageRatio(tileSet, modifier, tileImage) { measuredTileRatio ->
+        AutoSingleLineText(
+            text = text,
+            inlineContent = tileInlineTextContent(tileImage, measuredTileRatio),
+            color = color,
+            fontSize = fontSize,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            fontFamily = fontFamily,
+            letterSpacing = letterSpacing,
+            textDecoration = textDecoration,
+            textAlign = textAlign,
+            lineHeight = lineHeight,
+            overflow = overflow,
+            softWrap = softWrap,
+            style = style,
+            onTextSizeConstrained = onTextSizeConstrained
+        )
+    }
 }

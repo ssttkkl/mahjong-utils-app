@@ -5,6 +5,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.CanvasBasedWindow
 import io.ssttkkl.mahjongutils.app.App
 import io.ssttkkl.mahjongutils.app.getAppTypography
+import io.ssttkkl.mahjongutils.app.init.AppInit
 import kotlinx.browser.document
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.app_name
@@ -14,6 +15,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
+    AppInit.doInit()
     CanvasBasedWindow(
         canvasElementId = "ComposeTarget"
     ) {

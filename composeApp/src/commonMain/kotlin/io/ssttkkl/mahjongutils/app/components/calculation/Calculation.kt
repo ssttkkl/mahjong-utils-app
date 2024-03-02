@@ -68,24 +68,8 @@ fun <U, V> Calculation(
         }
     }
 
-    val calculating = result == null
-
-    AnimatedVisibility(
-        calculating,
-        enter = fadeIn(),
-        exit = fadeOut(),
-    ) {
-        onCalculating()
-    }
-
-    AnimatedVisibility(
-        !calculating,
-        enter = fadeIn(),
-        exit = fadeOut(),
-    ) {
-        result?.let {
-            it.onSuccess { onSuccess(it) }
-                .onFailure { onFailure(it) }
-        }
-    }
+    result?.let {
+        it.onSuccess { onSuccess(it) }
+            .onFailure { onFailure(it) }
+    } ?: onCalculating()
 }

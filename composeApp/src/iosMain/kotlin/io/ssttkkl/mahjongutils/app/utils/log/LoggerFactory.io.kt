@@ -1,9 +1,10 @@
 package io.ssttkkl.mahjongutils.app.utils.log
 
 import platform.Foundation.NSLog
+import kotlin.reflect.KClass
 
-object IosLoggerFactory : ILoggerFactory {
-    override fun getLogger(tag: String): Logger {
+actual object IosLoggerFactory {
+    actual fun getLogger(tag: String): Logger {
         return object : Logger {
             override fun trace(msg: String) {
                 NSLog("TRACE|[%s]%s", tag, msg)
@@ -30,5 +31,9 @@ object IosLoggerFactory : ILoggerFactory {
             }
 
         }
+    }
+
+    actual fun getLogger(clazz: KClass<*>): Logger {
+        return getLogger(clazz.simpleName ?: "")
     }
 }

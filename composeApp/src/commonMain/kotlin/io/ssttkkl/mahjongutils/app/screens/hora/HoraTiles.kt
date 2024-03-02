@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
@@ -43,6 +44,7 @@ fun HoraTiles(args: HoraArgs) {
             )
             Tiles(
                 listOf(args.agari),
+                modifier = Modifier.align(Alignment.Bottom),
                 fontSize = reducedTileSize,
                 tileImage = { LieDownTileImage(it) }
             )

@@ -6,6 +6,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import io.ssttkkl.mahjongutils.app.App
 import io.ssttkkl.mahjongutils.app.getAppTypography
+import io.ssttkkl.mahjongutils.app.init.AppInit
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.app_name
 import mahjongutils.composeapp.generated.resources.icon_app
@@ -14,6 +15,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 fun main() = application {
+    AppInit.doInit()
     Window(
         onCloseRequest = ::exitApplication,
         title = stringResource(Res.string.app_name),
