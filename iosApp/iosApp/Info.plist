@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string></string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Our application needs permission to save your result to your photo library. </string>
 	<key>LSApplicationCategoryType</key>

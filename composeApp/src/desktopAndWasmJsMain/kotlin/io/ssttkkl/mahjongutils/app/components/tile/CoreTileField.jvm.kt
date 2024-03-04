@@ -182,13 +182,13 @@ private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState):
 }
 
 @Composable
-internal actual fun CoreTileField(
+actual fun CoreTileField(
     value: List<Tile>,
     modifier: Modifier,
     state: CoreTileFieldState,
     cursorColor: Color,
     fontSizeInSp: Float,
-    placeholder: String?,
+    iosExtra: CoreTileFieldIosExtra,
 ) {
     val focusRequester = remember { FocusRequester() }
 

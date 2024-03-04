@@ -3,7 +3,7 @@ package io.ssttkkl.mahjongutils.app.utils.log
 import platform.Foundation.NSLog
 import kotlin.reflect.KClass
 
-actual object IosLoggerFactory {
+actual object LoggerFactory {
     actual fun getLogger(tag: String): Logger {
         return object : Logger {
             override fun trace(msg: String) {

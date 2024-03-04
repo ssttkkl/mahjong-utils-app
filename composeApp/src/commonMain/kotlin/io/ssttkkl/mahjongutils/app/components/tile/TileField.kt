@@ -188,7 +188,9 @@ fun BaseTileField(
             fontSize.value
         else
             LocalTextStyle.current.fontSize.value,
-        placeholder = label
+        iosExtra = CoreTileFieldIosExtra(
+            placeholder = label
+        )
     )
 }
 

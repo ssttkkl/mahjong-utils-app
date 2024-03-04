@@ -24,7 +24,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import io.ssttkkl.mahjongutils.app.utils.toUIImage
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
@@ -67,10 +66,11 @@ private fun Color.toUIColor(): UIColor {
 
 @Composable
 private fun Tile.getAttachment(height: Double): NSTextAttachment {
-    val width = height / 1.4  // TODO: 牌的比例是1.4:1
     val imgRes = imageResource(drawableResource)
+    val ratio = imgRes.height.toFloat() / imgRes.width
 
     return remember(this, height) {
+        val width = height / ratio
         val attachment = NSTextAttachment()
         attachment.image = imgRes.toUIImage()
         attachment.bounds = CGRectMake(0.0, 0.0, width, height)
@@ -92,13 +92,13 @@ private fun List<Tile>.toNSAttributedString(height: Double): NSAttributedString 
 
 @OptIn(ExperimentalForeignApi::class, ExperimentalNativeApi::class)
 @Composable
-internal actual fun CoreTileField(
+actual fun CoreTileField(
     value: List<Tile>,
     modifier: Modifier,
     state: CoreTileFieldState,
     cursorColor: Color,
     fontSizeInSp: Float,
-    placeholder: String?,
+    iosExtra: CoreTileFieldIosExtra,
 ) {
     val scope = currentRecomposeScope
     val coroutineContext = rememberCoroutineScope()
@@ -139,6 +139,18 @@ internal actual fun CoreTileField(
             }
 
             override fun textViewDidChange(textView: UITextView) {
+//                // 调整垂直居中
+//                val deadSpace = textView.bounds.useContents { size.height } -
+//                        textView.contentSize.useContents { height }
+//                val inset = max(0.0, deadSpace / 2.0)
+//                textView.contentInset =
+//                    UIEdgeInsetsMake(
+//                        inset,
+//                        textView.contentInset.useContents { left },
+//                        inset,
+//                        textView.contentInset.useContents { right }
+//                    )
+
                 val textShouldBe = attributedString
                 if (!textView.attributedText.isEqual(textShouldBe)) {
                     // 防止用户输入了什么奇怪的东西，重新渲染下
@@ -197,9 +209,11 @@ internal actual fun CoreTileField(
 
     UIKitView(
         modifier = modifier.fillMaxWidth()
-            .height(max(tileHeight * 1.2, heightOfText).dp),  // 最小高度为tileHeight * 1.2，避免高度跳动
+            .height(max(tileHeight, heightOfText).dp),  // 最小高度为tileHeight * 1.2，避免高度跳动
         factory = {
             UITextView().apply {
+                backgroundColor = UIColor(white = 0.0, alpha = 0.0)
+
                 // 去掉内部的padding
                 textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
                 textContainer.lineBreakMode = UILineBreakModeCharacterWrap
@@ -264,11 +278,11 @@ internal actual fun CoreTileField(
                 }
 
                 // 设置placeholder
-                if (currentPlaceholder != placeholder) {
+                if (currentPlaceholder != iosExtra.placeholder) {
                     placeholderLabel?.get()?.apply {
-                        text = placeholder
+                        text = iosExtra.placeholder
                     }
-                    currentPlaceholder = placeholder
+                    currentPlaceholder = iosExtra.placeholder
                 }
 
                 // 计算合适的高度

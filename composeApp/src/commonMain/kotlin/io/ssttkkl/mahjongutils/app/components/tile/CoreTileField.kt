@@ -16,12 +16,17 @@ class CoreTileFieldState(
     var selection by mutableStateOf(TextRange.Zero)
 }
 
+data class CoreTileFieldIosExtra(
+    val placeholder: String? = null  // 安卓忽略该属性，因为DecoratorBox在ios的输入框上不生效
+//    val background: Color? = null
+)
+
 @Composable
-internal expect fun CoreTileField(
+expect fun CoreTileField(
     value: List<Tile>,
     modifier: Modifier,
     state: CoreTileFieldState,
     cursorColor: Color,
     fontSizeInSp: Float,
-    placeholder: String? = null  // 安卓忽略该属性，因为DecoratorBox在ios的输入框上不生效
+    iosExtra: CoreTileFieldIosExtra,
 )
