@@ -11,6 +11,7 @@ import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.app_name
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
+import org.w3c.dom.asList
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -25,5 +26,9 @@ fun main() {
         }
 
         App(typography = getAppTypography())
+
+        LaunchedEffect(Unit) {
+            document.getElementById("loading-hint")?.remove()
+        }
     }
 }
