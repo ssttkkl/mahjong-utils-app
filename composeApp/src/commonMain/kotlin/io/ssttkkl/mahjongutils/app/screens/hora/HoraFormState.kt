@@ -140,6 +140,7 @@ class HoraFormState(
     var extraYaku by mutableStateOf<Set<Yaku>>(emptySet())
 
     val autoDetectedAgari by derivedStateOf {
+        // 当输入k*3+2张牌时，自动将最后一张作为默认的所和的牌
         if (tiles.size % 3 == 2) {
             tiles.last()
         } else {
@@ -295,6 +296,13 @@ class HoraFormState(
         doraErrMsg.clear()
 
         // 事前校验
+        val tiles = if (tiles.size % 3 == 1 && agari != null) {
+            // 如果输入是k*3+1张牌，则自动将所和的牌纳入手牌
+            tiles + agari!!
+        } else {
+            tiles
+        }
+
         val agari = agari ?: autoDetectedAgari
         if (agari == null) {
             agariErrMsg.add(Res.string.text_must_enter_agari)
