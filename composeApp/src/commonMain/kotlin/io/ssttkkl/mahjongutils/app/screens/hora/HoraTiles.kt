@@ -23,11 +23,12 @@ import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.components.tile.annotatedAsInline
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
+import io.ssttkkl.mahjongutils.app.utils.removeLast
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HoraTiles(args: HoraArgs) {
-    val tilesExcludingAgari = remember(args.tiles, args.agari) { args.tiles - args.agari }
+    val tilesExcludingAgari = remember(args.tiles, args.agari) { args.tiles.removeLast(args.agari) }
     FlowRow {
         Row(Modifier.padding(end = 8.dp)) {
             val preferTileSize = LocalTileTextSize.current
