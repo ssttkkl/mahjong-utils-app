@@ -1,7 +1,10 @@
 日麻牌理计算器
 ======
 
-Web版地址：https://mahjong-utils-app.vercel.app
+Web版地址：
+
+- https://mahjong-utils-app.vercel.app
+- https://ssttkkl.github.io/mahjong-utils-app/
 
 支持平台：
 
