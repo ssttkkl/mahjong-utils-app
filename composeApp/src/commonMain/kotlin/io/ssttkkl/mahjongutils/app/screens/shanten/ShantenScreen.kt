@@ -32,11 +32,16 @@ import mahjongutils.composeapp.generated.resources.label_shanten_mode
 import mahjongutils.composeapp.generated.resources.label_union_shanten
 import mahjongutils.composeapp.generated.resources.title_shanten
 import mahjongutils.composeapp.generated.resources.title_shanten_result
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 object ShantenScreen :
     FormAndResultScreen<ShantenScreenModel, ShantenArgs, ShantenCalcResult>() {
-    override val title
+
+    override val path: String
+        get() = "shanten"
+
+    override val formTitle: StringResource
         get() = Res.string.title_shanten
 
     override val resultTitle
@@ -50,14 +55,13 @@ object ShantenScreen :
     @Composable
     override fun FormContent(
         appState: AppState,
-        model: ShantenScreenModel,
-        modifier: Modifier
+        model: ShantenScreenModel
     ) {
         val components = remember(model.form) { ShantenFormComponents(model.form) }
         val verticalScrollState = rememberScrollState()
 
         with(Spacing.current) {
-            ScrollBox(verticalScrollState = verticalScrollState, modifier = modifier) {
+            ScrollBox(verticalScrollState = verticalScrollState) {
                 Column(
                     Modifier.verticalScroll(verticalScrollState)
                 ) {
@@ -95,8 +99,7 @@ object ShantenScreen :
     @Composable
     override fun ResultContent(
         appState: AppState,
-        result: ShantenCalcResult,
-        modifier: Modifier
+        result: ShantenCalcResult
     ) {
         val handler = getChangeArgsByResultContentHandler()
         ShantenResultContent(result.args, result.result.shantenInfo) {

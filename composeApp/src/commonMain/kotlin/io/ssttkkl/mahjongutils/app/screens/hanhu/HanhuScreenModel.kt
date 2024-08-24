@@ -3,8 +3,8 @@ package io.ssttkkl.mahjongutils.app.screens.hanhu
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreenModel
 import io.ssttkkl.mahjongutils.app.models.hanhu.HanHuArgs
 import io.ssttkkl.mahjongutils.app.models.hanhu.HanHuResult
 import kotlinx.coroutines.Deferred
@@ -14,7 +14,7 @@ import kotlinx.coroutines.async
 
 class HanhuScreenModel(
     form: HanhuFormState? = null
-) : ScreenModel {
+) : UrlNavigationScreenModel() {
     val form: HanhuFormState = form ?: HanhuFormState(screenModelScope)
 
     var lastArgs: HanHuArgs? by mutableStateOf(null)

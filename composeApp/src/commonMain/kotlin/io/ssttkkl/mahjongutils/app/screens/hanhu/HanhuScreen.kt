@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
-import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
+import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreen
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
 import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
@@ -33,16 +33,24 @@ import mahjongutils.composeapp.generated.resources.label_han
 import mahjongutils.composeapp.generated.resources.label_hora_options
 import mahjongutils.composeapp.generated.resources.label_hu
 import mahjongutils.composeapp.generated.resources.title_hanhu
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
-object HanhuScreen : NavigationScreen() {
-    override val title: StringResource
-        get() = Res.string.title_hanhu
+object HanhuScreen : UrlNavigationScreen<HanhuScreenModel>() {
+    override val title: String
+        @Composable
+        get() = stringResource(Res.string.title_hanhu)
+
+    override val path: String
+        get() = "hanhu"
 
     @Composable
-    override fun Content() {
-        val model = rememberScreenModel { HanhuScreenModel() }
+    override fun getScreenModel(): HanhuScreenModel {
+        return rememberScreenModel { HanhuScreenModel() }
+    }
+
+    @Composable
+    override fun ScreenContent() {
+        val model = getScreenModel()
         val form = model.form
 
         with(Spacing.current) {
@@ -140,7 +148,10 @@ object HanhuScreen : NavigationScreen() {
                     val formScrollState = rememberScrollState()
                     val resultScrollState = rememberScrollState()
 
-                    ScrollBox(verticalScrollState = formScrollState, modifier = Modifier.weight(2f)) {
+                    ScrollBox(
+                        verticalScrollState = formScrollState,
+                        modifier = Modifier.weight(2f)
+                    ) {
                         Column(
                             Modifier.verticalScroll(formScrollState)
                         ) {
@@ -150,7 +161,10 @@ object HanhuScreen : NavigationScreen() {
                         }
                     }
 
-                    ScrollBox(verticalScrollState = resultScrollState, modifier = Modifier.weight(3f)) {
+                    ScrollBox(
+                        verticalScrollState = resultScrollState,
+                        modifier = Modifier.weight(3f)
+                    ) {
                         Column(
                             Modifier.verticalScroll(resultScrollState)
                         ) {

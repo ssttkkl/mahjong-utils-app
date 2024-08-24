@@ -2,23 +2,18 @@ package io.ssttkkl.mahjongutils.app
 
 import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.navigator.Navigator
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppScaffold
-import io.ssttkkl.mahjongutils.app.components.appscaffold.rememberAppState
+import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
+import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreen
 import io.ssttkkl.mahjongutils.app.screens.about.AboutScreen
-import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
+import io.ssttkkl.mahjongutils.app.screens.about.OpenSourceLicensesScreen
 import io.ssttkkl.mahjongutils.app.screens.furoshanten.FuroShantenScreen
 import io.ssttkkl.mahjongutils.app.screens.hanhu.HanhuScreen
 import io.ssttkkl.mahjongutils.app.screens.hora.HoraScreen
@@ -26,53 +21,50 @@ import io.ssttkkl.mahjongutils.app.screens.shanten.ShantenScreen
 import io.ssttkkl.mahjongutils.app.theme.AppTheme
 import kotlinx.coroutines.launch
 
-private val navigatableScreens: List<NavigationScreen> = listOf(
+private val screenRegistry: Map<String, () -> UrlNavigationScreen<*>> = buildMap {
+    put(ShantenScreen.path) { ShantenScreen }
+    put(FuroShantenScreen.path) { FuroShantenScreen }
+    put(HoraScreen.path) { HoraScreen }
+    put(HanhuScreen.path) { HanhuScreen }
+    put(AboutScreen.path) { AboutScreen }
+    put(OpenSourceLicensesScreen.path) { OpenSourceLicensesScreen }
+}
+
+private val navigatableScreens = listOf(
     ShantenScreen,
     FuroShantenScreen,
     HoraScreen,
     HanhuScreen,
     AboutScreen
-)
+).map { it.path }
 
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun App(typography: Typography = MaterialTheme.typography) {
     AppTheme(typography = typography) {
-        Navigator(ShantenScreen) { navigator ->
-            val windowSizeClass: WindowSizeClass = calculateWindowSizeClass()
-            val useNavigationDrawer =
-                !(windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
-                        && windowSizeClass.heightSizeClass != WindowHeightSizeClass.Compact)
-
-            val appState = rememberAppState(
-                navigator,
-                windowSizeClass = windowSizeClass
-            )
-
-            AppScaffold(
-                appState,
-                navigatableScreens,
-                useNavigationDrawer,
-                navigationIcon = { canGoBack ->
-                    if (!canGoBack) {
-                        if (useNavigationDrawer) {
-                            Icon(Icons.Filled.Menu, "", Modifier.clickable {
-                                appState.coroutineScope.launch {
-                                    if (appState.drawerState.isClosed) {
-                                        appState.drawerState.open()
-                                    } else {
-                                        appState.drawerState.close()
-                                    }
+        AppScaffold(
+            screenRegistry,
+            navigatableScreens,
+            navigationIcon = {
+                val appState = LocalAppState.current
+                val canGoBack = appState.navigator.voyager.canPop
+                if (!canGoBack) {
+                    if (appState.useNavigationDrawer) {
+                        Icon(Icons.Default.Menu, "", Modifier.clickable {
+                            appState.coroutineScope.launch {
+                                if (appState.drawerState.isClosed) {
+                                    appState.drawerState.open()
+                                } else {
+                                    appState.drawerState.close()
                                 }
-                            })
-                        }
-                    } else {
-                        Icon(Icons.Filled.ArrowBack, "", Modifier.clickable {
-                            appState.navigator.pop()
+                            }
                         })
                     }
+                } else {
+                    Icon(Icons.AutoMirrored.Default.ArrowBack, "", Modifier.clickable {
+                        appState.navigator.voyager.pop()
+                    })
                 }
-            )
-        }
+            }
+        )
     }
 }
