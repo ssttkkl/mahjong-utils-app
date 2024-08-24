@@ -26,11 +26,13 @@ import kotlinx.coroutines.launch
 fun Modifier.tapPress(
     interactionSource: MutableInteractionSource?,
     enabled: Boolean = true,
-    onTap: (Offset) -> Unit
+    onLongPress: ((Offset) -> Unit)? = null,
+    onTap: ((Offset) -> Unit)? = null
 ): Modifier = if (enabled) composed {
     val scope = rememberCoroutineScope()
     val pressedInteraction = remember { mutableStateOf<PressInteraction.Press?>(null) }
     val onTapState = rememberUpdatedState(onTap)
+    val onLongPressState = rememberUpdatedState(onLongPress)
     DisposableEffect(interactionSource) {
         onDispose {
             pressedInteraction.value?.let { oldValue ->
@@ -68,21 +70,24 @@ fun Modifier.tapPress(
                     }
                 }
             },
-            onTap = { onTapState.value.invoke(it) }
+            onLongPress = onLongPressState.value,
+            onTap = onTapState.value
         )
     }
 } else this
 
 fun Modifier.clickableButNotFocusable(
     interactionSource: MutableInteractionSource,
-    onClick: () -> Unit
+    onLongPress: (() -> Unit)? = null,
+    onClick: (() -> Unit)? = null
 ): Modifier {
     return composed {
         this.indication(interactionSource, LocalIndication.current)
             .hoverable(interactionSource)
-            .tapPress(interactionSource) {
-                onClick()
-            }
+            .tapPress(interactionSource,
+                onLongPress = onLongPress?.let { { it() } },
+                onTap = onClick?.let { { it() } }
+            )
     }
 }
 

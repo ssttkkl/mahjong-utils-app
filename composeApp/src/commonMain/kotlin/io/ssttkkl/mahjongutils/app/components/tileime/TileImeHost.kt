@@ -45,15 +45,10 @@ private fun TileImeHostOnBottom(
             enter = slideInVertically { it } + fadeIn(),
             exit = slideOutVertically { it } + fadeOut()
         ) {
-            val collapsed = state.specifiedCollapsed ?: state.defaultCollapsed
 
             TileIme(
-                pendingText = state.pendingText,
-                collapsed = collapsed,
-                modifier = Modifier.fillMaxWidth(),
-                onCommitTile = { state.emitTile(it) },
-                onBackspace = { state.emitBackspaceTile() },
-                onChangeCollapsed = { state.specifiedCollapsed = it }
+                state,
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }
@@ -74,11 +69,8 @@ private fun TileImeHostFloating(
                 enter = slideInVertically { it } + fadeIn(),
                 exit = slideOutVertically { it } + fadeOut()
             ) {
-                val collapsed = state.specifiedCollapsed ?: state.defaultCollapsed
-
                 TileIme(
-                    pendingText = state.pendingText,
-                    collapsed = collapsed,
+                    state = state,
                     modifier = Modifier.widthIn(0.dp, 500.dp)
                         .background(MaterialTheme.colorScheme.background),
                     headerContainer = {
@@ -92,10 +84,7 @@ private fun TileImeHostFloating(
                             }
                             it()
                         }
-                    },
-                    onCommitTile = { state.emitTile(it) },
-                    onBackspace = { state.emitBackspaceTile() },
-                    onChangeCollapsed = { state.specifiedCollapsed = it }
+                    }
                 )
             }
         }

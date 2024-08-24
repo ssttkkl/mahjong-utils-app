@@ -19,13 +19,14 @@ interface KeyboardKeyItem {
         get() = 1f
 
     @Composable
-    fun display(onClick: () -> Unit)
+    fun display(onLongPress: () -> Unit, onClick: () -> Unit)
 }
 
 @Composable
 fun <T : KeyboardKeyItem> KeyboardScreen(
     keysMatrix: List<List<T>>,
-    onCommit: (T) -> Unit,
+    onLongPress: (T) -> Unit,
+    onClick: (T) -> Unit,
 ) {
     val windowSizeClass = LocalAppState.current.windowSizeClass
 
@@ -43,13 +44,13 @@ fun <T : KeyboardKeyItem> KeyboardScreen(
         keysMatrix.forEach { row ->
             Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
                 row.forEach { key ->
-                    KeyboardKey(
-                        Modifier.weight(key.weightOfRow).height(56.dp),
-                        {
-                            onCommit(key)
-                        }
+                    Box(
+                        modifier = Modifier.weight(key.weightOfRow).height(56.dp),
+                        contentAlignment = Alignment.BottomCenter
                     ) {
-                        key.display(it)
+                        key.display(
+                            onLongPress = { onLongPress(key) }
+                        ) { onClick(key) }
                     }
                 }
             }
@@ -57,16 +58,3 @@ fun <T : KeyboardKeyItem> KeyboardScreen(
     }
 }
 
-@Composable
-fun KeyboardKey(
-    modifier: Modifier,
-    onPress: () -> Unit,
-    content: @Composable (onClick: () -> Unit) -> Unit,
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.BottomCenter
-    ) {
-        content(onPress)
-    }
-}

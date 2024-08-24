@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import io.ssttkkl.mahjongutils.app.components.tapPress
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
+import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
 import mahjongutils.models.Tile
 
 private fun detectTapPosition(rects: List<Rect>, offset: Offset): Int {
@@ -149,16 +150,16 @@ private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState):
 
             if (it.key == Key.Backspace) {
                 if (ime.pendingText.isNotEmpty()) {
-                    ime.emitBackspacePendingText(1)
+                    ime.removeLastPendingText(1)
                 } else {
-                    ime.emitBackspaceTile()
+                    ime.emitAction(ImeAction.Backspace)
                 }
                 true
             } else if (it.key == Key.Delete) {
                 if (ime.pendingText.isNotEmpty()) {
-                    ime.emitBackspacePendingText(65535)
+                    ime.removeLastPendingText(65535)
                 } else {
-                    ime.emitDeleteTile()
+                    ime.emitAction(ImeAction.Delete)
                 }
                 true
             } else if (it.key == Key.DirectionLeft) {

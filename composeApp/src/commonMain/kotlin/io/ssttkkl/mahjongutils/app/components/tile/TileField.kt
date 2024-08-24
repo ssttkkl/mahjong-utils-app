@@ -67,7 +67,7 @@ private fun TileImeHostState.TileImeConsumer.consume(
             state.selection = state.selection.coerceIn(0, value.size)
             val curCursor = state.selection.start
             if (state.selection.length == 0) {
-                val indexToRemove = if (it == TileImeHostState.DeleteTile.Backspace) {
+                val indexToRemove = if (it == TileImeHostState.DeleteType.Backspace) {
                     curCursor - 1
                 } else {
                     curCursor
@@ -96,6 +96,12 @@ private fun TileImeHostState.TileImeConsumer.consume(
                 onValueChange?.invoke(newValue)
                 state.selection = TextRange(curCursor)
             }
+        },
+        handleCopyRequest = {
+            value
+        },
+        handleClearRequest = {
+            onValueChange?.invoke(emptyList())
         }
     )
 }

@@ -20,13 +20,35 @@ class TileImeHostState(
         private val logger = LoggerFactory.getLogger("TileImeHostState")
     }
 
-    enum class DeleteTile {
+    enum class DeleteType {
         Backspace, Delete
     }
 
+    sealed class ImeAction {
+        data class Input(val data: List<Tile>) : ImeAction()
+
+        data class Delete(val type: DeleteType) : ImeAction()
+
+        data object Copy : ImeAction()
+
+        data object Clear : ImeAction()
+    }
+
     var consumer by mutableStateOf(0)
-    val pendingTile = MutableSharedFlow<List<Tile>>()
-    val deleteTile = MutableSharedFlow<DeleteTile>()
+    val pendingAction = MutableSharedFlow<ImeAction>()
+
+    var clipboardData by mutableStateOf<List<Tile>?>(null)
+        private set
+
+    fun writeClipboardData(data: List<Tile>?) {
+        clipboardData = data
+    }
+
+    fun emitAction(action: ImeAction) {
+        coroutineScope.launch {
+            pendingAction.emit(action)
+        }
+    }
 
     val visible by derivedStateOf {
         consumer != 0
@@ -45,26 +67,26 @@ class TileImeHostState(
         var consuming by mutableStateOf(false)
             private set
 
-        private var collectPendingTileJob: Job? = null
-        private var collectDeleteTileJob: Job? = null
+        private var collectPendingActionJob: Job? = null
 
         fun consume(
             handlePendingTile: suspend (List<Tile>) -> Unit,
-            handleDeleteTile: suspend (DeleteTile) -> Unit
+            handleDeleteTile: suspend (DeleteType) -> Unit,
+            handleCopyRequest: suspend () -> List<Tile>,
+            handleClearRequest: suspend () -> Unit
         ) {
             if (!consuming) {
                 consumer += 1
                 consuming = true
 
-                collectPendingTileJob = coroutineScope.launch {
-                    pendingTile.collect { tile ->
-                        handlePendingTile(tile)
-                    }
-                }
-
-                collectDeleteTileJob = coroutineScope.launch {
-                    deleteTile.collect {
-                        handleDeleteTile(it)
+                collectPendingActionJob = coroutineScope.launch {
+                    pendingAction.collect { action ->
+                        when(action) {
+                            is ImeAction.Input -> handlePendingTile(action.data)
+                            ImeAction.Clear -> handleClearRequest()
+                            ImeAction.Copy -> writeClipboardData(handleCopyRequest())
+                            is ImeAction.Delete -> handleDeleteTile(action.type)
+                        }
                     }
                 }
 
@@ -77,47 +99,10 @@ class TileImeHostState(
                 consumer -= 1
                 consuming = false
 
-                collectPendingTileJob?.cancel()
-                collectDeleteTileJob?.cancel()
+                collectPendingActionJob?.cancel()
 
                 logger.debug("stop consuming")
             }
-        }
-    }
-
-    /**
-     * 发送一个退格麻将牌指令（对应Backspace键）
-     */
-    fun emitBackspaceTile() {
-        coroutineScope.launch {
-            deleteTile.emit(DeleteTile.Backspace)
-        }
-    }
-
-    /**
-     * 发送一个删除麻将牌指令（对应Delete键）
-     */
-    fun emitDeleteTile() {
-        coroutineScope.launch {
-            deleteTile.emit(DeleteTile.Delete)
-        }
-    }
-
-    /**
-     * 发送一个添加麻将牌指令
-     */
-    fun emitTile(tile: Tile) {
-        coroutineScope.launch {
-            pendingTile.emit(listOf(tile))
-        }
-    }
-
-    /**
-     * 发送一个添加麻将牌指令
-     */
-    fun emitTile(tiles: List<Tile>) {
-        coroutineScope.launch {
-            pendingTile.emit(tiles)
         }
     }
 
@@ -136,7 +121,7 @@ class TileImeHostState(
 
         if (tiles != null) {
             pendingText = ""
-            emitTile(tiles)
+            emitAction(ImeAction.Input(tiles))
         }
     }
 
@@ -145,7 +130,7 @@ class TileImeHostState(
         tryParsePendingText()
     }
 
-    fun emitBackspacePendingText(count: Int) {
+    fun removeLastPendingText(count: Int) {
         if (pendingText.length < count) {
             pendingText = ""
         } else {
@@ -153,5 +138,4 @@ class TileImeHostState(
             tryParsePendingText()
         }
     }
-
 }
