@@ -26,9 +26,8 @@ fun AppBar(
 ) {
     TopAppBar(
         title = {
-            val lastNotNull = stateList.findLast { it != null } ?: AppBarState.NONE
             Text(
-                lastNotNull.title
+                stateList.findLast { it != null }?.title ?: ""
             )
         },
         navigationIcon = {

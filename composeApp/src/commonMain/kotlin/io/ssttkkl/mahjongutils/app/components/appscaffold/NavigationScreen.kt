@@ -7,6 +7,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -105,12 +106,14 @@ abstract class NavigationScreen : Screen {
 
         // 替换掉appState.appBarStateList第level级的元素
         val appBarStateList = LocalAppState.current.appBarStateList
-        val navigator = LocalNavigator.currentOrThrow
-        if (appBarStateList.getOrNull(navigator.level) != screenAppBarState) {
-            while (appBarStateList.size <= navigator.level) {
-                appBarStateList.add(null)
+        val navigatorLevel = LocalNavigator.currentOrThrow.level
+        SideEffect {
+            if (appBarStateList.getOrNull(navigatorLevel) != screenAppBarState) {
+                while (appBarStateList.size <= navigatorLevel) {
+                    appBarStateList.add(null)
+                }
+                appBarStateList[navigatorLevel] = screenAppBarState
             }
-            appBarStateList[navigator.level] = screenAppBarState
         }
 
         ScreenContent()

@@ -5,6 +5,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -70,7 +71,7 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
                 model
             )
 
-            LaunchedEffect(model.result) {
+            SideEffect {
                 if (model.result != null && !showTwoPanes && nestedNavigator.items.none { it is NestedResultShared<*, *> && it.key == key }) {
                     nestedNavigator.push(NestedResultScreen<ARG, RES>(key))
                 }
@@ -85,14 +86,12 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
         navigator: Navigator,
         appState: AppState,
         parentScreenModel: M
-    ): Pair<NestedFormScreenModel<ARG, RES>, NestedResultScreenModel<ARG, RES>> {
+    ) {
         val formScreenModel = NestedFormScreen.rememberScreenModel<ARG, RES>(key, navigator)
         fillFormScreenModel(formScreenModel, appState, parentScreenModel)
 
         val resultScreenModel = NestedResultScreen.rememberScreenModel<ARG, RES>(key, navigator)
         fillResultScreenModel(resultScreenModel, appState, parentScreenModel)
-
-        return Pair(formScreenModel, resultScreenModel)
     }
 
     @Composable
