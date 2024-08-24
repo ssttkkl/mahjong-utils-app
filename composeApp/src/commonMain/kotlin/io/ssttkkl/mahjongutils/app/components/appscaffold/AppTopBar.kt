@@ -6,8 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 
-
+@Immutable
 data class AppBarState(
     val title: String = "",
     val actions: @Composable RowScope.() -> Unit = {},

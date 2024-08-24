@@ -8,9 +8,11 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 
+@Immutable
 data class RatioOption<T>(
     val value: T,
     val title: String,

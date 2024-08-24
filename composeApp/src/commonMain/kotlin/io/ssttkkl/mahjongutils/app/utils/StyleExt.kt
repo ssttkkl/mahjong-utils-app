@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.utils
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
@@ -7,6 +8,7 @@ import androidx.compose.ui.unit.sp
 
 fun TextStyle.withAlpha(alpha: Float) = copy(color = color.copy(alpha))
 
+@Immutable
 class TileTextSize(
     val bodyLarge: TextUnit,
     val bodyMedium: TextUnit,

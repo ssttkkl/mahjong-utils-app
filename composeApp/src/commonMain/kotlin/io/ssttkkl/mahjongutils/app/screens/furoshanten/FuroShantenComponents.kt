@@ -2,6 +2,7 @@ package io.ssttkkl.mahjongutils.app.screens.furoshanten
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
@@ -12,6 +13,7 @@ import mahjongutils.composeapp.generated.resources.label_tile_discarded_by_other
 import mahjongutils.composeapp.generated.resources.label_tiles_in_hand
 import org.jetbrains.compose.resources.stringResource
 
+@Immutable
 class FuroShantenComponents(
     val form: FuroShantenFormState
 ) {

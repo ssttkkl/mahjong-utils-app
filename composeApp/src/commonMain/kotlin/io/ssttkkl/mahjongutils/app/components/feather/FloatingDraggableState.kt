@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.components.feather
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +9,7 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 
+@Stable
 class FloatingDraggableState {
     var itemLayoutCoordinates: LayoutCoordinates? by mutableStateOf(null)
     var containerLayoutCoordinates: LayoutCoordinates? by mutableStateOf(null)

@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.models.furoshanten
 
+import androidx.compose.runtime.Immutable
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.serialization.Serializable
@@ -9,6 +10,7 @@ import mahjongutils.shanten.furoChanceShanten
 import kotlin.reflect.typeOf
 
 @Serializable
+@Immutable
 data class FuroChanceShantenArgs(
     val tiles: List<Tile>,
     val chanceTile: Tile,
@@ -28,6 +30,7 @@ data class FuroChanceShantenArgs(
     }
 }
 
+@Immutable
 data class FuroChanceShantenCalcResult(
     val args: FuroChanceShantenArgs,
     val result: FuroChanceShantenResult

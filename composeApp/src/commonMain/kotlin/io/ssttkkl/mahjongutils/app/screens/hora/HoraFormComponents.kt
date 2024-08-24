@@ -23,6 +23,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -59,6 +60,7 @@ import mahjongutils.models.Wind
 import mahjongutils.yaku.Yaku
 import org.jetbrains.compose.resources.stringResource
 
+@Stable
 class HoraFormComponents(
     val form: HoraFormState
 ) {

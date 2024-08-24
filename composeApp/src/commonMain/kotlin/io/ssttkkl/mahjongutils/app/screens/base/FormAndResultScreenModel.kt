@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.screens.base
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,8 +11,8 @@ import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
+@Stable
 abstract class FormAndResultScreenModel<ARG, RES> : UrlNavigationScreenModel(), FormState<ARG> {
     var onResult by mutableStateOf<(Deferred<RES>) -> Unit>({
         LoggerFactory.getLogger(this::class).debug("onResult not set")
@@ -22,11 +23,9 @@ abstract class FormAndResultScreenModel<ARG, RES> : UrlNavigationScreenModel(), 
     fun onSubmit() {
         val args = onCheck()
         if (args != null) {
-            screenModelScope.launch(Dispatchers.Default) {
-                onResult(screenModelScope.async(Dispatchers.Default) {
-                    onCalc(args)
-                })
-            }
+            onResult(screenModelScope.async(Dispatchers.Default) {
+                onCalc(args)
+            })
         }
     }
 

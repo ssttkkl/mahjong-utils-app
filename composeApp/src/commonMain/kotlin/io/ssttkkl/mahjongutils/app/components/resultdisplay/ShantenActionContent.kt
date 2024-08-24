@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
@@ -38,6 +39,7 @@ import mahjongutils.shanten.Improvement
 import mahjongutils.shanten.ShantenWithoutGot
 import org.jetbrains.compose.resources.stringResource
 
+@Immutable
 sealed class ShantenAction {
     abstract val shantenAfterAction: ShantenWithoutGot
 

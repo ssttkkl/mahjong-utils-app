@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.models.hora
 
+import androidx.compose.runtime.Immutable
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.serialization.Serializable
@@ -14,6 +15,7 @@ import mahjongutils.yaku.Yaku
 import kotlin.reflect.typeOf
 
 @Serializable
+@Immutable
 data class HoraArgs(
     val tiles: List<Tile>,
     val furo: List<Furo> = emptyList(),
@@ -39,6 +41,7 @@ data class HoraArgs(
     }
 }
 
+@Immutable
 data class HoraCalcResult(
     val args: HoraArgs,
     val result: Hora
