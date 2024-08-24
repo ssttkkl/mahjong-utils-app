@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.feather.FloatingDraggableContainer
@@ -45,15 +46,10 @@ private fun TileImeHostOnBottom(
             enter = slideInVertically { it } + fadeIn(),
             exit = slideOutVertically { it } + fadeOut()
         ) {
-            val collapsed = state.specifiedCollapsed ?: state.defaultCollapsed
 
             TileIme(
-                pendingText = state.pendingText,
-                collapsed = collapsed,
-                modifier = Modifier.fillMaxWidth(),
-                onCommitTile = { state.emitTile(it) },
-                onBackspace = { state.emitBackspaceTile() },
-                onChangeCollapsed = { state.specifiedCollapsed = it }
+                state,
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }
@@ -74,11 +70,8 @@ private fun TileImeHostFloating(
                 enter = slideInVertically { it } + fadeIn(),
                 exit = slideOutVertically { it } + fadeOut()
             ) {
-                val collapsed = state.specifiedCollapsed ?: state.defaultCollapsed
-
                 TileIme(
-                    pendingText = state.pendingText,
-                    collapsed = collapsed,
+                    state = state,
                     modifier = Modifier.widthIn(0.dp, 500.dp)
                         .background(MaterialTheme.colorScheme.background),
                     headerContainer = {
@@ -92,10 +85,7 @@ private fun TileImeHostFloating(
                             }
                             it()
                         }
-                    },
-                    onCommitTile = { state.emitTile(it) },
-                    onBackspace = { state.emitBackspaceTile() },
-                    onChangeCollapsed = { state.specifiedCollapsed = it }
+                    }
                 )
             }
         }
@@ -107,7 +97,8 @@ fun TileImeHost(
     content: @Composable () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val state = remember { TileImeHostState(scope) }
+    val clipboardManager = LocalClipboardManager.current
+    val state = remember { TileImeHostState(scope, clipboardManager) }
 
     CompositionLocalProvider(
         LocalTileImeHostState provides state,

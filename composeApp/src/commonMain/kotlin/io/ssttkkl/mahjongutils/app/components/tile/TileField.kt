@@ -18,6 +18,12 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isCtrlPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -67,7 +73,7 @@ private fun TileImeHostState.TileImeConsumer.consume(
             state.selection = state.selection.coerceIn(0, value.size)
             val curCursor = state.selection.start
             if (state.selection.length == 0) {
-                val indexToRemove = if (it == TileImeHostState.DeleteTile.Backspace) {
+                val indexToRemove = if (it == TileImeHostState.DeleteType.Backspace) {
                     curCursor - 1
                 } else {
                     curCursor
@@ -96,6 +102,12 @@ private fun TileImeHostState.TileImeConsumer.consume(
                 onValueChange?.invoke(newValue)
                 state.selection = TextRange(curCursor)
             }
+        },
+        handleCopyRequest = {
+            value
+        },
+        handleClearRequest = {
+            onValueChange?.invoke(emptyList())
         }
     )
 }
@@ -181,6 +193,23 @@ fun BaseTileField(
         value = value,
         modifier = modifier.onGloballyPositioned {
             layoutCoordinates = it
+        }.onKeyEvent {
+            if (it.type != KeyEventType.KeyUp) {
+                return@onKeyEvent false
+            }
+
+            //TODO: mac/ios上cmd+v会不会响应
+            if (it.key == Key.V && it.isCtrlPressed) {
+                // 粘贴操作
+                tileImeHostState.emitAction(TileImeHostState.ImeAction.Paste)
+                true
+            } else if (it.key == Key.C && it.isCtrlPressed) {
+                // 复制操作
+                tileImeHostState.emitAction(TileImeHostState.ImeAction.Copy)
+                true
+            } else {
+                false
+            }
         },
         state = state,
         cursorColor = if (isError) errorCursorColor else cursorColor,

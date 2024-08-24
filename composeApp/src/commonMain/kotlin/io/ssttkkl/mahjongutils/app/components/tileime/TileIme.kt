@@ -5,97 +5,29 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.ssttkkl.mahjongutils.app.components.backhandler.BackHandler
 import io.ssttkkl.mahjongutils.app.components.clickableButNotFocusable
-import io.ssttkkl.mahjongutils.app.components.tile.painterResource
+import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
 import mahjongutils.composeapp.generated.resources.Res
-import mahjongutils.composeapp.generated.resources.icon_backspace
+import mahjongutils.composeapp.generated.resources.icon_content_copy
+import mahjongutils.composeapp.generated.resources.icon_content_paste
 import mahjongutils.models.Tile
 import org.jetbrains.compose.resources.painterResource
-
-@Immutable
-sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
-    data class TileKey(val tile: Tile) : TileImeKey<TileKey>() {
-        @Composable
-        override fun display(onClick: () -> Unit) {
-            val density = LocalDensity.current
-
-            val interactionSource = remember { MutableInteractionSource() }
-
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .padding(4.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White)
-                    .clickableButNotFocusable(interactionSource) {
-                        onClick()
-                    },
-                Alignment.Center
-            ) {
-                Image(
-                    tile.painterResource,
-                    "",
-                    Modifier.size(with(density) { 36.sp.toDp() })
-                )
-            }
-        }
-    }
-
-    data object BackspaceKey : TileImeKey<BackspaceKey>() {
-        override val weightOfRow: Float
-            get() = 2f
-
-        @Composable
-        override fun display(onClick: () -> Unit) {
-            val density = LocalDensity.current
-
-            val interactionSource = remember { MutableInteractionSource() }
-
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .padding(4.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.secondary)
-                    .clickableButNotFocusable(interactionSource) {
-                        onClick()
-                    },
-                Alignment.Center
-            ) {
-                Image(
-                    painterResource(Res.drawable.icon_backspace),
-                    "",
-                    Modifier.size(with(density) { 36.sp.toDp() }),
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
-                )
-            }
-        }
-    }
-}
 
 private val tileImeMatrix = listOf(
     Tile.parseTiles("123456789m").map { TileImeKey.TileKey(it) },
@@ -106,33 +38,38 @@ private val tileImeMatrix = listOf(
 
 @Composable
 fun TileIme(
-    pendingText: String,
-    collapsed: Boolean,
+    state: TileImeHostState,
     modifier: Modifier = Modifier,
     headerContainer: @Composable (@Composable () -> Unit) -> Unit = { it() },
-    onCommitTile: (Tile) -> Unit,
-    onBackspace: () -> Unit,
-    onChangeCollapsed: (Boolean) -> Unit,
 ) {
-    val currentOnCommitTile by rememberUpdatedState(onCommitTile)
-    val currentOnBackspace by rememberUpdatedState(onBackspace)
-    val currentOnChangeCollapsed by rememberUpdatedState(onChangeCollapsed)
-    val currentOnCommit = remember {
+    val collapsed = state.specifiedCollapsed ?: state.defaultCollapsed
+    val onLongPress = remember(state) {
+        { it: TileImeKey<*> ->
+            when (it) {
+                is TileImeKey.BackspaceKey -> {
+                    state.emitAction(ImeAction.Clear)
+                }
+
+                else -> {}
+            }
+        }
+    }
+    val onClick = remember(state) {
         { it: TileImeKey<*> ->
             when (it) {
                 is TileImeKey.TileKey -> {
-                    currentOnCommitTile(it.tile)
+                    state.emitAction(ImeAction.Input(listOf(it.tile)))
                 }
 
                 is TileImeKey.BackspaceKey -> {
-                    currentOnBackspace()
+                    state.emitAction(ImeAction.Delete(TileImeHostState.DeleteType.Backspace))
                 }
             }
         }
     }
 
     BackHandler {
-        currentOnChangeCollapsed(true)
+        state.specifiedCollapsed = true
     }
 
     Column(
@@ -143,7 +80,7 @@ fun TileIme(
         headerContainer {
             Box(Modifier.fillMaxWidth()) {
                 Text(
-                    pendingText,
+                    state.pendingText,
                     Modifier.align(Alignment.Center)
                 )
 
@@ -156,20 +93,53 @@ fun TileIme(
                     Modifier
                         .padding(start = 8.dp)
                         .clickableButNotFocusable(remember { MutableInteractionSource() }) {
-                            onChangeCollapsed(!collapsed)
+                            state.specifiedCollapsed = !collapsed
                         }
                         .padding(4.dp)
                         .size(24.dp, 24.dp)
                         .align(Alignment.CenterStart),
                     alignment = Alignment.Center,
                 )
+
+                Row(Modifier.align(Alignment.CenterEnd)) {
+                    Image(
+                        painterResource(Res.drawable.icon_content_copy),
+                        "",
+                        Modifier
+                            .padding(start = 8.dp)
+                            .clickableButNotFocusable(remember { MutableInteractionSource() }) {
+                                state.emitAction(ImeAction.Copy)
+                            }
+                            .padding(4.dp)
+                            .size(24.dp, 24.dp),
+                    )
+
+                    Image(
+                        painterResource(Res.drawable.icon_content_paste),
+                        "",
+                        Modifier
+                            .padding(start = 8.dp)
+                            .let {
+                                if (state.clipboardData.isNullOrEmpty()) {
+                                    it.alpha(0.4f)
+                                } else {
+                                    it.clickableButNotFocusable(remember { MutableInteractionSource() }) {
+                                        state.emitAction(ImeAction.Paste)
+                                    }
+                                }
+                            }
+                            .padding(4.dp)
+                            .size(24.dp, 24.dp),
+                    )
+                }
             }
         }
 
         if (!collapsed) {
             KeyboardScreen(
                 tileImeMatrix,
-                currentOnCommit
+                onLongPress,
+                onClick
             )
         }
     }

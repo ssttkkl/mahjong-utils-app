@@ -5,28 +5,57 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
+import mahjongutils.models.toTilesString
 
 @Stable
 class TileImeHostState(
-    private val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope,
+    private val clipboardManager: ClipboardManager,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger("TileImeHostState")
     }
 
-    enum class DeleteTile {
+    enum class DeleteType {
         Backspace, Delete
     }
 
+    sealed class ImeAction {
+        data class Input(val data: List<Tile>) : ImeAction()
+
+        data class Delete(val type: DeleteType) : ImeAction()
+
+        data object Copy : ImeAction()
+
+        data object Paste : ImeAction()
+
+        data object Clear : ImeAction()
+    }
+
     var consumer by mutableStateOf(0)
-    val pendingTile = MutableSharedFlow<List<Tile>>()
-    val deleteTile = MutableSharedFlow<DeleteTile>()
+    val pendingAction = MutableSharedFlow<ImeAction>()
+
+    var clipboardData: List<Tile>? by mutableStateOf(null)
+        private set
+
+    fun writeClipboardData(data: List<Tile>?) {
+        data?.let { clipboardManager.setText(AnnotatedString(it.toTilesString())) }
+    }
+
+    fun emitAction(action: ImeAction) {
+        coroutineScope.launch {
+            pendingAction.emit(action)
+        }
+    }
 
     val visible by derivedStateOf {
         consumer != 0
@@ -45,26 +74,41 @@ class TileImeHostState(
         var consuming by mutableStateOf(false)
             private set
 
-        private var collectPendingTileJob: Job? = null
-        private var collectDeleteTileJob: Job? = null
+        private var collectPendingActionJob: Job? = null
+        private var pollClipboardJob: Job? = null
 
         fun consume(
             handlePendingTile: suspend (List<Tile>) -> Unit,
-            handleDeleteTile: suspend (DeleteTile) -> Unit
+            handleDeleteTile: suspend (DeleteType) -> Unit,
+            handleCopyRequest: suspend () -> List<Tile>,
+            handleClearRequest: suspend () -> Unit
         ) {
             if (!consuming) {
                 consumer += 1
                 consuming = true
 
-                collectPendingTileJob = coroutineScope.launch {
-                    pendingTile.collect { tile ->
-                        handlePendingTile(tile)
+                collectPendingActionJob = coroutineScope.launch {
+                    pendingAction.collect { action ->
+                        when (action) {
+                            is ImeAction.Input -> handlePendingTile(action.data)
+                            ImeAction.Clear -> handleClearRequest()
+                            ImeAction.Copy -> writeClipboardData(handleCopyRequest())
+                            ImeAction.Paste -> clipboardData?.let { handlePendingTile(it) }
+                            is ImeAction.Delete -> handleDeleteTile(action.type)
+                        }
                     }
                 }
 
-                collectDeleteTileJob = coroutineScope.launch {
-                    deleteTile.collect {
-                        handleDeleteTile(it)
+                pollClipboardJob = coroutineScope.launch {
+                    while (true) {
+                        try {
+                            clipboardManager.getText()?.text?.let {
+                                clipboardData = Tile.parseTiles(it)
+                            }
+                        } catch (e: Throwable) {
+                            // pass
+                        }
+                        delay(300)
                     }
                 }
 
@@ -77,47 +121,11 @@ class TileImeHostState(
                 consumer -= 1
                 consuming = false
 
-                collectPendingTileJob?.cancel()
-                collectDeleteTileJob?.cancel()
+                collectPendingActionJob?.cancel()
+                pollClipboardJob?.cancel()
 
                 logger.debug("stop consuming")
             }
-        }
-    }
-
-    /**
-     * 发送一个退格麻将牌指令（对应Backspace键）
-     */
-    fun emitBackspaceTile() {
-        coroutineScope.launch {
-            deleteTile.emit(DeleteTile.Backspace)
-        }
-    }
-
-    /**
-     * 发送一个删除麻将牌指令（对应Delete键）
-     */
-    fun emitDeleteTile() {
-        coroutineScope.launch {
-            deleteTile.emit(DeleteTile.Delete)
-        }
-    }
-
-    /**
-     * 发送一个添加麻将牌指令
-     */
-    fun emitTile(tile: Tile) {
-        coroutineScope.launch {
-            pendingTile.emit(listOf(tile))
-        }
-    }
-
-    /**
-     * 发送一个添加麻将牌指令
-     */
-    fun emitTile(tiles: List<Tile>) {
-        coroutineScope.launch {
-            pendingTile.emit(tiles)
         }
     }
 
@@ -136,7 +144,7 @@ class TileImeHostState(
 
         if (tiles != null) {
             pendingText = ""
-            emitTile(tiles)
+            emitAction(ImeAction.Input(tiles))
         }
     }
 
@@ -145,7 +153,7 @@ class TileImeHostState(
         tryParsePendingText()
     }
 
-    fun emitBackspacePendingText(count: Int) {
+    fun removeLastPendingText(count: Int) {
         if (pendingText.length < count) {
             pendingText = ""
         } else {
@@ -153,5 +161,4 @@ class TileImeHostState(
             tryParsePendingText()
         }
     }
-
 }

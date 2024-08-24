@@ -12,6 +12,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
@@ -37,6 +39,10 @@ import androidx.compose.ui.unit.sp
 import io.ssttkkl.mahjongutils.app.components.tapPress
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
+import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
 
 private fun detectTapPosition(rects: List<Rect>, offset: Offset): Int {
@@ -142,23 +148,41 @@ private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState):
     return composed {
         val ime = LocalTileImeHostState.current
 
+        val coroutineScope = rememberCoroutineScope()
+        var delayedClearJob: Job? by remember { mutableStateOf(null) }
+
         onKeyEvent {
+            // 当按下Backspace和Delete时，延迟500ms后清空输入框
+            if ((it.key == Key.Backspace || it.key == Key.Delete) && it.type == KeyEventType.KeyDown) {
+                delayedClearJob = coroutineScope.launch {
+                    delay(500)
+                    ime.emitAction(ImeAction.Clear)
+                    delayedClearJob = null
+                }
+            }
+
             if (it.type != KeyEventType.KeyUp) {
                 return@onKeyEvent false
             }
 
             if (it.key == Key.Backspace) {
+                // 当松开时，取消之前的延迟清空Job
+                delayedClearJob?.cancel()
+                delayedClearJob = null
                 if (ime.pendingText.isNotEmpty()) {
-                    ime.emitBackspacePendingText(1)
+                    ime.removeLastPendingText(1)
                 } else {
-                    ime.emitBackspaceTile()
+                    ime.emitAction(ImeAction.Delete(TileImeHostState.DeleteType.Backspace))
                 }
                 true
             } else if (it.key == Key.Delete) {
+                // 当松开时，取消之前的延迟清空Job
+                delayedClearJob?.cancel()
+                delayedClearJob = null
                 if (ime.pendingText.isNotEmpty()) {
-                    ime.emitBackspacePendingText(65535)
+                    ime.removeLastPendingText(65535)
                 } else {
-                    ime.emitDeleteTile()
+                    ime.emitAction(ImeAction.Delete(TileImeHostState.DeleteType.Delete))
                 }
                 true
             } else if (it.key == Key.DirectionLeft) {
