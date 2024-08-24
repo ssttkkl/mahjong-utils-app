@@ -31,6 +31,8 @@ class TileImeHostState(
 
         data object Copy : ImeAction()
 
+        data object Paste : ImeAction()
+
         data object Clear : ImeAction()
     }
 
@@ -81,10 +83,11 @@ class TileImeHostState(
 
                 collectPendingActionJob = coroutineScope.launch {
                     pendingAction.collect { action ->
-                        when(action) {
+                        when (action) {
                             is ImeAction.Input -> handlePendingTile(action.data)
                             ImeAction.Clear -> handleClearRequest()
                             ImeAction.Copy -> writeClipboardData(handleCopyRequest())
+                            ImeAction.Paste -> clipboardData?.let { handlePendingTile(it) }
                             is ImeAction.Delete -> handleDeleteTile(action.type)
                         }
                     }

@@ -152,14 +152,14 @@ private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState):
                 if (ime.pendingText.isNotEmpty()) {
                     ime.removeLastPendingText(1)
                 } else {
-                    ime.emitAction(ImeAction.Backspace)
+                    ime.emitAction(ImeAction.Delete(TileImeHostState.DeleteType.Backspace))
                 }
                 true
             } else if (it.key == Key.Delete) {
                 if (ime.pendingText.isNotEmpty()) {
                     ime.removeLastPendingText(65535)
                 } else {
-                    ime.emitAction(ImeAction.Delete)
+                    ime.emitAction(ImeAction.Delete(TileImeHostState.DeleteType.Delete))
                 }
                 true
             } else if (it.key == Key.DirectionLeft) {

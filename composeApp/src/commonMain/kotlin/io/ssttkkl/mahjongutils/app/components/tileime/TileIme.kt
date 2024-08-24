@@ -124,9 +124,7 @@ fun TileIme(
                                     it.alpha(0.4f)
                                 } else {
                                     it.clickableButNotFocusable(remember { MutableInteractionSource() }) {
-                                        state.clipboardData?.let {
-                                            state.emitAction(ImeAction.Input(it))
-                                        }
+                                        state.emitAction(ImeAction.Paste)
                                     }
                                 }
                             }
