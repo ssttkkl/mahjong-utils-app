@@ -44,13 +44,23 @@ object HanhuScreen : UrlNavigationScreen<HanhuScreenModel>() {
         get() = "hanhu"
 
     @Composable
-    override fun getScreenModel(): HanhuScreenModel {
+    override fun rememberScreenModel(): HanhuScreenModel {
         return rememberScreenModel { HanhuScreenModel() }
     }
 
     @Composable
+    override fun rememberScreenParams(): Map<String, String> {
+        val model = rememberScreenModel()
+        return model.form.extractToMap()
+    }
+
+    override fun applyScreenParams(model: HanhuScreenModel, params: Map<String, String>) {
+        model.form.applyFromMap(params)
+    }
+
+    @Composable
     override fun ScreenContent() {
-        val model = getScreenModel()
+        val model = rememberScreenModel()
         val form = model.form
 
         with(Spacing.current) {

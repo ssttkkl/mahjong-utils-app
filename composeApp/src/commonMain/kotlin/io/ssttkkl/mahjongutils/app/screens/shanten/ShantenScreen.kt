@@ -48,7 +48,7 @@ object ShantenScreen :
         get() = Res.string.title_shanten_result
 
     @Composable
-    override fun getScreenModel(): ShantenScreenModel {
+    override fun rememberScreenModel(): ShantenScreenModel {
         return rememberScreenModel { ShantenScreenModel() }
     }
 

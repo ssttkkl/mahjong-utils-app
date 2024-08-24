@@ -39,11 +39,15 @@ private val navigatableScreens = listOf(
 ).map { it.path }
 
 @Composable
-fun App(typography: Typography = MaterialTheme.typography) {
+fun App(
+    typography: Typography = MaterialTheme.typography,
+    additionalContent: @Composable () -> Unit = {}
+) {
     AppTheme(typography = typography) {
         AppScaffold(
             screenRegistry,
             navigatableScreens,
+            additionalContent = additionalContent,
             navigationIcon = {
                 val appState = LocalAppState.current
                 val canGoBack = appState.navigator.voyager.canPop

@@ -62,7 +62,7 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
             }
         }
 
-        val model = getScreenModel()
+        val model = rememberScreenModel()
         val (_, resultModel) = rememberFormAndResultScreenModel(
             appState,
             model
@@ -142,12 +142,22 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
 
     @Composable
     fun getChangeArgsByResultContentHandler(): (args: ARG) -> Unit {
-        val curModel by rememberUpdatedState(getScreenModel())
+        val curModel by rememberUpdatedState(rememberScreenModel())
         val curNavigator by rememberUpdatedState(screenState.nestedNavigator)
         return { args ->
             curNavigator?.popUntilRoot()
             curModel.fillFormWithArgs(args)
             curModel.onSubmit()
         }
+    }
+
+    @Composable
+    override fun rememberScreenParams(): Map<String, String> {
+        val model = rememberScreenModel()
+        return model.extractToMap()
+    }
+
+    override fun applyScreenParams(model: M, params: Map<String, String>) {
+        model.applyFromMap(params)
     }
 }

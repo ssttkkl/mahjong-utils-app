@@ -21,6 +21,10 @@ class HoraScreenModel(
     override fun resetForm() = form.resetForm()
     override fun onCheck(): HoraArgs? = form.onCheck()
 
+    override fun applyFromMap(map: Map<String, String>) = form.applyFromMap(map)
+
+    override fun extractToMap(): Map<String, String> = form.extractToMap()
+
     override suspend fun onCalc(args: HoraArgs): HoraCalcResult {
         HoraArgs.history.insert(args)
         return args.calc()

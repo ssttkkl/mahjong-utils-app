@@ -27,6 +27,7 @@ import mahjongutils.models.Furo
 import mahjongutils.models.Kan
 import mahjongutils.models.Tile
 import mahjongutils.models.Wind
+import mahjongutils.models.toTilesString
 import mahjongutils.yaku.Yaku
 import mahjongutils.yaku.Yakus
 import org.jetbrains.compose.resources.StringResource
@@ -41,6 +42,14 @@ class FuroModel {
 
     fun toFuro(): Furo {
         return Furo(tiles, ankan)
+    }
+
+    override fun toString(): String {
+        try {
+            return toFuro().toString()
+        } catch (e: Throwable) {
+            return tiles.toTilesString()
+        }
     }
 
     companion object {
@@ -138,6 +147,73 @@ class HoraFormState(
     var selfWind by mutableStateOf<Wind?>(null)
     var roundWind by mutableStateOf<Wind?>(null)
     var extraYaku by mutableStateOf<Set<Yaku>>(emptySet())
+
+    override fun applyFromMap(map: Map<String, String>) {
+        map["tiles"]?.let {
+            runCatching {
+                tiles = Tile.parseTiles(it)
+            }
+        }
+        map["furo"]?.let {
+            runCatching {
+                furo.clear()
+                furo.addAll(it.split(",").filter { it.isNotEmpty() }
+                    .map { FuroModel.fromFuro(Furo.parse(it)) })
+            }
+        }
+        map["agari"]?.let {
+            runCatching {
+                agari = Tile.get(it)
+            }
+        }
+        map["tsumo"]?.let {
+            runCatching {
+                tsumo = it.toBoolean()
+            }
+        }
+        map["dora"]?.let {
+            runCatching {
+                dora = it
+            }
+        }
+        map["selfWind"]?.let {
+            runCatching {
+                selfWind = Wind.entries.first { e -> e.name == it }
+            }
+        }
+        map["roundWind"]?.let {
+            runCatching {
+                roundWind = Wind.entries.first { e -> e.name == it }
+            }
+        }
+        map["extraYaku"]?.let {
+            runCatching {
+                extraYaku = it.split(",").filter { it.isNotEmpty() }
+                    .map {
+                        Yakus.allExtraYaku.first { e -> e.name == it }
+                    }.toSet()
+            }
+        }
+    }
+
+    override fun extractToMap(): Map<String, String> {
+        return buildMap {
+            put("tiles", tiles.toTilesString())
+            put("furo", furo.joinToString(",") { it.toString() })
+            agari?.let { agari ->
+                put("agari", agari.toString())
+            }
+            put("tsumo", tsumo.toString())
+            put("dora", dora)
+            selfWind?.let { selfWind ->
+                put("selfWind", selfWind.toString())
+            }
+            roundWind?.let { roundWind ->
+                put("roundWind", roundWind.toString())
+            }
+            put("extraYaku", extraYaku.joinToString(",") { it.name })
+        }
+    }
 
     val autoDetectedAgari by derivedStateOf {
         // 当输入k*3+2张牌时，自动将最后一张作为默认的所和的牌

@@ -74,7 +74,7 @@ object HoraScreen :
         get() = Res.string.title_hora_result
 
     @Composable
-    override fun getScreenModel(): HoraScreenModel {
+    override fun rememberScreenModel(): HoraScreenModel {
         return rememberScreenModel { HoraScreenModel() }
     }
 

@@ -47,7 +47,7 @@ object FuroShantenScreen :
         get() = Res.string.title_furo_shanten_result
 
     @Composable
-    override fun getScreenModel(): FuroShantenScreenModel {
+    override fun rememberScreenModel(): FuroShantenScreenModel {
         return rememberScreenModel { FuroShantenScreenModel() }
     }
 

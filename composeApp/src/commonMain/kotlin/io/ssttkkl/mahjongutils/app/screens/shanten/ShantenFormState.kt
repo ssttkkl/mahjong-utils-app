@@ -13,6 +13,7 @@ import mahjongutils.composeapp.generated.resources.text_cannot_have_more_than_14
 import mahjongutils.composeapp.generated.resources.text_must_enter_tiles
 import mahjongutils.composeapp.generated.resources.text_tiles_must_not_be_divided_into_3
 import mahjongutils.models.Tile
+import mahjongutils.models.toTilesString
 import mahjongutils.shanten.CommonShantenArgs
 import mahjongutils.shanten.CommonShantenArgsErrorInfo
 import mahjongutils.shanten.validate
@@ -21,6 +22,26 @@ import org.jetbrains.compose.resources.StringResource
 class ShantenFormState : FormState<ShantenArgs> {
     var tiles by mutableStateOf<List<Tile>>(emptyList())
     var shantenMode by mutableStateOf(ShantenMode.Union)
+
+    override fun extractToMap(): Map<String, String> {
+        return mapOf(
+            "tiles" to tiles.toTilesString(),
+            "shantenMode" to shantenMode.name
+        )
+    }
+
+    override fun applyFromMap(map: Map<String, String>) {
+        map["tiles"]?.let {
+            runCatching {
+                tiles = Tile.parseTiles(it)
+            }
+        }
+        map["shantenMode"]?.let {
+            runCatching {
+                shantenMode = ShantenMode.entries.first { e -> e.name == it }
+            }
+        }
+    }
 
     val tilesErrMsg = mutableStateListOf<StringResource>()
 
