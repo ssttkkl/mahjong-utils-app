@@ -154,7 +154,7 @@ private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState):
         onKeyEvent {
             // 当按下Backspace和Delete时，延迟500ms后清空输入框
             if ((it.key == Key.Backspace || it.key == Key.Delete) && it.type == KeyEventType.KeyDown) {
-                coroutineScope.launch {
+                delayedClearJob = coroutineScope.launch {
                     delay(500)
                     ime.emitAction(ImeAction.Clear)
                     delayedClearJob = null
