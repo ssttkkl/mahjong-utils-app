@@ -5,16 +5,21 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
+import mahjongutils.models.toTilesString
 
 @Stable
 class TileImeHostState(
-    private val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope,
+    private val clipboardManager: ClipboardManager,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger("TileImeHostState")
@@ -39,11 +44,11 @@ class TileImeHostState(
     var consumer by mutableStateOf(0)
     val pendingAction = MutableSharedFlow<ImeAction>()
 
-    var clipboardData by mutableStateOf<List<Tile>?>(null)
+    var clipboardData: List<Tile>? by mutableStateOf(null)
         private set
 
     fun writeClipboardData(data: List<Tile>?) {
-        clipboardData = data
+        data?.let { clipboardManager.setText(AnnotatedString(it.toTilesString())) }
     }
 
     fun emitAction(action: ImeAction) {
@@ -70,6 +75,7 @@ class TileImeHostState(
             private set
 
         private var collectPendingActionJob: Job? = null
+        private var pollClipboardJob: Job? = null
 
         fun consume(
             handlePendingTile: suspend (List<Tile>) -> Unit,
@@ -93,6 +99,19 @@ class TileImeHostState(
                     }
                 }
 
+                pollClipboardJob = coroutineScope.launch {
+                    while (true) {
+                        try {
+                            clipboardManager.getText()?.text?.let {
+                                clipboardData = Tile.parseTiles(it)
+                            }
+                        } catch (e: Throwable) {
+                            // pass
+                        }
+                        delay(300)
+                    }
+                }
+
                 logger.debug("start consuming")
             }
         }
@@ -103,6 +122,7 @@ class TileImeHostState(
                 consuming = false
 
                 collectPendingActionJob?.cancel()
+                pollClipboardJob?.cancel()
 
                 logger.debug("stop consuming")
             }

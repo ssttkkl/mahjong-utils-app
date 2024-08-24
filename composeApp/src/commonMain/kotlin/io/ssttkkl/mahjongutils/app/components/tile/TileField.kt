@@ -19,9 +19,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -192,6 +194,10 @@ fun BaseTileField(
         modifier = modifier.onGloballyPositioned {
             layoutCoordinates = it
         }.onKeyEvent {
+            if (it.type != KeyEventType.KeyUp) {
+                return@onKeyEvent false
+            }
+
             //TODO: mac/ios上cmd+v会不会响应
             if (it.key == Key.V && it.isCtrlPressed) {
                 // 粘贴操作
