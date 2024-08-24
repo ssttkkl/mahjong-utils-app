@@ -27,7 +27,7 @@ class NestedResultScreen<ARG, RES>(
             resultKey: String,
             navigator: Navigator = LocalNavigator.currentOrThrow
         ): NestedResultScreenModel<ARG, RES> {
-            // 统一存在根级Navigator中
+            // 统一存在子级Navigator中
             val model = navigator.rememberNavigatorScreenModel("${resultKey}-result") {
                 NestedResultScreenModel<ARG, RES>()
             }
