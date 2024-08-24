@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.screens.hora
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -32,6 +33,7 @@ import mahjongutils.yaku.Yaku
 import mahjongutils.yaku.Yakus
 import org.jetbrains.compose.resources.StringResource
 
+@Stable
 class FuroModel {
     var tiles: List<Tile> by mutableStateOf(emptyList())
     var ankan: Boolean by mutableStateOf(false)

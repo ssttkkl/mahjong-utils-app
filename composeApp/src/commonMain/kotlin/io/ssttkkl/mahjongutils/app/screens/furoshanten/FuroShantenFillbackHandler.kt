@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.screens.furoshanten
 
+import androidx.compose.runtime.Stable
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.FillbackHandler
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
@@ -7,6 +8,7 @@ import io.ssttkkl.mahjongutils.app.screens.common.EditablePanelState
 import io.ssttkkl.mahjongutils.app.utils.removeLast
 import mahjongutils.models.Tile
 
+@Stable
 class FuroShantenFillbackHandler(
     val panelState: EditablePanelState<FuroShantenFormState, FuroChanceShantenArgs>,
     val requestFocus: () -> Unit

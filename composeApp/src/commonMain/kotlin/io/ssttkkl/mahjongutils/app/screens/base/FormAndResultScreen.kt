@@ -5,10 +5,12 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import cafe.adriel.voyager.navigator.CurrentScreen
+import cafe.adriel.voyager.navigator.Navigator
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreen
@@ -16,6 +18,7 @@ import io.ssttkkl.mahjongutils.app.models.base.History
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
+@Stable
 abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, RES> :
     UrlNavigationScreen<M>() {
     companion object {
@@ -53,7 +56,7 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
     @Composable
     override fun ScreenContent() {
         val appState = LocalAppState.current
-        val showTwoPanes = isTwoPanes(appState.windowSizeClass)
+        val showTwoPanes by rememberUpdatedState(isTwoPanes(appState.windowSizeClass))
         val initialScreen = remember(showTwoPanes) {
             if (showTwoPanes) {
                 NestedFormAndResultScreen<ARG, RES>(key)
@@ -63,19 +66,22 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
         }
 
         val model = rememberScreenModel()
-        val (_, resultModel) = rememberFormAndResultScreenModel(
-            appState,
-            model
-        )
 
         NestedNavigator(initialScreen) { nestedNavigator ->
             CurrentScreen()
 
-            LaunchedEffect(nestedNavigator, resultModel, showTwoPanes) {
+            val (_, resultModel) = rememberFormAndResultScreenModel(
+                appState,
+                model,
+                nestedNavigator
+            )
+
+            val curNavigator by rememberUpdatedState(nestedNavigator)
+            LaunchedEffect(resultModel) {
                 model.onResult = { result ->
                     resultModel.result = result
                     if (resultModel.result != null && !showTwoPanes) {
-                        nestedNavigator.push(NestedResultScreen<ARG, RES>(key))
+                        curNavigator.push(NestedResultScreen<ARG, RES>(key))
                     }
                 }
             }
@@ -85,12 +91,14 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
     @Composable
     private fun rememberFormAndResultScreenModel(
         appState: AppState,
-        parentScreenModel: M
+        parentScreenModel: M,
+        nestedNavigator: Navigator,
     ): Pair<NestedFormScreenModel<ARG, RES>, NestedResultScreenModel<ARG, RES>> {
-        val formScreenModel = NestedFormScreen.rememberScreenModel<ARG, RES>(key)
+        val formScreenModel = NestedFormScreen.rememberScreenModel<ARG, RES>(key, nestedNavigator)
         fillFormScreenModel(formScreenModel, appState, parentScreenModel)
 
-        val resultScreenModel = NestedResultScreen.rememberScreenModel<ARG, RES>(key)
+        val resultScreenModel =
+            NestedResultScreen.rememberScreenModel<ARG, RES>(key, nestedNavigator)
         fillResultScreenModel(resultScreenModel, appState, parentScreenModel)
 
         return Pair(formScreenModel, resultScreenModel)

@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.models.shanten
 
+import androidx.compose.runtime.Immutable
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.serialization.Serializable
@@ -9,11 +10,13 @@ import mahjongutils.shanten.regularShanten
 import mahjongutils.shanten.shanten
 import kotlin.reflect.typeOf
 
+@Immutable
 enum class ShantenMode {
     Union, Regular
 }
 
 @Serializable
+@Immutable
 data class ShantenArgs(
     val tiles: List<Tile>,
     val mode: ShantenMode = ShantenMode.Union
@@ -35,6 +38,7 @@ data class ShantenArgs(
     }
 }
 
+@Immutable
 data class ShantenCalcResult(
     val args: ShantenArgs,
     val result: CommonShantenResult<*>

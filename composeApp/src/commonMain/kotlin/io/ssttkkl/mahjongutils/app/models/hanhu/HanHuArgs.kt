@@ -1,10 +1,12 @@
 package io.ssttkkl.mahjongutils.app.models.hanhu
 
+import androidx.compose.runtime.Immutable
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import mahjongutils.hanhu.HanHuOptions
 import mahjongutils.hanhu.getChildPointByHanHu
 import mahjongutils.hanhu.getParentPointByHanHu
 
+@Immutable
 data class HanHuArgs(val han: Int, val hu: Int, val options: HanHuOptions) {
     fun calc(): HanHuResult {
         logger.info("hanhu calc args: ${this}")

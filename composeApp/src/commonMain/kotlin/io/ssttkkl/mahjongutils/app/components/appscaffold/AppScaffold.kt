@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.CurrentScreen
 import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
@@ -84,8 +85,9 @@ fun InnerScaffold(
             additionalContent()
         }
 
+        val density = LocalDensity.current
         AppBottomSheet(appState.appBottomSheetState) {
-            appState.appBottomSheetState = AppBottomSheetState.NONE
+            appState.appBottomSheetState = AppBottomSheetState(density, {})
         }
     }
 }

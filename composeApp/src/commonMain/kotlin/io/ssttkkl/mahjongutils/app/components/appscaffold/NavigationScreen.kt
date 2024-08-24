@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,10 +25,12 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorContent
 import cafe.adriel.voyager.navigator.currentOrThrow
 
+@Stable
 class NavigationScreenState : ScreenModel {
     var nestedNavigator: Navigator? by mutableStateOf(null)
 }
 
+@Stable
 abstract class NavigationScreen : Screen {
     companion object {
         @Composable
@@ -149,9 +152,11 @@ abstract class NavigationScreen : Screen {
     abstract fun ScreenContent()
 }
 
+@Stable
 abstract class UrlNavigationScreenModel : ScreenModel {
 }
 
+@Stable
 abstract class UrlNavigationScreen<M : UrlNavigationScreenModel> : NavigationScreen() {
     abstract val path: String
 
@@ -169,8 +174,10 @@ abstract class UrlNavigationScreen<M : UrlNavigationScreenModel> : NavigationScr
     open fun applyScreenParams(model: M, params: Map<String, String>) {}
 }
 
+@Stable
 object VoidNavigationScreenModel : UrlNavigationScreenModel()
 
+@Stable
 abstract class NoParamUrlNavigationScreen : UrlNavigationScreen<VoidNavigationScreenModel>() {
     @Composable
     override fun rememberScreenModel(): VoidNavigationScreenModel {

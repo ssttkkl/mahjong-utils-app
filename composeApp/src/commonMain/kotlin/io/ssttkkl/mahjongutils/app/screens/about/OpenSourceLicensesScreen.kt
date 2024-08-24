@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,6 +17,7 @@ import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.title_about_opensource_licenses
 import org.jetbrains.compose.resources.stringResource
 
+@Stable
 object OpenSourceLicensesScreen : NoParamUrlNavigationScreen() {
     override val path: String
         get() = "about/licenses"

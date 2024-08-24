@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.components.tileime
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
 
+@Stable
 class TileImeHostState(
     private val coroutineScope: CoroutineScope
 ) {
@@ -38,6 +40,7 @@ class TileImeHostState(
     // 用户如果点击过折叠按钮，则遵循用户的意图
     var specifiedCollapsed by mutableStateOf<Boolean?>(null)
 
+    @Stable
     inner class TileImeConsumer {
         var consuming by mutableStateOf(false)
             private set

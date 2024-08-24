@@ -9,6 +9,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,12 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
+@Immutable
 data class ComboOption<T>(
     val text: String,
     val value: T,
     val enabled: Boolean = true
 )
 
+@Immutable
 sealed class ChooseAction<T> {
     data class OnChoose<T>(val value: T) : ChooseAction<T>()
     data class OnNotChoose<T>(val value: T) : ChooseAction<T>()

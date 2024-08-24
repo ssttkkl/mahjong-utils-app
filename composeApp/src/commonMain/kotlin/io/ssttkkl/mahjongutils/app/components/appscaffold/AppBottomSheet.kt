@@ -5,23 +5,23 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.Density
 import kotlinx.coroutines.launch
 
+@Stable
 @OptIn(ExperimentalMaterial3Api::class)
 class AppBottomSheetState(
-    val content: @Composable () -> Unit
+    density: Density,
+    val content: @Composable () -> Unit = {}
 ) {
     var visible: Boolean by mutableStateOf(false)
-    val sheetState: SheetState = SheetState(false)
-
-    companion object {
-        val NONE = AppBottomSheetState {}
-    }
+    val sheetState: SheetState = SheetState(false, density)
 }
 
 

@@ -1,21 +1,22 @@
 package io.ssttkkl.mahjongutils.app.screens.base
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreenModel
-import io.ssttkkl.mahjongutils.app.components.appscaffold.rootNavigator
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.coroutines.Deferred
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
+@Stable
 class NestedResultScreen<ARG, RES>(
     val resultKey: String,
 ) : NavigationScreen() {
@@ -24,12 +25,12 @@ class NestedResultScreen<ARG, RES>(
         @Composable
         fun <ARG, RES> rememberScreenModel(
             resultKey: String,
+            navigator: Navigator = LocalNavigator.currentOrThrow
         ): NestedResultScreenModel<ARG, RES> {
             // 统一存在根级Navigator中
-            val model = LocalNavigator.currentOrThrow.rootNavigator
-                .rememberNavigatorScreenModel("${resultKey}-result") {
-                    NestedResultScreenModel<ARG, RES>()
-                }
+            val model = navigator.rememberNavigatorScreenModel("${resultKey}-result") {
+                NestedResultScreenModel<ARG, RES>()
+            }
             return model
         }
     }
@@ -49,11 +50,11 @@ class NestedResultScreen<ARG, RES>(
     @Composable
     override fun ScreenContent() {
         val model = model
-        val shared = remember(model) { NestedResultShared(model) }
-        shared.ResultCalculation()
+        NestedResultCalculation(model)
     }
 }
 
+@Stable
 class NestedResultScreenModel<ARG, RES> : UrlNavigationScreenModel() {
     var title by mutableStateOf<StringResource?>(null)
 
