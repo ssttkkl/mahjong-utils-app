@@ -22,6 +22,22 @@ class HanhuFormState(
     var han: String by mutableStateOf("")
     var hu: String by mutableStateOf("")
 
+    override fun applyFromMap(map: Map<String, String>) {
+        map["han"]?.let {
+            han = it
+        }
+        map["hu"]?.let {
+            hu = it
+        }
+    }
+
+    override fun extractToMap(): Map<String, String> {
+        return mapOf(
+            "han" to han,
+            "hu" to hu
+        )
+    }
+
     private var hanhuOptionsState = mutableStateOf(HanHuOptions.Default)
     var hanhuOptions: HanHuOptions
         get() = hanhuOptionsState.value

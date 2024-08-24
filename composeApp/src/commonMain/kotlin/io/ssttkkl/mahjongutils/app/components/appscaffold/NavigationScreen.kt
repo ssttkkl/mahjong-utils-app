@@ -7,6 +7,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -81,10 +82,10 @@ abstract class NavigationScreen : Screen {
 
     @Composable
     final override fun Content() {
-        val curTitle by rememberUpdatedState(title)
-        val curOverrideNavigationIcon by rememberUpdatedState(overrideNavigationIcon)
-        val curNavigator by rememberUpdatedState(LocalNavigator.currentOrThrow)
-        val screenAppBarState = remember(curTitle, curOverrideNavigationIcon) {
+        val curTitle = title
+        val curOverrideNavigationIcon = overrideNavigationIcon
+        val curNavigator = LocalNavigator.currentOrThrow
+        val screenAppBarState = remember(curTitle, curOverrideNavigationIcon, curNavigator) {
             AppBarState(
                 title = curTitle,
                 actions = {
@@ -128,6 +129,19 @@ abstract class NavigationScreen : Screen {
         Navigator(screen) { nestedNavigator ->
             screenState.nestedNavigator = nestedNavigator
             content(nestedNavigator)
+
+            val appBarStateList = LocalAppState.current.appBarStateList
+            DisposableEffect(Unit) {
+                while (appBarStateList.size <= nestedNavigator.level) {
+                    appBarStateList.add(null)
+                }
+
+                onDispose {
+                    while (appBarStateList.size > nestedNavigator.level) {
+                        appBarStateList.removeLast()
+                    }
+                }
+            }
         }
     }
 
@@ -136,11 +150,6 @@ abstract class NavigationScreen : Screen {
 }
 
 abstract class UrlNavigationScreenModel : ScreenModel {
-    fun extractParams(): List<Pair<String, String>> {
-        return emptyList()
-    }
-
-    fun applyParams(params: List<Pair<String, String>>) {}
 }
 
 abstract class UrlNavigationScreen<M : UrlNavigationScreenModel> : NavigationScreen() {
@@ -150,14 +159,21 @@ abstract class UrlNavigationScreen<M : UrlNavigationScreenModel> : NavigationScr
         get() = path
 
     @Composable
-    abstract fun getScreenModel(): M
+    abstract fun rememberScreenModel(): M
+
+    @Composable
+    open fun rememberScreenParams(): Map<String, String> {
+        return emptyMap()
+    }
+
+    open fun applyScreenParams(model: M, params: Map<String, String>) {}
 }
 
 object VoidNavigationScreenModel : UrlNavigationScreenModel()
 
 abstract class NoParamUrlNavigationScreen : UrlNavigationScreen<VoidNavigationScreenModel>() {
     @Composable
-    override fun getScreenModel(): VoidNavigationScreenModel {
+    override fun rememberScreenModel(): VoidNavigationScreenModel {
         return VoidNavigationScreenModel
     }
 }

@@ -63,7 +63,8 @@ fun NavigationItems(
 @Composable
 fun InnerScaffold(
     appState: AppState,
-    navigationIcon: @Composable () -> Unit
+    additionalContent: @Composable () -> Unit = {},
+    navigationIcon: @Composable () -> Unit,
 ) {
     Scaffold(
         modifier = Modifier.safeDrawingPadding(),
@@ -80,6 +81,7 @@ fun InnerScaffold(
 
         Surface(Modifier.padding(innerPadding)) {
             CurrentScreen()
+            additionalContent()
         }
 
         AppBottomSheet(appState.appBottomSheetState) {
@@ -95,7 +97,8 @@ fun AppScaffold(
     screenRegistry: Map<String, () -> UrlNavigationScreen<*>>,
     navigatableScreens: List<String>,
     initialScreenPath: String = navigatableScreens.first(),
-    navigationIcon: @Composable () -> Unit
+    additionalContent: @Composable () -> Unit = {},
+    navigationIcon: @Composable () -> Unit,
 ) {
     AppNavigator(screenRegistry, initialScreenPath) { myNavigator ->
         val windowSizeClass: WindowSizeClass = calculateWindowSizeClass()
@@ -120,7 +123,7 @@ fun AppScaffold(
                             Spacer(Modifier.width(panesHorizontalSpacing))
 
                             Column(Modifier.weight(1f)) {
-                                InnerScaffold(appState, navigationIcon)
+                                InnerScaffold(appState, additionalContent, navigationIcon)
                             }
                         }
                     }
@@ -150,7 +153,7 @@ fun AppScaffold(
                             }
                         }
                     ) {
-                        InnerScaffold(appState, navigationIcon)
+                        InnerScaffold(appState, additionalContent, navigationIcon)
                     }
                 }
             }

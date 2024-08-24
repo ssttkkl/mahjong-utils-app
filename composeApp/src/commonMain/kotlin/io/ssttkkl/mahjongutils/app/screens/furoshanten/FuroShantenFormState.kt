@@ -13,6 +13,7 @@ import mahjongutils.composeapp.generated.resources.text_must_enter_chance_tile
 import mahjongutils.composeapp.generated.resources.text_must_enter_tiles
 import mahjongutils.composeapp.generated.resources.text_tiles_are_not_without_got
 import mahjongutils.models.Tile
+import mahjongutils.models.toTilesString
 import mahjongutils.shanten.FuroChanceShantenArgsErrorInfo
 import mahjongutils.shanten.validate
 import org.jetbrains.compose.resources.StringResource
@@ -21,6 +22,34 @@ class FuroShantenFormState : FormState<FuroChanceShantenArgs> {
     var tiles by mutableStateOf<List<Tile>>(emptyList())
     var chanceTile by mutableStateOf<Tile?>(null)
     var allowChi by mutableStateOf(true)
+
+    override fun applyFromMap(map: Map<String, String>) {
+        map["tiles"]?.let {
+            runCatching {
+                tiles = Tile.parseTiles(it)
+            }
+        }
+        map["chanceTile"]?.let {
+            runCatching {
+                chanceTile = Tile.get(it)
+            }
+        }
+        map["allowChi"]?.let {
+            runCatching {
+                allowChi = it.toBoolean()
+            }
+        }
+    }
+
+    override fun extractToMap(): Map<String, String> {
+        return buildMap {
+            put("tiles", tiles.toTilesString())
+            chanceTile?.let { chanceTile ->
+                put("chanceTile", chanceTile.toString())
+            }
+            put("allowChi", allowChi.toString())
+        }
+    }
 
     val tilesErrMsg = mutableStateListOf<StringResource>()
     val chanceTileErrMsg = mutableStateListOf<StringResource>()
