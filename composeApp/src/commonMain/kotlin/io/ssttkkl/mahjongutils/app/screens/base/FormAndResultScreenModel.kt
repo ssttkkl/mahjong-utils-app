@@ -6,13 +6,16 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreenModel
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
+import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 abstract class FormAndResultScreenModel<ARG, RES> : UrlNavigationScreenModel(), FormState<ARG> {
-    var result by mutableStateOf<Deferred<RES>?>(null)
+    var onResult by mutableStateOf<(Deferred<RES>) -> Unit>({
+        LoggerFactory.getLogger(this::class).debug("onResult not set")
+    })
 
     abstract suspend fun onCalc(args: ARG): RES
 
@@ -20,9 +23,9 @@ abstract class FormAndResultScreenModel<ARG, RES> : UrlNavigationScreenModel(), 
         val args = onCheck()
         if (args != null) {
             screenModelScope.launch(Dispatchers.Default) {
-                result = screenModelScope.async(Dispatchers.Default) {
+                onResult(screenModelScope.async(Dispatchers.Default) {
                     onCalc(args)
-                }
+                })
             }
         }
     }

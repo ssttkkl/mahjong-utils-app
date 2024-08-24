@@ -38,3 +38,12 @@ fun AppNavigator(
         }
     }
 }
+
+val Navigator.rootNavigator: Navigator
+    get() {
+        var cur = this
+        while (cur.parent != null) {
+            cur = cur.parent!!
+        }
+        return cur
+    }

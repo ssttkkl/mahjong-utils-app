@@ -8,7 +8,7 @@ class NestedResultShared<ARG, RES>(val model: NestedResultScreenModel<ARG, RES>)
 
     @Composable
     fun ResultCalculation() {
-        model.parentScreenModel?.result?.let { resultDeferred ->
+        model.result?.let { resultDeferred ->
             Calculation(
                 resultDeferred,
                 {
