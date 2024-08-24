@@ -10,18 +10,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
+import io.ssttkkl.mahjongutils.app.components.appscaffold.NoParamUrlNavigationScreen
 import io.ssttkkl.mahjongutils.app.components.scrollbox.VerticalScrollBox
-import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.title_about_opensource_licenses
-import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
-object OpenSourceLicensesScreen : NavigationScreen() {
-    override val title: StringResource?
-        get() = Res.string.title_about_opensource_licenses
+object OpenSourceLicensesScreen : NoParamUrlNavigationScreen() {
+    override val path: String
+        get() = "about/licenses"
+
+    override val title: String
+        @Composable
+        get() = stringResource(Res.string.title_about_opensource_licenses)
 
     @Composable
-    override fun Content() {
+    override fun ScreenContent() {
         var aboutlibraries by remember {
             mutableStateOf("")
         }

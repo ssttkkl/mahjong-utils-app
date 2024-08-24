@@ -11,22 +11,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import cafe.adriel.voyager.navigator.LocalNavigator
 import io.ssttkkl.mahjongutils.app.BuildKonfig
+import io.ssttkkl.mahjongutils.app.components.appscaffold.NoParamUrlNavigationScreen
 import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
-import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.title_about
 import mahjongutils.composeapp.generated.resources.title_about_appversion
 import mahjongutils.composeapp.generated.resources.title_about_opensource_licenses
 import mahjongutils.composeapp.generated.resources.title_about_opensource_repo
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
-object AboutScreen : NavigationScreen() {
-    override val title: StringResource
-        get() = Res.string.title_about
+object AboutScreen : NoParamUrlNavigationScreen() {
+    override val path: String
+        get() = "about"
+
+    override val title: String
+        @Composable
+        get() = stringResource(Res.string.title_about)
 
     @Composable
-    override fun Content() {
+    override fun ScreenContent() {
         val uriHandler = LocalUriHandler.current
         val navigator = LocalNavigator.current
 

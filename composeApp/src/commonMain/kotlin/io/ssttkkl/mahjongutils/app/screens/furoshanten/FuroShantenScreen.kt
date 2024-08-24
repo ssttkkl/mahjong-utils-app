@@ -30,13 +30,17 @@ import mahjongutils.composeapp.generated.resources.label_other_options
 import mahjongutils.composeapp.generated.resources.text_false_symbol
 import mahjongutils.composeapp.generated.resources.title_furo_shanten
 import mahjongutils.composeapp.generated.resources.title_furo_shanten_result
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 
 object FuroShantenScreen :
     FormAndResultScreen<FuroShantenScreenModel, FuroChanceShantenArgs, FuroChanceShantenCalcResult>() {
 
-    override val title
+    override val path: String
+        get() = "furoShanten"
+
+    override val formTitle: StringResource
         get() = Res.string.title_furo_shanten
 
     override val resultTitle
@@ -50,14 +54,13 @@ object FuroShantenScreen :
     @Composable
     override fun FormContent(
         appState: AppState,
-        model: FuroShantenScreenModel,
-        modifier: Modifier
+        model: FuroShantenScreenModel
     ) {
         val components = remember(model.form) { FuroShantenComponents(model.form) }
         val verticalScrollState = rememberScrollState()
 
         with(Spacing.current) {
-            ScrollBox(verticalScrollState = verticalScrollState, modifier = modifier) {
+            ScrollBox(verticalScrollState = verticalScrollState) {
                 Column(
                     Modifier.verticalScroll(verticalScrollState)
                 ) {
@@ -100,8 +103,7 @@ object FuroShantenScreen :
     @Composable
     override fun ResultContent(
         appState: AppState,
-        result: FuroChanceShantenCalcResult,
-        modifier: Modifier
+        result: FuroChanceShantenCalcResult
     ) {
         val handler = getChangeArgsByResultContentHandler()
         FuroShantenResultContent(result.args, result.result.shantenInfo) {

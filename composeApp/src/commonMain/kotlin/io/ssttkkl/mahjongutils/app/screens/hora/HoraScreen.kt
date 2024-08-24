@@ -57,12 +57,17 @@ import mahjongutils.composeapp.generated.resources.text_comma
 import mahjongutils.composeapp.generated.resources.text_overwrite_hora_options_hint
 import mahjongutils.composeapp.generated.resources.title_hora
 import mahjongutils.composeapp.generated.resources.title_hora_result
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 
 object HoraScreen :
     FormAndResultScreen<HoraScreenModel, HoraArgs, HoraCalcResult>() {
-    override val title
+
+    override val path: String
+        get() = "hora"
+
+    override val formTitle: StringResource
         get() = Res.string.title_hora
 
     override val resultTitle
@@ -77,14 +82,13 @@ object HoraScreen :
     @Composable
     override fun FormContent(
         appState: AppState,
-        model: HoraScreenModel,
-        modifier: Modifier
+        model: HoraScreenModel
     ) {
         val components = remember(model.form) { HoraFormComponents(model.form) }
         val verticalScrollState = rememberScrollState()
 
         with(Spacing.current) {
-            ScrollBox(verticalScrollState = verticalScrollState, modifier = modifier) {
+            ScrollBox(verticalScrollState = verticalScrollState) {
                 Column(
                     Modifier.verticalScroll(verticalScrollState)
                 ) {
@@ -176,8 +180,7 @@ object HoraScreen :
     @Composable
     override fun ResultContent(
         appState: AppState,
-        result: HoraCalcResult,
-        modifier: Modifier
+        result: HoraCalcResult
     ) {
         HoraResultContent(result.args, result.result)
     }

@@ -1,8 +1,5 @@
 package io.ssttkkl.mahjongutils.app.components.calculation
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
@@ -27,7 +24,7 @@ fun PopAndShowSnackbarOnFailure(throwable: Throwable) {
     val unknownError = stringResource(Res.string.text_unknown_error)
 
     LaunchedEffect(throwable) {
-        appState.navigator.popUntilRoot()
+        appState.navigator.voyager.popUntilRoot()
         withContext(NonCancellable) {
             appState.snackbarHostState.showSnackbar(unknownError)
         }
