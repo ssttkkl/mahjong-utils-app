@@ -1,19 +1,22 @@
 日麻牌理计算器
 ======
 
-![icon](fastlane/metadata/android/zh-CN/images/icon.jpg)
+![icon](fastlane/metadata/android/zh-CN/images/icon.png)
 
-Web版地址：
+Web版：
 
-- https://mahjong-utils-app.vercel.app
 - https://ssttkkl.github.io/mahjong-utils-app/
+- https://mahjong-utils-app.vercel.app
 
-支持平台：
+安卓版：
 
-- [x] Android
-- [x] iOS
-- [x] Desktop
-- [x] Web
+- 前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本的composeApp-release.apk
+
+桌面版：
+
+- JAR（需要安装Java）：前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本对应平台的mahjong-utils-app-xxx.jar，双击运行即可。例如Windows系统需要下载mahjong-utils-app-windows-x64-xxx-release.jar
+- 安装包（无需安装Java）：前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本对应平台的mahjong-utils-app-xxx.xxx，双击安装即可。例如Windows系统需要下载mahjong-utils-app-xxx.exe
+
 
 ## 功能
 
