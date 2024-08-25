@@ -45,20 +45,24 @@ jobs:
 
     - name: Package Distribution
       run: |
-        ./gradlew composeApp:packageDistributionForCurrentOS
+        ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
 
     - name: Upload the Build Artifact
       uses: actions/upload-artifact@v3.1.1
       with:
         name: distribution
-        path: composeApp/build/compose/binaries/main/exe/*
+        path: |
+          composeApp/build/compose/binaries/main/exe/*
+          composeApp/build/compose/jars/*.jar
 
     - name: Upload Release Assets
       if: ${{ github.event_name == 'release' }}
       uses: AButler/upload-release-assets@v3.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: composeApp/build/compose/binaries/main/exe/*
+        files: |
+          composeApp/build/compose/binaries/main/exe/*
+          composeApp/build/compose/jars/*.jar
         
   build-on-macos:
     
@@ -77,20 +81,24 @@ jobs:
 
     - name: Package Distribution
       run: |
-        ./gradlew composeApp:packageDistributionForCurrentOS
+        ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
 
     - name: Upload the Build Artifact
       uses: actions/upload-artifact@v3.1.1
       with:
         name: distribution
-        path: composeApp/build/compose/binaries/main/dmg/*
+        path: |
+          composeApp/build/compose/binaries/main/dmg/*
+          composeApp/build/compose/jars/*.jar
 
     - name: Upload Release Assets
       if: ${{ github.event_name == 'release' }}
       uses: AButler/upload-release-assets@v3.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: composeApp/build/compose/binaries/main/dmg/*
+        files: |
+          composeApp/build/compose/binaries/main/dmg/*
+          composeApp/build/compose/jars/*.jar
         
   build-on-linux:
     
@@ -114,17 +122,21 @@ jobs:
 
       - name: Package Distribution
         run: |
-          ./gradlew composeApp:packageDistributionForCurrentOS
+          ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
 
       - name: Upload the Build Artifact
         uses: actions/upload-artifact@v3.1.1
         with:
           name: distribution
-          path: composeApp/build/appimage/mahjong-utils-app.AppImage
+          path: |
+            composeApp/build/appimage/mahjong-utils-app.AppImage
+            composeApp/build/compose/jars/*.jar
 
       - name: Upload Release Assets
         if: ${{ github.event_name == 'release' }}
         uses: AButler/upload-release-assets@v3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          files: composeApp/build/appimage/mahjong-utils-app.AppImage
+          files: |
+            composeApp/build/appimage/mahjong-utils-app.AppImage
+            composeApp/build/compose/jars/*.jar
