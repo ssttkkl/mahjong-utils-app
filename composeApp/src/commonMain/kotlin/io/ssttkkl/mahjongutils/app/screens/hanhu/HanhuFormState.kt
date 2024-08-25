@@ -31,13 +31,6 @@ class HanhuFormState(
         }
     }
 
-    override fun extractToMap(): Map<String, String> {
-        return mapOf(
-            "han" to han,
-            "hu" to hu
-        )
-    }
-
     private var hanhuOptionsState = mutableStateOf(HanHuOptions.Default)
     var hanhuOptions: HanHuOptions
         get() = hanhuOptionsState.value

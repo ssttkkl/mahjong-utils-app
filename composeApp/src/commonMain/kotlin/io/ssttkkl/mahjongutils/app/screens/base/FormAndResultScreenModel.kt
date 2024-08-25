@@ -23,11 +23,17 @@ abstract class FormAndResultScreenModel<ARG, RES> : UrlNavigationScreenModel(), 
     fun onSubmit() {
         val args = onCheck()
         if (args != null) {
+            lastArg = args
             onResult(screenModelScope.async(Dispatchers.Default) {
                 onCalc(args)
             })
         }
     }
 
-    abstract val history: HistoryDataStore<ARG>
+    abstract val history: HistoryDataStore<ARG>?
+
+    var lastArg: ARG? by mutableStateOf(null)
+        private set
+
+    abstract fun extractToMap(): Map<String, String>
 }

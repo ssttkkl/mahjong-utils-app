@@ -25,6 +25,7 @@ import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
+import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_calc
 import mahjongutils.composeapp.generated.resources.label_regular_shanten
@@ -37,6 +38,8 @@ import org.jetbrains.compose.resources.stringResource
 
 object ShantenScreen :
     FormAndResultScreen<ShantenScreenModel, ShantenArgs, ShantenCalcResult>() {
+
+    private val logger = LoggerFactory.getLogger(this::class)
 
     override val path: String
         get() = "shanten"

@@ -9,6 +9,7 @@ import io.ssttkkl.mahjongutils.app.screens.base.FormState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
+import mahjongutils.models.toTilesString
 
 class ShantenScreenModel(
     val form: ShantenFormState = ShantenFormState()
@@ -23,4 +24,13 @@ class ShantenScreenModel(
 
     override val history: HistoryDataStore<ShantenArgs>
         get() = ShantenArgs.history
+
+    override fun extractToMap(): Map<String, String> {
+        return lastArg?.let {
+            mapOf(
+                "tiles" to it.tiles.toTilesString(),
+                "shantenMode" to it.mode.name
+            )
+        } ?: emptyMap()
+    }
 }

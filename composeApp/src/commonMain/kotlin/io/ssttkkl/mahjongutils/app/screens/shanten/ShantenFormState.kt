@@ -7,13 +7,13 @@ import androidx.compose.runtime.setValue
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
 import io.ssttkkl.mahjongutils.app.screens.base.FormState
+import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.text_any_tile_must_not_be_more_than_4
 import mahjongutils.composeapp.generated.resources.text_cannot_have_more_than_14_tiles
 import mahjongutils.composeapp.generated.resources.text_must_enter_tiles
 import mahjongutils.composeapp.generated.resources.text_tiles_must_not_be_divided_into_3
 import mahjongutils.models.Tile
-import mahjongutils.models.toTilesString
 import mahjongutils.shanten.CommonShantenArgs
 import mahjongutils.shanten.CommonShantenArgsErrorInfo
 import mahjongutils.shanten.validate
@@ -23,20 +23,15 @@ class ShantenFormState : FormState<ShantenArgs> {
     var tiles by mutableStateOf<List<Tile>>(emptyList())
     var shantenMode by mutableStateOf(ShantenMode.Union)
 
-    override fun extractToMap(): Map<String, String> {
-        return mapOf(
-            "tiles" to tiles.toTilesString(),
-            "shantenMode" to shantenMode.name
-        )
-    }
-
     override fun applyFromMap(map: Map<String, String>) {
         map["tiles"]?.let {
+            LoggerFactory.getLogger(this::class).debug("tiles: ${it}")
             runCatching {
                 tiles = Tile.parseTiles(it)
             }
         }
         map["shantenMode"]?.let {
+            LoggerFactory.getLogger(this::class).debug("shantenMode: ${it}")
             runCatching {
                 shantenMode = ShantenMode.entries.first { e -> e.name == it }
             }
