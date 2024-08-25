@@ -1,5 +1,4 @@
 rootProject.name = "mahjongutils"
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
     repositories {
@@ -19,3 +18,12 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
+
+if (file("external/mahjong-utils/build.gradle.kts").exists()) {
+    includeBuild("external/mahjong-utils") {
+        name = "mahjong-utils-lib"
+        dependencySubstitution {
+            substitute(module("io.github.ssttkkl:mahjong-utils")).using(project(":mahjong-utils"))
+        }
+    }
+}
