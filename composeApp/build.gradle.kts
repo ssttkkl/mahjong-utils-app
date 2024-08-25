@@ -341,7 +341,7 @@ if (enableDesktop) {
                 workingDir = appDir.parentFile
                 executable = appimagetool.canonicalPath
                 environment("ARCH", "x86_64")  // TODO: 支持arm64
-                args("mahjong-utils-app.AppDir", "mahjong-utils-app.AppImage")
+                args("mahjong-utils-app.AppDir", "mahjong-utils-app-linux-${rootProject.ext["versionName"]}.AppImage")
             }
         }
     }

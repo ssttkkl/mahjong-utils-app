@@ -60,9 +60,7 @@ jobs:
       uses: AButler/upload-release-assets@v3.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: |
-          composeApp/build/compose/binaries/main/exe/*
-          composeApp/build/compose/jars/*.jar
+        files: composeApp/build/compose/binaries/main/exe/*;composeApp/build/compose/jars/*.jar
         
   build-on-macos:
     
@@ -96,9 +94,7 @@ jobs:
       uses: AButler/upload-release-assets@v3.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: |
-          composeApp/build/compose/binaries/main/dmg/*
-          composeApp/build/compose/jars/*.jar
+        files: composeApp/build/compose/binaries/main/dmg/*;composeApp/build/compose/jars/*.jar
         
   build-on-linux:
     
@@ -137,6 +133,4 @@ jobs:
         uses: AButler/upload-release-assets@v3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          files: |
-            composeApp/build/appimage/mahjong-utils-app.AppImage
-            composeApp/build/compose/jars/*.jar
+          files: composeApp/build/appimage/*.AppImage;composeApp/build/compose/jars/*.jar
