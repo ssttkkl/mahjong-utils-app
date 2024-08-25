@@ -204,6 +204,11 @@ buildkonfig {
     }
 }
 
+aboutLibraries {
+    // 移除 "generated" 时间戳
+    excludeFields = arrayOf("generated")
+}
+
 if (enableAndroid) {
     (extensions.getByName("android") as BaseAppModuleExtension).apply {
         namespace = "io.ssttkkl.mahjongutils.app"
