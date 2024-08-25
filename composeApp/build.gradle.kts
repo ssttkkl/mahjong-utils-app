@@ -174,7 +174,7 @@ kotlin {
 
     if (enableIos) {
         cocoapods {
-            version = properties["version.name"].toString()
+            version = rootProject.ext.get("versionName").toString()
             summary = "Riichi Mahjong Calculator"
             homepage = properties["opensource.repo"].toString()
             source =
@@ -197,8 +197,8 @@ buildkonfig {
     packageName = "io.ssttkkl.mahjongutils.app"
 
     defaultConfigs {
-        buildConfigField(STRING, "VERSION_NAME", properties["version.name"].toString())
-        buildConfigField(STRING, "VERSION_CODE", properties["version.code"].toString())
+        buildConfigField(STRING, "VERSION_NAME", rootProject.ext.get("versionName").toString())
+        buildConfigField(STRING, "VERSION_CODE", rootProject.ext.get("versionCode").toString())
         buildConfigField(STRING, "OPENSOURCE_REPO", properties["opensource.repo"].toString())
         buildConfigField(STRING, "OPENSOURCE_LICENSE", properties["opensource.license"].toString())
     }
@@ -217,11 +217,8 @@ if (enableAndroid) {
             applicationId = "io.ssttkkl.mahjongutils.app"
             minSdk = libs.versions.android.minSdk.get().toInt()
             targetSdk = libs.versions.android.targetSdk.get().toInt()
-            versionName = properties["version.name"].toString()
-
-            val codeInVersionName = versionName!!.split(".").map { it.toInt() }
-            versionCode =
-                codeInVersionName[0] * 10000 + codeInVersionName[1] * 100 + codeInVersionName[2]
+            versionName = rootProject.ext.get("versionName").toString()
+            versionCode = rootProject.ext.get("versionCode").toString().toInt()
         }
         packaging {
             resources {
@@ -263,7 +260,7 @@ if (enableDesktop) {
 
             nativeDistributions {
                 packageName = "mahjong-utils-app"
-                packageVersion = properties["version.name"].toString()
+                packageVersion = rootProject.ext.get("versionName").toString()
                 description = "Riichi Mahjong Calculator"
                 copyright = "Copyright (c) 2024 ssttkkl"
                 licenseFile.set(rootProject.file("LICENSE"))
@@ -342,4 +339,13 @@ if (enableDesktop) {
 
 if (enableWeb) {
     compose.web {}
+}
+
+tasks.create("generateVersionFile") {
+    doLast {
+        file("version.properties").writer().use {
+            it.appendLine("versionName=${rootProject.ext.get("versionName")}")
+            it.appendLine("versionCode=${rootProject.ext.get("versionCode")}")
+        }
+    }
 }

@@ -1,3 +1,4 @@
+name: Validate Fastlane Metadata
 on: [pull_request]
 jobs:
   validate:
