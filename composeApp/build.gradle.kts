@@ -14,6 +14,7 @@ plugins {
 
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.androidApplication) apply enableAndroid
     alias(libs.plugins.kotlinNativeCocoapods) apply enableIos
     alias(libs.plugins.kotlinSerialization)
@@ -55,16 +56,21 @@ kotlin {
                 }
             }
         }
+        println("target: android")
     }
 
     if (enableIos) {
         iosX64()
+        println("target: iosX64")
         iosArm64()
+        println("target: iosArm64")
         iosSimulatorArm64()
+        println("target: iosSimulatorArm64")
     }
 
     if (enableDesktop) {
         jvm("desktop")
+        println("target: desktop")
     }
 
     if (enableWeb) {
@@ -77,6 +83,7 @@ kotlin {
             }
             binaries.executable()
         }
+        println("target: wasmJs")
     }
 
     sourceSets {
