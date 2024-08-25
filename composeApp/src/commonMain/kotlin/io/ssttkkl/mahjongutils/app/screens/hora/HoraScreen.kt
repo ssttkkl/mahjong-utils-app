@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -279,9 +279,7 @@ private fun OverwriteHoraOptionsAlertDialog(
     onDismissRequest: () -> Unit,
     onConfirmation: (yes: Boolean) -> Unit
 ) {
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-    ) {
+    BasicAlertDialog(onDismissRequest = onDismissRequest) {
         Card {
             Column(
                 Modifier.padding(Spacing.current.cardInnerPadding)

@@ -2,6 +2,8 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.apache.commons.io.FileUtils
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import java.util.Properties
 
 plugins {
@@ -49,13 +51,7 @@ kotlin {
     applyDefaultHierarchyTemplate()
 
     if (enableAndroid) {
-        androidTarget {
-            compilations.all {
-                kotlinOptions {
-                    jvmTarget = "11"
-                }
-            }
-        }
+        androidTarget()
         println("target: android")
     }
 
@@ -170,6 +166,12 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 
+    tasks.withType<KotlinJvmCompile>().configureEach {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
+
     if (enableIos) {
         cocoapods {
             version = properties["version.name"].toString()
@@ -251,9 +253,6 @@ if (enableAndroid) {
             sourceCompatibility = JavaVersion.VERSION_11
             targetCompatibility = JavaVersion.VERSION_11
         }
-//        dependencies {
-//            debugImplementation(libs.compose.ui.tooling)
-//        }
     }
 }
 
@@ -342,7 +341,5 @@ if (enableDesktop) {
 }
 
 if (enableWeb) {
-    compose.experimental {
-        web.application {}
-    }
+    compose.web {}
 }
