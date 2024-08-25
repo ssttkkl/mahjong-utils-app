@@ -245,7 +245,13 @@ if (enableAndroid) {
         }
         buildTypes {
             getByName("release") {
-                isMinifyEnabled = false
+                isMinifyEnabled = true
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    project.file("compose-common.pro"),
+                    project.file("compose-r8.pro")
+                )
+
                 signingConfig = signingConfigs.findByName("release")
             }
         }
@@ -291,6 +297,10 @@ if (enableDesktop) {
                 linux {
                     iconFile.set(file("icon.png"))
                 }
+            }
+
+            buildTypes.release.proguard {
+                configurationFiles.from(project.file("compose-common.pro"))
             }
         }
     }
