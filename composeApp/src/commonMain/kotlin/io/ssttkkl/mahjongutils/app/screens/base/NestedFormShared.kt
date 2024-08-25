@@ -35,22 +35,24 @@ fun <ARG, RES> NestedFormTopBarActions(model: NestedFormScreenModel<ARG, RES>) {
     val appState = LocalAppState.current
     val density = LocalDensity.current
     with(Spacing.current) {
-        IconButton(onClick = {
-            appState.appBottomSheetState = AppBottomSheetState(density) {
-                HistoryContent(
-                    model,
-                    Modifier.windowHorizontalMargin(),
-                    requestCloseModal = {
-                        appState.appBottomSheetState.visible = false
-                    }
+        if (model.parentScreenModel?.history != null) {
+            IconButton(onClick = {
+                appState.appBottomSheetState = AppBottomSheetState(density) {
+                    HistoryContent(
+                        model,
+                        Modifier.windowHorizontalMargin(),
+                        requestCloseModal = {
+                            appState.appBottomSheetState.visible = false
+                        }
+                    )
+                }
+                appState.appBottomSheetState.visible = true
+            }) {
+                Icon(
+                    painterResource(Res.drawable.icon_history_outlined),
+                    stringResource(Res.string.label_history)
                 )
             }
-            appState.appBottomSheetState.visible = true
-        }) {
-            Icon(
-                painterResource(Res.drawable.icon_history_outlined),
-                stringResource(Res.string.label_history)
-            )
         }
 
         IconButton(onClick = {
@@ -78,7 +80,7 @@ private fun <ARG, RES> HistoryContent(
             TextButton(
                 onClick = {
                     parentModel?.screenModelScope?.launch {
-                        parentModel.history.clear()
+                        parentModel.history?.clear()
                     }
                 },
                 enabled = !historyState?.value.isNullOrEmpty()

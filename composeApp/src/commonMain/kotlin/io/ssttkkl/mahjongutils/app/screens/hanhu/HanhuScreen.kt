@@ -51,7 +51,7 @@ object HanhuScreen : UrlNavigationScreen<HanhuScreenModel>() {
     @Composable
     override fun rememberScreenParams(): Map<String, String> {
         val model = rememberScreenModel()
-        return model.form.extractToMap()
+        return model.extractToMap()
     }
 
     override fun applyScreenParams(model: HanhuScreenModel, params: Map<String, String>) {
@@ -123,14 +123,14 @@ object HanhuScreen : UrlNavigationScreen<HanhuScreenModel>() {
             @Composable
             fun ColumnScope.Result() {
                 Calculation(
-                    Pair(model.lastArgs, model.result),
+                    Pair(model.lastArg, model.result),
                     { Pair(it.first, it.second?.await()) },
                     onCalculating = {}
-                ) { (lastArgs, result) ->
+                ) { (lastArg, result) ->
                     if (result != null) {
                         PointPanel(
-                            lastArgs?.han ?: 0,
-                            lastArgs?.hu ?: 0,
+                            lastArg?.han ?: 0,
+                            lastArg?.hu ?: 0,
                             false,
                             result.parentPoint,
                             result.childPoint

@@ -198,25 +198,6 @@ class HoraFormState(
         }
     }
 
-    override fun extractToMap(): Map<String, String> {
-        return buildMap {
-            put("tiles", tiles.toTilesString())
-            put("furo", furo.joinToString(",") { it.toString() })
-            agari?.let { agari ->
-                put("agari", agari.toString())
-            }
-            put("tsumo", tsumo.toString())
-            put("dora", dora)
-            selfWind?.let { selfWind ->
-                put("selfWind", selfWind.toString())
-            }
-            roundWind?.let { roundWind ->
-                put("roundWind", roundWind.toString())
-            }
-            put("extraYaku", extraYaku.joinToString(",") { it.name })
-        }
-    }
-
     val autoDetectedAgari by derivedStateOf {
         // 当输入k*3+2张牌时，自动将最后一张作为默认的所和的牌
         if (tiles.size % 3 == 2) {
