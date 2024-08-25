@@ -219,20 +219,24 @@ if (enableAndroid) {
             }
         }
         signingConfigs {
-            create("release") {
-                storeFile = rootProject.file("keystore.jks")
-                storePassword = localProperties["android.signing.release.storePassword"]?.toString()
-                    ?: System.getenv("ANDROID_SIGNING_RELEASE_STORE_PASSWORD")
-                keyAlias = localProperties["android.signing.release.keyAlias"]?.toString()
-                    ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_ALIAS")
-                keyPassword = localProperties["android.signing.release.keyPassword"]?.toString()
-                    ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_PASSWORD")
+            val keystoreFile = rootProject.file("keystore.jks")
+            if (keystoreFile.exists()) {
+                create("release") {
+                    storeFile = rootProject.file("keystore.jks")
+                    storePassword =
+                        localProperties["android.signing.release.storePassword"]?.toString()
+                            ?: System.getenv("ANDROID_SIGNING_RELEASE_STORE_PASSWORD")
+                    keyAlias = localProperties["android.signing.release.keyAlias"]?.toString()
+                        ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_ALIAS")
+                    keyPassword = localProperties["android.signing.release.keyPassword"]?.toString()
+                        ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_PASSWORD")
+                }
             }
         }
         buildTypes {
             getByName("release") {
                 isMinifyEnabled = false
-                signingConfig = signingConfigs.getByName("release")
+                signingConfig = signingConfigs.findByName("release")
             }
         }
         compileOptions {
