@@ -1,4 +1,4 @@
-rootProject.name = "mahjong-utils-app"
+rootProject.name = "mahjongutils"
 
 pluginManagement {
     repositories {

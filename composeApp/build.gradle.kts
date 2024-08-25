@@ -74,6 +74,7 @@ kotlin {
     }
 
     if (enableWeb) {
+        @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
         wasmJs {
             moduleName = "mahjong-utils-app"
             browser {
