@@ -14,6 +14,8 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,7 +44,9 @@ fun TileIme(
     modifier: Modifier = Modifier,
     headerContainer: @Composable (@Composable () -> Unit) -> Unit = { it() },
 ) {
-    val collapsed = state.specifiedCollapsed ?: state.defaultCollapsed
+    val collapsed by remember {
+        derivedStateOf { state.specifiedCollapsed ?: state.defaultCollapsed }
+    }
     val onLongPress = remember(state) {
         { it: TileImeKey<*> ->
             when (it) {
