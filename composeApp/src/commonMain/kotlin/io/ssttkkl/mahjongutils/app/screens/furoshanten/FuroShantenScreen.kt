@@ -38,7 +38,7 @@ object FuroShantenScreen :
     FormAndResultScreen<FuroShantenScreenModel, FuroChanceShantenArgs, FuroChanceShantenCalcResult>() {
 
     override val path: String
-        get() = "furoShanten"
+        get() = "/furoShanten"
 
     override val formTitle: StringResource
         get() = Res.string.title_furo_shanten

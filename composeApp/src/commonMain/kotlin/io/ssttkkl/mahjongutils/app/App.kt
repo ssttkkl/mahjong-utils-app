@@ -27,7 +27,6 @@ private val screenRegistry: Map<String, () -> UrlNavigationScreen<*>> = buildMap
     put(HoraScreen.path) { HoraScreen }
     put(HanhuScreen.path) { HanhuScreen }
     put(AboutScreen.path) { AboutScreen }
-    put(OpenSourceLicensesScreen.path) { OpenSourceLicensesScreen }
 }
 
 private val navigatableScreens = listOf(

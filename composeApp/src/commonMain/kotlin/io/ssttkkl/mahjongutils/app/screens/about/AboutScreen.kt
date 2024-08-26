@@ -22,7 +22,7 @@ import org.jetbrains.compose.resources.stringResource
 
 object AboutScreen : NoParamUrlNavigationScreen() {
     override val path: String
-        get() = "about"
+        get() = "/about"
 
     override val title: String
         @Composable

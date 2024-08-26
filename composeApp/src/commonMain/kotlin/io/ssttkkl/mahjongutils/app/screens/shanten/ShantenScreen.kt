@@ -42,7 +42,7 @@ object ShantenScreen :
     private val logger = LoggerFactory.getLogger(this::class)
 
     override val path: String
-        get() = "shanten"
+        get() = "/shanten"
 
     override val formTitle: StringResource
         get() = Res.string.title_shanten

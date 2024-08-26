@@ -65,7 +65,7 @@ object HoraScreen :
     FormAndResultScreen<HoraScreenModel, HoraArgs, HoraCalcResult>() {
 
     override val path: String
-        get() = "hora"
+        get() = "/hora"
 
     override val formTitle: StringResource
         get() = Res.string.title_hora

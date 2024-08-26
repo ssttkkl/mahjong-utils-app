@@ -294,6 +294,21 @@ if (enableDesktop) {
                     dockName = "Riichi Mahjong Calculator"
                     iconFile.set(file("icon.icns"))
                     bundleID = "io.ssttkkl.mahjongutils.app"
+                    infoPlist {
+                        extraKeysRawXml = """
+                            <key>CFBundleURLTypes</key>
+                            <array>
+                                <dict>
+                                    <key>CFBundleURLName</key>
+                                    <string>com.yourcompany.yourapp</string>
+                                    <key>CFBundleURLSchemes</key>
+                                    <array>
+                                        <string>mahjongutils</string>
+                                    </array>
+                                </dict>
+                            </array>
+                        """.trimIndent()
+                    }
                 }
 
                 linux {
