@@ -80,7 +80,8 @@ private fun TileImeHostFloating(
                                 Icon(
                                     painterResource(Res.drawable.icon_drag_handle),
                                     "",
-                                    Modifier.align(Alignment.Center)
+                                    Modifier.align(Alignment.Center),
+                                    tint = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                             it()

@@ -15,7 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
@@ -41,7 +40,7 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
                     .fillMaxSize()
                     .padding(4.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.background)
                     .clickableButNotFocusable(interactionSource, onLongPress, onClick),
                 Alignment.Center
             ) {

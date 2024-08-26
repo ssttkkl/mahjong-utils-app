@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -20,7 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.backhandler.BackHandler
 import io.ssttkkl.mahjongutils.app.components.clickableButNotFocusable
@@ -78,7 +79,7 @@ fun TileIme(
 
     Column(
         modifier
-            .background(Color.LightGray.copy(alpha = 0.4f)),
+            .background(MaterialTheme.colorScheme.surfaceContainer),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         headerContainer {
@@ -103,9 +104,11 @@ fun TileIme(
                         .size(24.dp, 24.dp)
                         .align(Alignment.CenterStart),
                     alignment = Alignment.Center,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                 )
 
-                Row(Modifier.align(Alignment.CenterEnd)) {
+                Row(Modifier.align(Alignment.CenterEnd)
+                    .padding(start = 8.dp)) {
                     Image(
                         painterResource(Res.drawable.icon_content_copy),
                         "",
@@ -116,6 +119,7 @@ fun TileIme(
                             }
                             .padding(4.dp)
                             .size(24.dp, 24.dp),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                     )
 
                     Image(
@@ -134,6 +138,7 @@ fun TileIme(
                             }
                             .padding(4.dp)
                             .size(24.dp, 24.dp),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                     )
                 }
             }
