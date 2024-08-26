@@ -1,0 +1,9 @@
+Riichi Mahjong Calculator, supporting features such as hand efficiency, meld hand efficiency, winning hand analysis, and point calculation for han and hu.
+
+- Hand Efficiency: Includes tile efficiency, good shape tile efficiency (for one-shanten only), and defense strategy.
+
+- Meld Hand Efficiency: Tile efficiency for chi, pon, kan, and pass; includes good shape tile efficiency (for one-shanten only) and defense strategy.
+
+- Winning Hand Analysis: Defaults to Mahjong Soul/Tenhou rules, with customizable rules to some extent.
+
+- Han and Hu Point Calculation: Defaults to Mahjong Soul/Tenhou rules, with customizable rules to some extent.

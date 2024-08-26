@@ -1,17 +1,20 @@
 {
   "name": "composeApp",
-  "version": "1.0.4",
-  "homepage": "https://github.com/NNSZ-Yorozuya/mahjong-utils-app",
+  "version": "1.0.8",
+  "homepage": "https://github.com/ssttkkl/mahjong-utils-app",
   "source": {
     "http": ""
   },
   "authors": "",
-  "license": "Private",
+  "license": "MIT",
   "summary": "Riichi Mahjong Calculator",
   "vendored_frameworks": "build/cocoapods/framework/composeApp.framework",
   "libraries": "c++",
   "platforms": {
     "ios": "13.0"
+  },
+  "xcconfig": {
+    "ENABLE_USER_SCRIPT_SANDBOXING": "NO"
   },
   "pod_target_xcconfig": {
     "KOTLIN_PROJECT_PATH": ":composeApp",
@@ -26,6 +29,6 @@
     }
   ],
   "resources": [
-    "build/compose/ios/composeApp/compose-resources"
+    "build/compose/cocoapods/compose-resources"
   ]
 }
