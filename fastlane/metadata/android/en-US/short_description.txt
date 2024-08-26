@@ -1,3 +1,2 @@
 Riichi Mahjong Calculator, supporting features such as hand
-efficiency, meld hand efficiency, winning hand analysis,
-and point calculation for han and hu.
+efficiency, winning hand analysis, and more.
