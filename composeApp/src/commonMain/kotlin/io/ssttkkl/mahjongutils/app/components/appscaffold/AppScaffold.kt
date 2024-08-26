@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.components.appscaffold
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -114,7 +116,7 @@ fun AppScaffold(
             TileImeHost {
                 if (!appState.useNavigationDrawer) {
                     with(Spacing.current) {
-                        Row {
+                        Row(Modifier.background(MaterialTheme.colorScheme.surface)) {
                             val menuScrollState = rememberScrollState()
                             ScrollBox(menuScrollState) {
                                 Column(Modifier.width(200.dp).verticalScroll(menuScrollState)) {

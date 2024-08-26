@@ -1,2 +1,1 @@
-Riichi Mahjong Calculator, supporting features such as hand
-efficiency, winning hand analysis, and more.
+Riichi Mahjong Calculator, featuring hand efficiency calculation, and more.
