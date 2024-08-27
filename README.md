@@ -22,20 +22,20 @@ Web版：
 
 - 牌理：包括进张、好形进张（仅一向听）、退向打法
 
-![牌理](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/Screenshot_20240825_200657.jpg)
+![牌理](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/1.jpg)
 
 - 副露牌理：吃碰杠PASS四种打法下的进张、好形进张（仅一向听）、退向打法
 
-![副露牌理](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/Screenshot_20240825_200719.jpg)
+![副露牌理](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/2.jpg)
 
 - 和牌分析：默认为雀魂/天凤规则，可以定制少部分规则
 
-![和牌分析](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/Screenshot_20240825_200931.jpg)
-![规则定制](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/Screenshot_20240825_201324.jpg)
+![和牌分析](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/4.jpg)
+![规则定制](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/7.jpg)
 
 - 番符得点计算：默认为雀魂/天凤规则，可以定制少部分规则
 
-![番符得点计算](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/Screenshot_20240825_201311.jpg)
+![番符得点计算](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/5.jpg)
 
 ## App说明
 
