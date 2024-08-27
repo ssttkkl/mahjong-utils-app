@@ -300,7 +300,7 @@ if (enableDesktop) {
                             <array>
                                 <dict>
                                     <key>CFBundleURLName</key>
-                                    <string>com.yourcompany.yourapp</string>
+                                    <string>io.ssttkkl.mahjongutils.app</string>
                                     <key>CFBundleURLSchemes</key>
                                     <array>
                                         <string>mahjongutils</string>
