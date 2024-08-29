@@ -12,8 +12,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.shreyaspatil.capturable.capturable
+import dev.shreyaspatil.capturable.controller.CaptureController
 import io.ssttkkl.mahjongutils.app.components.panel.Panel
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.scrollbox.VerticalScrollBox
@@ -110,13 +113,17 @@ private fun YakuPanel(hora: Hora) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun HoraResultContent(args: HoraArgs, hora: Hora) {
+fun HoraResultContent(
+    args: HoraArgs, hora: Hora,
+    captureController: CaptureController,
+) {
     val state = rememberLazyListState()
 
     with(Spacing.current) {
         VerticalScrollBox(state) {
-            LazyColumn(Modifier.fillMaxWidth(), state = state) {
+            LazyColumn(Modifier.fillMaxWidth().capturable(captureController), state = state) {
                 item("hand") {
                     VerticalSpacerBetweenPanels()
 

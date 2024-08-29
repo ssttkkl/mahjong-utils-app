@@ -8,9 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
+import dev.shreyaspatil.capturable.capturable
+import dev.shreyaspatil.capturable.controller.CaptureController
 import io.ssttkkl.mahjongutils.app.components.onEnterKeyDown
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
@@ -41,18 +42,31 @@ import org.jetbrains.compose.resources.stringResource
 fun ShantenResultContent(
     args: ShantenArgs,
     shanten: CommonShanten,
+    captureController: CaptureController,
     requestChangeArgs: (ShantenArgs) -> Unit
 ) {
     if (shanten is ShantenWithoutGot) {
-        ShantenWithoutGotResultContent(args, shanten.asWithoutGot, requestChangeArgs)
+        ShantenWithoutGotResultContent(
+            args,
+            shanten.asWithoutGot,
+            captureController,
+            requestChangeArgs
+        )
     } else {
-        ShantenWithGotResultContent(args, shanten.asWithGot, requestChangeArgs)
+        ShantenWithGotResultContent(
+            args,
+            shanten.asWithGot,
+            captureController,
+            requestChangeArgs
+        )
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ShantenWithoutGotResultContent(
     args: ShantenArgs, shanten: ShantenWithoutGot,
+    captureController: CaptureController,
     requestChangeArgs: (ShantenArgs) -> Unit
 ) {
     val panelState = remember { EditablePanelState(args, ShantenFormState()) }
@@ -60,53 +74,61 @@ private fun ShantenWithoutGotResultContent(
         panelState.originArgs = args
     }
 
+    val lazyListState = rememberLazyListState()
 
     with(Spacing.current) {
-        LazyColumn(Modifier.fillMaxWidth()) {
-            item("hand") {
-                VerticalSpacerBetweenPanels()
-                TilesInHandPanel(args, false, panelState, requestChangeArgs)
-            }
+        VerticalScrollBox(lazyListState) {
+            LazyColumn(
+                Modifier.fillMaxWidth().capturable(captureController),
+                state = lazyListState
+            ) {
+                item("hand") {
+                    VerticalSpacerBetweenPanels()
+                    TilesInHandPanel(args, false, panelState, requestChangeArgs)
+                }
 
-            item("shantenNum") {
-                VerticalSpacerBetweenPanels()
-                ShantenNumCardPanel(shanten.shantenNum)
-            }
+                item("shantenNum") {
+                    VerticalSpacerBetweenPanels()
+                    ShantenNumCardPanel(shanten.shantenNum)
+                }
 
-            item("advance") {
-                VerticalSpacerBetweenPanels()
-                TilesWithNumTopCardPanel(
-                    stringResource(Res.string.label_advance_tiles),
-                    shanten.advance,
-                    shanten.advanceNum
-                )
-            }
+                item("advance") {
+                    VerticalSpacerBetweenPanels()
+                    TilesWithNumTopCardPanel(
+                        stringResource(Res.string.label_advance_tiles),
+                        shanten.advance,
+                        shanten.advanceNum
+                    )
+                }
 
-            item("goodShapeAdvance") {
-                shanten.goodShapeAdvance?.let { goodShapeAdvance ->
-                    shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
-                        VerticalSpacerBetweenPanels()
-                        TilesWithNumTopCardPanel(
-                            stringResource(Res.string.label_good_shape_advance_tiles),
-                            goodShapeAdvance,
-                            goodShapeAdvanceNum,
-                            1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
-                        )
+                item("goodShapeAdvance") {
+                    shanten.goodShapeAdvance?.let { goodShapeAdvance ->
+                        shanten.goodShapeAdvanceNum?.let { goodShapeAdvanceNum ->
+                            VerticalSpacerBetweenPanels()
+                            TilesWithNumTopCardPanel(
+                                stringResource(Res.string.label_good_shape_advance_tiles),
+                                goodShapeAdvance,
+                                goodShapeAdvanceNum,
+                                1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
+                            )
+                        }
                     }
                 }
-            }
 
-            item("footer") {
-                VerticalSpacerBetweenPanels()
+                item("footer") {
+                    VerticalSpacerBetweenPanels()
+                }
             }
         }
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ShantenWithGotResultContent(
     args: ShantenArgs,
     shanten: ShantenWithGot,
+    captureController: CaptureController,
     requestChangeArgs: (ShantenArgs) -> Unit
 ) {
     // shanten to actions (asc sorted)
@@ -158,7 +180,10 @@ private fun ShantenWithGotResultContent(
 
     with(Spacing.current) {
         VerticalScrollBox(lazyListState) {
-            LazyColumn(Modifier.fillMaxWidth(), state = lazyListState) {
+            LazyColumn(
+                Modifier.fillMaxWidth().capturable(captureController),
+                state = lazyListState
+            ) {
                 item {
                     VerticalSpacerBetweenPanels()
                     TilesInHandPanel(args, true, panelState, requestChangeArgs)

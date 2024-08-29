@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.screenModelScope
+import dev.shreyaspatil.capturable.controller.CaptureController
 import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreenModel
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
@@ -36,4 +37,6 @@ abstract class FormAndResultScreenModel<ARG, RES> : UrlNavigationScreenModel(), 
         private set
 
     abstract fun extractToMap(): Map<String, String>
+
+    val resultCaptureController = CaptureController()
 }

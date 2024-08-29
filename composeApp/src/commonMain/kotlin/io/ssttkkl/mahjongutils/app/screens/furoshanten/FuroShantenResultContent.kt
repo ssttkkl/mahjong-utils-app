@@ -10,8 +10,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.shreyaspatil.capturable.capturable
+import dev.shreyaspatil.capturable.controller.CaptureController
 import io.ssttkkl.mahjongutils.app.components.onEnterKeyDown
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
@@ -27,9 +30,12 @@ import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import kotlinx.coroutines.launch
 import mahjongutils.shanten.ShantenWithFuroChance
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun FuroShantenResultContent(
-    args: FuroChanceShantenArgs, shanten: ShantenWithFuroChance,
+    args: FuroChanceShantenArgs,
+    shanten: ShantenWithFuroChance,
+    captureController: CaptureController,
     requestChangeArgs: (FuroChanceShantenArgs) -> Unit
 ) {
     // shanten to actions (asc sorted)
@@ -102,7 +108,7 @@ fun FuroShantenResultContent(
 
     with(Spacing.current) {
         VerticalScrollBox(lazyListState) {
-            LazyColumn(Modifier.fillMaxWidth(), state = lazyListState) {
+            LazyColumn(Modifier.fillMaxWidth().capturable(captureController), state = lazyListState) {
                 item {
                     VerticalSpacerBetweenPanels()
                     FuroShantenTilesPanel(args, panelState, requestChangeArgs)

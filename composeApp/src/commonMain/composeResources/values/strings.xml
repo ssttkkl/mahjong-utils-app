@@ -202,4 +202,6 @@
     <string name="text_must_enter_hu">Input the hu please.</string>
     <string name="text_invalid_hu_number">The hu you inputted is invalid.</string>
     <string name="text_hu_exceeded_maximum">The hu exceeds the maximum value of 140.</string>
+
+    <string name="text_save_result_success">Result saved as image.</string>
 </resources>

@@ -21,6 +21,7 @@ import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
+import io.ssttkkl.mahjongutils.app.screens.hora.HoraScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
 import mahjongutils.composeapp.generated.resources.Res
@@ -106,7 +107,11 @@ object FuroShantenScreen :
         result: FuroChanceShantenCalcResult
     ) {
         val handler = getChangeArgsByResultContentHandler()
-        FuroShantenResultContent(result.args, result.result.shantenInfo) {
+        FuroShantenResultContent(
+            result.args,
+            result.result.shantenInfo,
+            rememberScreenModel().resultCaptureController
+        ) {
             handler(it)
         }
     }

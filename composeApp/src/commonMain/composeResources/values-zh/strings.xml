@@ -202,4 +202,6 @@
     <string name="text_must_enter_hu">请输入符数。</string>
     <string name="text_invalid_hu_number">输入的符数不合法。</string>
     <string name="text_hu_exceeded_maximum">输入的符数超过最大值140。</string>
+
+    <string name="text_save_result_success">成功保存结果图片到本地。</string>
 </resources>
