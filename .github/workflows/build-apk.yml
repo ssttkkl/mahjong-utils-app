@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout my repository
         uses: actions/checkout@v3
+        with:
+          submodules: 'true'
 
       - name: Setup Java JDK
         uses: actions/setup-java@v3
