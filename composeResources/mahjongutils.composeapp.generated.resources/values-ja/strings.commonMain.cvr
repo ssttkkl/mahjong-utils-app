@@ -62,6 +62,7 @@ string|label_tile_discarded_by_other|5LuW5a6244GL44KJ5Ye644KL
 string|label_tiles_in_hand|5omL54mM
 string|label_tsumo|44OE44Oi
 string|label_union_shanten|5LiA6Iis5b2i
+string|label_view|Vmlldw==
 string|label_waiting_tiles|5b2T44Gf44KK54mM
 string|label_wind_east|5p2x
 string|label_wind_north|5YyX
@@ -145,6 +146,7 @@ string|text_overwrite_hora_options_hint|RG8geW91IGFsc28gd2FudCB0byBvdmVyd3JpdGUg
 string|text_parent_ron|6Kaq44Ot44Oz44GZ77yaJTEkcw==
 string|text_parent_tsumo|6Kaq44OE44Oi77yaJTEkcyBBTEzvvIjlhbElMiRz77yJ
 string|text_regular_shanten_desc|77yU6Z2i5a2Q77yR6ZuA6aCt44Gu5b2i44Gg44GR44KS6ICD44GI44G+44GZ44CC
+string|text_save_result_success|UmVzdWx0IHNhdmVkIGFzIGltYWdlLg==
 string|text_shanten_action_ankan|5pqX5qeTJTEkcw==
 string|text_shanten_action_chi_and_discard|JTEkcyUyJHPjg4Hjg7zjgIElMyRz5YiH44KL
 string|text_shanten_action_discard|JTEkc+WIh+OCiw==
