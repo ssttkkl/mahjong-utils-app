@@ -1,7 +1,6 @@
 package io.ssttkkl.mahjongutils.app.screens.shanten
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,8 +9,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import dev.shreyaspatil.capturable.capturable
 import dev.shreyaspatil.capturable.controller.CaptureController
+import io.ssttkkl.mahjongutils.app.components.capturablelazy.LazyCapturableColumn
 import io.ssttkkl.mahjongutils.app.components.onEnterKeyDown
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
@@ -78,8 +77,9 @@ private fun ShantenWithoutGotResultContent(
 
     with(Spacing.current) {
         VerticalScrollBox(lazyListState) {
-            LazyColumn(
-                Modifier.fillMaxWidth().capturable(captureController),
+            LazyCapturableColumn(
+                captureController,
+                Modifier.fillMaxWidth(),
                 state = lazyListState
             ) {
                 item("hand") {
@@ -180,8 +180,9 @@ private fun ShantenWithGotResultContent(
 
     with(Spacing.current) {
         VerticalScrollBox(lazyListState) {
-            LazyColumn(
-                Modifier.fillMaxWidth().capturable(captureController),
+            LazyCapturableColumn(
+                captureController,
+                Modifier.fillMaxWidth(),
                 state = lazyListState
             ) {
                 item {
