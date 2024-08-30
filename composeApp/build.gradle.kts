@@ -317,13 +317,16 @@ if (enableDesktop) {
     }
 
     afterEvaluate {
-        tasks.findByName("packageAppImage")?.doLast {
+        fun packAppImage(isRelease: Boolean) {
             val appDirSrc = project.file("mahjong-utils-app.AppDir")
-            val packageOutput =
+            val packageOutput = if (isRelease)
+                layout.buildDirectory.dir("compose/binaries/main-release/app/mahjong-utils-app")
+                    .get().asFile
+            else
                 layout.buildDirectory.dir("compose/binaries/main/app/mahjong-utils-app")
                     .get().asFile
             if (!appDirSrc.exists() || !packageOutput.exists()) {
-                return@doLast
+                return
             }
 
             val downloadDest = layout.buildDirectory.dir("tmp").get().asFile
@@ -339,7 +342,10 @@ if (enableDesktop) {
                 appimagetool.setExecutable(true)
             }
 
-            val appDir = layout.buildDirectory.dir("appimage/mahjong-utils-app.AppDir").get().asFile
+            val appDir = if (isRelease)
+                layout.buildDirectory.dir("appimage/main-release/mahjong-utils-app.AppDir").get().asFile
+            else
+                layout.buildDirectory.dir("appimage/main/mahjong-utils-app.AppDir").get().asFile
             if (appDir.exists()) {
                 appDir.deleteRecursively()
             }
@@ -355,8 +361,18 @@ if (enableDesktop) {
                 workingDir = appDir.parentFile
                 executable = appimagetool.canonicalPath
                 environment("ARCH", "x86_64")  // TODO: 支持arm64
-                args("mahjong-utils-app.AppDir", "mahjong-utils-app-linux-${rootProject.ext["versionName"]}.AppImage")
+                args(
+                    "mahjong-utils-app.AppDir",
+                    "mahjong-utils-app-linux-${rootProject.ext["versionName"]}.AppImage"
+                )
             }
+        }
+
+        tasks.findByName("packageAppImage")?.doLast {
+            packAppImage(false)
+        }
+        tasks.findByName("packageReleaseAppImage")?.doLast {
+            packAppImage(true)
         }
     }
 }
