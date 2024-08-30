@@ -19,7 +19,7 @@ private fun blobOptions(type: String): BlobPropertyBag = js(
     "({ type })"
 )
 
-actual object SavePhotoUtils {
+actual object ImageUtils : CommonImageUtils() {
     private fun download(
         buffer: JsAny?,
         filename: String,

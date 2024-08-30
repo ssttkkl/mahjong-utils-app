@@ -125,6 +125,10 @@ kotlin {
             dependsOn(commonMain)
         }
 
+        val nonAndroidMain by creating {
+            dependsOn(commonMain)
+        }
+
         if (enableAndroid) {
             val androidMain by getting {
                 dependsOn(nonWasmJsMain)
@@ -138,12 +142,14 @@ kotlin {
         if (enableIos) {
             val iosMain by getting {
                 dependsOn(nonWasmJsMain)
+                dependsOn(nonAndroidMain)
             }
         }
 
         if (enableDesktop) {
             val desktopMain by getting {
                 dependsOn(nonWasmJsMain)
+                dependsOn(nonAndroidMain)
                 dependsOn(desktopAndWasmJsMain)
                 dependencies {
                     implementation(compose.desktop.currentOs)
@@ -158,6 +164,7 @@ kotlin {
         if (enableWeb) {
             val wasmJsMain by getting {
                 dependsOn(desktopAndWasmJsMain)
+                dependsOn(nonAndroidMain)
             }
         }
     }

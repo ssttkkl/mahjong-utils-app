@@ -12,7 +12,7 @@ import javax.imageio.ImageIO
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
-actual object SavePhotoUtils {
+actual object ImageUtils : CommonImageUtils() {
     actual suspend fun save(imageBitmap: ImageBitmap, title: String): Boolean {
         // 弹出文件选择框
         val fileChooser = JFileChooser().apply {

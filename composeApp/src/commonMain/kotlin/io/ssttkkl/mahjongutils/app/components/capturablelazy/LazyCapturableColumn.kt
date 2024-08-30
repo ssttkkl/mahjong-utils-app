@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ExperimentalComposeApi
@@ -24,11 +25,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.shreyaspatil.capturable.capturable
 import dev.shreyaspatil.capturable.controller.CaptureController
 import dev.shreyaspatil.capturable.controller.CaptureController.CaptureRequest
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
+import io.ssttkkl.mahjongutils.app.utils.image.ImageUtils
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.completeWith
 import kotlinx.coroutines.launch
@@ -48,6 +51,7 @@ fun LazyCapturableColumn(
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
     userScrollEnabled: Boolean = true,
+    captureBackground: Color? = MaterialTheme.colorScheme.background,
     content: LazyListScope.() -> Unit
 ) {
     var captureRequest: CaptureRequest? by remember { mutableStateOf(null) }
@@ -94,6 +98,9 @@ fun LazyCapturableColumn(
                     onDrawSignal?.await()
                     onDrawSignal = null
                     innerCaptureController.captureAsync(req.config).await()
+                }.mapCatching {
+                    if (captureBackground == null) it
+                    else ImageUtils.withBackground(it, captureBackground)
                 }
                 req.imageBitmapDeferred.completeWith(result)
                 captureRequest = null
