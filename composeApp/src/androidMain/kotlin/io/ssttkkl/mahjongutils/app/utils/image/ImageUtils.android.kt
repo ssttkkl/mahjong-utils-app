@@ -37,8 +37,10 @@ actual suspend fun platformWithBackground(
         paintBackground
     )
 
+    // 将原始硬件位图转换为软件位图
+    val softwareBitmap = imageBitmap.asAndroidBitmap().copy(Bitmap.Config.ARGB_8888, false)
     // 绘制原始位图
-    canvas.drawBitmap(imageBitmap.asAndroidBitmap(), 50f, 50f, null) // 偏移位置50, 50
+    canvas.drawBitmap(softwareBitmap, 0f, 0f, null)
 
     return newBitmap.asImageBitmap()
 }
