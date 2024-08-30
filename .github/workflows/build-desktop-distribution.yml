@@ -42,7 +42,9 @@ jobs:
       uses: actions/setup-java@v3
       with:
         distribution: temurin
-        java-version: 17
+        java-version: |
+          11
+          17
         cache: 'gradle'
 
     - name: Package Distribution
@@ -78,7 +80,9 @@ jobs:
       uses: actions/setup-java@v3
       with:
         distribution: temurin
-        java-version: 17
+        java-version: |
+          11
+          17
         cache: 'gradle'
 
     - name: Package Distribution
@@ -114,7 +118,9 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: temurin
-          java-version: 17
+          java-version: |
+            11
+            17
           cache: 'gradle'
 
       - name: Install FUSE (linux)
