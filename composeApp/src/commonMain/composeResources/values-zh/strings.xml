@@ -17,6 +17,7 @@
     <string name="label_history">历史记录</string>
     <string name="label_clear">清空</string>
     <string name="label_share">分享</string>
+    <string name="label_view">查看</string>
 
     <string name="text_empty_history">空</string>
 

@@ -4,16 +4,38 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toAwtImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okio.FileSystem
-import okio.Path.Companion.toPath
 import okio.use
+import java.awt.Desktop
 import java.io.File
+import java.io.IOException
 import javax.imageio.ImageIO
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
+
+actual class SaveResult(val file: File) {
+    actual val isSupportOpen: Boolean
+        get() = true
+    actual val isSupportShare: Boolean
+        get() = false
+
+    actual suspend fun open() {
+        withContext(Dispatchers.IO) {
+            try {
+                Desktop.getDesktop().open(file)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    actual suspend fun share() {
+    }
+
+}
+
 actual object ImageUtils : CommonImageUtils() {
-    actual suspend fun save(imageBitmap: ImageBitmap, title: String): Boolean {
+    actual suspend fun save(imageBitmap: ImageBitmap, title: String): SaveResult? {
         // 弹出文件选择框
         val fileChooser = JFileChooser().apply {
             dialogTitle = "Save File"
@@ -34,9 +56,9 @@ actual object ImageUtils : CommonImageUtils() {
                     ImageIO.write(imageBitmap.toAwtImage(), "png", sink)
                 }
             }
-            return true
+            return SaveResult(fileToSave)
         } else {
-            return false
+            return null
         }
     }
 }

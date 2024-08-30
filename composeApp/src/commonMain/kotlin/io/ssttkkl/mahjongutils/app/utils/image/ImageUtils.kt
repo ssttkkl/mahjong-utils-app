@@ -10,7 +10,14 @@ open class CommonImageUtils {
         platformWithBackground(imageBitmap, background)
 }
 
+expect class SaveResult {
+    val isSupportOpen: Boolean
+    val isSupportShare: Boolean
+    suspend fun open()
+    suspend fun share()
+}
+
 expect object ImageUtils : CommonImageUtils {
-    suspend fun save(imageBitmap: ImageBitmap, title: String): Boolean
+    suspend fun save(imageBitmap: ImageBitmap, title: String): SaveResult?
 }
 

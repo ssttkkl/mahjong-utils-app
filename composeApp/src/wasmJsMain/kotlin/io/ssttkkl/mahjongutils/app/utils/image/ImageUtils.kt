@@ -1,13 +1,7 @@
 package io.ssttkkl.mahjongutils.app.utils.image
 
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asComposeImageBitmap
 import kotlinx.browser.document
-import org.jetbrains.skia.Bitmap
-import org.jetbrains.skia.ColorAlphaType
-import org.jetbrains.skia.ColorType
-import org.jetbrains.skia.ImageInfo
-import org.khronos.webgl.Uint8ClampedArray
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLCanvasElement
@@ -18,6 +12,20 @@ import org.w3c.files.BlobPropertyBag
 private fun blobOptions(type: String): BlobPropertyBag = js(
     "({ type })"
 )
+
+actual class SaveResult(val url: String) {
+    actual val isSupportOpen: Boolean
+        get() = false
+    actual val isSupportShare: Boolean
+        get() = false
+
+    actual suspend fun open() {
+    }
+
+    actual suspend fun share() {
+    }
+
+}
 
 actual object ImageUtils : CommonImageUtils() {
     private fun download(
@@ -53,7 +61,7 @@ actual object ImageUtils : CommonImageUtils() {
         }
     }
 
-    actual suspend fun save(imageBitmap: ImageBitmap, title: String): Boolean {
+    actual suspend fun save(imageBitmap: ImageBitmap, title: String): SaveResult? {
         return try {
             val imgData = imageBitmap.toImageData()
 
@@ -65,10 +73,10 @@ actual object ImageUtils : CommonImageUtils() {
             ctx.putImageData(imgData, 0.0, 0.0)
             val url = canvas.toDataURL("image/png")
             download(url, "${title}.png")
-            true
+            SaveResult(url)
         } catch (e: Throwable) {
             e.printStackTrace()
-            false
+            null
         }
     }
 

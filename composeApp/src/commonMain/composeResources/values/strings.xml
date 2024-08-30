@@ -17,6 +17,7 @@
     <string name="label_history">History</string>
     <string name="label_clear">Clear</string>
     <string name="label_share">Share</string>
+    <string name="label_view">View</string>
 
     <string name="text_empty_history">Empty</string>
 

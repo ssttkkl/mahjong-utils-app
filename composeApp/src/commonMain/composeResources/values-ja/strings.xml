@@ -17,6 +17,7 @@
     <string name="label_history">ヒストリ</string>
     <string name="label_clear">クリア</string>
     <string name="label_share">シェア</string>
+    <string name="label_view">View</string>
 
     <string name="text_empty_history">なし</string>
 

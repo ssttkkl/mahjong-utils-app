@@ -1,6 +1,7 @@
 package io.ssttkkl.mahjongutils.app.utils.image
 
 import android.content.ContentValues
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -12,7 +13,9 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
+import androidx.core.content.ContextCompat.startActivity
 import io.ssttkkl.mahjongutils.app.MyApp
+import io.ssttkkl.mahjongutils.app.utils.ActivityHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -45,8 +48,40 @@ actual suspend fun platformWithBackground(
     return newBitmap.asImageBitmap()
 }
 
+actual class SaveResult(val uri: Uri, val title: String) {
+    actual val isSupportOpen: Boolean
+        get() = true
+    actual val isSupportShare: Boolean
+        get() = true
+
+    actual suspend fun open() {
+        // 创建Intent以打开图片
+        val intent = Intent().apply {
+            action = Intent.ACTION_VIEW
+            setDataAndType(uri, "image/png") // 设置MIME类型
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION // 给予读权限
+        }
+
+        // 启动Intent
+        ActivityHelper.currentActivity?.startActivity(intent)
+    }
+
+    actual suspend fun share() {
+        // 创建分享意图
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, uri)  // 附加 URI
+            type = "image/png"  // 或 "image/jpeg" 根据实际情况
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION // 给予读权限
+        }
+
+        // 启动分享意图
+        ActivityHelper.currentActivity?.startActivity(Intent.createChooser(shareIntent, title))
+    }
+}
+
 actual object ImageUtils : CommonImageUtils() {
-    actual suspend fun save(imageBitmap: ImageBitmap, title: String): Boolean {
+    actual suspend fun save(imageBitmap: ImageBitmap, title: String): SaveResult? {
         return withContext(Dispatchers.IO) {
             val values = ContentValues().apply {
                 put(MediaStore.Images.Media.DISPLAY_NAME, title)
@@ -58,22 +93,20 @@ actual object ImageUtils : CommonImageUtils() {
             val uri: Uri = MyApp.current.contentResolver.insert(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 values
-            ) ?: return@withContext false
+            ) ?: return@withContext null
 
-            uri.let {
-                try {
-                    MyApp.current.contentResolver.openOutputStream(it)?.use {
-                        imageBitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, it)
-                    } ?: return@let false
-                    values.clear()
-                    values.put(MediaStore.Images.Media.IS_PENDING, 0)
-                    MyApp.current.contentResolver.update(uri, values, null, null)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    return@let false
-                }
+            try {
+                MyApp.current.contentResolver.openOutputStream(uri)?.use {
+                    imageBitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, it)
+                } ?: return@withContext null
+                values.clear()
+                values.put(MediaStore.Images.Media.IS_PENDING, 0)
+                MyApp.current.contentResolver.update(uri, values, null, null)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext null
             }
-            return@withContext true
+            return@withContext SaveResult(uri, title)
         }
     }
 }
