@@ -35,12 +35,16 @@ jobs:
     steps:
     - name: Checkout my repository
       uses: actions/checkout@v3
+      with:
+        submodules: 'true'
 
     - name: Setup Java JDK
       uses: actions/setup-java@v3
       with:
         distribution: temurin
-        java-version: 17
+        java-version: |
+          11
+          17
         cache: 'gradle'
 
     - name: Package Distribution
@@ -69,12 +73,16 @@ jobs:
     steps:
     - name: Checkout my repository
       uses: actions/checkout@v3
+      with:
+        submodules: 'true'
 
     - name: Setup Java JDK
       uses: actions/setup-java@v3
       with:
         distribution: temurin
-        java-version: 17
+        java-version: |
+          11
+          17
         cache: 'gradle'
 
     - name: Package Distribution
@@ -103,12 +111,16 @@ jobs:
     steps:
       - name: Checkout my repository
         uses: actions/checkout@v3
+        with:
+          submodules: 'true'
 
       - name: Setup Java JDK
         uses: actions/setup-java@v3
         with:
           distribution: temurin
-          java-version: 17
+          java-version: |
+            11
+            17
           cache: 'gradle'
 
       - name: Install FUSE (linux)
@@ -125,7 +137,7 @@ jobs:
         with:
           name: distribution
           path: |
-            composeApp/build/appimage/mahjong-utils-app.AppImage
+            composeApp/build/appimage/main-release/mahjong-utils-app.AppImage
             composeApp/build/compose/jars/*.jar
 
       - name: Upload Release Assets
@@ -133,4 +145,4 @@ jobs:
         uses: AButler/upload-release-assets@v3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          files: "composeApp/build/appimage/*.AppImage;composeApp/build/compose/jars/*.jar"
+          files: "composeApp/build/appimage/main-release/*.AppImage;composeApp/build/compose/jars/*.jar"

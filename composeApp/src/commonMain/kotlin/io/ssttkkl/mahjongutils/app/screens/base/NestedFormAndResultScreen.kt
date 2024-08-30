@@ -51,6 +51,7 @@ class NestedFormAndResultScreen<ARG, RES>(
 
     @Composable
     override fun RowScope.TopBarActions() {
+        NestedResultTopBarActions(resultModel)
         NestedFormTopBarActions(formModel)
     }
 }

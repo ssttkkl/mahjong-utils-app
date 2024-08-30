@@ -1,3 +1,6 @@
 [submodule "external/mahjong-utils"]
 	path = external/mahjong-utils
 	url = https://github.com/ssttkkl/mahjong-utils
+[submodule "external/Capturable"]
+	path = external/Capturable
+	url = https://github.com/ssttkkl/Capturable

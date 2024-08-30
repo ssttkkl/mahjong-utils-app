@@ -17,6 +17,7 @@
     <string name="label_history">ヒストリ</string>
     <string name="label_clear">クリア</string>
     <string name="label_share">シェア</string>
+    <string name="label_view">View</string>
 
     <string name="text_empty_history">なし</string>
 
@@ -202,4 +203,6 @@
     <string name="text_must_enter_hu">符数を入力してください。</string>
     <string name="text_invalid_hu_number">有効な符数ではありません。</string>
     <string name="text_hu_exceeded_maximum">符数は140以下（140枚含む）にするべきです。</string>
+
+    <string name="text_save_result_success">Result saved as image.</string>
 </resources>

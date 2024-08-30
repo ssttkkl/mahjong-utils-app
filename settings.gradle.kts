@@ -27,3 +27,8 @@ if (file("external/mahjong-utils/build.gradle.kts").exists()) {
         }
     }
 }
+includeBuild("external/Capturable") {
+    dependencySubstitution {
+        substitute(module("dev.shreyaspatil:capturable")).using(project(":capturable"))
+    }
+}
