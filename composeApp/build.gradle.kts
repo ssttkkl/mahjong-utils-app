@@ -388,11 +388,11 @@ if (enableWeb) {
     compose.web {}
 }
 
-tasks.create("generateVersionFile") {
-    doLast {
-        file("version.properties").writer().use {
-            it.appendLine("versionName=${rootProject.ext.get("versionName")}")
-            it.appendLine("versionCode=${rootProject.ext.get("versionCode")}")
-        }
+fun generateVersionFile() {
+    file("version.properties").writer().use {
+        it.appendLine("versionName=${rootProject.ext.get("versionName")}")
+        it.appendLine("versionCode=${rootProject.ext.get("versionCode")}")
     }
 }
+
+generateVersionFile()

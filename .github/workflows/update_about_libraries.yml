@@ -30,12 +30,3 @@ jobs:
       run: |
         chmod +x export_about_libraries.sh
         ./export_about_libraries.sh
-
-    - name: Update Version File
-      run: |
-        ./gradlew generateVersionFile
-
-    - name: Commit
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: Update about libraries
