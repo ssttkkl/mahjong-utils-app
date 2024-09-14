@@ -47,6 +47,15 @@ if (rootProject.file("local.properties").exists()) {
     }
 }
 
+val versionProperties = Properties().apply {
+    file("version.properties").inputStream().use { inputStream ->
+        load(inputStream)
+    }
+}
+val versionName = versionProperties["versionName"].toString()
+val versionCode = versionProperties["versionCode"].toString().toInt()
+version = versionName
+
 kotlin {
     applyDefaultHierarchyTemplate()
 
@@ -183,7 +192,7 @@ kotlin {
 
     if (enableIos) {
         cocoapods {
-            version = rootProject.ext.get("versionName").toString()
+            version = versionName
             summary = "Riichi Mahjong Calculator"
             homepage = properties["opensource.repo"].toString()
             source =
@@ -206,8 +215,8 @@ buildkonfig {
     packageName = "io.ssttkkl.mahjongutils.app"
 
     defaultConfigs {
-        buildConfigField(STRING, "VERSION_NAME", rootProject.ext.get("versionName").toString())
-        buildConfigField(STRING, "VERSION_CODE", rootProject.ext.get("versionCode").toString())
+        buildConfigField(STRING, "VERSION_NAME", versionName)
+        buildConfigField(STRING, "VERSION_CODE", versionCode.toString())
         buildConfigField(STRING, "OPENSOURCE_REPO", properties["opensource.repo"].toString())
         buildConfigField(STRING, "OPENSOURCE_LICENSE", properties["opensource.license"].toString())
     }
@@ -231,9 +240,10 @@ if (enableAndroid) {
             applicationId = "io.ssttkkl.mahjongutils.app"
             minSdk = libs.versions.android.minSdk.get().toInt()
             targetSdk = libs.versions.android.targetSdk.get().toInt()
-            versionName = rootProject.ext.get("versionName").toString()
-            versionCode = rootProject.ext.get("versionCode").toString().toInt()
         }
+        defaultConfig.versionName = versionName
+        defaultConfig.versionCode = versionCode
+
         packaging {
             resources {
                 excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -287,7 +297,7 @@ if (enableDesktop) {
 
             nativeDistributions {
                 packageName = "mahjong-utils-app"
-                packageVersion = rootProject.ext.get("versionName").toString()
+                packageVersion = versionName
                 description = "Riichi Mahjong Calculator"
                 copyright = "Copyright (c) 2024 ssttkkl"
                 licenseFile.set(rootProject.file("LICENSE"))
@@ -325,6 +335,12 @@ if (enableDesktop) {
 
     afterEvaluate {
         fun packAppImage(isRelease: Boolean) {
+            val arch = when(val osArch = System.getProperty("os.arch")) {
+                "aarch64" -> "aarch64"
+                "amd64" -> "x86_64"
+                else -> throw UnsupportedOperationException("current arch not supported: ${osArch}")
+            }
+
             val appDirSrc = project.file("mahjong-utils-app.AppDir")
             val packageOutput = if (isRelease)
                 layout.buildDirectory.dir("compose/binaries/main-release/app/mahjong-utils-app")
@@ -337,10 +353,10 @@ if (enableDesktop) {
             }
 
             val downloadDest = layout.buildDirectory.dir("tmp").get().asFile
-            val appimagetool = downloadDest.resolve("appimagetool-x86_64.AppImage")
+            val appimagetool = downloadDest.resolve("appimagetool-${arch}.AppImage")
 
             download.run {
-                src("https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage")
+                src("https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-${arch}.AppImage")
                 dest(downloadDest)
                 overwrite(false)
             }
@@ -367,10 +383,10 @@ if (enableDesktop) {
             exec {
                 workingDir = appDir.parentFile
                 executable = appimagetool.canonicalPath
-                environment("ARCH", "x86_64")  // TODO: 支持arm64
+                environment("ARCH", arch)
                 args(
                     "mahjong-utils-app.AppDir",
-                    "mahjong-utils-app-linux-${rootProject.ext["versionName"]}.AppImage"
+                    "mahjong-utils-app-linux-${versionName}.AppImage"
                 )
             }
         }
@@ -387,12 +403,3 @@ if (enableDesktop) {
 if (enableWeb) {
     compose.web {}
 }
-
-fun generateVersionFile() {
-    file("version.properties").writer().use {
-        it.appendLine("versionName=${rootProject.ext.get("versionName")}")
-        it.appendLine("versionCode=${rootProject.ext.get("versionCode")}")
-    }
-}
-
-generateVersionFile()

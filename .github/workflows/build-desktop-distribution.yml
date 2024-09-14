@@ -67,7 +67,6 @@ jobs:
         files: "composeApp/build/compose/binaries/main-release/exe/*;composeApp/build/compose/jars/*.jar"
         
   build-on-macos:
-    
     runs-on: macos-latest
     
     steps:

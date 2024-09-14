@@ -11,13 +11,3 @@ plugins {
     alias(libs.plugins.buildkonfig) apply false
     alias(libs.plugins.undercouch.download) apply false
 }
-
-val versionName = properties["version.name"].toString()
-val versionCode = run {
-    val codeInVersionName = versionName.split(".").map { it.toInt() }
-    codeInVersionName[0] * 10000 + codeInVersionName[1] * 100 + codeInVersionName[2]
-}
-ext {
-    set("versionName", versionName)
-    set("versionCode", versionCode.toString())
-}
