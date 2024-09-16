@@ -286,6 +286,7 @@ if (enableDesktop) {
                 windows {
                     iconFile.set(file("icon.ico"))
                     upgradeUuid = "16b7010f-44eb-4157-9113-3f8e44d72955"
+                    dirChooser = true
                     shortcut = true
                     menu = true
                 }

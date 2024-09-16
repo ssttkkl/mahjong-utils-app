@@ -38,7 +38,7 @@ private fun UrlHandler(appNavigator: AppNavigator, uri: URI? = null) {
 
     LaunchedEffect(uri) {
         if (uri != null && uri.scheme == "mahjongutils") {
-            appNavigator.url = Url(uri.path, parseQuery(uri.query))
+            appNavigator.url = Url(uri.path, uri.query?.let { parseQuery(it) } ?: emptyMap())
             logger.info("apply url: ${appNavigator.url}")
         }
     }
