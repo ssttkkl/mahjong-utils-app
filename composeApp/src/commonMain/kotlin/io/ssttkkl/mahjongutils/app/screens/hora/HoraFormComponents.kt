@@ -169,7 +169,7 @@ class HoraFormComponents(
             }
         }
     }
-    
+
     @Composable
     fun SelfWind(modifier: Modifier = Modifier) {
         TopPanel(modifier = modifier) {
@@ -182,7 +182,7 @@ class HoraFormComponents(
             )
         }
     }
-    
+
     @Composable
     fun RoundWind(modifier: Modifier = Modifier) {
         TopPanel(modifier = modifier) {
@@ -193,7 +193,7 @@ class HoraFormComponents(
             )
         }
     }
-    
+
     @Composable
     fun Dora() {
         ValidationField(form.doraErrMsg) { isError ->
@@ -213,7 +213,7 @@ class HoraFormComponents(
             )
         }
     }
-    
+
     @Composable
     fun ExtraYaku() {
         val options = yakuComboOptions(form.allExtraYaku)
