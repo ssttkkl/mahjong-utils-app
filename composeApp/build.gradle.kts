@@ -8,19 +8,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import java.util.Properties
 
 plugins {
-    val enableAndroid = System.getenv("enable_android")
-        ?.equals("true", ignoreCase = true) != false
-            && JavaVersion.current() >= JavaVersion.VERSION_17
-
-    val enableIos = System.getenv("enable_ios")
-        ?.equals("true", ignoreCase = true) != false
-            && System.getProperty("os.name").startsWith("Mac")
-
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.androidApplication) apply enableAndroid
-    alias(libs.plugins.kotlinNativeCocoapods) apply enableIos
+    alias(libs.plugins.androidApplication) apply false
+    alias(libs.plugins.kotlinNativeCocoapods) apply false
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.kotlinxAtomicfu)
     alias(libs.plugins.aboutLibraries)
@@ -28,20 +20,35 @@ plugins {
     alias(libs.plugins.undercouch.download)
 }
 
+private fun ExtraPropertiesExtension.getBoolean(name: String, default: Boolean = true): Boolean {
+    return if (has(name))
+        get(name)?.toString()?.lowercase()?.toBooleanStrictOrNull() ?: default
+    else
+        default
+}
+
 // vercel自带的Java 11，但是AGP要求17，所以添加开关
-val enableAndroid = System.getenv("enable_android")
-    ?.equals("true", ignoreCase = true) != false
-        && JavaVersion.current() >= JavaVersion.VERSION_17
+val enableAndroid
+    get() = rootProject.extra.getBoolean("enable_android")
+            && JavaVersion.current() >= JavaVersion.VERSION_17
 
-val enableIos = System.getenv("enable_ios")
-    ?.equals("true", ignoreCase = true) != false
-        && System.getProperty("os.name").startsWith("Mac")
+if (enableAndroid) {
+    apply(plugin = libs.plugins.androidApplication.get().pluginId)
+}
 
-val enableDesktop = System.getenv("enable_desktop")
-    ?.equals("true", ignoreCase = true) != false
+val enableIos
+    get() = rootProject.extra.getBoolean("enable_ios")
+            && System.getProperty("os.name").startsWith("Mac")
 
-val enableWasm = System.getenv("enable_wasm")
-    ?.equals("true", ignoreCase = true) != false
+if (enableIos) {
+    apply(plugin = libs.plugins.kotlinNativeCocoapods.get().pluginId)
+}
+
+val enableDesktop
+    get() = rootProject.extra.getBoolean("enable_desktop")
+
+val enableWasm
+    get() = rootProject.extra.getBoolean("enable_wasm")
 
 val localProperties = Properties()
 if (rootProject.file("local.properties").exists()) {
@@ -353,7 +360,8 @@ if (enableDesktop) {
             }
 
             val appDir = if (isRelease)
-                layout.buildDirectory.dir("appimage/main-release/mahjong-utils-app.AppDir").get().asFile
+                layout.buildDirectory.dir("appimage/main-release/mahjong-utils-app.AppDir")
+                    .get().asFile
             else
                 layout.buildDirectory.dir("appimage/main/mahjong-utils-app.AppDir").get().asFile
             if (appDir.exists()) {
