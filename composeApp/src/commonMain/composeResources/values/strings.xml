@@ -2,10 +2,10 @@
 <resources>
     <string name="app_name">Riichi Mahjong Calculator</string>
 
-    <string name="title_shanten">Shanten</string>
-    <string name="title_shanten_result">Shanten Result</string>
-    <string name="title_furo_shanten">Open-meld Shanten</string>
-    <string name="title_furo_shanten_result">Open-meld Result</string>
+    <string name="title_shanten">Hand Efficiency</string>
+    <string name="title_shanten_result">Hand Efficiency Result</string>
+    <string name="title_furo_shanten">Meld Hand Efficiency</string>
+    <string name="title_furo_shanten_result">Meld Hand Efficiency Result</string>
     <string name="title_hora">Wining Hand Analyses</string>
     <string name="title_hora_result">Wining Hand Result</string>
     <string name="title_hanhu">Score Calculation By Fan and Minipoints</string>
