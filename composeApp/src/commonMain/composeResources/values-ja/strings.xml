@@ -54,7 +54,7 @@
     <string name="text_improvement_desc">ツモ%1$sだら%2$s切る（%3$d枚待ちになる）</string>
 
     <string name="label_tile_discarded_by_other">他家から出る</string>
-    <string name="label_tile_discarded_by_other_short">出る%s</string>
+    <string name="label_tile_discarded_by_other_short">出る%1$s</string>
     <string name="label_other_options">オプション</string>
     <string name="label_allow_chi">上家から出る（チーができる）</string>
 
