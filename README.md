@@ -1,49 +1,56 @@
-日麻牌理计算器
+Riichi Mahjong Calculator
 ======
+
+[中文](README-ZH.md)
 
 ![icon](fastlane/metadata/android/zh-CN/images/icon.png)
 
-Web版：
+For Web:
 
 - https://ssttkkl.github.io/mahjong-utils-app/
 - https://mahjong-utils-app.vercel.app
 
-安卓版：
+For Android:
 
-- 前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本的composeApp-release.apk
+- Go to [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases) and download **composeApp-release.apk** in the latest release.
 
-桌面版：
+For Desktop:
 
-- JAR（需要安装Java）：前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本对应平台的mahjong-utils-app-xxx.jar，双击运行即可。例如Windows系统需要下载mahjong-utils-app-windows-x64-xxx-release.jar
-- 安装包（无需安装Java）：前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本对应平台的mahjong-utils-app-xxx.xxx，双击安装即可。例如Windows系统需要下载mahjong-utils-app-xxx.exe
+- JAR (Java required): Go to [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases) and download **mahjong-utils-app-xxx-vvv.jar** (xxx is your OS and arch, and vvv is the version name) in the latest release. Double-click to run. (For example, Windows X64 users should download **mahjong-utils-app-windows-x64-xxx-release.jar**)
+- Install Package (non Java required): Go to [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases) and download **mahjong-utils-app-vvv.xxx** (xxx is your OS package format, and vvv is the version name) in the latest release. Double-click to install. (For example, Windows X64 users should download **mahjong-utils-app-vvv.exe**)
 
+For iOS:
 
-## 功能
+You should clone the repo and build your self. Xcode, Cocoapods and JDK (>= 11) is required.
 
-- 牌理：包括进张、好形进张（仅一向听）、退向打法
+Clone the repo, run `pod install` under iosApp, then open iosApp/iosApp.xcworkspace with Xcode and you can build it.
 
-![牌理](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/1.jpg)
+## Features
 
-- 副露牌理：吃碰杠PASS四种打法下的进张、好形进张（仅一向听）、退向打法
+- Hand Efficiency: Includes tile efficiency, good-shape tile efficiency (for one-shanten only), and defense strategy.
 
-![副露牌理](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/2.jpg)
+![Hand Efficiency](fastlane/metadata/android/en-US/images/tenInchScreenshots/1.jpg)
 
-- 和牌分析：默认为雀魂/天凤规则，可以定制少部分规则
+- Meld Hand Efficiency: Tile efficiency for chow, pung, kong, and pass; includes good-shape tile efficiency (for one-shanten only) and defense strategy.
 
-![和牌分析](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/4.jpg)
-![规则定制](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/7.jpg)
+![Meld Hand Efficiency](fastlane/metadata/android/en-US/images/tenInchScreenshots/2.jpg)
 
-- 番符得点计算：默认为雀魂/天凤规则，可以定制少部分规则
+- Winning Hand Analysis: Defaults to Mahjong Soul/Tenhou rules, with customizable rules to some extent.
 
-![番符得点计算](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/5.jpg)
+![Winning Hand Analysis](fastlane/metadata/android/en-US/images/tenInchScreenshots/4.jpg)
+![Customizable Rules](fastlane/metadata/android/en-US/images/tenInchScreenshots/7.jpg)
 
-## App说明
+- Score Calculation By Fan and Minipoints: Defaults to Mahjong Soul/Tenhou rules, with customizable rules to some extent.
 
-算法为纯手工自制，App无需网络，纯本地计算
+![Score Calculation By Fan and Minipoints](fastlane/metadata/android/en-US/images/tenInchScreenshots/5.jpg)
 
-App基于Kotlin/Multiplatform与Compose Multiplatform技术栈开发，欢迎PR
+## Addition
 
-可能会有些小Bug，欢迎通过GitHub的issue区反馈问题
+The algorithm runs at local, no network access will be made.
+
+App based on Kotlin/Multiplatform and Compose Multiplatform, PR is welcomed.
+
+If you find any bug or incorrect translation, please report in [issue](https://github.com/ssttkkl/mahjong-utils-app/issues).
 
 ## LICENSE
 
