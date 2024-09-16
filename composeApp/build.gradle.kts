@@ -57,6 +57,14 @@ if (rootProject.file("local.properties").exists()) {
     }
 }
 
+val versionProperties = Properties()
+file("version.properties").inputStream().use { inputStream ->
+    versionProperties.load(inputStream)
+}
+
+val versionName = versionProperties["versionName"].toString()
+val versionCode = versionProperties["versionCode"].toString().toInt()
+
 kotlin {
     applyDefaultHierarchyTemplate()
 
@@ -193,7 +201,7 @@ kotlin {
 
     if (enableIos) {
         (this as ExtensionAware).extensions.configure<CocoapodsExtension> {
-            version = rootProject.ext.get("versionName").toString()
+            version = versionName
             summary = "Riichi Mahjong Calculator"
             homepage = properties["opensource.repo"].toString()
             source =
@@ -216,8 +224,8 @@ buildkonfig {
     packageName = "io.ssttkkl.mahjongutils.app"
 
     defaultConfigs {
-        buildConfigField(STRING, "VERSION_NAME", rootProject.ext.get("versionName").toString())
-        buildConfigField(STRING, "VERSION_CODE", rootProject.ext.get("versionCode").toString())
+        buildConfigField(STRING, "VERSION_NAME", versionName)
+        buildConfigField(STRING, "VERSION_CODE", versionCode.toString())
         buildConfigField(STRING, "OPENSOURCE_REPO", properties["opensource.repo"].toString())
         buildConfigField(STRING, "OPENSOURCE_LICENSE", properties["opensource.license"].toString())
     }
@@ -241,9 +249,9 @@ if (enableAndroid) {
             applicationId = "io.ssttkkl.mahjongutils.app"
             minSdk = libs.versions.android.minSdk.get().toInt()
             targetSdk = libs.versions.android.targetSdk.get().toInt()
-            versionName = rootProject.ext.get("versionName").toString()
-            versionCode = rootProject.ext.get("versionCode").toString().toInt()
         }
+        defaultConfig.versionName = versionName
+        defaultConfig.versionCode = versionCode
         packaging {
             resources {
                 excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -297,7 +305,7 @@ if (enableDesktop) {
 
             nativeDistributions {
                 packageName = "mahjong-utils-app"
-                packageVersion = rootProject.ext.get("versionName").toString()
+                packageVersion = versionName
                 description = "Riichi Mahjong Calculator"
                 copyright = "Copyright (c) 2024 ssttkkl"
                 licenseFile.set(rootProject.file("LICENSE"))
@@ -381,7 +389,7 @@ if (enableDesktop) {
                 environment("ARCH", "x86_64")  // TODO: 支持arm64
                 args(
                     "mahjong-utils-app.AppDir",
-                    "mahjong-utils-app-linux-${rootProject.ext["versionName"]}.AppImage"
+                    "mahjong-utils-app-${versionName}.AppImage"
                 )
             }
         }
@@ -398,12 +406,3 @@ if (enableDesktop) {
 if (enableWasm) {
     compose.web {}
 }
-
-fun generateVersionFile() {
-    file("version.properties").writer().use {
-        it.appendLine("versionName=${rootProject.ext.get("versionName")}")
-        it.appendLine("versionCode=${rootProject.ext.get("versionCode")}")
-    }
-}
-
-generateVersionFile()

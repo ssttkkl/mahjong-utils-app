@@ -72,6 +72,7 @@ object HanhuScreen : UrlNavigationScreen<HanhuScreenModel>() {
                             form.han, { form.han = it }, Modifier.fillMaxWidth(),
                             label = { Text(stringResource(Res.string.label_han)) },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            maxLines = 1,
                             isError = isError
                         )
                     }
@@ -85,6 +86,7 @@ object HanhuScreen : UrlNavigationScreen<HanhuScreenModel>() {
                             form.hu, { form.hu = it }, Modifier.fillMaxWidth(),
                             label = { Text(stringResource(Res.string.label_hu)) },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            maxLines = 1,
                             isError = isError
                         )
                     }
