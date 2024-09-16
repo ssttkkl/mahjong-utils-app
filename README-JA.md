@@ -28,20 +28,20 @@ iOS版：
 
 - 牌理：牌効率・良形効率（一向聴のみ）・向聴戻しを含みます。
 
-![手牌効率](fastlane/metadata/android/en-US/images/tenInchScreenshots/1.jpg)
+![手牌効率](fastlane/metadata/android/ja-JP/images/tenInchScreenshots/1.png)
 
 - 鳴き牌理：鳴き（チー・ポン・カン・パス）の牌効率・良形効率（一向聴のみ）・向聴戻しを含まれます。
 
-![鳴き手効率](fastlane/metadata/android/en-US/images/tenInchScreenshots/2.jpg)
+![鳴き手効率](fastlane/metadata/android/ja-JP/images/tenInchScreenshots/2.png)
 
 - 和了分析：初期設定は雀魂や天鳳のルールに従いますが、ある程度カスタマイズ可能です。
 
-![和了分析](fastlane/metadata/android/en-US/images/tenInchScreenshots/4.jpg)  
-![ルールのカスタマイズ](fastlane/metadata/android/en-US/images/tenInchScreenshots/7.jpg)
+![和了分析](fastlane/metadata/android/ja-JP/images/tenInchScreenshots/4.png)  
+![ルールのカスタマイズ](fastlane/metadata/android/ja-JP/images/tenInchScreenshots/7.png)
 
 - 飜符による得点計算：初期設定は麻雀魂や天鳳のルールに従いますが、ある程度カスタマイズ可能です。
 
-![飜符による得点計算](fastlane/metadata/android/en-US/images/tenInchScreenshots/5.jpg)
+![飜符による得点計算](fastlane/metadata/android/ja-JP/images/tenInchScreenshots/5.png)
 
 ## 追加情報
 
