@@ -3,10 +3,11 @@ efficiency, meld hand efficiency, winning hand analysis,
 and score calculation for fan and minipoints.
 
 - Hand Efficiency: Includes tile efficiency, good-shape tile
- efficiency (for one-shanten only), and defense strategy.
+ efficiency (for one-shanten only), and backwards strategy.
 
 - Meld Hand Efficiency: Tile efficiency for chow, pung, kong,
-and pass; includes good-shape tile efficiency (for one-shanten only) and defense strategy.
+and pass; includes good-shape tile efficiency (for one-shanten only)
+and backwards strategy.
 
 - Winning Hand Analysis: Defaults to Mahjong Soul/Tenhou rules,
  with customizable rules to some extent.

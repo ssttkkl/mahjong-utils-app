@@ -1,7 +1,7 @@
 Riichi Mahjong Calculator
 ======
 
-[中文](README-ZH.md)
+[中文](README-ZH.md) [日本語](README-JA.md)
 
 ![icon](fastlane/metadata/android/zh-CN/images/icon.png)
 
@@ -26,11 +26,11 @@ For iOS:
 
 ## Features
 
-- Hand Efficiency: Includes tile efficiency, good-shape tile efficiency (for one-shanten only), and defense strategy.
+- Hand Efficiency: Includes tile efficiency, good-shape tile efficiency (for one-shanten only), and backwards strategy.
 
 ![Hand Efficiency](fastlane/metadata/android/en-US/images/tenInchScreenshots/1.jpg)
 
-- Meld Hand Efficiency: Tile efficiency for chow, pung, kong, and pass; includes good-shape tile efficiency (for one-shanten only) and defense strategy.
+- Meld Hand Efficiency: Tile efficiency for chow, pung, kong, and pass; includes good-shape tile efficiency (for one-shanten only) and backwards strategy.
 
 ![Meld Hand Efficiency](fastlane/metadata/android/en-US/images/tenInchScreenshots/2.jpg)
 

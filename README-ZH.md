@@ -1,6 +1,8 @@
 日麻牌理计算器
 ======
 
+[English](README.md) [日本語](README-JA.md)
+
 ![icon](fastlane/metadata/android/zh-CN/images/icon.png)
 
 Web版：
