@@ -389,7 +389,7 @@ if (enableDesktop) {
                 environment("ARCH", "x86_64")  // TODO: 支持arm64
                 args(
                     "mahjong-utils-app.AppDir",
-                    "mahjong-utils-app-linux-${rootProject.ext["versionName"]}.AppImage"
+                    "mahjong-utils-app-${versionName}.AppImage"
                 )
             }
         }
