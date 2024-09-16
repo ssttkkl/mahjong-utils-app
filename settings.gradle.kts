@@ -46,7 +46,7 @@ if (mahjongUtilsLibPath.resolve("build.gradle.kts").exists()) {
     }
 }
 
-val capturableLibPath = file("external/mahjong-utils")
+val capturableLibPath = file("external/Capturable")
 if (envPropFile.exists()) {
     envPropFile.copyTo(capturableLibPath.resolve("env.properties"), overwrite = true)
 }
