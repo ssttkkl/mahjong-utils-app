@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -24,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -99,16 +101,17 @@ object HoraScreen :
 
                     VerticalSpacerBetweenPanels()
 
-                    // 所和的牌
                     TopPanel {
-                        components.Agari()
-                    }
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            // 所和的牌
+                            components.Agari(Modifier.weight(1f))
 
-                    VerticalSpacerBetweenPanels()
-
-                    // 自摸/荣和
-                    TopPanel {
-                        components.Tsumo()
+                            // 自摸/荣和
+                            components.Tsumo()
+                        }
                     }
 
                     VerticalSpacerBetweenPanels()
