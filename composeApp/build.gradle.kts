@@ -302,6 +302,7 @@ if (enableDesktop) {
                 windows {
                     iconFile.set(file("icon.ico"))
                     upgradeUuid = "16b7010f-44eb-4157-9113-3f8e44d72955"
+                    dirChooser = true
                     shortcut = true
                     menu = true
                 }
@@ -310,6 +311,21 @@ if (enableDesktop) {
                     dockName = "Riichi Mahjong Calculator"
                     iconFile.set(file("icon.icns"))
                     bundleID = "io.ssttkkl.mahjongutils.app"
+                    infoPlist {
+                        extraKeysRawXml = """
+                            <key>CFBundleURLTypes</key>
+                            <array>
+                                <dict>
+                                    <key>CFBundleURLName</key>
+                                    <string>io.ssttkkl.mahjongutils.app</string>
+                                    <key>CFBundleURLSchemes</key>
+                                    <array>
+                                        <string>mahjongutils</string>
+                                    </array>
+                                </dict>
+                            </array>
+                        """.trimIndent()
+                    }
                 }
 
                 linux {

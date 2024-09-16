@@ -41,7 +41,7 @@ object HanhuScreen : UrlNavigationScreen<HanhuScreenModel>() {
         get() = stringResource(Res.string.title_hanhu)
 
     override val path: String
-        get() = "hanhu"
+        get() = "/hanhu"
 
     @Composable
     override fun rememberScreenModel(): HanhuScreenModel {

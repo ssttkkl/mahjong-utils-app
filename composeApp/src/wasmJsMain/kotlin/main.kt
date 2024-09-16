@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalResourceApi::class)
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -21,8 +19,8 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 
 private fun extractUrl(fullUrl: String): Url? {
-    val pathStartIdx = fullUrl.indexOf("#/") + 2
-    if (pathStartIdx > 1) {
+    val pathStartIdx = fullUrl.indexOf("#") + 1
+    if (pathStartIdx > 0) {
         return Url.parse(fullUrl.substring(pathStartIdx))
     } else {
         return null

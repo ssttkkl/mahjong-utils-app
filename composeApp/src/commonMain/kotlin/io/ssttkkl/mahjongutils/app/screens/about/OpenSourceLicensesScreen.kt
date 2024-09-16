@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
+import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.appscaffold.NoParamUrlNavigationScreen
 import io.ssttkkl.mahjongutils.app.components.scrollbox.VerticalScrollBox
 import mahjongutils.composeapp.generated.resources.Res
@@ -18,10 +19,7 @@ import mahjongutils.composeapp.generated.resources.title_about_opensource_licens
 import org.jetbrains.compose.resources.stringResource
 
 @Stable
-object OpenSourceLicensesScreen : NoParamUrlNavigationScreen() {
-    override val path: String
-        get() = "about/licenses"
-
+object OpenSourceLicensesScreen : NavigationScreen() {
     override val title: String
         @Composable
         get() = stringResource(Res.string.title_about_opensource_licenses)
