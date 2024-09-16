@@ -8,7 +8,6 @@ import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -102,8 +101,7 @@ class HoraFormComponents(
     @Composable
     fun Tsumo() {
         SingleChoiceSegmentedButtonGroup(
-            tsumoOptions(), form.tsumo, { form.tsumo = it },
-            Modifier.padding(start = 16.dp)
+            tsumoOptions(), form.tsumo, { form.tsumo = it }
         )
     }
 
@@ -169,7 +167,7 @@ class HoraFormComponents(
             }
         }
     }
-    
+
     @Composable
     fun SelfWind(modifier: Modifier = Modifier) {
         TopPanel(modifier = modifier) {
@@ -182,7 +180,7 @@ class HoraFormComponents(
             )
         }
     }
-    
+
     @Composable
     fun RoundWind(modifier: Modifier = Modifier) {
         TopPanel(modifier = modifier) {
@@ -193,7 +191,7 @@ class HoraFormComponents(
             )
         }
     }
-    
+
     @Composable
     fun Dora() {
         ValidationField(form.doraErrMsg) { isError ->
@@ -213,7 +211,7 @@ class HoraFormComponents(
             )
         }
     }
-    
+
     @Composable
     fun ExtraYaku() {
         val options = yakuComboOptions(form.allExtraYaku)
