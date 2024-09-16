@@ -21,3 +21,4 @@ captures
 /.fleet/
 
 *.jks
+env.properties
