@@ -14,17 +14,6 @@ plugins {
     alias(libs.plugins.undercouch.download) apply false
 }
 
-val versionName = properties["version.name"].toString()
-val versionCode = run {
-    val codeInVersionName = versionName.split(".").map { it.toInt() }
-    codeInVersionName[0] * 10000 + codeInVersionName[1] * 100 + codeInVersionName[2]
-}
-
-ext {
-    set("versionName", versionName)
-    set("versionCode", versionCode.toString())
-}
-
 val envPropFile = file("env.properties")
 if (envPropFile.exists()) {
     val props = Properties().apply {
