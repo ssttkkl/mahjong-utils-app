@@ -21,9 +21,8 @@ For Desktop:
 
 For iOS:
 
-You should clone the repo and build your self. Xcode, Cocoapods and JDK (>= 11) is required.
-
-Clone the repo, run `pod install` under iosApp, then open iosApp/iosApp.xcworkspace with Xcode and you can build it.
+- You should clone the repo and build your self. Xcode, Cocoapods and JDK (>= 11) is required.
+- Clone the repo, run `pod install` under **iosApp**, then open **iosApp/iosApp.xcworkspace** with Xcode and you can build it.
 
 ## Features
 

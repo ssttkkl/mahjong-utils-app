@@ -17,6 +17,10 @@ Web版：
 - JAR（需要安装Java）：前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本对应平台的mahjong-utils-app-xxx.jar，双击运行即可。例如Windows系统需要下载mahjong-utils-app-windows-x64-xxx-release.jar
 - 安装包（无需安装Java）：前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本对应平台的mahjong-utils-app-xxx.xxx，双击安装即可。例如Windows系统需要下载mahjong-utils-app-xxx.exe
 
+iOS版：
+
+- 你可以自行克隆仓库进行编译。要求一台mac电脑、一个苹果开发者账号，Xcode、Cocoapods以及JDK（>=11）。
+- 克隆本仓库，在**iosApp**目录下执行`pod install`，然后通过Xcode打开**iosApp/iosApp.xcworkspace**并进行构建。
 
 ## 功能
 
