@@ -1,5 +1,3 @@
-import java.util.Properties
-
 rootProject.name = "mahjongutils"
 
 pluginManagement {
@@ -19,19 +17,9 @@ dependencyResolutionManagement {
     }
 }
 
-val envPropFile = file("env.properties")
-if (envPropFile.exists()) {
-    val props = Properties().apply {
-        envPropFile.reader().use { rd ->
-            load(rd)
-        }
-    }
-    props.forEach { (k, v) ->
-        extra.set(k.toString(), v)
-    }
-}
-
 include(":composeApp")
+
+val envPropFile = file("env.properties")
 
 val mahjongUtilsLibPath = file("external/mahjong-utils")
 if (mahjongUtilsLibPath.resolve("build.gradle.kts").exists()) {
