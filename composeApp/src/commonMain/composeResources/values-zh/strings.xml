@@ -81,7 +81,7 @@
     <string name="label_renpuuJyantou4Hu">连风雀头计4符</string>
     <string name="desc_renpuuJyantou4Hu">当雀头同时为自风与场风时，是否计4符（关闭该选项则计2符）</string>
     <string name="label_hasKiriageMangan">有切上满贯</string>
-    <string name="desc_hasKiriageMangan">4番30符是否视作满贯</string>
+    <string name="desc_hasKiriageMangan">4番30符、3番60符是否视作满贯</string>
     <string name="label_hasKazoeYakuman">有累计役满</string>
     <string name="desc_hasKazoeYakuman">非役满牌型但番数达13番及以上时，是否视作役满</string>
     <string name="label_hasMultipleYakuman">有多倍役满</string>

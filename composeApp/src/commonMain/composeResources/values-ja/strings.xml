@@ -17,7 +17,7 @@
     <string name="label_history">ヒストリ</string>
     <string name="label_clear">クリア</string>
     <string name="label_share">シェア</string>
-    <string name="label_view">View</string>
+    <string name="label_view">ビュー</string>
 
     <string name="text_empty_history">なし</string>
 
@@ -39,7 +39,7 @@
     <string name="label_waiting_tiles">当たり牌</string>
     <string name="label_good_shape_advance_tiles">好形受け入れ</string>
     <string name="label_good_shape_improvement_tiles">好形変化</string>
-    <string name="label_fillback">Fill Back</string>
+    <string name="label_fillback">フィルバック</string>
     <string name="text_tiles_num">%1$d枚</string>
     <string name="text_tiles_num_short">%1$d枚</string>
     <string name="text_tiles_num_and_percentile">%1$d枚（%1$s%）</string>
@@ -56,11 +56,11 @@
     <string name="label_tile_discarded_by_other">他家から出る</string>
     <string name="label_tile_discarded_by_other_short">出る%s</string>
     <string name="label_other_options">オプション</string>
-    <string name="label_allow_chi">チーができる</string>
+    <string name="label_allow_chi">上家から出る（チーができる）</string>
 
     <string name="label_furo">副露</string>
-    <string name="label_mentsu">Mentsu</string>
-    <string name="label_jyantou">Jyantou</string>
+    <string name="label_mentsu">面子</string>
+    <string name="label_jyantou">雀頭</string>
     <string name="label_ankan">暗槓</string>
     <string name="label_minkan">大明槓</string>
     <string name="label_agari">アガリ牌</string>
@@ -73,24 +73,24 @@
     <string name="label_extra_yaku">役</string>
     <string name="label_extra_yaku_unspecified">なし</string>
 
-    <string name="label_hora_options">Hora Options</string>
-    <string name="label_aotenjou">Aotenjou</string>
-    <string name="desc_aotenjou">Remove the fixed score limit for Mangan and above; no matter the number of han, calculate using the basic point formula. </string>
-    <string name="label_hasKuitan">Kuitan</string>
-    <string name="desc_hasKuitan">Whether Tanyao is considered a non-closed hand yaku. </string>
-    <string name="label_renpuuJyantou4Hu">Renpuu Jyantou 4-Hu</string>
-    <string name="desc_renpuuJyantou4Hu">When the pair (Jyantou) is both the player\u0027s wind and the prevailing wind, is it scored as 4 hu. (closing this option scores it as 2 hu)</string>
-    <string name="label_hasKiriageMangan">Kiriage Mangan</string>
-    <string name="desc_hasKiriageMangan">Is 4-han 30-fu considered a mangan.</string>
-    <string name="label_hasKazoeYakuman">Kazoe Yakuman</string>
-    <string name="desc_hasKazoeYakuman">Is a non-Yakuman hand with 13 or more han considered a Yakuman. </string>
-    <string name="label_hasMultipleYakuman">Multiple Yakuman</string>
-    <string name="desc_hasMultipleYakuman">Are Daisushi, Kokushimusou-Juusanmen-Machi, and Junsei-ChurenPoutou considered as double Yakuman. </string>
-    <string name="label_hasComplexYakuman">Complex Yakuman</string>
-    <string name="desc_hasComplexYakuman">When a hand qualifies for multiple Yakuman, is it allowed to be combined. (if this option is turned off, then only the highest multiple Yakuman is counted)</string>
-    <string name="label_hora_options_ok">OK</string>
-    <string name="label_hora_options_restore">Restore</string>
-    <string name="text_overwrite_hora_options_hint">Do you also want to overwrite hora options?</string>
+    <string name="label_hora_options">ゲームルール</string>
+    <string name="label_aotenjou">青天井</string>
+    <string name="desc_aotenjou">点数が満貫以上になっても満貫打ち切りをせず、計算式どおりに得点を算出する。</string>
+    <string name="label_hasKuitan">喰いタン</string>
+    <string name="desc_hasKuitan">断么九（タンヤオ）が喰い下がり役にする。</string>
+    <string name="label_renpuuJyantou4Hu">連風牌の雀頭が4符にする</string>
+    <string name="desc_renpuuJyantou4Hu">雀頭は連風牌の場合4符にする。(オフにすると、連風牌の雀頭が2符にする)</string>
+    <string name="label_hasKiriageMangan">切り上げ満貫</string>
+    <string name="desc_hasKiriageMangan">30符4飜・60符3飜が満貫にする。</string>
+    <string name="label_hasKazoeYakuman">数え役満</string>
+    <string name="desc_hasKazoeYakuman">役満がないばい、翻数が13翻以上であれば役満と同じ得点。</string>
+    <string name="label_hasMultipleYakuman">ダブル役満</string>
+    <string name="desc_hasMultipleYakuman">四暗刻単騎待ちや大四喜、国士無双13面待ち、九蓮宝燈9面待ちをダブル役満とする。</string>
+    <string name="label_hasComplexYakuman">役満の複合</string>
+    <string name="desc_hasComplexYakuman">役満が複数ある場合は全てカウントされ、得点が乗算されます。（オフにすると、最も高い倍数の役満のみがカウントされます）</string>
+    <string name="label_hora_options_ok">はい</string>
+    <string name="label_hora_options_restore">復元する</string>
+    <string name="text_overwrite_hora_options_hint">ゲームルールも上書きしますか?</string>
 
     <string name="label_wind_unspecified">指定しない</string>
     <string name="label_wind_east">東</string>
@@ -122,62 +122,62 @@
     <string name="label_yakuman">役満</string>
     <string name="label_multiple_yakuman">%1$s倍役満</string>
 
-    <string name="label_yaku_tsumo">Tsumo</string>
-    <string name="label_yaku_pinhu">Pinhu</string>
-    <string name="label_yaku_tanyao">Tanyao</string>
-    <string name="label_yaku_ipe">Ipe</string>
-    <string name="label_yaku_self_wind">SelfWind</string>
-    <string name="label_yaku_round_wind">RoundWind</string>
-    <string name="label_yaku_chankan">Chankan</string>
-    <string name="label_yaku_haku">Haku</string>
-    <string name="label_yaku_hatsu">Hatsu</string>
-    <string name="label_yaku_chun">Chun</string>
-    <string name="label_yaku_sanshoku">Sanshoku</string>
-    <string name="label_yaku_ittsu">Ittsu</string>
-    <string name="label_yaku_chanta">Chanta</string>
-    <string name="label_yaku_chitoi">Chitoi</string>
-    <string name="label_yaku_toitoi">Toitoi</string>
-    <string name="label_yaku_sananko">Sananko</string>
-    <string name="label_yaku_honroto">Honroto</string>
-    <string name="label_yaku_sandoko">Sandoko</string>
-    <string name="label_yaku_sankantsu">Sankantsu</string>
-    <string name="label_yaku_shosangen">Shosangen</string>
-    <string name="label_yaku_honitsu">Honitsu</string>
-    <string name="label_yaku_junchan">Junchan</string>
-    <string name="label_yaku_ryanpe">Ryanpe</string>
-    <string name="label_yaku_chinitsu">Chinitsu</string>
+    <string name="label_yaku_tsumo">門前清自摸和（メンゼンツモ）</string>
+    <string name="label_yaku_pinhu">平和（ピンフ）</string>
+    <string name="label_yaku_tanyao">断么九（タンヤオ）</string>
+    <string name="label_yaku_ipe">一盃口（イーペーコー）</string>
+    <string name="label_yaku_self_wind">役牌：自風</string>
+    <string name="label_yaku_round_wind">役牌：場風</string>
+    <string name="label_yaku_haku">役牌：白</string>
+    <string name="label_yaku_hatsu">役牌：發</string>
+    <string name="label_yaku_chun">役牌：中</string>
+    <string name="label_yaku_sanshoku">三色同順（サンショクドウジュン）</string>
+    <string name="label_yaku_ittsu">一気通貫（イッキツウカン）</string>
+    <string name="label_yaku_chanta">混全帯么九（ホンチャンタイヤオチュー）</string>
+    <string name="label_yaku_chitoi">七対子（チートイツ）</string>
+    <string name="label_yaku_toitoi">対々和（トイトイホー）</string>
+    <string name="label_yaku_sananko">三暗刻（サンアンコウ）</string>
+    <string name="label_yaku_honroto">混老頭（ホンロウトウ）</string>
+    <string name="label_yaku_sandoko">三色同刻（サンショクドウコウ）</string>
+    <string name="label_yaku_sankantsu">三槓子（サンカンツ）</string>
+    <string name="label_yaku_shosangen">小三元（ショウサンゲン）</string>
+    <string name="label_yaku_honitsu">混一色（ホンイーソー）</string>
+    <string name="label_yaku_junchan">純全帯么九（ジュンチャンタイヤオチュー）</string>
+    <string name="label_yaku_ryanpe">二盃口（リャンペーコー）</string>
+    <string name="label_yaku_chinitsu">清一色（チンイーソー）</string>
 
-    <string name="label_yaku_kokushi">Kokushi</string>
-    <string name="label_yaku_suanko">Suanko</string>
-    <string name="label_yaku_daisangen">Daisangen</string>
-    <string name="label_yaku_tsuiso">Tsuiso</string>
-    <string name="label_yaku_shousushi">Shousushi</string>
-    <string name="label_yaku_lyuiso">Lyuiso</string>
-    <string name="label_yaku_chinroto">Chinroto</string>
-    <string name="label_yaku_sukantsu">Sukantsu</string>
-    <string name="label_yaku_churen">Churen</string>
-    <string name="label_yaku_daisushi">Daisushi</string>
-    <string name="label_yaku_churenNineWaiting">ChurenNineWaiting</string>
-    <string name="label_yaku_suankoTanki">SuankoTanki</string>
-    <string name="label_yaku_kokushiThirteenWaiting">KokushiThirteenWaiting</string>
+    <string name="label_yaku_kokushi">国士無双（コクシムソウ）</string>
+    <string name="label_yaku_suanko">四暗刻（スーアンコウ）</string>
+    <string name="label_yaku_daisangen">大三元（ダイサンゲン）</string>
+    <string name="label_yaku_tsuiso">字一色（ツーイーソー）</string>
+    <string name="label_yaku_shousushi">小四喜（ショウスーシー）</string>
+    <string name="label_yaku_lyuiso">緑一色（リュウイーソー）</string>
+    <string name="label_yaku_chinroto">清老頭（チンロウトウ）</string>
+    <string name="label_yaku_sukantsu">四槓子（スーカンツ）</string>
+    <string name="label_yaku_churen">九蓮宝燈（チュウレンポウトウ）</string>
+    <string name="label_yaku_daisushi">大四喜（ダイスーシー）</string>
+    <string name="label_yaku_churenNineWaiting">純正九蓮宝燈（純正チュウレンポウトウ）</string>
+    <string name="label_yaku_suankoTanki">四暗刻単騎（スーアンコウ単騎）</string>
+    <string name="label_yaku_kokushiThirteenWaiting">国士無双十三面待ち（コクシムソウ十三面待ち）</string>
 
-    <string name="label_yaku_tenhou">テンホウ</string>
-    <string name="label_yaku_chihou">チイホウ</string>
-    <string name="label_yaku_wrichi">ダブルリーチ</string>
-    <string name="label_yaku_richi">リーチ</string>
-    <string name="label_yaku_ippatsu">イッパツ</string>
-    <string name="label_yaku_rinshan">リンシャン</string>
-    <string name="label_yaku_haitei">ハイテイ</string>
-    <string name="label_yaku_houtei">ホウテイ</string>
+    <string name="label_yaku_tenhou">天和（テンホー）</string>
+    <string name="label_yaku_chihou">地和（チーホー）</string>
+    <string name="label_yaku_wrichi">ダブル立直（ダブルリーチ）</string>
+    <string name="label_yaku_richi">立直（リーチ）</string>
+    <string name="label_yaku_ippatsu">一発（イッパツ）</string>
+    <string name="label_yaku_rinshan">嶺上開花（リンシャンカイホウ）</string>
+    <string name="label_yaku_chankan">槍槓（チャンカン）</string>
+    <string name="label_yaku_haitei">海底摸月（ハイテイモーユエ）</string>
+    <string name="label_yaku_houtei">河底撈魚（ホウテイラオユイ）</string>
 
     <string name="label_yaku_dora">ドラ%1$d</string>
 
-    <string name="label_yaku">Yaku</string>
-    <string name="label_hora_point">Han, Hu and Point</string>
-    <string name="label_hand_deconstruction">Hand Deconstruction</string>
+    <string name="label_yaku">役</string>
+    <string name="label_hora_point">飜符得点</string>
+    <string name="label_hand_deconstruction">手牌解析</string>
 
-    <string name="label_han">Han</string>
-    <string name="label_hu">Hu</string>
+    <string name="label_han">飜</string>
+    <string name="label_hu">符</string>
 
     <string name="label_yes">はい</string>
     <string name="label_no">いいえ</string>
@@ -204,5 +204,5 @@
     <string name="text_invalid_hu_number">有効な符数ではありません。</string>
     <string name="text_hu_exceeded_maximum">符数は140以下（140枚含む）にするべきです。</string>
 
-    <string name="text_save_result_success">Result saved as image.</string>
+    <string name="text_save_result_success">結果は画像にセーフしました。</string>
 </resources>

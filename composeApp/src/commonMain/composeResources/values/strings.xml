@@ -81,7 +81,7 @@
     <string name="label_renpuuJyantou4Hu">Renpuu Jyantou as 4 minipoints</string>
     <string name="desc_renpuuJyantou4Hu">When the pair (Jyantou) is both the seat wind and the round wind, it will be scored as 4 minipoints. (if turned-off, it will be scored as 2 minipoints)</string>
     <string name="label_hasKiriageMangan">Kiriage Mangan</string>
-    <string name="desc_hasKiriageMangan">A hand with 4 fan and 30 minipoints will be scored as a Mangan.</string>
+    <string name="desc_hasKiriageMangan">A hand with 4 fan and 30 minipoints / 3 fan and 60 minipoints will be scored as a Mangan.</string>
     <string name="label_hasKazoeYakuman">Kazoe Yakuman</string>
     <string name="desc_hasKazoeYakuman">A non-Yakuman hand with 13 or more fan will be considered a Yakuman. </string>
     <string name="label_hasMultipleYakuman">Multiple Yakuman</string>
