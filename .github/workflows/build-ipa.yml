@@ -27,6 +27,7 @@ jobs:
           
       - name: Archive
         run: |
+          cd iosApp
           xcodebuild \
           -workspace iosApp.xcworkspace \
           -scheme iosApp \
@@ -38,22 +39,21 @@ jobs:
 
       - name: Export unsigned IPA
         run: |
-          cd build/iosApp.xcarchive/Products/Applications
+          cd iosApp/build/iosApp.xcarchive/Products/Applications
           mkdir Payload
           mv mahjongutils.app Payload
           zip -qq -r -9 iosApp-unsigned.ipa Payload
-          cd ../../../../
-          mv build/iosApp.xcarchive/Products/Applications/iosApp-unsigned.ipa build
+          mv iosApp-unsigned.ipa ../../..
 
       - name: Upload the Build Artifact
         uses: actions/upload-artifact@v3.1.1
         with:
           name: distribution
-          path: build/*.ipa
+          path: iosApp/build/*.ipa
 
       - name: Upload Release Assets
         if: ${{ github.event_name == 'release' }}
         uses: AButler/upload-release-assets@v3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          files: build/*.ipa
+          files: iosApp/build/*.ipa
