@@ -185,7 +185,7 @@ kotlin {
     }
 
     if (enableIos) {
-        extensions.configure<CocoapodsExtension> {
+        (this as ExtensionAware).extensions.configure<CocoapodsExtension> {
             version = rootProject.ext.get("versionName").toString()
             summary = "Riichi Mahjong Calculator"
             homepage = properties["opensource.repo"].toString()
