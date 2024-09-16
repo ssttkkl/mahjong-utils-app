@@ -1,0 +1,59 @@
+name: Build IPA
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout my repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: 'gradle'
+          
+      - name: Archive
+        run: |
+          xcodebuild \
+          -workspace iosApp.xcworkspace \
+          -scheme iosApp \
+          -archivePath build/iosApp.xcarchive \
+          -sdk iphoneos \
+          -configuration Release \
+          -destination generic/platform=iOS \
+          clean archive
+
+      - name: Export unsigned IPA
+        run: |
+          cd build/iosApp.xcarchive/Products/Applications
+          mkdir Payload
+          mv mahjongutils.app Payload
+          zip -qq -r -9 iosApp-unsigned.ipa Payload
+          cd ../../../../
+          mv build/iosApp.xcarchive/Products/Applications/iosApp-unsigned.ipa build
+
+      - name: Upload the Build Artifact
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: distribution
+          path: build/*.ipa
+
+      - name: Upload Release Assets
+        if: ${{ github.event_name == 'release' }}
+        uses: AButler/upload-release-assets@v3.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          files: build/*.ipa
