@@ -3,16 +3,18 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.apache.commons.io.FileUtils
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import java.util.Properties
 
 plugins {
-    val enableAndroid = System.getProperty("enable_android")
+    val enableAndroid = System.getenv("enable_android")
         ?.equals("true", ignoreCase = true) != false
             && JavaVersion.current() >= JavaVersion.VERSION_17
 
-    val enableIos = System.getProperty("enable_ios")
+    val enableIos = System.getenv("enable_ios")
         ?.equals("true", ignoreCase = true) != false
+            && System.getProperty("os.name").startsWith("Mac")
 
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
@@ -27,17 +29,18 @@ plugins {
 }
 
 // vercel自带的Java 11，但是AGP要求17，所以添加开关
-val enableAndroid = System.getProperty("enable_android")
+val enableAndroid = System.getenv("enable_android")
     ?.equals("true", ignoreCase = true) != false
         && JavaVersion.current() >= JavaVersion.VERSION_17
 
-val enableIos = System.getProperty("enable_ios")
+val enableIos = System.getenv("enable_ios")
+    ?.equals("true", ignoreCase = true) != false
+        && System.getProperty("os.name").startsWith("Mac")
+
+val enableDesktop = System.getenv("enable_desktop")
     ?.equals("true", ignoreCase = true) != false
 
-val enableDesktop = System.getProperty("enable_desktop")
-    ?.equals("true", ignoreCase = true) != false
-
-val enableWeb = System.getProperty("enable_web")
+val enableWasm = System.getenv("enable_wasm")
     ?.equals("true", ignoreCase = true) != false
 
 val localProperties = Properties()
@@ -52,24 +55,24 @@ kotlin {
 
     if (enableAndroid) {
         androidTarget()
-        println("target: android")
+        println("${project.name} target: android")
     }
 
     if (enableIos) {
         iosX64()
-        println("target: iosX64")
+        println("${project.name} target: iosX64")
         iosArm64()
-        println("target: iosArm64")
+        println("${project.name} target: iosArm64")
         iosSimulatorArm64()
-        println("target: iosSimulatorArm64")
+        println("${project.name} target: iosSimulatorArm64")
     }
 
     if (enableDesktop) {
         jvm("desktop")
-        println("target: desktop")
+        println("${project.name} target: desktop")
     }
 
-    if (enableWeb) {
+    if (enableWasm) {
         @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
         wasmJs {
             moduleName = "mahjong-utils-app"
@@ -80,7 +83,7 @@ kotlin {
             }
             binaries.executable()
         }
-        println("target: wasmJs")
+        println("${project.name} target: wasmJs")
     }
 
     sourceSets {
@@ -161,7 +164,7 @@ kotlin {
             }
         }
 
-        if (enableWeb) {
+        if (enableWasm) {
             val wasmJsMain by getting {
                 dependsOn(desktopAndWasmJsMain)
                 dependsOn(nonAndroidMain)
@@ -182,7 +185,7 @@ kotlin {
     }
 
     if (enableIos) {
-        cocoapods {
+        extensions.configure<CocoapodsExtension> {
             version = rootProject.ext.get("versionName").toString()
             summary = "Riichi Mahjong Calculator"
             homepage = properties["opensource.repo"].toString()
@@ -384,7 +387,7 @@ if (enableDesktop) {
     }
 }
 
-if (enableWeb) {
+if (enableWasm) {
     compose.web {}
 }
 
