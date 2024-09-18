@@ -21,8 +21,8 @@ For Desktop:
 
 For iOS:
 
-- You should clone the repo and build your self. Xcode, Cocoapods and JDK (>= 11) is required.
-- Clone the repo, run `pod install` under **iosApp**, then open **iosApp/iosApp.xcworkspace** with Xcode and you can build it.
+- Go to [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases) and download **iosApp-unsigned.ipa** in the latest release.
+- Sign it yourself and install using [Sideloadly](https://sideloadly.io/) or any other signing tools.
 
 ## Features
 
