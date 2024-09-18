@@ -21,8 +21,8 @@ Android版：
 
 iOS版：
 
-- リポジトリをクローンし、自分でビルドする必要があります。Xcode、Cocoapods、およびJDK (>= 11) が必要です。
-- リポジトリをクローンし、**iosApp**で`pod install`を実行し、Xcodeで**iosApp/iosApp.xcworkspace**を開いてビルドできます。
+- [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)ページにアクセスし、最新リリースで**iosApp-unsigned.ipa**をダウンロードしてください。
+- [Sideloadly](https://sideloadly.io/)やその他のサインツールを使って、IPAをサインしてインストールします。
 
 ## 機能
 
