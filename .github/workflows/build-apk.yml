@@ -45,6 +45,7 @@ jobs:
           ANDROID_SIGNING_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_RELEASE_KEY_PASSWORD }}
           ANDROID_SIGNING_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_RELEASE_STORE_PASSWORD }}
         run: |
+          cp env.properties.fdroid env.properties
           ./gradlew composeApp:assembleRelease
 
       - name: Upload the Build Artifact
