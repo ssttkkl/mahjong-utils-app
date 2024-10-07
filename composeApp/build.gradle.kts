@@ -5,7 +5,6 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
-import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -20,50 +19,13 @@ plugins {
     alias(libs.plugins.undercouch.download)
 }
 
-private fun ExtraPropertiesExtension.getBoolean(name: String, default: Boolean = true): Boolean {
-    return if (has(name))
-        get(name).toString().lowercase().toBooleanStrict()
-    else
-        default
-}
-
-// vercel自带的Java 11，但是AGP要求17，所以添加开关
-val enableAndroid
-    get() = rootProject.extra.getBoolean("ENABLE_ANDROID")
-            && JavaVersion.current() >= JavaVersion.VERSION_17
-
 if (enableAndroid) {
     apply(plugin = libs.plugins.androidApplication.get().pluginId)
 }
 
-val enableIos
-    get() = rootProject.extra.getBoolean("ENABLE_IOS")
-            && System.getProperty("os.name").startsWith("Mac")
-
 if (enableIos) {
     apply(plugin = libs.plugins.kotlinNativeCocoapods.get().pluginId)
 }
-
-val enableDesktop
-    get() = rootProject.extra.getBoolean("ENABLE_DESKTOP")
-
-val enableWasm
-    get() = rootProject.extra.getBoolean("ENABLE_WASM")
-
-val localProperties = Properties()
-if (rootProject.file("local.properties").exists()) {
-    rootProject.file("local.properties").inputStream().use { inputStream ->
-        localProperties.load(inputStream)
-    }
-}
-
-val versionProperties = Properties()
-file("version.properties").inputStream().use { inputStream ->
-    versionProperties.load(inputStream)
-}
-
-val versionName = versionProperties["versionName"].toString()
-val versionCode = versionProperties["versionCode"].toString().toInt()
 
 kotlin {
     applyDefaultHierarchyTemplate()
