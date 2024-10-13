@@ -12,7 +12,13 @@ For Web:
 
 For Android:
 
-- Go to [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases) and download **composeApp-release.apk** in the latest release.
+- Download from F-Droid:
+
+[<img src="https://f-droid.org/badge/get-it-on.png"
+    alt="Get it on F-Droid"
+    height="80">](https://f-droid.org/packages/io.ssttkkl.mahjongutils.app)
+
+- Or go to [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases) and download **composeApp-release.apk** in the latest release.
 
 For Desktop:
 
