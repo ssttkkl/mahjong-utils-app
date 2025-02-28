@@ -24,7 +24,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
@@ -105,7 +104,7 @@ fun AppScaffold(
     navigationIcon: @Composable () -> Unit,
 ) {
     AppNavigator(screenRegistry, initialScreenPath) { myNavigator ->
-        val windowSizeClass: WindowSizeClass = calculateWindowSizeClass()
+        val windowSizeClass: WindowSizeClass = rememberWindowSizeClass()
         val appState = rememberAppState(
             myNavigator,
             windowSizeClass = windowSizeClass

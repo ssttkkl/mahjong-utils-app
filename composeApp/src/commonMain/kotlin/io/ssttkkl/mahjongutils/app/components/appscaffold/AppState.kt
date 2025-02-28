@@ -7,7 +7,6 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
@@ -47,7 +46,7 @@ class AppState(
 fun rememberAppState(
     navigator: AppNavigator,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    windowSizeClass: WindowSizeClass = calculateWindowSizeClass(),
+    windowSizeClass: WindowSizeClass = rememberWindowSizeClass(),
     density: Density = LocalDensity.current
 ): AppState {
     return remember(navigator, coroutineScope, windowSizeClass, density) {
