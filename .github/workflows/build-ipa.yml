@@ -46,7 +46,7 @@ jobs:
           mv iosApp-unsigned.ipa ../../..
 
       - name: Upload the Build Artifact
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4.6.1
         with:
           name: distribution
           path: iosApp/build/*.ipa
