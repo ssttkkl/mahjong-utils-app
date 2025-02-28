@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.TextUnit
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import mahjongutils.models.Chi
 import mahjongutils.models.Furo
+import mahjongutils.models.FuroType
 import mahjongutils.models.Kan
 import mahjongutils.models.Pon
 
@@ -17,23 +18,18 @@ fun FuroTiles(
     furo: Furo, modifier: Modifier = Modifier,
     fontSize: TextUnit = LocalTileTextSize.current
 ) {
-    when (furo) {
-        is Chi -> ChiTiles(furo, modifier, fontSize)
-        is Pon -> PonTiles(furo, modifier, fontSize)
-        is Kan -> {
-            if (furo.ankan) {
-                AnkanTiles(furo, modifier, fontSize)
-            } else {
-                MinkanTiles(furo, modifier, fontSize)
-            }
-        }
+    when (furo.type) {
+        FuroType.Chi -> ChiTiles(furo, modifier, fontSize)
+        FuroType.Pon -> PonTiles(furo, modifier, fontSize)
+        FuroType.Ankan -> AnkanTiles(furo, modifier, fontSize)
+        FuroType.Kan -> MinkanTiles(furo, modifier, fontSize)
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ChiTiles(
-    chi: Chi, modifier: Modifier = Modifier,
+    chi: Furo, modifier: Modifier = Modifier,
     fontSize: TextUnit = LocalTileTextSize.current,
 ) {
     FlowRow(modifier) {
@@ -49,7 +45,7 @@ fun ChiTiles(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PonTiles(
-    pon: Pon, modifier: Modifier = Modifier,
+    pon: Furo, modifier: Modifier = Modifier,
     fontSize: TextUnit = LocalTileTextSize.current,
 ) {
     FlowRow(modifier) {
@@ -65,7 +61,7 @@ fun PonTiles(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MinkanTiles(
-    kan: Kan, modifier: Modifier = Modifier,
+    kan: Furo, modifier: Modifier = Modifier,
     fontSize: TextUnit = LocalTileTextSize.current,
 ) {
     FlowRow(modifier) {
@@ -81,7 +77,7 @@ fun MinkanTiles(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AnkanTiles(
-    kan: Kan, modifier: Modifier = Modifier,
+    kan: Furo, modifier: Modifier = Modifier,
     fontSize: TextUnit = LocalTileTextSize.current,
 ) {
     FlowRow(modifier) {
