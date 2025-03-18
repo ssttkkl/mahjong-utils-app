@@ -52,9 +52,9 @@ jobs:
         ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
 
     - name: Upload the Build Artifact
-      uses: actions/upload-artifact@v3.1.1
+      uses: actions/upload-artifact@v4.6.1
       with:
-        name: distribution
+        name: distribution-windows
         path: |
           composeApp/build/compose/binaries/main-release/exe/*
           composeApp/build/compose/jars/*.jar
@@ -90,9 +90,9 @@ jobs:
         ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
 
     - name: Upload the Build Artifact
-      uses: actions/upload-artifact@v3.1.1
+      uses: actions/upload-artifact@v4.6.1
       with:
-        name: distribution
+        name: distribution-macos
         path: |
           composeApp/build/compose/binaries/main-release/dmg/*
           composeApp/build/compose/jars/*.jar
@@ -133,9 +133,9 @@ jobs:
           ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
 
       - name: Upload the Build Artifact
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4.6.1
         with:
-          name: distribution
+          name: distribution-linux
           path: |
             composeApp/build/appimage/main-release/mahjong-utils-app.AppImage
             composeApp/build/compose/jars/*.jar

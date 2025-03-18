@@ -165,13 +165,34 @@ val Yaku.localizedName
         else -> error("unknown yaku: $this")
     }
 
-fun List<Tile>.removeLast(vararg tile: Tile): List<Tile> {
+fun List<Tile>.removeLast(tiles: Iterable<Tile>): List<Tile> {
     return toMutableList().apply {
-        tile.forEach { t ->
+        tiles.forEach { t ->
             val lastIndexOfTile = lastIndexOf(t)
             if (lastIndexOfTile != -1) {
                 removeAt(lastIndexOfTile)
             }
         }
     }
+}
+
+fun List<Tile>.removeLast(tile: Tile): List<Tile> {
+    return toMutableList().apply {
+        val lastIndexOfTile = lastIndexOf(tile)
+        if (lastIndexOfTile != -1) {
+            removeAt(lastIndexOfTile)
+        }
+    }
+}
+
+fun List<Tile>.removeLast(tile1: Tile, tile2: Tile): List<Tile> {
+    return removeLast(listOf(tile1, tile2))
+}
+
+fun List<Tile>.removeLast(tile1: Tile, tile2: Tile, tile3: Tile): List<Tile> {
+    return removeLast(listOf(tile1, tile2, tile3))
+}
+
+fun List<Tile>.removeLast(tile1: Tile, tile2: Tile, tile3: Tile, tile4: Tile): List<Tile> {
+    return removeLast(listOf(tile1, tile2, tile3, tile4))
 }

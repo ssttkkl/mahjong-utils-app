@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.ssttkkl.mahjongutils.app.components.appscaffold.rememberWindowSizeClass
 
 @Immutable
 data class Spacing(
@@ -33,7 +33,7 @@ data class Spacing(
         val current: Spacing
             @Composable
             get() {
-                val windowSizeClass = calculateWindowSizeClass()
+                val windowSizeClass = rememberWindowSizeClass()
                 return when {
                     windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
                             || windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact

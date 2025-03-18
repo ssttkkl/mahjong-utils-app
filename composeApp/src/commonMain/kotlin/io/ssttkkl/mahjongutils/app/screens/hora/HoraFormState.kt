@@ -25,6 +25,7 @@ import mahjongutils.hora.HoraArgsErrorInfo
 import mahjongutils.hora.HoraOptions
 import mahjongutils.hora.validate
 import mahjongutils.models.Furo
+import mahjongutils.models.FuroType
 import mahjongutils.models.Kan
 import mahjongutils.models.Tile
 import mahjongutils.models.Wind
@@ -58,9 +59,7 @@ class FuroModel {
         fun fromFuro(furo: Furo): FuroModel {
             return FuroModel().apply {
                 tiles = furo.tiles
-                if (furo is Kan) {
-                    ankan = furo.ankan
-                }
+                ankan = furo.type == FuroType.Ankan
             }
         }
     }
