@@ -1,12 +1,10 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
-import mahjongutils.buildlogic.APPLICATION_DISPLAY_NAME
 import mahjongutils.buildlogic.APPLICATION_ID
-import mahjongutils.buildlogic.APPLICATION_NAME
-import mahjongutils.buildlogic.utils.*
-import org.gradle.jvm.tasks.Jar
-import org.jreleaser.model.Active
-import org.jreleaser.model.Distribution
-import org.jreleaser.model.Stereotype
+import mahjongutils.buildlogic.utils.enableAndroid
+import mahjongutils.buildlogic.utils.enableDesktop
+import mahjongutils.buildlogic.utils.enableIos
+import mahjongutils.buildlogic.utils.enableWasm
+import mahjongutils.buildlogic.utils.readVersion
 
 plugins {
     id("mahjongutils.buildlogic.composeapp")
