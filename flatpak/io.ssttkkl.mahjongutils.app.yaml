@@ -1,0 +1,39 @@
+id: io.ssttkkl.mahjongutils.app
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk21
+command: mahjong-utils-app
+
+finish-args:
+  - --socket=x11
+  - --share=ipc
+  - --env=PATH=/app/jre/bin:/app/bin:/usr/bin
+  - --env=JAVA_HOME=/app/jre
+
+modules:
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk21/install.sh
+
+  - name: mahjong-utils-app
+    buildsystem: simple
+    sources:
+      - type: git
+        url: https://github.com/ssttkkl/mahjong-utils-app.git
+        branch: main
+      - type: script
+        dest-filename: mahjong-utils-app
+        commands:
+          - exec java -jar /app/share/io.ssttkkl.mahjongutils.app/mahjong-utils-app.jar $@
+    build-options:
+      env:
+        PATH: /app/bin:/usr/bin:/usr/lib/sdk/openjdk21/bin
+        JAVA_HOME: /usr/lib/sdk/openjdk21/jvm/openjdk-21
+    build-commands:
+      - ./gradlew packageReleaseUberJarForCurrentOS
+      - cp composeApp/build/compose/jars/*.jar mahjong-utils-app.jar
+      - install -Dm755 -t /app/bin mahjong-utils-app
+      - install -Dm644 -t /app/share/io.ssttkkl.mahjongutils.app mahjong-utils-app.jar
