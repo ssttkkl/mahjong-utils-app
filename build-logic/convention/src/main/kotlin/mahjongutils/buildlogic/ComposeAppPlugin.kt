@@ -31,7 +31,6 @@ import java.util.Properties
 
 const val APPLICATION_ID = "io.ssttkkl.mahjongutils.app"
 const val APPLICATION_NAME = "mahjong-utils-app"
-const val APPLICATION_NAME_CAMEL = "RiichiMahjongCalculator"
 const val APPLICATION_DISPLAY_NAME = "Riichi Mahjong Calculator"
 
 class ComposeAppPlugin : Plugin<Project> {
@@ -311,7 +310,7 @@ class ComposeAppPlugin : Plugin<Project> {
                     environment("ARCH", "x86_64")  // TODO: 支持arm64
                     args(
                         "${APPLICATION_NAME}.AppDir",
-                        "${APPLICATION_NAME_CAMEL}-${versionName}-x86_64.AppImage"
+                        "${APPLICATION_NAME}-${versionName}-x86_64.AppImage"
                     )
                 }
             }
