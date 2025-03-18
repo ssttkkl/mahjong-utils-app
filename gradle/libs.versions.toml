@@ -1,5 +1,7 @@
 [versions]
 agp = "8.5.0"
+commonsIo = "2.18.0"
+java-targetJvm = "11"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -27,6 +29,7 @@ androidx-datastore-core-okio = { module = "androidx.datastore:datastore-core-oki
 appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 capturable = { module = "dev.shreyaspatil:capturable", version.ref = "capturable" }
+commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json-okio = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json-okio", version.ref = "kotlinx-serialization" }
@@ -42,6 +45,11 @@ voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.
 voyager-screenmodel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 about-libraries-core = { module = "com.mikepenz:aboutlibraries-core", version.ref = "aboutLibraries" }
 about-libraries-compose = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutLibraries" }
+
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref= "agp" }
+compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-jb" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+undercouch-download-gradle-plugin = { module = "de.undercouch:gradle-download-task", version.ref = "undercouch-download" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
