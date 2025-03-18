@@ -1,17 +1,13 @@
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.*
 
 plugins {
     id("mahjongutils.buildlogic.composeapp")
-    alias(libs.plugins.androidApplication) apply false
-    alias(libs.plugins.kotlinNativeCocoapods) apply false
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.kotlinxAtomicfu)
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.buildkonfig)
-    alias(libs.plugins.undercouch.download)
 }
 
 kotlin {
