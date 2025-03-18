@@ -23,7 +23,6 @@ import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenCalcResult
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
-import io.ssttkkl.mahjongutils.app.screens.furoshanten.FuroShantenScreen
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
@@ -107,8 +106,7 @@ object ShantenScreen :
     ) {
         val handler = getChangeArgsByResultContentHandler()
         ShantenResultContent(
-            result.args, result.result.shantenInfo,
-            rememberScreenModel().resultCaptureController
+            result.args, result.result.shantenInfo
         ) {
             handler(it)
         }

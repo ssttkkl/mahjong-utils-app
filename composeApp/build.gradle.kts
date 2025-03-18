@@ -40,8 +40,6 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
 
                 implementation(libs.mahjong.utils)
-
-                implementation(libs.capturable)
             }
         }
 
