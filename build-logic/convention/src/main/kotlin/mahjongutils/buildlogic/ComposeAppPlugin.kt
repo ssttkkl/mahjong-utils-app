@@ -51,6 +51,9 @@ class ComposeAppPlugin : Plugin<Project> {
             pluginManager.apply(libs.findPlugin("kotlinNativeCocoapods").get().get().pluginId)
         }
 
+        val (versionName, versionCode) = readVersion()
+        project.version = versionName
+
         configKotlinMultiplatform()
         if (enableIos) {
             configKotlinIos()
@@ -99,15 +102,15 @@ class ComposeAppPlugin : Plugin<Project> {
                 optIn.add("org.jetbrains.compose.resources.ExperimentalResourceApi")
                 freeCompilerArgs.add("-Xexpect-actual-classes")
             }
+        }
 
-            tasks.withType<KotlinJvmCompile>().configureEach {
-                compilerOptions {
-                    jvmTarget.set(
-                        JvmTarget.valueOf(
-                            "JVM_" + libs.findVersion("java-targetJvm").get().toString()
-                        )
+        tasks.withType<KotlinJvmCompile>().configureEach {
+            compilerOptions {
+                jvmTarget.set(
+                    JvmTarget.valueOf(
+                        "JVM_" + libs.findVersion("java-targetJvm").get().toString()
                     )
-                }
+                )
             }
         }
     }
