@@ -273,12 +273,12 @@ class ComposeAppPlugin : Plugin<Project> {
                     return
                 }
 
-                val downloadDest = layout.buildDirectory.dir("tmp").get().asFile
-                val appimagetool = downloadDest.resolve("appimagetool-x86_64.AppImage")
+                val appimagetool = layout.buildDirectory.dir("tmp").get().asFile
+                    .resolve("appimagetool-x86_64.AppImage")
 
                 downloadFile(
                     "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage",
-                    downloadDest
+                    appimagetool
                 )
 
                 if (!appimagetool.canExecute()) {
