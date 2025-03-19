@@ -179,7 +179,7 @@ object HoraScreen :
         appState: AppState,
         result: HoraCalcResult
     ) {
-        HoraResultContent(result.args, result.result, rememberScreenModel().resultCaptureController)
+        HoraResultContent(result.args, result.result)
     }
 
     @OptIn(ExperimentalLayoutApi::class)

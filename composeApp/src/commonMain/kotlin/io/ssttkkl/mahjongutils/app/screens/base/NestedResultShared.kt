@@ -6,7 +6,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.runtime.rememberCoroutineScope
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
@@ -36,7 +35,6 @@ fun <ARG, RES> NestedResultCalculation(model: NestedResultScreenModel<ARG, RES>)
     }
 }
 
-@OptIn(ExperimentalComposeApi::class)
 @Composable
 fun <ARG, RES> NestedResultTopBarActions(model: NestedResultScreenModel<ARG, RES>) {
     val coroutineScope = rememberCoroutineScope()
@@ -47,27 +45,25 @@ fun <ARG, RES> NestedResultTopBarActions(model: NestedResultScreenModel<ARG, RES
     val saveSuccessMessage = stringResource(Res.string.text_save_result_success)
     if (model.result != null) {
         IconButton(onClick = {
-            model.parentScreenModel?.resultCaptureController?.let { controller ->
-                coroutineScope.launch {
-                    val img = controller.captureAsync().await()
-                    val result = ImageUtils.save(img, "result") ?: return@launch
+            coroutineScope.launch {
+                val img = appState.captureController.captureAsync().await()
+                val result = ImageUtils.save(img, "result") ?: return@launch
 
-                    if (result.isSupportShare) {
-                        val action = appState.snackbarHostState.showSnackbar(
-                            saveSuccessMessage,
-                            shareLabel
-                        )
-                        if (action == SnackbarResult.ActionPerformed) {
-                            result.share()
-                        }
-                    } else if (result.isSupportOpen) {
-                        val action = appState.snackbarHostState.showSnackbar(
-                            saveSuccessMessage,
-                            shareView
-                        )
-                        if (action == SnackbarResult.ActionPerformed) {
-                            result.open()
-                        }
+                if (result.isSupportShare) {
+                    val action = appState.snackbarHostState.showSnackbar(
+                        saveSuccessMessage,
+                        shareLabel
+                    )
+                    if (action == SnackbarResult.ActionPerformed) {
+                        result.share()
+                    }
+                } else if (result.isSupportOpen) {
+                    val action = appState.snackbarHostState.showSnackbar(
+                        saveSuccessMessage,
+                        shareView
+                    )
+                    if (action == SnackbarResult.ActionPerformed) {
+                        result.open()
                     }
                 }
             }

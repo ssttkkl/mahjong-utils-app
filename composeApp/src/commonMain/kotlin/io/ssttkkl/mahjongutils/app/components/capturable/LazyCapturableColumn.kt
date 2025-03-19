@@ -1,6 +1,6 @@
 @file:Suppress("INVISIBLE_REFERENCE", "INVISIBLE_MEMBER")
 
-package io.ssttkkl.mahjongutils.app.components.capturablelazy
+package io.ssttkkl.mahjongutils.app.components.capturable
 
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,16 +28,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.shreyaspatil.capturable.capturable
 import dev.shreyaspatil.capturable.controller.CaptureController
-import dev.shreyaspatil.capturable.controller.CaptureController.CaptureRequest
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
 import io.ssttkkl.mahjongutils.app.utils.image.ImageUtils
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.completeWith
 import kotlinx.coroutines.launch
 
-@OptIn(
-    ExperimentalComposeUiApi::class, ExperimentalComposeApi::class
-)
+
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LazyCapturableColumn(
     captureController: CaptureController,
@@ -54,7 +51,7 @@ fun LazyCapturableColumn(
     captureBackground: Color? = MaterialTheme.colorScheme.background,
     content: LazyListScope.() -> Unit
 ) {
-    var captureRequest: CaptureRequest? by remember { mutableStateOf(null) }
+    var captureRequest: CaptureController.CaptureRequest? by remember { mutableStateOf(null) }
     val coroutineScope = rememberCoroutineScope()
     val innerCaptureController = rememberCaptureController()
     var onDrawSignal: CompletableDeferred<Unit>? by remember {
@@ -97,7 +94,7 @@ fun LazyCapturableColumn(
                 val result = runCatching {
                     onDrawSignal?.await()
                     onDrawSignal = null
-                    innerCaptureController.captureAsync(req.config).await()
+                    innerCaptureController.captureAsync().await()
                 }.mapCatching {
                     if (captureBackground == null) it
                     else ImageUtils.withBackground(it, captureBackground)
