@@ -7,8 +7,8 @@
     <name xml:lang="zh">日麻牌理计算器</name>
     <name xml:lang="ja">麻雀牌理電卓</name>
 
-    <summary>Riichi Mahjong Calculator, featuring hand efficiency calculation, and more.</summary>
-    <summary xml:lang="zh">日麻牌理计算器，支持牌理/副露牌理/和牌分析/番符算点功能。</summary>
+    <summary>Riichi Mahjong Calculator, featuring hand efficiency calculation, and more</summary>
+    <summary xml:lang="zh">日麻牌理计算器，支持牌理/副露牌理/和牌分析/番符算点功能</summary>
     <summary xml:lang="ja">リーチ麻雀計算機、牌理・鳴き牌理・和了分析・飜符による得点計算</summary>
 
     <developer id="io.github.ssttkkl">
@@ -20,95 +20,88 @@
 
     <url type="homepage">https://github.com/ssttkkl/mahjong-utils-app</url>
 
+    <content_rating type="oars-1.1" />
+
     <description>
         <p>
             Riichi Mahjong Calculator, supporting features such as hand efficiency, meld hand efficiency, winning hand analysis, and score calculation for fan and minipoints.
         </p>
+        <p xml:lang="zh">
+            日麻牌理计算器，支持牌理/副露牌理/和牌分析/番符算点功能。
+        </p>
+        <p xml:lang="ja">
+            リーチ麻雀計算機、牌理・鳴き牌理・和了分析・飜符による得点計算。
+        </p>
+
         <p>
             - Hand Efficiency: Includes tile efficiency, good-shape tile  efficiency (for one-shanten only), and backwards strategy.
         </p>
+        <p xml:lang="zh">
+            - 牌理：包括进张、好形进张（仅一向听）、退向打法
+        </p>
+        <p xml:lang="ja">
+            - 牌理：牌効率・良形効率（一向聴のみ）・向聴戻しを含みます。
+        </p>
+
         <p>
             - Meld Hand Efficiency: Tile efficiency for chow, pung, kong, and pass; includes good-shape tile efficiency (for one-shanten only) and backwards strategy.
         </p>
+        <p xml:lang="zh">
+            - 副露牌理：吃碰杠PASS四种打法下的进张、好形进张（仅一向听）、退向打法
+        </p>
+        <p xml:lang="ja">
+            - 鳴き牌理：鳴き（チー・ポン・カン・パス）の牌効率・良形効率（一向聴のみ）・向聴戻しを含まれます。
+        </p>
+
         <p>
             - Winning Hand Analysis: Defaults to Mahjong Soul/Tenhou rules,  with customizable rules to some extent.
         </p>
+        <p xml:lang="zh">
+            - 和牌分析：默认为雀魂/天凤规则，可以定制少部分规则
+        </p>
+        <p xml:lang="ja">
+            - 和了分析：初期設定は雀魂や天鳳のルールに従いますが、ある程度カスタマイズ可能です。
+        </p>
+
         <p>
             - Score Calculation By Fan and Minipoints: Defaults to Mahjong Soul/Tenhou  rules, with customizable rules to some extent.
         </p>
-    </description>
-
-    <description xml:lang="zh">
-        <p>
-            日麻牌理计算器，支持牌理/副露牌理/和牌分析/番符算点功能。
-        </p>
-        <p>
-            - 牌理：包括进张、好形进张（仅一向听）、退向打法
-        </p>
-        <p>
-            - 副露牌理：吃碰杠PASS四种打法下的进张、好形进张（仅一向听）、退向打法
-        </p>
-        <p>
-            - 和牌分析：默认为雀魂/天凤规则，可以定制少部分规则
-        </p>
-        <p>
+        <p xml:lang="zh">
             - 番符得点计算：默认为雀魂/天凤规则，可以定制少部分规则
         </p>
-    </description>
-
-    <description xml:lang="ja">
-        <p>
-            リーチ麻雀計算機、牌理・鳴き牌理・和了分析・飜符による得点計算。
-        </p>
-        <p>
-            - 牌理：牌効率・良形効率（一向聴のみ）・向聴戻しを含みます。
-        </p>
-        <p>
-            - 鳴き牌理：鳴き（チー・ポン・カン・パス）の牌効率・良形効率（一向聴のみ）・向聴戻しを含まれます。
-        </p>
-        <p>
-            - 和了分析：初期設定は雀魂や天鳳のルールに従いますが、ある程度カスタマイズ可能です。
-        </p>
-        <p>
+        <p xml:lang="ja">
             - 飜符による得点計算：初期設定は麻雀魂や天鳳のルールに従いますが、ある程度カスタマイズ可能です。
         </p>
     </description>
 
-    <launchable type="desktop-id">io.github.ssttkkl.mahjong_utils_app.desktop</launchable>
+    <releases>
+        <release version="1.0.11" date="2024-09-20">
+            <url type="details">https://github.com/ssttkkl/mahjong-utils-app/releases/tag/v1.0.11</url>
+            <description>
+                <p>What's Changed</p>
+                <ul>
+                    <li>Fix F-Droid build</li>
+                    <li>Fix Engligh and Japanese translation</li>
+                </ul>
+            </description>
+        </release>
+    </releases>
 
     <screenshots>
         <screenshot type="default">
             <image>https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/en-US/images/tenInchScreenshots/1.jpg</image>
+            <image xml:lang="zh">https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/zh-CN/images/tenInchScreenshots/1.jpg</image>
+            <image xml:lang="ja">https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/ja-JP/images/tenInchScreenshots/1.jpg</image>
         </screenshot>
         <screenshot>
             <image>https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/en-US/images/tenInchScreenshots/2.jpg</image>
+            <image xml:lang="zh">https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/zh-CN/images/tenInchScreenshots/2.jpg</image>
+            <image xml:lang="ja">https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/ja-JP/images/tenInchScreenshots/2.jpg</image>
         </screenshot>
         <screenshot>
             <image>https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/en-US/images/tenInchScreenshots/3.jpg</image>
-        </screenshot>
-    </screenshots>
-
-    <screenshots xml:lang="zh">
-        <screenshot type="default">
-            <image>https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/zh-CN/images/tenInchScreenshots/1.jpg</image>
-        </screenshot>
-        <screenshot>
-            <image>https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/zh-CN/images/tenInchScreenshots/2.jpg</image>
-        </screenshot>
-        <screenshot>
-            <image>https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/zh-CN/images/tenInchScreenshots/3.jpg</image>
-        </screenshot>
-    </screenshots>
-
-    <screenshots xml:lang="ja">
-        <screenshot type="default">
-            <image>https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/ja-JP/images/tenInchScreenshots/1.jpg</image>
-        </screenshot>
-        <screenshot>
-            <image>https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/ja-JP/images/tenInchScreenshots/2.jpg</image>
-        </screenshot>
-        <screenshot>
-            <image>https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/ja-JP/images/tenInchScreenshots/3.jpg</image>
+            <image xml:lang="zh">https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/zh-CN/images/tenInchScreenshots/3.jpg</image>
+            <image xml:lang="ja">https://raw.githubusercontent.com/ssttkkl/mahjong-utils-app/refs/heads/main/fastlane/metadata/android/ja-JP/images/tenInchScreenshots/3.jpg</image>
         </screenshot>
     </screenshots>
 
@@ -122,4 +115,6 @@
         <!-- Mobile/tablet AND desktop supported -->
         <display_length compare="ge">360</display_length>
     </requires>
+
+    <launchable type="desktop-id">io.github.ssttkkl.mahjong_utils_app.desktop</launchable>
 </component>
