@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0.11
+Type=Application
+
+Name=Riichi Mahjong Calculator
+Comment=Riichi Mahjong Calculator, featuring hand efficiency calculation, and more.
+Categories=Utility;Construction;
+
+Icon=mahjong_utils_app
+Exec=mahjong-utils-app
+Terminal=false

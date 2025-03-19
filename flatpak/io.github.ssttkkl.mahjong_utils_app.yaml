@@ -1,4 +1,4 @@
-id: io.ssttkkl.mahjongutils.app
+id: io.github.ssttkkl.mahjong_utils_app
 runtime: org.freedesktop.Platform
 runtime-version: '23.08'
 sdk: org.freedesktop.Sdk
