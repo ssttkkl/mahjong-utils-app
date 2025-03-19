@@ -32,46 +32,47 @@
         <p xml:lang="ja">
             リーチ麻雀計算機、牌理・鳴き牌理・和了分析・飜符による得点計算。
         </p>
-
-        <p>
-            - Hand Efficiency: Includes tile efficiency, good-shape tile  efficiency (for one-shanten only), and backwards strategy.
-        </p>
-        <p xml:lang="zh">
-            - 牌理：包括进张、好形进张（仅一向听）、退向打法
-        </p>
-        <p xml:lang="ja">
-            - 牌理：牌効率・良形効率（一向聴のみ）・向聴戻しを含みます。
-        </p>
-
-        <p>
-            - Meld Hand Efficiency: Tile efficiency for chow, pung, kong, and pass; includes good-shape tile efficiency (for one-shanten only) and backwards strategy.
-        </p>
-        <p xml:lang="zh">
-            - 副露牌理：吃碰杠PASS四种打法下的进张、好形进张（仅一向听）、退向打法
-        </p>
-        <p xml:lang="ja">
-            - 鳴き牌理：鳴き（チー・ポン・カン・パス）の牌効率・良形効率（一向聴のみ）・向聴戻しを含まれます。
-        </p>
-
-        <p>
-            - Winning Hand Analysis: Defaults to Mahjong Soul/Tenhou rules,  with customizable rules to some extent.
-        </p>
-        <p xml:lang="zh">
-            - 和牌分析：默认为雀魂/天凤规则，可以定制少部分规则
-        </p>
-        <p xml:lang="ja">
-            - 和了分析：初期設定は雀魂や天鳳のルールに従いますが、ある程度カスタマイズ可能です。
-        </p>
-
-        <p>
-            - Score Calculation By Fan and Minipoints: Defaults to Mahjong Soul/Tenhou  rules, with customizable rules to some extent.
-        </p>
-        <p xml:lang="zh">
-            - 番符得点计算：默认为雀魂/天凤规则，可以定制少部分规则
-        </p>
-        <p xml:lang="ja">
-            - 飜符による得点計算：初期設定は麻雀魂や天鳳のルールに従いますが、ある程度カスタマイズ可能です。
-        </p>
+        <ul>
+            <li>
+                - Hand Efficiency: Includes tile efficiency, good-shape tile  efficiency (for one-shanten only), and backwards strategy.
+            </li>
+            <li xml:lang="zh">
+                - 牌理：包括进张、好形进张（仅一向听）、退向打法
+            </li>
+            <li xml:lang="ja">
+                - 牌理：牌効率・良形効率（一向聴のみ）・向聴戻しを含みます。
+            </li>
+    
+            <li>
+                - Meld Hand Efficiency: Tile efficiency for chow, pung, kong, and pass; includes good-shape tile efficiency (for one-shanten only) and backwards strategy.
+            </li>
+            <li xml:lang="zh">
+                - 副露牌理：吃碰杠PASS四种打法下的进张、好形进张（仅一向听）、退向打法
+            </li>
+            <li xml:lang="ja">
+                - 鳴き牌理：鳴き（チー・ポン・カン・パス）の牌効率・良形効率（一向聴のみ）・向聴戻しを含まれます。
+            </li>
+    
+            <li>
+                - Winning Hand Analysis: Defaults to Mahjong Soul/Tenhou rules,  with customizable rules to some extent.
+            </li>
+            <li xml:lang="zh">
+                - 和牌分析：默认为雀魂/天凤规则，可以定制少部分规则
+            </li>
+            <li xml:lang="ja">
+                - 和了分析：初期設定は雀魂や天鳳のルールに従いますが、ある程度カスタマイズ可能です。
+            </li>
+    
+            <li>
+                - Score Calculation By Fan and Minipoints: Defaults to Mahjong Soul/Tenhou  rules, with customizable rules to some extent.
+            </li>
+            <li xml:lang="zh">
+                - 番符得点计算：默认为雀魂/天凤规则，可以定制少部分规则
+            </li>
+            <li xml:lang="ja">
+                - 飜符による得点計算：初期設定は麻雀魂や天鳳のルールに従いますが、ある程度カスタマイズ可能です。
+            </li>
+        </ul>
     </description>
 
     <releases>
