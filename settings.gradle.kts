@@ -20,14 +20,3 @@ dependencyResolutionManagement {
 
 include(":composeApp")
 
-val envPropFile = file("env.properties")
-
-val capturableLibPath = file("external/Capturable")
-if (envPropFile.exists()) {
-    envPropFile.copyTo(capturableLibPath.resolve("env.properties"), overwrite = true)
-}
-includeBuild(capturableLibPath.path) {
-    dependencySubstitution {
-        substitute(module("dev.shreyaspatil:capturable")).using(project(":capturable"))
-    }
-}

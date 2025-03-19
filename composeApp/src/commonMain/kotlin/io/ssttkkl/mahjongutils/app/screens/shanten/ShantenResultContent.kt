@@ -7,10 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import dev.shreyaspatil.capturable.controller.CaptureController
-import io.ssttkkl.mahjongutils.app.components.capturablelazy.LazyCapturableColumn
+import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
+import io.ssttkkl.mahjongutils.app.components.capturable.LazyCapturableColumn
 import io.ssttkkl.mahjongutils.app.components.onEnterKeyDown
 import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
@@ -41,31 +40,26 @@ import org.jetbrains.compose.resources.stringResource
 fun ShantenResultContent(
     args: ShantenArgs,
     shanten: CommonShanten,
-    captureController: CaptureController,
     requestChangeArgs: (ShantenArgs) -> Unit
 ) {
     if (shanten is ShantenWithoutGot) {
         ShantenWithoutGotResultContent(
             args,
             shanten.asWithoutGot,
-            captureController,
             requestChangeArgs
         )
     } else {
         ShantenWithGotResultContent(
             args,
             shanten.asWithGot,
-            captureController,
             requestChangeArgs
         )
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ShantenWithoutGotResultContent(
     args: ShantenArgs, shanten: ShantenWithoutGot,
-    captureController: CaptureController,
     requestChangeArgs: (ShantenArgs) -> Unit
 ) {
     val panelState = remember { EditablePanelState(args, ShantenFormState()) }
@@ -78,7 +72,7 @@ private fun ShantenWithoutGotResultContent(
     with(Spacing.current) {
         VerticalScrollBox(lazyListState) {
             LazyCapturableColumn(
-                captureController,
+                LocalAppState.current.captureController,
                 Modifier.fillMaxWidth(),
                 state = lazyListState
             ) {
@@ -123,12 +117,10 @@ private fun ShantenWithoutGotResultContent(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ShantenWithGotResultContent(
     args: ShantenArgs,
     shanten: ShantenWithGot,
-    captureController: CaptureController,
     requestChangeArgs: (ShantenArgs) -> Unit
 ) {
     // shanten to actions (asc sorted)
@@ -181,7 +173,7 @@ private fun ShantenWithGotResultContent(
     with(Spacing.current) {
         VerticalScrollBox(lazyListState) {
             LazyCapturableColumn(
-                captureController,
+                LocalAppState.current.captureController,
                 Modifier.fillMaxWidth(),
                 state = lazyListState
             ) {
