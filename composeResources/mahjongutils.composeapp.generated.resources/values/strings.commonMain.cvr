@@ -15,6 +15,7 @@ string|label_aotenjou|QW90ZW5qb3U=
 string|label_baiman|QmFpbWFu
 string|label_calc|Q2FsYw==
 string|label_clear|Q2xlYXI=
+string|label_copy|Q29weQ==
 string|label_dora_count|TnVtYmVyIG9mIERvcmE=
 string|label_extra_yaku_unspecified|Tm9uZQ==
 string|label_extra_yaku|RXh0cmEgWWFrdQ==
@@ -46,6 +47,7 @@ string|label_multiple_yakuman|JTEkcy10aW1lcyBZYWt1bWFu
 string|label_no|Tm8=
 string|label_other_information|T3RoZXIgSW5mb3JtYXRpb24=
 string|label_other_options|T3B0aW9ucw==
+string|label_paste|UGFzdGU=
 string|label_regular_shanten|UmVndWxhcg==
 string|label_renpuuJyantou4Hu|UmVucHV1IEp5YW50b3UgYXMgNCBtaW5pcG9pbnRz
 string|label_ron|Um9u
