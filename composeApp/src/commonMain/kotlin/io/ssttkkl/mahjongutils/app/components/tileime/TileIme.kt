@@ -86,7 +86,8 @@ fun TileIme(
             Box(Modifier.fillMaxWidth()) {
                 Text(
                     state.pendingText,
-                    Modifier.align(Alignment.Center)
+                    Modifier.align(Alignment.Center),
+                    MaterialTheme.colorScheme.onSurface
                 )
 
                 Image(

@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.ssttkkl.mahjongutils.app.components.clickableButNotFocusable
+import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.components.tile.painterResource
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_backspace
@@ -47,14 +48,9 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
                     .clickableButNotFocusable(interactionSource, onLongPress, onClick),
                 Alignment.Center
             ) {
-                Image(
-                    tile.painterResource,
-                    "",
+                TileImage(
+                    tile,
                     Modifier.size(with(density) { 36.sp.toDp() })
-                        .let {
-                            if (isSystemInDarkTheme()) it.alpha(0.7f)
-                            else it
-                        }
                 )
             }
         }
