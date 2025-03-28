@@ -18,6 +18,8 @@
     <string name="label_clear">クリア</string>
     <string name="label_share">シェア</string>
     <string name="label_view">ビュー</string>
+    <string name="label_copy">コピー</string>
+    <string name="label_paste">ペースト</string>
 
     <string name="text_empty_history">なし</string>
 
