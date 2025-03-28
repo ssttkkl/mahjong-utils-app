@@ -1,5 +1,5 @@
 [versions]
-agp = "8.5.0"
+agp = "8.6.1"
 commonsIo = "2.18.0"
 java-targetJvm = "11"
 android-compileSdk = "35"
