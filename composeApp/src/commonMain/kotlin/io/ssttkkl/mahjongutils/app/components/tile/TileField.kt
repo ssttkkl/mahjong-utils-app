@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isCtrlPressed
+import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.TextUnit
 import io.ssttkkl.mahjongutils.app.components.feather.LocalFloatingDraggableState
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
+import io.ssttkkl.mahjongutils.app.utils.PlatformUtils
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.text_tiles_num_short
@@ -198,12 +200,14 @@ fun BaseTileField(
                 return@onKeyEvent false
             }
 
-            //TODO: mac/ios上cmd+v会不会响应
-            if (it.key == Key.V && it.isCtrlPressed) {
+            // 注意判断苹果和其他系统
+            val isCtrlOrCmdPressed =
+                if (PlatformUtils.isApple) it.isMetaPressed else it.isCtrlPressed
+            if (it.key == Key.V && isCtrlOrCmdPressed) {
                 // 粘贴操作
                 tileImeHostState.emitAction(TileImeHostState.ImeAction.Paste)
                 true
-            } else if (it.key == Key.C && it.isCtrlPressed) {
+            } else if (it.key == Key.C && isCtrlOrCmdPressed) {
                 // 复制操作
                 tileImeHostState.emitAction(TileImeHostState.ImeAction.Copy)
                 true

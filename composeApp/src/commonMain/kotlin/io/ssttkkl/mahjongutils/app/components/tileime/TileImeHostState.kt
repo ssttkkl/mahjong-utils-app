@@ -5,9 +5,12 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.text.AnnotatedString
+import io.ssttkkl.mahjongutils.app.utils.getText
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
+import io.ssttkkl.mahjongutils.app.utils.setText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -19,7 +22,7 @@ import mahjongutils.models.toTilesString
 @Stable
 class TileImeHostState(
     private val coroutineScope: CoroutineScope,
-    private val clipboardManager: ClipboardManager,
+    private val clipboardManager: Clipboard,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger("TileImeHostState")
@@ -48,7 +51,11 @@ class TileImeHostState(
         private set
 
     fun writeClipboardData(data: List<Tile>?) {
-        data?.let { clipboardManager.setText(AnnotatedString(it.toTilesString())) }
+            data?.let {
+                coroutineScope.launch {
+                    clipboardManager.setText(it.toTilesString())
+                }
+            }
     }
 
     fun emitAction(action: ImeAction) {
@@ -102,7 +109,7 @@ class TileImeHostState(
                 pollClipboardJob = coroutineScope.launch {
                     while (true) {
                         try {
-                            clipboardManager.getText()?.text?.let {
+                            clipboardManager.getText()?.let {
                                 clipboardData = Tile.parseTiles(it)
                             }
                         } catch (e: Throwable) {

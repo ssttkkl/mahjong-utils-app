@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_REFERENCE", "INVISIBLE_MEMBER")
-
 package io.ssttkkl.mahjongutils.app.components.capturable
 
 import androidx.compose.foundation.gestures.FlingBehavior
@@ -74,19 +72,19 @@ fun LazyCapturableColumn(
     captureRequest?.let { req ->
         Box(modifier = Modifier.requiredHeight(10000.dp)) {
             LazyColumn(
-                modifier.capturable(innerCaptureController)
+                modifier = modifier.capturable(innerCaptureController)
                     .drawWithContent {
                         drawContent()
                         onDrawSignal?.complete(Unit)
                     },
-                state,
-                contentPadding,
-                reverseLayout,
-                verticalArrangement,
-                horizontalAlignment,
-                flingBehavior,
-                userScrollEnabled,
-                content
+                state = state,
+                contentPadding = contentPadding,
+                reverseLayout = reverseLayout,
+                verticalArrangement = verticalArrangement,
+                horizontalAlignment = horizontalAlignment,
+                flingBehavior = flingBehavior,
+                userScrollEnabled = userScrollEnabled,
+                content = content
             )
         }
         DisposableEffect(req) {
@@ -109,15 +107,15 @@ fun LazyCapturableColumn(
         }
     } ?: run {
         LazyColumn(
-            modifier,
-            state,
-            contentPadding,
-            reverseLayout,
-            verticalArrangement,
-            horizontalAlignment,
-            flingBehavior,
-            userScrollEnabled,
-            content
+            modifier = modifier,
+            state = state,
+            contentPadding = contentPadding,
+            reverseLayout = reverseLayout,
+            verticalArrangement = verticalArrangement,
+            horizontalAlignment = horizontalAlignment,
+            flingBehavior = flingBehavior,
+            userScrollEnabled = userScrollEnabled,
+            content = content
         )
     }
 }
