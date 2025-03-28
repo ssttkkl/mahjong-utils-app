@@ -1,10 +1,12 @@
 package io.ssttkkl.mahjongutils.app.components.tile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
@@ -108,7 +110,10 @@ fun TileImage(
     Image(
         tile?.painterResource ?: painterResource(Res.drawable.tile_back),
         tile.toString(),
-        modifier,
+        modifier.let {
+            if (isSystemInDarkTheme()) it.alpha(0.7f)
+            else it
+        },
         alignment, contentScale, alpha, colorFilter
     )
 }
