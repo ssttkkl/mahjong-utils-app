@@ -46,3 +46,8 @@
 # jna相关
 -keep class com.sun.jna.** { *; }
 -keep class * implements com.sun.jna.** { *; }
+
+# TODO: compose 1.8.0-beta01后出现
+# Warning: com.mikepenz.aboutlibraries.ui.compose.SharedLibrariesKt: can't find referenced method 'void FlowRow(androidx.compose.ui.Modifier,androidx.compose.foundation.layout.Arrangement$Horizontal,androidx.compose.foundation.layout.Arrangement$Vertical,int,int,androidx.compose.foundation.layout.FlowRowOverflow,kotlin.jvm.functions.Function3,androidx.compose.runtime.Composer,int,int)' in program class androidx.compose.foundation.layout.FlowLayoutKt
+# Warning: com.mikepenz.aboutlibraries.ui.compose.SharedLibrariesKt$LicenseDialog$1$1: can't find referenced method 'void FlowRow(androidx.compose.ui.Modifier,androidx.compose.foundation.layout.Arrangement$Horizontal,androidx.compose.foundation.layout.Arrangement$Vertical,int,int,androidx.compose.foundation.layout.FlowRowOverflow,kotlin.jvm.functions.Function3,androidx.compose.runtime.Composer,int,int)' in program class androidx.compose.foundation.layout.FlowLayoutKt
+-dontwarn com.mikepenz.aboutlibraries.ui.compose.SharedLibrariesKt
