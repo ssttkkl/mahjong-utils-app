@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
@@ -106,7 +107,7 @@ fun TileImeHost(
     content: @Composable () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val clipboardManager = LocalClipboardManager.current
+    val clipboardManager = LocalClipboard.current
     val state = remember { TileImeHostState(scope, clipboardManager) }
 
     CompositionLocalProvider(
