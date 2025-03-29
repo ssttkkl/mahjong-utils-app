@@ -215,6 +215,11 @@ class ComposeAppPlugin : Plugin<Project> {
                     }
                 }
             }
+            buildTypes {
+                named("release") {
+                    signingConfig = signingConfigs.findByName("release")
+                }
+            }
         }
     }
 
