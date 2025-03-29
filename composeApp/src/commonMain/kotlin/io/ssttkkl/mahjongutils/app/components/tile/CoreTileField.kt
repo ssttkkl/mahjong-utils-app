@@ -39,7 +39,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import io.ssttkkl.mahjongutils.app.components.onRightClick
 import io.ssttkkl.mahjongutils.app.components.tapPress
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
@@ -282,39 +282,52 @@ private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState):
 internal fun CoreTileField(
     value: List<Tile>,
     modifier: Modifier,
+    enabled: Boolean = true,
     state: CoreTileFieldState,
     cursorColor: Color,
     fontSize: TextUnit
 ) {
+    val tileImeHostState = LocalTileImeHostState.current
     val focusRequester = remember { FocusRequester() }
 
     // 记录每个麻将牌相对于Tiles的位置
     var rectsState: MutableState<List<Rect>> = remember { mutableStateOf(emptyList()) }
     val focused by state.interactionSource.collectIsFocusedAsState()
 
+    var dropdownExpanded by remember { mutableStateOf(false) }
+
     Box(
         modifier
-        .focusRequester(focusRequester)
-        .focusable(interactionSource = state.interactionSource)
-        .tapPress(state.interactionSource) {
-            focusRequester.requestFocus()
-        }
-        .handleKeyEvent(value.size, state)
-        .pointerHoverIcon(PointerIcon.Text)
-        .onTapChangeCursor(rectsState) {
-            state.selection = TextRange(it)
-        }
-        .onPressDetectTileImeDefaultCollapsed(LocalTileImeHostState.current)
-        .let {
-            if (focused)
-                it.drawCursor(
-                    state.selection,
-                    rectsState,
-                    cursorColor
-                )
-            else
-                it
-        }
+            .focusRequester(focusRequester)
+            .focusable(enabled, interactionSource = state.interactionSource)
+            .onRightClick(enabled) {
+                dropdownExpanded = true
+            }
+            .tapPress(
+                state.interactionSource,
+                enabled,
+                onLongPress = {
+                    dropdownExpanded = true
+                },
+                onTap = {
+                    focusRequester.requestFocus()
+                })
+            .handleKeyEvent(value.size, state)
+            .pointerHoverIcon(PointerIcon.Text)
+            .onTapChangeCursor(rectsState) {
+                state.selection = TextRange(it)
+            }
+            .onPressDetectTileImeDefaultCollapsed(tileImeHostState)
+            .let {
+                if (focused)
+                    it.drawCursor(
+                        state.selection,
+                        rectsState,
+                        cursorColor
+                    )
+                else
+                    it
+            }
     ) {
         Tiles(
             value,
@@ -324,4 +337,5 @@ internal fun CoreTileField(
             }
         )
     }
+    TileFieldPopMenu(dropdownExpanded, { dropdownExpanded = !dropdownExpanded })
 }
