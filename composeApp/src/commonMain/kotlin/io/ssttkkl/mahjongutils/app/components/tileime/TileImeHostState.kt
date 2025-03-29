@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
@@ -44,7 +45,7 @@ class TileImeHostState(
     }
 
     var consumer by mutableStateOf(0)
-    val pendingAction = Channel<ImeAction>(capacity = 255)
+    val pendingAction = MutableSharedFlow<ImeAction>(extraBufferCapacity = 255)
 
     suspend fun readClipboardData(): List<Tile>? {
         return clipboardManager.getText()?.let {
@@ -59,7 +60,7 @@ class TileImeHostState(
     }
 
     fun emitAction(action: ImeAction) {
-        pendingAction.trySend(action)
+        pendingAction.tryEmit(action)
     }
 
     val visible by derivedStateOf {
@@ -92,7 +93,7 @@ class TileImeHostState(
                 consuming = true
 
                 collectPendingActionJob = coroutineScope.launch(Dispatchers.Main) {
-                    pendingAction.consumeAsFlow().collect { action ->
+                    pendingAction.collect { action ->
                         when (action) {
                             is ImeAction.Input -> handlePendingTile(action.data)
                             ImeAction.Clear -> handleClearRequest()
