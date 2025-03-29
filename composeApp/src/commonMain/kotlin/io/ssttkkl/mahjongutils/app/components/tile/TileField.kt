@@ -3,10 +3,11 @@ package io.ssttkkl.mahjongutils.app.components.tile
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -17,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isCtrlPressed
@@ -123,9 +123,9 @@ fun BaseTileField(
     value: List<Tile>,
     onValueChange: (List<Tile>) -> Unit,
     modifier: Modifier = Modifier,
-    label: String? = null,
     enabled: Boolean = true,
     fontSize: TextUnit = TileTextSize.Default.bodyLarge,
+    colors: TextFieldColors = TextFieldDefaults.colors(),
     isError: Boolean = false,
     interactionSource: MutableInteractionSource,
 ) {
@@ -192,8 +192,10 @@ fun BaseTileField(
         }
     }
 
-    val cursorColor: Color = MaterialTheme.colorScheme.primary
-    val errorCursorColor: Color = MaterialTheme.colorScheme.error
+    val cursorColor = when {
+        isError -> colors.errorCursorColor
+        else -> colors.cursorColor
+    }
 
     CoreTileField(
         value = value,
@@ -220,15 +222,10 @@ fun BaseTileField(
             }
         },
         state = state,
-        cursorColor = if (isError) errorCursorColor else cursorColor,
-        fontSizeInSp = if (fontSize.isSp)
-            fontSize.value
-        else
-            LocalTextStyle.current.fontSize.value,
-        placeholder = label
+        cursorColor = cursorColor,
+        fontSize = fontSize
     )
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -237,7 +234,68 @@ fun TileField(
     onValueChange: (List<Tile>) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    fontSize: TextUnit = TileTextSize.Default.bodyLarge,
+    fontSize: TextUnit = TileTextSize.Default.bodyMedium,
+    label: String? = null,
+    placeholder: (@Composable () -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null,
+    isError: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    val shape = TextFieldDefaults.shape
+    val colors = TextFieldDefaults.colors()
+
+    val decorationBox = @Composable { innerTextField: @Composable () -> Unit ->
+        TextFieldDefaults.DecorationBox(
+            value = value.toTilesString(),
+            visualTransformation = VisualTransformation.None,
+            innerTextField = innerTextField,
+            placeholder = placeholder,
+            label = label?.let { ({ Text(label) }) },
+            trailingIcon = {
+                Text(
+                    stringResource(Res.string.text_tiles_num_short, value.size),
+                    style = MaterialTheme.typography.labelMedium
+                )
+            },
+            supportingText = supportingText,
+            singleLine = true,
+            enabled = enabled,
+            isError = isError,
+            interactionSource = interactionSource,
+            colors = colors,
+            container = {
+                TextFieldDefaults.ContainerBox(
+                    enabled,
+                    isError,
+                    interactionSource,
+                    colors,
+                    shape
+                )
+            }
+        )
+    }
+    decorationBox {
+        BaseTileField(
+            value,
+            onValueChange,
+            modifier,
+            enabled = enabled,
+            fontSize = fontSize,
+            colors = colors,
+            isError = isError,
+            interactionSource = interactionSource
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OutlinedTileField(
+    value: List<Tile>,
+    onValueChange: (List<Tile>) -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    fontSize: TextUnit = TileTextSize.Default.bodyMedium,
     label: String? = null,
     placeholder: (@Composable () -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
@@ -282,9 +340,9 @@ fun TileField(
             value,
             onValueChange,
             modifier,
-            label = label,
             enabled = enabled,
             fontSize = fontSize,
+            colors = colors,
             isError = isError,
             interactionSource = interactionSource
         )
