@@ -54,9 +54,24 @@ jobs:
     - name: Rename Distribution
       run: |
         Set-Location composeApp/build/compose/binaries/main-release/exe
-          Get-ChildItem *.dmg | ForEach-Object {
-          $newName = $_.Name -replace '\.dmg$', '-x64.exe'
+        Get-ChildItem *.exe | ForEach-Object {
+          $newName = $_.Name -replace '\.exe$', '-x64.exe'
           Rename-Item -Path $_.FullName -NewName $newName
+        }
+
+    - name: Zip Distribution
+      run: |
+        $versionFileContent = Get-Content -Path composeApp\version.properties -Raw
+        if ($versionFileContent -match 'versionName=(.*)') {
+          $versionName = $matches[1].Trim()
+          Write-Host "提取的版本号: $versionName"
+        
+          Set-Location composeApp\build\compose\binaries\main-release\app
+          Compress-Archive -Path "mahjong-utils-app\*" -DestinationPath mahjong-utils-app-windows-x64-$versionName.zip -CompressionLevel Optimal
+        }
+        else {
+          Write-Error "未找到 versionName 属性"
+          exit 1
         }
 
     - name: Upload the Build Artifact
@@ -64,7 +79,8 @@ jobs:
       with:
         name: distribution-windows
         path: |
-          composeApp/build/compose/binaries/main-release/exe/*
+          composeApp/build/compose/binaries/main-release/exe/*.exe
+          composeApp/build/compose/binaries/main-release/app/*.zip
           composeApp/build/compose/jars/*.jar
 
     - name: Upload Release Assets
@@ -72,7 +88,7 @@ jobs:
       uses: AButler/upload-release-assets@v3.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: "composeApp/build/compose/binaries/main-release/exe/*;composeApp/build/compose/jars/*.jar"
+        files: "composeApp/build/compose/binaries/main-release/exe/*.exe;composeApp/build/compose/binaries/main-release/app/*.zip;composeApp/build/compose/jars/*.jar"
         
   build-on-macos-arm64:
     runs-on: macos-latest
@@ -197,7 +213,7 @@ jobs:
         with:
           name: distribution-linux
           path: |
-            composeApp/build/appimage/main-release/mahjong-utils-app.AppImage
+            composeApp/build/appimage/main-release/*.AppImage
             composeApp/build/compose/jars/*.jar
 
       - name: Upload Release Assets
