@@ -54,55 +54,59 @@ private fun TileImeHostState.TileImeConsumer.consume(
 
     this.consume(
         handlePendingTile = { tiles ->
-            state.selection = state.selection.coerceIn(0, value.size)
-            val newValue = buildList {
-                addAll(value.subList(0, state.selection.start))
-                addAll(tiles)
-
-                if (state.selection.end != value.size) {
-                    addAll(
-                        value.subList(
-                            state.selection.end,
-                            value.size
-                        )
-                    )
-                }
-            }
-            onValueChange?.invoke(newValue)
-            state.selection = TextRange(state.selection.start + tiles.size)
-        },
-        handleDeleteTile = {
-            state.selection = state.selection.coerceIn(0, value.size)
-            val curCursor = state.selection.start
-            if (state.selection.length == 0) {
-                val indexToRemove = if (it == TileImeHostState.DeleteType.Backspace) {
-                    curCursor - 1
-                } else {
-                    curCursor
-                }
-
-                if (indexToRemove in value.indices) {
-                    val newValue = ArrayList(value).apply {
-                        removeAt(indexToRemove)
-                    }
-                    onValueChange?.invoke(newValue)
-                    state.selection = TextRange(indexToRemove)
-                }
-            } else {
+            state.updateSelection(value.indices) { selection ->
                 val newValue = buildList {
-                    addAll(value.subList(0, state.selection.start))
+                    addAll(value.subList(0, selection.start))
+                    addAll(tiles)
 
-                    if (state.selection.end != value.size) {
+                    if (selection.end != value.size) {
                         addAll(
                             value.subList(
-                                state.selection.end + 1,
+                                selection.end,
                                 value.size
                             )
                         )
                     }
                 }
                 onValueChange?.invoke(newValue)
-                state.selection = TextRange(curCursor)
+                TextRange(selection.start + tiles.size)
+            }
+        },
+        handleDeleteTile = {
+            state.updateSelection(value.indices) { selection ->
+                val curCursor = selection.start
+                if (selection.length == 0) {
+                    val indexToRemove = if (it == TileImeHostState.DeleteType.Backspace) {
+                        curCursor - 1
+                    } else {
+                        curCursor
+                    }
+
+                    if (indexToRemove in value.indices) {
+                        val newValue = ArrayList(value).apply {
+                            removeAt(indexToRemove)
+                        }
+                        onValueChange?.invoke(newValue)
+                        TextRange(indexToRemove)
+                    } else {
+                        selection
+                    }
+                } else {
+                    val newValue = buildList {
+                        addAll(value.subList(0, selection.start))
+
+                        if (selection.end != value.size) {
+                            addAll(
+                                value.subList(
+                                    selection.end + 1,
+                                    value.size
+                                )
+                            )
+                        }
+                    }
+                    onValueChange?.invoke(newValue)
+                    TextRange(curCursor)
+                }
             }
         },
         handleCopyRequest = {
@@ -196,7 +200,7 @@ fun BaseTileField(
         modifier = modifier.onGloballyPositioned {
             layoutCoordinates = it
         }.onKeyEvent {
-            if (it.type != KeyEventType.KeyUp) {
+            if (it.type != KeyEventType.KeyDown) {
                 return@onKeyEvent false
             }
 

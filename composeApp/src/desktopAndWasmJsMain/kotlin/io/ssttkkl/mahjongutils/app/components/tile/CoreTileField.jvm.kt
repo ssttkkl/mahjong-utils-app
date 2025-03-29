@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -40,7 +41,9 @@ import io.ssttkkl.mahjongutils.app.components.tapPress
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
@@ -149,53 +152,108 @@ private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState):
         val ime = LocalTileImeHostState.current
 
         val coroutineScope = rememberCoroutineScope()
-        var delayedClearJob: Job? by remember { mutableStateOf(null) }
+        var nowKeyDown by remember { mutableStateOf(false) }
 
         onKeyEvent {
-            // 当按下Backspace和Delete时，延迟500ms后清空输入框
-            if ((it.key == Key.Backspace || it.key == Key.Delete) && it.type == KeyEventType.KeyDown) {
-                delayedClearJob = coroutineScope.launch {
-                    delay(500)
-                    ime.emitAction(ImeAction.Clear)
-                    delayedClearJob = null
+            if (it.key == Key.Backspace || it.key == Key.Delete) {
+                if (it.type == KeyEventType.KeyDown && !nowKeyDown) {
+                    // 按下的一瞬间，执行IME或输入框的退格/删除
+                    // 长按时可能会收到多个按键事件，如果此前已经有任务则不再处理
+                    nowKeyDown = true
+                    if (it.key == Key.Backspace) {
+                        if (ime.pendingText.isNotEmpty()) {
+                            ime.removeLastPendingText(1)
+                        } else {
+                            ime.emitAction(ImeAction.Delete(TileImeHostState.DeleteType.Backspace))
+                        }
+                    } else if (it.key == Key.Delete) {
+                        if (ime.pendingText.isNotEmpty()) {
+                            ime.removeLastPendingText(65535)
+                        } else {
+                            ime.emitAction(ImeAction.Delete(TileImeHostState.DeleteType.Delete))
+                        }
+                    }
+
+                    // 延迟500ms后，持续执行光标移动
+                    coroutineScope.launch {
+                        delay(500)
+
+                        // IME如果有文本，则持续对其退格。且退格到无文本后不再继续对文本框退格
+                        if (ime.pendingText.isNotEmpty() && it.key == Key.Backspace) {
+                            while (ime.pendingText.isNotEmpty()) {
+                                ime.removeLastPendingText(1)
+                                delay(100)
+                            }
+                        } else {
+                            while (true) {
+                                if (it.key == Key.Backspace) {
+                                    ime.emitAction(ImeAction.Delete(TileImeHostState.DeleteType.Backspace))
+                                } else {
+                                    ime.emitAction(ImeAction.Delete(TileImeHostState.DeleteType.Delete))
+                                }
+                                delay(100)
+                            }
+                        }
+                    }
+                    return@onKeyEvent true
+                } else if (it.type == KeyEventType.KeyUp) {
+                    coroutineScope.coroutineContext.cancelChildren()
+                    nowKeyDown = false
+                    return@onKeyEvent true
                 }
             }
 
-            if (it.type != KeyEventType.KeyUp) {
-                return@onKeyEvent false
+            if (it.key == Key.DirectionLeft || it.key == Key.DirectionRight) {
+                // 按下的一瞬间，执行光标移动
+                // 长按时可能会收到多个按键事件，如果此前已经有任务则不再处理
+                nowKeyDown = true
+                if (it.type == KeyEventType.KeyDown && !nowKeyDown) {
+                    if (it.key == Key.DirectionLeft) {
+                        if (state.selection.start > 0) {
+                            state.selection =
+                                TextRange(state.selection.start - 1).coerceIn(0, tilesCount)
+                        }
+                    } else if (it.key == Key.DirectionRight) {
+                        if (state.selection.end < tilesCount) {
+                            state.selection =
+                                TextRange(state.selection.end + 1).coerceIn(0, tilesCount)
+                        }
+                    }
+
+                    // 延迟500ms后，持续执行光标移动
+                    coroutineScope.launch {
+                        delay(500)
+
+                        while (true) {
+                            if (it.key == Key.DirectionLeft) {
+                                if (state.selection.start > 0) {
+                                    state.selection =
+                                        TextRange(state.selection.start - 1).coerceIn(
+                                            0,
+                                            tilesCount
+                                        )
+                                }
+                            } else if (it.key == Key.DirectionRight) {
+                                if (state.selection.end < tilesCount) {
+                                    state.selection =
+                                        TextRange(state.selection.end + 1).coerceIn(
+                                            0,
+                                            tilesCount
+                                        )
+                                }
+                            }
+                            delay(100)
+                        }
+                    }
+                    return@onKeyEvent true
+                } else if (it.type == KeyEventType.KeyUp) {
+                    coroutineScope.coroutineContext.cancelChildren()
+                    nowKeyDown = false
+                    return@onKeyEvent true
+                }
             }
 
-            if (it.key == Key.Backspace) {
-                // 当松开时，取消之前的延迟清空Job
-                delayedClearJob?.cancel()
-                delayedClearJob = null
-                if (ime.pendingText.isNotEmpty()) {
-                    ime.removeLastPendingText(1)
-                } else {
-                    ime.emitAction(ImeAction.Delete(TileImeHostState.DeleteType.Backspace))
-                }
-                true
-            } else if (it.key == Key.Delete) {
-                // 当松开时，取消之前的延迟清空Job
-                delayedClearJob?.cancel()
-                delayedClearJob = null
-                if (ime.pendingText.isNotEmpty()) {
-                    ime.removeLastPendingText(65535)
-                } else {
-                    ime.emitAction(ImeAction.Delete(TileImeHostState.DeleteType.Delete))
-                }
-                true
-            } else if (it.key == Key.DirectionLeft) {
-                if (state.selection.start > 0) {
-                    state.selection = TextRange(state.selection.start - 1).coerceIn(0, tilesCount)
-                }
-                true
-            } else if (it.key == Key.DirectionRight) {
-                if (state.selection.end < tilesCount) {
-                    state.selection = TextRange(state.selection.end + 1).coerceIn(0, tilesCount)
-                }
-                true
-            } else if (validKeys.containsKey(it.key)) {
+            if (it.type == KeyEventType.KeyDown && validKeys.containsKey(it.key)) {
                 ime.appendPendingText(validKeys[it.key]!!)
                 true
             } else {
