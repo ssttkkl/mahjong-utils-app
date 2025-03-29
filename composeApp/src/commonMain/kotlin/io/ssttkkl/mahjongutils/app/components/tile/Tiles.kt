@@ -130,7 +130,10 @@ fun LieDownTileImage(
     Image(
         tile?.liePainterResource ?: painterResource(Res.drawable.tile_back_lie),
         tile.toString(),
-        modifier,
+        modifier.let {
+            if (isSystemInDarkTheme()) it.alpha(0.7f)
+            else it
+        },
         alignment, contentScale, alpha, colorFilter
     )
 }
