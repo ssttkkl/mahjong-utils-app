@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.ssttkkl.mahjongutils.app.components.basic.RatioGroups
 import io.ssttkkl.mahjongutils.app.components.basic.RatioOption
+import io.ssttkkl.mahjongutils.app.components.tile.OutlinedTileField
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
@@ -18,15 +19,25 @@ import org.jetbrains.compose.resources.stringResource
 
 class ShantenFormComponents(val form: ShantenFormState) {
     @Composable
-    fun Tiles(modifier: Modifier = Modifier) {
+    fun Tiles(modifier: Modifier = Modifier, forResultContent: Boolean = false) {
         ValidationField(form.tilesErrMsg, modifier) { isError ->
-            TileField(
-                value = form.tiles,
-                onValueChange = { form.tiles = it },
-                modifier = Modifier.fillMaxWidth(),
-                isError = isError,
-                label = stringResource(Res.string.label_tiles_in_hand)
-            )
+            if (forResultContent) {
+                TileField(
+                    value = form.tiles,
+                    onValueChange = { form.tiles = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = isError,
+                    label = stringResource(Res.string.label_tiles_in_hand)
+                )
+            } else {
+                OutlinedTileField(
+                    value = form.tiles,
+                    onValueChange = { form.tiles = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = isError,
+                    label = stringResource(Res.string.label_tiles_in_hand)
+                )
+            }
         }
     }
 

@@ -157,9 +157,9 @@ private fun FuroShantenTilesPanel(
         TilesPanelHeader(panelState = state, onCancel = onCancel, onSubmit = onSubmit)
     }) {
         if (state.editing) {
-            components.Tiles(Modifier.onEnterKeyDown(onSubmit))
+            components.Tiles(Modifier.onEnterKeyDown(onSubmit), true)
             Spacer(Modifier.height(8.dp))
-            components.ChanceTile(Modifier.onEnterKeyDown(onSubmit))
+            components.ChanceTile(Modifier.onEnterKeyDown(onSubmit), true)
         } else {
             CompositionLocalProvider(LocalTileTextSize provides TileTextSize.Default.bodyLarge) {
                 FuroShantenTiles(args.tiles, args.chanceTile)

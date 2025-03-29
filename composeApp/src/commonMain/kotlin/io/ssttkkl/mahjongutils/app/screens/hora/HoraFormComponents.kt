@@ -35,7 +35,7 @@ import io.ssttkkl.mahjongutils.app.components.basic.MultiComboBox
 import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.SegmentedButtonOption
 import io.ssttkkl.mahjongutils.app.components.basic.segmentedbutton.SingleChoiceSegmentedButtonGroup
 import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
-import io.ssttkkl.mahjongutils.app.components.tile.TileField
+import io.ssttkkl.mahjongutils.app.components.tile.OutlinedTileField
 import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
 import io.ssttkkl.mahjongutils.app.utils.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
@@ -66,7 +66,7 @@ class HoraFormComponents(
     @Composable
     fun Tiles() {
         ValidationField(form.tilesErrMsg) { isError ->
-            TileField(
+            OutlinedTileField(
                 value = form.tiles,
                 onValueChange = { form.tiles = it },
                 modifier = Modifier.fillMaxWidth(),
@@ -79,7 +79,7 @@ class HoraFormComponents(
     @Composable
     fun Agari(modifier: Modifier = Modifier) {
         ValidationField(form.agariErrMsg, modifier) { isError ->
-            TileField(
+            OutlinedTileField(
                 value = form.agari?.let { listOf(it) } ?: emptyList(),
                 onValueChange = { form.agari = it.firstOrNull() },
                 modifier = Modifier.fillMaxWidth(),
@@ -125,7 +125,7 @@ class HoraFormComponents(
                         ListItem(
                             {
                                 ValidationField(furoModel.errMsg) { isError ->
-                                    TileField(
+                                    OutlinedTileField(
                                         furoModel.tiles,
                                         { furoModel.tiles = it },
                                         Modifier.fillMaxWidth(),

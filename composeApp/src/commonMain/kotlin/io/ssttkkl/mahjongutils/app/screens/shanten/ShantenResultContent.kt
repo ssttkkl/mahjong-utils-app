@@ -239,7 +239,7 @@ private fun TilesInHandPanel(
         }
     ) {
         if (state.editing) {
-            components.Tiles(Modifier.onEnterKeyDown(onSubmit))
+            components.Tiles(Modifier.onEnterKeyDown(onSubmit), true)
         } else {
             AutoSingleLineTiles(args.tiles, fontSize = TileTextSize.Default.bodyLarge)
         }
