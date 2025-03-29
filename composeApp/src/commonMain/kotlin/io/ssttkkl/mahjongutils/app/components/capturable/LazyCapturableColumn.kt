@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
@@ -23,6 +24,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.shreyaspatil.capturable.capturable
 import dev.shreyaspatil.capturable.controller.CaptureController
@@ -47,6 +49,7 @@ fun LazyCapturableColumn(
     flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
     userScrollEnabled: Boolean = true,
     captureBackground: Color? = MaterialTheme.colorScheme.background,
+    captureWidth: Dp? = 480.dp,
     content: LazyListScope.() -> Unit
 ) {
     var captureRequest: CaptureController.CaptureRequest? by remember { mutableStateOf(null) }
@@ -70,7 +73,15 @@ fun LazyCapturableColumn(
     }
 
     captureRequest?.let { req ->
-        Box(modifier = Modifier.requiredHeight(10000.dp)) {
+        Box(
+            modifier = Modifier.requiredHeight(10000.dp)
+                .let {
+                    if (captureWidth != null)
+                        it.requiredWidth(captureWidth)
+                    else
+                        it
+                }
+        ) {
             LazyColumn(
                 modifier = modifier.capturable(innerCaptureController)
                     .drawWithContent {
