@@ -3,3 +3,4 @@ release/
 mahjong-utils-app.AppDir/bin/
 mahjong-utils-app.AppDir/lib/
 *.podspec
+generated.conveyor.conf

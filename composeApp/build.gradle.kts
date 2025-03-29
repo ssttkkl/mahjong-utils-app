@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.kotlinxAtomicfu)
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.buildkonfig)
+    id("dev.hydraulic.conveyor") version "1.12"
 }
 
 kotlin {
@@ -98,6 +99,54 @@ kotlin {
             }
         }
     }
+}
+
+dependencies {
+    // Use the configurations created by the Conveyor plugin to tell Gradle/Conveyor where to find the artifacts for each platform.
+    linuxAmd64(compose.desktop.linux_x64)
+    macAmd64(compose.desktop.macos_x64)
+    macAarch64(compose.desktop.macos_arm64)
+    windowsAmd64(compose.desktop.windows_x64)
+}
+
+// region Work around temporary Compose bugs.
+configurations.all {
+    attributes {
+        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
+        attribute(Attribute.of("ui", String::class.java), "awt")
+    }
+}
+// endregion
+
+tasks.register<Exec>("conveyMacAppArm64") {
+    group = "conveyor"
+
+    val dir = layout.buildDirectory.dir("packages")
+    outputs.dir(dir)
+    commandLine(
+        "/Applications/Conveyor.app/Contents/MacOS/conveyor",
+        "-Kapp.machines=mac.aarch64",
+        "make",
+        "--output-dir", dir.get(),
+        "mac-app"
+    )
+    dependsOn("proguardReleaseJars", "writeConveyorConfig")
+    environment("GITHUB_TOKEN", "111")
+}
+tasks.register<Exec>("conveyMacAppX64") {
+    group = "conveyor"
+
+    val dir = layout.buildDirectory.dir("packages")
+    outputs.dir(dir)
+    commandLine(
+        "/Applications/Conveyor.app/Contents/MacOS/conveyor",
+        "-Kapp.machines=mac.amd64",
+        "make",
+        "--output-dir", dir.get(),
+        "mac-app"
+    )
+    dependsOn("proguardReleaseJars", "writeConveyorConfig")
+    environment("GITHUB_TOKEN", "111")
 }
 
 buildkonfig {

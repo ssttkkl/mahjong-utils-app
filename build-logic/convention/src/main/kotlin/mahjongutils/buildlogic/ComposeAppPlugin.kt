@@ -25,6 +25,8 @@ import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import org.apache.commons.io.FileUtils
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.jetbrains.compose.web.WebExtension
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import java.util.Properties
@@ -73,6 +75,11 @@ class ComposeAppPlugin : Plugin<Project> {
     private fun Project.configKotlinMultiplatform() {
         (kotlinExtension as KotlinMultiplatformExtension).apply {
             applyDefaultHierarchyTemplate()
+
+            jvmToolchain {
+                languageVersion.set(JavaLanguageVersion.of(17))
+                vendor.set(JvmVendorSpec.ADOPTIUM)
+            }
 
             if (enableAndroid) {
                 androidTarget()
@@ -234,11 +241,11 @@ class ComposeAppPlugin : Plugin<Project> {
                     packageName = APPLICATION_NAME
                     packageVersion = versionName
                     description = APPLICATION_DISPLAY_NAME
+                    vendor = "ssttkkl"
                     copyright = "Copyright (c) 2024 ssttkkl"
                     licenseFile.set(rootProject.file("LICENSE"))
 
                     windows {
-                        iconFile.set(file("icon.ico"))
                         upgradeUuid = "16b7010f-44eb-4157-9113-3f8e44d72955"
                         shortcut = true
                         menu = true
@@ -246,12 +253,8 @@ class ComposeAppPlugin : Plugin<Project> {
 
                     macOS {
                         dockName = APPLICATION_DISPLAY_NAME
-                        iconFile.set(file("icon.icns"))
-                        bundleID = "io.ssttkkl.mahjongutils.app"
-                    }
-
-                    linux {
-                        iconFile.set(file("icon.png"))
+                        bundleID = APPLICATION_ID
+                        appCategory = "public.app-category.utilities"
                     }
 
                     val hostOs = System.getProperty("os.name")
