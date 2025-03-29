@@ -9,9 +9,9 @@ name: Desktop Distribution
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   release:
     types: [published]
   workflow_dispatch:
@@ -51,6 +51,14 @@ jobs:
       run: |
         ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
 
+    - name: Rename Distribution
+      run: |
+        Set-Location composeApp/build/compose/binaries/main-release/exe
+          Get-ChildItem *.dmg | ForEach-Object {
+          $newName = $_.Name -replace '\.dmg$', '-x64.exe'
+          Rename-Item -Path $_.FullName -NewName $newName
+        }
+
     - name: Upload the Build Artifact
       uses: actions/upload-artifact@v4.6.1
       with:
@@ -66,8 +74,7 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         files: "composeApp/build/compose/binaries/main-release/exe/*;composeApp/build/compose/jars/*.jar"
         
-  build-on-macos:
-    
+  build-on-macos-arm64:
     runs-on: macos-latest
     
     steps:
@@ -89,10 +96,17 @@ jobs:
       run: |
         ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
 
+    - name: Rename Distribution
+      run: |
+        cd composeApp/build/compose/binaries/main-release/dmg
+        for file in *.dmg; do
+          mv "$file" "${file%.dmg}-arm64.dmg"
+        done
+
     - name: Upload the Build Artifact
       uses: actions/upload-artifact@v4.6.1
       with:
-        name: distribution-macos
+        name: distribution-macos-arm64
         path: |
           composeApp/build/compose/binaries/main-release/dmg/*
           composeApp/build/compose/jars/*.jar
@@ -103,7 +117,53 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         files: "composeApp/build/compose/binaries/main-release/dmg/*;composeApp/build/compose/jars/*.jar"
-        
+
+
+  build-on-macos-x64:
+    runs-on: macos-13
+
+    steps:
+      - name: Checkout my repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: |
+            11
+            17
+          cache: 'gradle'
+
+      - name: Package Distribution
+        run: |
+          ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
+
+      - name: Rename Distribution
+        run: |
+          cd composeApp/build/compose/binaries/main-release/dmg
+          for file in *.dmg; do
+            mv "$file" "${file%.dmg}-x64.dmg"
+          done
+
+      - name: Upload the Build Artifact
+        uses: actions/upload-artifact@v4.6.1
+        with:
+          name: distribution-macos-x64
+          path: |
+            composeApp/build/compose/binaries/main-release/dmg/*
+            composeApp/build/compose/jars/*.jar
+
+      - name: Upload Release Assets
+        if: ${{ github.event_name == 'release' }}
+        uses: AButler/upload-release-assets@v3.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          files: "composeApp/build/compose/binaries/main-release/dmg/*;composeApp/build/compose/jars/*.jar"
+
+
   build-on-linux:
     
     runs-on: ubuntu-latest

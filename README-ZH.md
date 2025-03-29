@@ -12,16 +12,29 @@ Web版：
 
 安卓版：
 
-- 前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本的**composeApp-release.apk**
+- 从 F-Droid 下载:
+
+[<img src="https://f-droid.org/badge/get-it-on.png"
+alt="Get it on F-Droid"
+height="80">](https://f-droid.org/packages/io.ssttkkl.mahjongutils.app)
+
+- 或者前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases/latest)页面下载最新版本的
+  **composeApp-release.apk**
 
 桌面版：
 
-- JAR（需要安装Java）：前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本对应平台的**mahjong-utils-app-xxx.jar**，双击运行即可。例如Windows系统需要下载mahjong-utils-app-windows-x64-xxx-release.jar
-- 安装包（无需安装Java）：前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本对应平台的**mahjong-utils-app-xxx.xxx**，双击安装即可。例如Windows系统需要下载mahjong-utils-app-xxx.exe
+- 前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases/latest)页面下载最新版本对应平台的文件
+
+| 系统            | 安装包文件（需要安装后运行，无需Java）                     | JAR文件（可直接运行，需要Java11或以上）                          |
+|---------------|-------------------------------------------|---------------------------------------------------|
+| Windows (x64) | mahjong-utils-app-xxx.**exe**             | mahjong-utils-app-**windows-x64**-xxx-release.jar |
+| macOS (arm64) | mahjong-utils-app-xxx.**app**             | mahjong-utils-app-**macos-arm64**-xxx-release.jar |
+| Linux (x64)   | mahjong-utils-app-xxx-**x86_64.AppImage** | mahjong-utils-app-**linux-x64**-xxx-release.jar   |
 
 iOS版：
 
-- 前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)页面下载最新版本的**iosApp-unsigned.ipa**
+- 前往[Releases](https://github.com/ssttkkl/mahjong-utils-app/releases/latest)页面下载最新版本的
+  **iosApp-unsigned.ipa**
 - 使用[Sideloadly](https://sideloadly.io/)或其他任何自签名安装工具，对IPA进行签名并安装到你的设备。
 
 ## 功能
