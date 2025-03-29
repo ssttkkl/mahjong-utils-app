@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
-import androidx.core.content.ContextCompat.startActivity
-import io.ssttkkl.mahjongutils.app.MyApp
+import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
+import io.ssttkkl.mahjongutils.app.components.appscaffold.activity
 import io.ssttkkl.mahjongutils.app.utils.ActivityHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -81,7 +81,13 @@ actual class SaveResult(val uri: Uri, val title: String) {
 }
 
 actual object ImageUtils : CommonImageUtils() {
-    actual suspend fun save(imageBitmap: ImageBitmap, title: String): SaveResult? {
+    actual suspend fun save(
+        appState: AppState,
+        imageBitmap: ImageBitmap,
+        title: String
+    ): SaveResult? {
+        val activity = appState.activity
+
         return withContext(Dispatchers.IO) {
             val values = ContentValues().apply {
                 put(MediaStore.Images.Media.DISPLAY_NAME, title)
@@ -90,18 +96,18 @@ actual object ImageUtils : CommonImageUtils() {
                 put(MediaStore.Images.Media.IS_PENDING, 1)
             }
 
-            val uri: Uri = MyApp.current.contentResolver.insert(
+            val uri: Uri = activity.contentResolver.insert(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 values
             ) ?: return@withContext null
 
             try {
-                MyApp.current.contentResolver.openOutputStream(uri)?.use {
+                activity.contentResolver.openOutputStream(uri)?.use {
                     imageBitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, it)
                 } ?: return@withContext null
                 values.clear()
                 values.put(MediaStore.Images.Media.IS_PENDING, 0)
-                MyApp.current.contentResolver.update(uri, values, null, null)
+                activity.contentResolver.update(uri, values, null, null)
             } catch (e: Exception) {
                 e.printStackTrace()
                 return@withContext null

@@ -47,7 +47,7 @@ fun <ARG, RES> NestedResultTopBarActions(model: NestedResultScreenModel<ARG, RES
         IconButton(onClick = {
             coroutineScope.launch {
                 val img = appState.captureController.captureAsync().await()
-                val result = ImageUtils.save(img, "result") ?: return@launch
+                val result = ImageUtils.save(appState, img, "result") ?: return@launch
 
                 if (result.isSupportShare) {
                     val action = appState.snackbarHostState.showSnackbar(

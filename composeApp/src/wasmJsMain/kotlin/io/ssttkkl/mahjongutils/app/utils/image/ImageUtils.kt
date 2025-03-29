@@ -1,6 +1,7 @@
 package io.ssttkkl.mahjongutils.app.utils.image
 
 import androidx.compose.ui.graphics.ImageBitmap
+import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import kotlinx.browser.document
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLAnchorElement
@@ -61,7 +62,7 @@ actual object ImageUtils : CommonImageUtils() {
         }
     }
 
-    actual suspend fun save(imageBitmap: ImageBitmap, title: String): SaveResult? {
+    actual suspend fun save(appState: AppState, imageBitmap: ImageBitmap, title: String): SaveResult? {
         return try {
             val imgData = imageBitmap.toImageData()
 
