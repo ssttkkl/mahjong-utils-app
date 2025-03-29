@@ -8,6 +8,7 @@ import mahjongutils.buildlogic.utils.enableIos
 import mahjongutils.buildlogic.utils.enableWasm
 import mahjongutils.buildlogic.utils.libs
 import mahjongutils.buildlogic.utils.readVersion
+import org.apache.commons.io.FileUtils
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -19,14 +20,13 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.compose.web.WebExtension
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
-import org.apache.commons.io.FileUtils
-import org.jetbrains.compose.web.WebExtension
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import java.util.Properties
 
 const val APPLICATION_ID = "io.ssttkkl.mahjongutils.app"
@@ -231,9 +231,10 @@ class ComposeAppPlugin : Plugin<Project> {
                 mainClass = "MainKt"
 
                 nativeDistributions {
-                    packageName = APPLICATION_NAME
+                    packageName = APPLICATION_DISPLAY_NAME
                     packageVersion = versionName
                     description = APPLICATION_DISPLAY_NAME
+                    vendor = "ssttkkl"
                     copyright = "Copyright (c) 2024 ssttkkl"
                     licenseFile.set(rootProject.file("LICENSE"))
 
@@ -242,6 +243,8 @@ class ComposeAppPlugin : Plugin<Project> {
                         upgradeUuid = "16b7010f-44eb-4157-9113-3f8e44d72955"
                         shortcut = true
                         menu = true
+                        dirChooser = true
+                        perUserInstall = true
                     }
 
                     macOS {
@@ -272,10 +275,10 @@ class ComposeAppPlugin : Plugin<Project> {
             fun packAppImage(isRelease: Boolean) {
                 val appDirSrc = project.file("${APPLICATION_NAME}.AppDir")
                 val packageOutput = if (isRelease)
-                    layout.buildDirectory.dir("compose/binaries/main-release/app/${APPLICATION_NAME}")
+                    layout.buildDirectory.dir("compose/binaries/main-release/app/${APPLICATION_DISPLAY_NAME}")
                         .get().asFile
                 else
-                    layout.buildDirectory.dir("compose/binaries/main/app/${APPLICATION_NAME}")
+                    layout.buildDirectory.dir("compose/binaries/main/app/${APPLICATION_DISPLAY_NAME}")
                         .get().asFile
                 if (!appDirSrc.exists() || !packageOutput.exists()) {
                     return
