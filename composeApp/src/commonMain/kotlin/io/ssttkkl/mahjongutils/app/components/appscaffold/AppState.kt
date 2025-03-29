@@ -27,7 +27,8 @@ class AppState(
     val navigator: AppNavigator,
     val windowSizeClass: WindowSizeClass,
     val density: Density,
-    val captureController: CaptureController
+    val captureController: CaptureController,
+    val extra: Map<String, Any?> = emptyMap()
 ) {
     val drawerState = DrawerState(DrawerValue.Closed)
     val snackbarHostState = SnackbarHostState()
@@ -49,7 +50,8 @@ fun rememberAppState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     windowSizeClass: WindowSizeClass = rememberWindowSizeClass(),
     density: Density = LocalDensity.current,
-    captureController: CaptureController = rememberCaptureController()
+    captureController: CaptureController = rememberCaptureController(),
+    extra: Map<String, Any?> = rememberAppStateExtra()
 ): AppState {
     return remember(navigator, coroutineScope, windowSizeClass, density, captureController) {
         AppState(
@@ -57,10 +59,14 @@ fun rememberAppState(
             coroutineScope = coroutineScope,
             windowSizeClass = windowSizeClass,
             density = density,
-            captureController = captureController
+            captureController = captureController,
+            extra = extra
         )
     }
 }
+
+@Composable
+expect fun rememberAppStateExtra(): Map<String, Any?>
 
 val LocalAppState = compositionLocalOf<AppState> {
     error("No LocalAppState provided! ")
