@@ -2,6 +2,7 @@ package io.ssttkkl.mahjongutils.app.utils.image
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toAwtImage
+import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okio.use
@@ -35,7 +36,7 @@ actual class SaveResult(val file: File) {
 }
 
 actual object ImageUtils : CommonImageUtils() {
-    actual suspend fun save(imageBitmap: ImageBitmap, title: String): SaveResult? {
+    actual suspend fun save(appState: AppState, imageBitmap: ImageBitmap, title: String): SaveResult? {
         // 弹出文件选择框
         val fileChooser = JFileChooser().apply {
             dialogTitle = "Save File"

@@ -2,6 +2,7 @@ package io.ssttkkl.mahjongutils.app.utils.image
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 
 expect suspend fun platformWithBackground(imageBitmap: ImageBitmap, background: Color): ImageBitmap
 
@@ -18,6 +19,6 @@ expect class SaveResult {
 }
 
 expect object ImageUtils : CommonImageUtils {
-    suspend fun save(imageBitmap: ImageBitmap, title: String): SaveResult?
+    suspend fun save(appState: AppState, imageBitmap: ImageBitmap, title: String): SaveResult?
 }
 
