@@ -49,7 +49,7 @@ jobs:
 
     - name: Package Distribution
       run: |
-        ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
+        ./gradlew composeApp:createReleaseDistributable composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
 
     - name: Rename Distribution
       run: |
