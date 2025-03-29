@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -142,6 +143,11 @@ fun TileIme(
 @Composable
 private fun TilePopMenu(state: TileImeHostState, modifier: Modifier) {
     var expanded by remember { mutableStateOf(false) }
+    var clipboardData by remember { mutableStateOf<List<Tile>?>(null) }
+
+    LaunchedEffect(expanded) {
+        clipboardData = state.readClipboardData()
+    }
 
     Column(modifier) {
         // 触发按钮
@@ -190,7 +196,7 @@ private fun TilePopMenu(state: TileImeHostState, modifier: Modifier) {
                                 Modifier.padding(horizontal = 8.dp)
                             )
                         }
-                        state.clipboardData?.let { tiles ->
+                        clipboardData?.let { tiles ->
                             Spacer(Modifier.height(8.dp))
                             Row {
                                 tiles.forEach {
@@ -205,7 +211,7 @@ private fun TilePopMenu(state: TileImeHostState, modifier: Modifier) {
                     state.emitAction(ImeAction.Paste)
                     expanded = false
                 },
-                enabled = !state.clipboardData.isNullOrEmpty()
+                enabled = !clipboardData.isNullOrEmpty()
             )
 
             DropdownMenuItem(

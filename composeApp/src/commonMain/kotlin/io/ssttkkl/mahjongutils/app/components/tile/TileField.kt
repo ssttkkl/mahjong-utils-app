@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isCtrlPressed
+import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.TextUnit
 import io.ssttkkl.mahjongutils.app.components.feather.LocalFloatingDraggableState
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
+import io.ssttkkl.mahjongutils.app.utils.PlatformUtils
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.text_tiles_num_short
@@ -52,55 +54,59 @@ private fun TileImeHostState.TileImeConsumer.consume(
 
     this.consume(
         handlePendingTile = { tiles ->
-            state.selection = state.selection.coerceIn(0, value.size)
-            val newValue = buildList {
-                addAll(value.subList(0, state.selection.start))
-                addAll(tiles)
-
-                if (state.selection.end != value.size) {
-                    addAll(
-                        value.subList(
-                            state.selection.end,
-                            value.size
-                        )
-                    )
-                }
-            }
-            onValueChange?.invoke(newValue)
-            state.selection = TextRange(state.selection.start + tiles.size)
-        },
-        handleDeleteTile = {
-            state.selection = state.selection.coerceIn(0, value.size)
-            val curCursor = state.selection.start
-            if (state.selection.length == 0) {
-                val indexToRemove = if (it == TileImeHostState.DeleteType.Backspace) {
-                    curCursor - 1
-                } else {
-                    curCursor
-                }
-
-                if (indexToRemove in value.indices) {
-                    val newValue = ArrayList(value).apply {
-                        removeAt(indexToRemove)
-                    }
-                    onValueChange?.invoke(newValue)
-                    state.selection = TextRange(indexToRemove)
-                }
-            } else {
+            state.updateSelection(value.indices) { selection ->
                 val newValue = buildList {
-                    addAll(value.subList(0, state.selection.start))
+                    addAll(value.subList(0, selection.start))
+                    addAll(tiles)
 
-                    if (state.selection.end != value.size) {
+                    if (selection.end != value.size) {
                         addAll(
                             value.subList(
-                                state.selection.end + 1,
+                                selection.end,
                                 value.size
                             )
                         )
                     }
                 }
                 onValueChange?.invoke(newValue)
-                state.selection = TextRange(curCursor)
+                TextRange(selection.start + tiles.size)
+            }
+        },
+        handleDeleteTile = {
+            state.updateSelection(value.indices) { selection ->
+                val curCursor = selection.start
+                if (selection.length == 0) {
+                    val indexToRemove = if (it == TileImeHostState.DeleteType.Backspace) {
+                        curCursor - 1
+                    } else {
+                        curCursor
+                    }
+
+                    if (indexToRemove in value.indices) {
+                        val newValue = ArrayList(value).apply {
+                            removeAt(indexToRemove)
+                        }
+                        onValueChange?.invoke(newValue)
+                        TextRange(indexToRemove)
+                    } else {
+                        selection
+                    }
+                } else {
+                    val newValue = buildList {
+                        addAll(value.subList(0, selection.start))
+
+                        if (selection.end != value.size) {
+                            addAll(
+                                value.subList(
+                                    selection.end + 1,
+                                    value.size
+                                )
+                            )
+                        }
+                    }
+                    onValueChange?.invoke(newValue)
+                    TextRange(curCursor)
+                }
             }
         },
         handleCopyRequest = {
@@ -194,16 +200,18 @@ fun BaseTileField(
         modifier = modifier.onGloballyPositioned {
             layoutCoordinates = it
         }.onKeyEvent {
-            if (it.type != KeyEventType.KeyUp) {
+            if (it.type != KeyEventType.KeyDown) {
                 return@onKeyEvent false
             }
 
-            //TODO: mac/ios上cmd+v会不会响应
-            if (it.key == Key.V && it.isCtrlPressed) {
+            // 注意判断苹果和其他系统
+            val isCtrlOrCmdPressed =
+                if (PlatformUtils.isApple) it.isMetaPressed else it.isCtrlPressed
+            if (it.key == Key.V && isCtrlOrCmdPressed) {
                 // 粘贴操作
                 tileImeHostState.emitAction(TileImeHostState.ImeAction.Paste)
                 true
-            } else if (it.key == Key.C && it.isCtrlPressed) {
+            } else if (it.key == Key.C && isCtrlOrCmdPressed) {
                 // 复制操作
                 tileImeHostState.emitAction(TileImeHostState.ImeAction.Copy)
                 true

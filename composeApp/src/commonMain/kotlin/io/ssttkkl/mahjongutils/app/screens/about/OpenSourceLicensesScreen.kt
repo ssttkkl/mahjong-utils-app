@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
+import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import io.ssttkkl.mahjongutils.app.components.appscaffold.NoParamUrlNavigationScreen
 import io.ssttkkl.mahjongutils.app.components.scrollbox.VerticalScrollBox
 import mahjongutils.composeapp.generated.resources.Res
