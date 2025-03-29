@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.tappableElement
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
@@ -58,7 +59,6 @@ private fun TileImeHostOnBottom(
             TileIme(
                 state,
                 modifier = Modifier.fillMaxWidth()
-                    .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom))
             )
         }
     }

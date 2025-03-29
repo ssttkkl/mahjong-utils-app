@@ -69,7 +69,8 @@ fun InnerScaffold(
     navigationIcon: @Composable () -> Unit,
 ) {
     Scaffold(
-        modifier = Modifier.safeDrawingPadding(),
+        modifier = Modifier.background(MaterialTheme.colorScheme.surface)
+            .safeDrawingPadding(),
         topBar = {
             AppBar(appState.appBarStateList, navigationIcon)
         },
@@ -94,7 +95,6 @@ fun InnerScaffold(
 }
 
 
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun AppScaffold(
     screenRegistry: Map<String, () -> UrlNavigationScreen<*>>,
