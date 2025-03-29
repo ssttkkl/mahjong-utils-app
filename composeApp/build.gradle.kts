@@ -26,7 +26,7 @@ kotlin {
                 implementation(libs.material3.windowSizeClass)
 
                 implementation(libs.about.libraries.core)
-                implementation(libs.about.libraries.compose)
+//                implementation(libs.about.libraries.compose)
 
                 implementation(libs.voyager.navigator)
                 implementation(libs.voyager.screenmodel)
