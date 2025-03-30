@@ -46,3 +46,10 @@
 # jna相关
 -keep class com.sun.jna.** { *; }
 -keep class * implements com.sun.jna.** { *; }
+
+# slf4j/logback/KotlinLogging相关
+-dontwarn jakarta.**
+-dontwarn org.codehaus.commons.compiler.CompileException
+-dontwarn org.codehaus.janino.ClassBodyEvaluator
+-dontwarn org.tukaani.xz.**
+-dontwarn kotlinx.coroutines.slf4j.MDCContext
