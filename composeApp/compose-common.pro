@@ -34,6 +34,9 @@
 # However, since in this case they will not be used, we can disable these warnings
 -dontwarn kotlinx.serialization.internal.ClassValueReferences
 
+-dontoptimize
+-keepattributes StackMapTable
+
 # keep没留住Serializer，干脆把自己的代码全部keep了
 -dontnote mahjongutils.**
 -dontnote io.ssttkkl.mahjongutils.app.**
@@ -47,9 +50,9 @@
 -keep class com.sun.jna.** { *; }
 -keep class * implements com.sun.jna.** { *; }
 
-# slf4j/logback/KotlinLogging相关
+# slf4j/logback相关
+-keep class ch.qos.logback.classic.** { *; }
 -dontwarn jakarta.**
 -dontwarn org.codehaus.commons.compiler.CompileException
 -dontwarn org.codehaus.janino.ClassBodyEvaluator
 -dontwarn org.tukaani.xz.**
--dontwarn kotlinx.coroutines.slf4j.MDCContext
