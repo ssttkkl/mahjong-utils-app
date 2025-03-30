@@ -10,17 +10,32 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":third-party:capturable"))
-                api(project(":third-party:feather"))
-
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(libs.material3.windowSizeClass)
+
+                api(project(":third-party:capturable"))
+                api(project(":third-party:feather"))
+                api(libs.kotlin.logging)
+                api(libs.okio)
+                api(libs.kotlinx.serialization.json)
+                api(libs.kotlinx.serialization.json.okio)
+                api(libs.kotlinx.datetime)
+                api(libs.kotlinx.atomicfu)
+                api(libs.kotlinx.coroutines.core)
             }
         }
+
+        val nonWasmJsMain by getting {
+            dependencies {
+                implementation(libs.androidx.datastore.core)
+                implementation(libs.androidx.datastore.core.okio)
+            }
+        }
+
         if (enableAndroid) {
             val androidMain by getting {
                 dependencies {
@@ -36,6 +51,9 @@ kotlin {
                 dependencies {
                     implementation(compose.desktop.currentOs)
                     implementation(libs.kotlinx.coroutines.swing)
+                    implementation(libs.appdirs)
+                    implementation(libs.slf4j.api)
+                    implementation(libs.logback.classic)
                 }
             }
         }

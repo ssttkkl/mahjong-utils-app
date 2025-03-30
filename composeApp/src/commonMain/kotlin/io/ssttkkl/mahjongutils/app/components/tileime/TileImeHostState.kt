@@ -6,15 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.Clipboard
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ssttkkl.mahjongutils.app.utils.getText
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import io.ssttkkl.mahjongutils.app.utils.setText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
 import mahjongutils.models.toTilesString
@@ -25,7 +23,7 @@ class TileImeHostState(
     private val clipboardManager: Clipboard,
 ) {
     companion object {
-        private val logger = LoggerFactory.getLogger("TileImeHostState")
+        private val logger = KotlinLogging.logger("TileImeHostState")
     }
 
     enum class DeleteType {

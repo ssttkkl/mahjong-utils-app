@@ -4,10 +4,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.ssttkkl.mahjongutils.app.base.utils.logger
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
 import io.ssttkkl.mahjongutils.app.screens.base.FormState
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.text_any_tile_must_not_be_more_than_4
 import mahjongutils.composeapp.generated.resources.text_cannot_have_more_than_14_tiles
@@ -25,13 +26,13 @@ class ShantenFormState : FormState<ShantenArgs> {
 
     override fun applyFromMap(map: Map<String, String>) {
         map["tiles"]?.let {
-            LoggerFactory.getLogger(this::class).debug("tiles: ${it}")
+            KotlinLogging.logger(this::class).debug("tiles: ${it}")
             runCatching {
                 tiles = Tile.parseTiles(it)
             }
         }
         map["shantenMode"]?.let {
-            LoggerFactory.getLogger(this::class).debug("shantenMode: ${it}")
+            KotlinLogging.logger(this::class).debug("shantenMode: ${it}")
             runCatching {
                 shantenMode = ShantenMode.entries.first { e -> e.name == it }
             }

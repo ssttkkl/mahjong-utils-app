@@ -1,7 +1,9 @@
 package io.ssttkkl.mahjongutils.app.models.hanhu
 
 import androidx.compose.runtime.Immutable
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
+import io.github.oshai.kotlinlogging.KotlinLogging
+
+import io.ssttkkl.mahjongutils.app.base.utils.logger
 import mahjongutils.hanhu.HanHuOptions
 import mahjongutils.hanhu.getChildPointByHanHu
 import mahjongutils.hanhu.getParentPointByHanHu
@@ -19,6 +21,6 @@ data class HanHuArgs(val han: Int, val hu: Int, val options: HanHuOptions) {
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(HanHuArgs::class)
+        private val logger = KotlinLogging.logger(HanHuArgs::class)
     }
 }

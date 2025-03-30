@@ -1,8 +1,9 @@
 package io.ssttkkl.mahjongutils.app.models.furoshanten
 
 import androidx.compose.runtime.Immutable
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.ssttkkl.mahjongutils.app.base.utils.logger
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.serialization.Serializable
 import mahjongutils.models.Tile
 import mahjongutils.shanten.FuroChanceShantenResult
@@ -24,7 +25,7 @@ data class FuroChanceShantenArgs(
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(FuroChanceShantenArgs::class)
+        private val logger = KotlinLogging.logger(FuroChanceShantenArgs::class)
         val history: HistoryDataStore<FuroChanceShantenArgs> =
             HistoryDataStore("furoChanceShanten", typeOf<FuroChanceShantenArgs>())
     }

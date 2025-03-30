@@ -30,22 +30,7 @@ kotlin {
                 implementation(libs.voyager.navigator)
                 implementation(libs.voyager.screenmodel)
 
-                implementation(libs.okio)
-
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.kotlinx.serialization.json.okio)
-                implementation(libs.kotlinx.datetime)
-                implementation(libs.kotlinx.atomicfu)
-                implementation(libs.kotlinx.coroutines.core)
-
                 implementation(libs.mahjong.utils)
-            }
-        }
-
-        val nonWasmJsMain by getting {
-            dependencies {
-                implementation(libs.androidx.datastore.core)
-                implementation(libs.androidx.datastore.core.okio)
             }
         }
 
@@ -64,9 +49,6 @@ kotlin {
                 dependencies {
                     implementation(compose.desktop.currentOs)
                     implementation(libs.kotlinx.coroutines.swing)
-                    implementation(libs.appdirs)
-//                    implementation(libs.slf4j.api)
-//                    implementation(libs.logback.classic)
                 }
             }
         }

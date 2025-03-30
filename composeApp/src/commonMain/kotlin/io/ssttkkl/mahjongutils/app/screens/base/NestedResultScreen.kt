@@ -6,15 +6,14 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import dev.shreyaspatil.capturable.controller.CaptureController
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.ssttkkl.mahjongutils.app.base.utils.logger
 import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreenModel
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.coroutines.Deferred
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
@@ -71,6 +70,6 @@ class NestedResultScreenModel<ARG, RES> : UrlNavigationScreenModel() {
     var result by mutableStateOf<Deferred<RES>?>(null)
 
     var resultContent by mutableStateOf<@Composable (RES) -> Unit>({
-        LoggerFactory.getLogger(this::class).debug("no resultContent")
+        KotlinLogging.logger(this::class).debug("no resultContent")
     })
 }

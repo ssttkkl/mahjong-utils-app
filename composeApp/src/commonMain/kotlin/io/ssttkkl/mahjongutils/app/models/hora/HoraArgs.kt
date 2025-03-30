@@ -1,8 +1,9 @@
 package io.ssttkkl.mahjongutils.app.models.hora
 
 import androidx.compose.runtime.Immutable
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.ssttkkl.mahjongutils.app.base.utils.logger
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.serialization.Serializable
 import mahjongutils.hora.Hora
 import mahjongutils.hora.HoraOptions
@@ -35,7 +36,7 @@ data class HoraArgs(
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(HoraArgs::class)
+        private val logger = KotlinLogging.logger(HoraArgs::class)
         val history: HistoryDataStore<HoraArgs> =
             HistoryDataStore("hora", typeOf<HoraArgs>())
     }
