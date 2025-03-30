@@ -11,7 +11,6 @@ import io.ssttkkl.mahjongutils.app.components.appscaffold.AppNavigator
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppNavigator
 import io.ssttkkl.mahjongutils.app.components.appscaffold.Url
 import io.ssttkkl.mahjongutils.app.getAppTypography
-import io.ssttkkl.mahjongutils.app.init.AppInit
 import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.browser.document
 import kotlinx.browser.window
@@ -55,7 +54,6 @@ private fun UrlHandler(appNavigator: AppNavigator) {
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-    AppInit.doInit()
     CanvasBasedWindow(
         canvasElementId = "ComposeTarget"
     ) {
