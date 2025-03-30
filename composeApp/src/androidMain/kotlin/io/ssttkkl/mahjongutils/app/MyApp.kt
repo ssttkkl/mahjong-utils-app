@@ -3,8 +3,8 @@ package io.ssttkkl.mahjongutils.app
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import io.ssttkkl.mahjongutils.app.base.utils.FileUtils
 import io.ssttkkl.mahjongutils.app.utils.ActivityHelper
-import io.ssttkkl.mahjongutils.app.utils.FileUtils
 import okio.Path.Companion.toOkioPath
 
 class MyApp : Application() {
