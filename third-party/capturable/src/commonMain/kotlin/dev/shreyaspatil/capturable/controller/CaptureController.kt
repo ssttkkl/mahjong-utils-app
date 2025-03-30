@@ -50,7 +50,7 @@ class CaptureController(internal val graphicsLayer: GraphicsLayer) {
      */
     @Suppress("ktlint")
     private val _captureRequests = Channel<CaptureRequest>(capacity = Channel.UNLIMITED)
-    internal val captureRequests = _captureRequests.receiveAsFlow()
+    val captureRequests = _captureRequests.receiveAsFlow()
 
     /**
      * Creates and requests for a Bitmap capture with specified [config] and returns
@@ -73,7 +73,7 @@ class CaptureController(internal val graphicsLayer: GraphicsLayer) {
     /**
      * Holds information of capture request
      */
-    internal class CaptureRequest(val imageBitmapDeferred: CompletableDeferred<ImageBitmap>)
+    class CaptureRequest(val imageBitmapDeferred: CompletableDeferred<ImageBitmap>)
 }
 
 /**
