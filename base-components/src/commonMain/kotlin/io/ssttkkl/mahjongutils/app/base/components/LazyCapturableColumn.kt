@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.components.capturable
+package io.ssttkkl.mahjongutils.app.base.components
 
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
