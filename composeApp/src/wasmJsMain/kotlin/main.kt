@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalResourceApi::class)
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -7,16 +5,15 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.CanvasBasedWindow
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.ssttkkl.mahjongutils.app.App
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppNavigator
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppNavigator
 import io.ssttkkl.mahjongutils.app.components.appscaffold.Url
 import io.ssttkkl.mahjongutils.app.getAppTypography
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.browser.document
 import kotlinx.browser.window
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.app_name
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 
 private fun extractUrl(fullUrl: String): Url? {
