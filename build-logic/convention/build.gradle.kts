@@ -30,9 +30,13 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("compose-app") {
-            id = "mahjongutils.buildlogic.composeapp"
-            implementationClass = "mahjongutils.buildlogic.ComposeAppPlugin"
+        register("app") {
+            id = "mahjongutils.buildlogic.app"
+            implementationClass = "mahjongutils.buildlogic.AppPlugin"
+        }
+        register("lib") {
+            id = "mahjongutils.buildlogic.lib"
+            implementationClass = "mahjongutils.buildlogic.LibPlugin"
         }
     }
 }

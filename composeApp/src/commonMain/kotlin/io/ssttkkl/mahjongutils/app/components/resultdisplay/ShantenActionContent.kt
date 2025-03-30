@@ -13,11 +13,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.components.panel.Panel
+import io.ssttkkl.mahjongutils.app.base.components.Panel
 import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
-import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.base.Spacing
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import mahjongutils.composeapp.generated.resources.Res

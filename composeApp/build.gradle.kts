@@ -2,14 +2,10 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
-import mahjongutils.buildlogic.utils.enableIos
-import mahjongutils.buildlogic.utils.enableWasm
 import mahjongutils.buildlogic.utils.readVersion
 
 plugins {
-    id("mahjongutils.buildlogic.composeapp")
-    alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.kotlinxAtomicfu)
+    id("mahjongutils.buildlogic.app")
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.buildkonfig)
 }
@@ -18,6 +14,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":base-components"))
+
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
@@ -43,25 +41,15 @@ kotlin {
             }
         }
 
-        val nonWasmJsMain by creating {
-            dependsOn(commonMain)
+        val nonWasmJsMain by getting {
             dependencies {
                 implementation(libs.androidx.datastore.core)
                 implementation(libs.androidx.datastore.core.okio)
             }
         }
 
-        val desktopAndWasmJsMain by creating {
-            dependsOn(commonMain)
-        }
-
-        val nonAndroidMain by creating {
-            dependsOn(commonMain)
-        }
-
         if (enableAndroid) {
             val androidMain by getting {
-                dependsOn(nonWasmJsMain)
                 dependencies {
                     implementation(libs.compose.ui.tooling.preview)
                     implementation(libs.androidx.activity.compose)
@@ -69,18 +57,9 @@ kotlin {
                 }
             }
         }
-        if (enableIos) {
-            val iosMain by getting {
-                dependsOn(nonWasmJsMain)
-                dependsOn(nonAndroidMain)
-            }
-        }
 
         if (enableDesktop) {
             val desktopMain by getting {
-                dependsOn(nonWasmJsMain)
-                dependsOn(nonAndroidMain)
-                dependsOn(desktopAndWasmJsMain)
                 dependencies {
                     implementation(compose.desktop.currentOs)
                     implementation(libs.kotlinx.coroutines.swing)
@@ -88,13 +67,6 @@ kotlin {
 //                    implementation(libs.slf4j.api)
 //                    implementation(libs.logback.classic)
                 }
-            }
-        }
-
-        if (enableWasm) {
-            val wasmJsMain by getting {
-                dependsOn(desktopAndWasmJsMain)
-                dependsOn(nonAndroidMain)
             }
         }
     }

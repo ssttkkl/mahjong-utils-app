@@ -6,7 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
+import io.ssttkkl.mahjongutils.app.base.components.TopCardPanel
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_baiman
 import mahjongutils.composeapp.generated.resources.label_haneman

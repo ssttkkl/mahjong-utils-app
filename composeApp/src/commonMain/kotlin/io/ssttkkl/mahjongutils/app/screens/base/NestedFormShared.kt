@@ -18,9 +18,9 @@ import androidx.compose.ui.platform.LocalDensity
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppBottomSheetState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
-import io.ssttkkl.mahjongutils.app.components.panel.LazyCardPanel
-import io.ssttkkl.mahjongutils.app.components.panel.Panel
-import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.base.components.LazyCardPanel
+import io.ssttkkl.mahjongutils.app.base.components.Panel
+import io.ssttkkl.mahjongutils.app.base.Spacing
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_history_outlined

@@ -13,8 +13,27 @@ import mahjongutils.composeapp.generated.resources.icon_app
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import java.awt.Button
+import java.awt.Dialog
+import java.awt.FlowLayout
+import java.awt.Frame
+import java.awt.Label
 
 fun main() = application {
+    Thread.setDefaultUncaughtExceptionHandler { _, e ->
+        Dialog(Frame(), e.message ?: "Error").apply {
+            layout = FlowLayout()
+            val label = Label(e.message)
+            add(label)
+            val button = Button("OK").apply {
+                addActionListener { dispose() }
+            }
+            add(button)
+            setSize(300,300)
+            isVisible = true
+        }
+    }
+
     AppInit.doInit()
     Window(
         onCloseRequest = ::exitApplication,

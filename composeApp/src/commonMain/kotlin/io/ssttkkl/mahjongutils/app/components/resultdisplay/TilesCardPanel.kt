@@ -2,8 +2,8 @@ package io.ssttkkl.mahjongutils.app.components.resultdisplay
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import io.ssttkkl.mahjongutils.app.components.panel.Panel
-import io.ssttkkl.mahjongutils.app.components.panel.TopCardPanel
+import io.ssttkkl.mahjongutils.app.base.components.Panel
+import io.ssttkkl.mahjongutils.app.base.components.TopCardPanel
 import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.utils.percentile

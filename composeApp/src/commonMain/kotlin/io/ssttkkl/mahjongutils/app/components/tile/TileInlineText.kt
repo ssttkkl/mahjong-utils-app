@@ -25,8 +25,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
-import io.ssttkkl.mahjongutils.app.components.autosizetext.AutoSingleLineText
-import io.ssttkkl.mahjongutils.app.components.autosizetext.TextSizeConstrainedResult
+import io.ssttkkl.mahjongutils.app.base.components.AutoSingleLineText
+import io.ssttkkl.mahjongutils.app.base.components.TextSizeConstrainedResult
 import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
 import io.ssttkkl.mahjongutils.app.utils.emoji
 import io.ssttkkl.mahjongutils.app.utils.emojiToTile

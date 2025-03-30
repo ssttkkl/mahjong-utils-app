@@ -18,5 +18,6 @@ dependencyResolutionManagement {
     }
 }
 
+include(":base-components")
 include(":composeApp")
 
