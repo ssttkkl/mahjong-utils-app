@@ -231,7 +231,7 @@ class ComposeAppPlugin : Plugin<Project> {
                 mainClass = "MainKt"
 
                 nativeDistributions {
-                    packageName = APPLICATION_DISPLAY_NAME
+                    packageName = APPLICATION_NAME
                     packageVersion = versionName
                     description = APPLICATION_DISPLAY_NAME
                     vendor = "ssttkkl"
@@ -275,10 +275,10 @@ class ComposeAppPlugin : Plugin<Project> {
             fun packAppImage(isRelease: Boolean) {
                 val appDirSrc = project.file("${APPLICATION_NAME}.AppDir")
                 val packageOutput = if (isRelease)
-                    layout.buildDirectory.dir("compose/binaries/main-release/app/${APPLICATION_DISPLAY_NAME}")
+                    layout.buildDirectory.dir("compose/binaries/main-release/app/${APPLICATION_NAME}")
                         .get().asFile
                 else
-                    layout.buildDirectory.dir("compose/binaries/main/app/${APPLICATION_DISPLAY_NAME}")
+                    layout.buildDirectory.dir("compose/binaries/main/app/${APPLICATION_NAME}")
                         .get().asFile
                 if (!appDirSrc.exists() || !packageOutput.exists()) {
                     return
