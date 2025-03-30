@@ -2,8 +2,8 @@ package io.ssttkkl.mahjongutils.app.components.resultdisplay
 
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Text
-import io.ssttkkl.mahjongutils.app.components.panel.LazyTopCardPanel
-import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.base.components.LazyTopCardPanel
+import io.ssttkkl.mahjongutils.app.base.Spacing
 import io.ssttkkl.mahjongutils.app.utils.shantenNumText
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_shanten_action

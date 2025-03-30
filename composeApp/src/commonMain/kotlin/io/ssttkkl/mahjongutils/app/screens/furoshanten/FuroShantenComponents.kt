@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
+import io.ssttkkl.mahjongutils.app.base.components.SwitchItem
 import io.ssttkkl.mahjongutils.app.components.tile.OutlinedTileField
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
-import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
+import io.ssttkkl.mahjongutils.app.base.components.ValidationField
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_allow_chi
 import mahjongutils.composeapp.generated.resources.label_tile_discarded_by_other

@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import dev.shreyaspatil.capturable.controller.CaptureController
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
+import io.ssttkkl.mahjongutils.app.base.rememberWindowSizeClass
 import kotlinx.coroutines.CoroutineScope
 
 @Stable

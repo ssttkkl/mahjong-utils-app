@@ -12,7 +12,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+
 
 @Stable
 class AppNavigator(

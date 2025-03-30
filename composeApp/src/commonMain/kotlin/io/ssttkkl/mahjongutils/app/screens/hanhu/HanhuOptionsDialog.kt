@@ -14,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Dialog
-import io.ssttkkl.mahjongutils.app.components.basic.SwitchItem
-import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.base.components.SwitchItem
+import io.ssttkkl.mahjongutils.app.base.Spacing
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.desc_aotenjou
 import mahjongutils.composeapp.generated.resources.desc_hasKazoeYakuman

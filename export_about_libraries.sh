@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-./gradlew composeApp:exportLibraryDefinitions -PaboutLibraries.exportPath=src/commonMain/composeResources/files/ -PaboutLibraries.exportVariant=release
+rootDir=$(pwd)
+./gradlew :third-party:dummy-for-aboutlibraries:exportLibraryDefinitions -PaboutLibraries.exportPath=$rootDir/composeApp/src/commonMain/composeResources/files/ -PaboutLibraries.exportVariant=release

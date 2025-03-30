@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.models
 
+import io.ssttkkl.mahjongutils.app.base.utils.createDataStore
 import kotlinx.serialization.Serializable
 import mahjongutils.hanhu.HanHuOptions
 import mahjongutils.hora.HoraOptions

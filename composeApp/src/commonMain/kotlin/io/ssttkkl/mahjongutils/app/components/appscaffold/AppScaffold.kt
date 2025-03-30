@@ -22,7 +22,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -31,9 +30,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.CurrentScreen
-import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
+import io.ssttkkl.mahjongutils.app.base.components.ScrollBox
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
-import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.base.Spacing
+import io.ssttkkl.mahjongutils.app.base.rememberWindowSizeClass
 import kotlinx.coroutines.launch
 
 

@@ -10,7 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowSnackbarOnFailure
-import io.ssttkkl.mahjongutils.app.utils.image.ImageUtils
+import io.ssttkkl.mahjongutils.app.utils.image.ImageSaver
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_share
@@ -47,7 +47,7 @@ fun <ARG, RES> NestedResultTopBarActions(model: NestedResultScreenModel<ARG, RES
         IconButton(onClick = {
             coroutineScope.launch {
                 val img = appState.captureController.captureAsync().await()
-                val result = ImageUtils.save(appState, img, "result") ?: return@launch
+                val result = ImageSaver.save(appState, img, "result") ?: return@launch
 
                 if (result.isSupportShare) {
                     val action = appState.snackbarHostState.showSnackbar(

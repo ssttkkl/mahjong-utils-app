@@ -1,7 +1,9 @@
 package io.ssttkkl.mahjongutils.app.models.hanhu
 
 import androidx.compose.runtime.Immutable
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+
+
 import mahjongutils.hanhu.HanHuOptions
 import mahjongutils.hanhu.getChildPointByHanHu
 import mahjongutils.hanhu.getParentPointByHanHu

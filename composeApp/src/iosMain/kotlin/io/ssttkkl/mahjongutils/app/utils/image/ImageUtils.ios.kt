@@ -28,7 +28,7 @@ actual class SaveResult {
     }
 }
 
-actual object ImageUtils : CommonImageUtils() {
+actual object ImageSaver {
     @OptIn(ExperimentalForeignApi::class)
     actual suspend fun save(
         appState: AppState,

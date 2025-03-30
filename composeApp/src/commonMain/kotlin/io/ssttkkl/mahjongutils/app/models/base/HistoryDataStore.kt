@@ -1,8 +1,9 @@
 package io.ssttkkl.mahjongutils.app.models.base
 
-import io.ssttkkl.mahjongutils.app.models.DataStore
-import io.ssttkkl.mahjongutils.app.models.createDataStore
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
+
+import io.ssttkkl.mahjongutils.app.base.utils.DataStore
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+import io.ssttkkl.mahjongutils.app.base.utils.createDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer

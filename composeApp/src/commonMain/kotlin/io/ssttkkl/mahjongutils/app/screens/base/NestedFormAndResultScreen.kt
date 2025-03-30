@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
-import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.base.Spacing
 import org.jetbrains.compose.resources.stringResource
 
 @Stable
