@@ -1,10 +1,9 @@
 package io.ssttkkl.mahjongutils.app.models.base
 
-import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ssttkkl.mahjongutils.app.base.utils.DataStore
-import io.ssttkkl.mahjongutils.app.base.utils.createDataStore
 
-import io.ssttkkl.mahjongutils.app.base.utils.logger
+import io.ssttkkl.mahjongutils.app.base.utils.DataStore
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+import io.ssttkkl.mahjongutils.app.base.utils.createDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -18,7 +17,7 @@ class HistoryDataStore<T>(
 ) {
     companion object {
         const val DEFAULT_MAX_ITEM = 100
-        private val logger = KotlinLogging.logger(HistoryDataStore::class)
+        private val logger = LoggerFactory.getLogger(HistoryDataStore::class)
     }
 
     @OptIn(ExperimentalSerializationApi::class)

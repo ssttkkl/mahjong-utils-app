@@ -10,8 +10,8 @@ import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ssttkkl.mahjongutils.app.base.utils.logger
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+
 import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
 import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreenModel
 import kotlinx.coroutines.Deferred
@@ -70,6 +70,6 @@ class NestedResultScreenModel<ARG, RES> : UrlNavigationScreenModel() {
     var result by mutableStateOf<Deferred<RES>?>(null)
 
     var resultContent by mutableStateOf<@Composable (RES) -> Unit>({
-        KotlinLogging.logger(this::class).debug("no resultContent")
+        LoggerFactory.getLogger(this::class).debug("no resultContent")
     })
 }

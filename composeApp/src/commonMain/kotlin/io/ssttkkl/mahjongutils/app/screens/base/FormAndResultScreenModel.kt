@@ -5,8 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.screenModelScope
-import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ssttkkl.mahjongutils.app.base.utils.logger
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+
 import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreenModel
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import kotlinx.coroutines.Deferred
@@ -16,7 +16,7 @@ import kotlinx.coroutines.async
 @Stable
 abstract class FormAndResultScreenModel<ARG, RES> : UrlNavigationScreenModel(), FormState<ARG> {
     var onResult by mutableStateOf<(Deferred<RES>) -> Unit>({
-        KotlinLogging.logger(this::class).debug("onResult not set")
+        LoggerFactory.getLogger(this::class).debug("onResult not set")
     })
 
     abstract suspend fun onCalc(args: ARG): RES

@@ -12,7 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
-import io.github.oshai.kotlinlogging.KotlinLogging
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 
 
 @Stable
@@ -34,7 +34,7 @@ fun AppNavigator(
     initialScreenPath: String,
     content: AppNavigatorContent = { CurrentScreen() }
 ) {
-    val logger = remember { KotlinLogging.logger("AppNavigator") }
+    val logger = remember { LoggerFactory.getLogger("AppNavigator") }
 
     val initialScreen = screenRegistry[initialScreenPath]
     checkNotNull(initialScreen)

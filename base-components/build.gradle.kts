@@ -19,7 +19,6 @@ kotlin {
 
                 api(project(":third-party:capturable"))
                 api(project(":third-party:feather"))
-                api(libs.kotlin.logging)
                 api(libs.okio)
                 api(libs.kotlinx.serialization.json)
                 api(libs.kotlinx.serialization.json.okio)

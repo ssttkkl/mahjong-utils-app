@@ -13,13 +13,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import io.github.oshai.kotlinlogging.KotlinLogging
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 import io.ssttkkl.mahjongutils.app.base.Spacing
 import io.ssttkkl.mahjongutils.app.base.components.Caption
 import io.ssttkkl.mahjongutils.app.base.components.ScrollBox
 import io.ssttkkl.mahjongutils.app.base.components.TopPanel
 import io.ssttkkl.mahjongutils.app.base.utils.localizedFormatting
-import io.ssttkkl.mahjongutils.app.base.utils.logger
+
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
 import io.ssttkkl.mahjongutils.app.models.base.History
@@ -40,7 +40,7 @@ import org.jetbrains.compose.resources.stringResource
 object ShantenScreen :
     FormAndResultScreen<ShantenScreenModel, ShantenArgs, ShantenCalcResult>() {
 
-    private val logger = KotlinLogging.logger(this::class)
+    private val logger = LoggerFactory.getLogger(this::class)
 
     override val path: String
         get() = "shanten"

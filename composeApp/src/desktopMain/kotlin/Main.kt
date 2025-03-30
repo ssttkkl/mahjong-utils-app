@@ -2,9 +2,9 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ssttkkl.mahjongutils.app.App
 import io.ssttkkl.mahjongutils.app.base.utils.FileUtils
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 import io.ssttkkl.mahjongutils.app.getAppTypography
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.app_name
@@ -15,7 +15,7 @@ import org.jetbrains.compose.resources.stringResource
 fun init() {
     configureLogback()
 
-    val logger = KotlinLogging.logger("init")
+    val logger = LoggerFactory.getLogger("init")
     logger.info { "App start" }
     logger.info { "UserDataDir: ${FileUtils.sandboxPath}" }
 }

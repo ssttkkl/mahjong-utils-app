@@ -1,8 +1,8 @@
 package io.ssttkkl.mahjongutils.app.models.shanten
 
 import androidx.compose.runtime.Immutable
-import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ssttkkl.mahjongutils.app.base.utils.logger
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
 import kotlinx.serialization.Serializable
 import mahjongutils.models.Tile
@@ -33,7 +33,7 @@ data class ShantenArgs(
     }
 
     companion object {
-        private val logger = KotlinLogging.logger(ShantenArgs::class)
+        private val logger = LoggerFactory.getLogger(ShantenArgs::class)
         val history: HistoryDataStore<ShantenArgs> =
             HistoryDataStore("shanten", typeOf<ShantenArgs>())
     }

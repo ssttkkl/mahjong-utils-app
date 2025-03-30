@@ -11,8 +11,8 @@ import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ssttkkl.mahjongutils.app.base.utils.logger
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+
 import io.ssttkkl.mahjongutils.app.components.appscaffold.NavigationScreen
 import io.ssttkkl.mahjongutils.app.models.base.History
 import org.jetbrains.compose.resources.StringResource
@@ -68,7 +68,7 @@ class NestedFormScreenModel<ARG, RES> : ScreenModel {
     var parentScreenModel by mutableStateOf<FormAndResultScreenModel<ARG, RES>?>(null)
 
     var formContent by mutableStateOf<@Composable () -> Unit>({
-        KotlinLogging.logger(this::class).debug("no formContent")
+        LoggerFactory.getLogger(this::class).debug("no formContent")
     })
     var historyItem by mutableStateOf<@Composable (History<ARG>) -> Unit>({
         error("not specified")
