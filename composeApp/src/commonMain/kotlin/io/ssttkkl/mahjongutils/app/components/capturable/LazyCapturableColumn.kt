@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import dev.shreyaspatil.capturable.capturable
 import dev.shreyaspatil.capturable.controller.CaptureController
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
-import io.ssttkkl.mahjongutils.app.utils.image.ImageUtils
+import io.ssttkkl.mahjongutils.app.base.utils.withBackground
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.completeWith
 import kotlinx.coroutines.launch
@@ -106,7 +106,7 @@ fun LazyCapturableColumn(
                     innerCaptureController.captureAsync().await()
                 }.mapCatching {
                     if (captureBackground == null) it
-                    else ImageUtils.withBackground(it, captureBackground)
+                    else it.withBackground(captureBackground)
                 }
                 req.imageBitmapDeferred.completeWith(result)
                 captureRequest = null

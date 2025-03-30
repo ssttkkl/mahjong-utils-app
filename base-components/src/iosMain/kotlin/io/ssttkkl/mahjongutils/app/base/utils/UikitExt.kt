@@ -1,6 +1,6 @@
 @file:Suppress("INVISIBLE_REFERENCE", "INVISIBLE_MEMBER")
 
-package io.ssttkkl.mahjongutils.app.utils
+package io.ssttkkl.mahjongutils.app.base.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

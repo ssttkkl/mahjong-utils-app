@@ -1,6 +1,7 @@
 package io.ssttkkl.mahjongutils.app.utils.image
 
 import androidx.compose.ui.graphics.ImageBitmap
+import io.ssttkkl.mahjongutils.app.base.utils.toImageData
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import kotlinx.browser.document
 import org.w3c.dom.CanvasRenderingContext2D
@@ -28,7 +29,7 @@ actual class SaveResult(val url: String) {
 
 }
 
-actual object ImageUtils : CommonImageUtils() {
+actual object ImageSaver {
     private fun download(
         buffer: JsAny?,
         filename: String,

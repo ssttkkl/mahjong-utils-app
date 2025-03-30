@@ -35,7 +35,7 @@ actual class SaveResult(val file: File) {
 
 }
 
-actual object ImageUtils : CommonImageUtils() {
+actual object ImageSaver {
     actual suspend fun save(appState: AppState, imageBitmap: ImageBitmap, title: String): SaveResult? {
         // 弹出文件选择框
         val fileChooser = JFileChooser().apply {

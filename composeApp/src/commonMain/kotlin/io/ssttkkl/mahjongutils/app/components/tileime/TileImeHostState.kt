@@ -7,8 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.Clipboard
 import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ssttkkl.mahjongutils.app.utils.getText
-import io.ssttkkl.mahjongutils.app.utils.setText
+import io.ssttkkl.mahjongutils.app.base.utils.getText
+import io.ssttkkl.mahjongutils.app.base.utils.setText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

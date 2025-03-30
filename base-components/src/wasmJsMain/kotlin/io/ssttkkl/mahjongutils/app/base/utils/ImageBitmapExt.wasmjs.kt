@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.utils.image
+package io.ssttkkl.mahjongutils.app.base.utils
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asSkiaBitmap

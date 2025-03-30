@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.utils
+package io.ssttkkl.mahjongutils.app.base.utils
 
 expect object PlatformUtils {
     val isApple: Boolean

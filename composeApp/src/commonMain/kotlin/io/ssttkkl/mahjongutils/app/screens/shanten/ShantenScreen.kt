@@ -18,6 +18,7 @@ import io.ssttkkl.mahjongutils.app.base.Spacing
 import io.ssttkkl.mahjongutils.app.base.components.Caption
 import io.ssttkkl.mahjongutils.app.base.components.ScrollBox
 import io.ssttkkl.mahjongutils.app.base.components.TopPanel
+import io.ssttkkl.mahjongutils.app.base.utils.localizedFormatting
 import io.ssttkkl.mahjongutils.app.base.utils.logger
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
@@ -26,7 +27,6 @@ import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenCalcResult
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
-import io.ssttkkl.mahjongutils.app.utils.localizedFormatting
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_calc
 import mahjongutils.composeapp.generated.resources.label_regular_shanten

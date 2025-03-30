@@ -4,9 +4,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import io.ssttkkl.mahjongutils.app.base.components.Panel
 import io.ssttkkl.mahjongutils.app.base.components.TopCardPanel
+import io.ssttkkl.mahjongutils.app.base.utils.percentile
 import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
-import io.ssttkkl.mahjongutils.app.utils.percentile
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.text_tiles_num
 import mahjongutils.composeapp.generated.resources.text_tiles_num_and_percentile

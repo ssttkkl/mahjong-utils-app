@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.utils
+package io.ssttkkl.mahjongutils.app.base.utils
 
 import kotlin.math.pow
 import kotlin.math.roundToInt

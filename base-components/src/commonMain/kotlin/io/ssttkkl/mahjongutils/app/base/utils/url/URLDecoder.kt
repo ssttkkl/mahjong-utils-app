@@ -23,7 +23,7 @@
  * or visit www.oracle.com if you need additional information or have any
  * questions.
  */
-package io.ssttkkl.mahjongutils.app.utils.url
+package io.ssttkkl.mahjongutils.app.base.utils.url
 
 /**
  * Utility class for HTML form decoding. This class contains static methods

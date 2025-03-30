@@ -34,9 +34,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import com.quadible.feather.LocalFloatingDraggableState
+import io.ssttkkl.mahjongutils.app.base.utils.PlatformUtils
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
-import io.ssttkkl.mahjongutils.app.utils.PlatformUtils
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.text_tiles_num_short
