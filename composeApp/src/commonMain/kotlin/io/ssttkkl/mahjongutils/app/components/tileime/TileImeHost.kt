@@ -24,9 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
-import io.ssttkkl.mahjongutils.app.base.components.feather.FloatingDraggableContainer
-import io.ssttkkl.mahjongutils.app.base.components.feather.FloatingDraggableItem
-import io.ssttkkl.mahjongutils.app.base.components.feather.FloatingDraggableState
+import com.quadible.feather.FloatingDraggableContainer
+import com.quadible.feather.FloatingDraggableItem
+import com.quadible.feather.FloatingDraggableState
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_drag_handle
 import org.jetbrains.compose.resources.painterResource

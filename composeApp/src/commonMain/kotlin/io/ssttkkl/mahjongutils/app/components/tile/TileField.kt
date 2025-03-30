@@ -33,7 +33,7 @@ import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
-import io.ssttkkl.mahjongutils.app.base.components.feather.LocalFloatingDraggableState
+import com.quadible.feather.LocalFloatingDraggableState
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.utils.PlatformUtils

@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.base.components.feather
+package com.quadible.feather
 
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box

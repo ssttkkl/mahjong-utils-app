@@ -25,6 +25,7 @@ kotlin {
 
                 implementation(libs.about.libraries.core)
 //                implementation(libs.about.libraries.compose)
+                implementation(project(":third-party:aboutlibraries-compose"))
 
                 implementation(libs.voyager.navigator)
                 implementation(libs.voyager.screenmodel)

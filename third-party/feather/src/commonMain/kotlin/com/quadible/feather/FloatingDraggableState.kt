@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.base.components.feather
+package com.quadible.feather
 
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
