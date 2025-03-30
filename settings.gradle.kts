@@ -18,5 +18,11 @@ dependencyResolutionManagement {
     }
 }
 
+include(":third-party:dummy-for-aboutlibraries")
+include(":third-party:aboutlibraries-compose")
+include(":third-party:capturable")
+include(":third-party:feather")
+
+include(":base-components")
 include(":composeApp")
 

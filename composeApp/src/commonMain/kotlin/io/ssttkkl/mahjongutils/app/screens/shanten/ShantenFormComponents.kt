@@ -3,11 +3,11 @@ package io.ssttkkl.mahjongutils.app.screens.shanten
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.ssttkkl.mahjongutils.app.components.basic.RatioGroups
-import io.ssttkkl.mahjongutils.app.components.basic.RatioOption
+import io.ssttkkl.mahjongutils.app.base.components.RatioGroups
+import io.ssttkkl.mahjongutils.app.base.components.RatioOption
 import io.ssttkkl.mahjongutils.app.components.tile.OutlinedTileField
 import io.ssttkkl.mahjongutils.app.components.tile.TileField
-import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
+import io.ssttkkl.mahjongutils.app.base.components.ValidationField
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenMode
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_regular_shanten

@@ -1,7 +1,7 @@
 package io.ssttkkl.mahjongutils.app.components.appscaffold
 
-import io.ssttkkl.mahjongutils.app.utils.url.URLDecoder
-import io.ssttkkl.mahjongutils.app.utils.url.URLEncoder
+import io.ssttkkl.mahjongutils.app.base.utils.url.URLDecoder
+import io.ssttkkl.mahjongutils.app.base.utils.url.URLEncoder
 
 data class Url(
     val path: String,

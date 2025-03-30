@@ -23,10 +23,10 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreen
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
-import io.ssttkkl.mahjongutils.app.components.panel.TopPanel
-import io.ssttkkl.mahjongutils.app.components.scrollbox.ScrollBox
-import io.ssttkkl.mahjongutils.app.components.validation.ValidationField
-import io.ssttkkl.mahjongutils.app.utils.Spacing
+import io.ssttkkl.mahjongutils.app.base.components.TopPanel
+import io.ssttkkl.mahjongutils.app.base.components.ScrollBox
+import io.ssttkkl.mahjongutils.app.base.components.ValidationField
+import io.ssttkkl.mahjongutils.app.base.Spacing
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_calc
 import mahjongutils.composeapp.generated.resources.label_han

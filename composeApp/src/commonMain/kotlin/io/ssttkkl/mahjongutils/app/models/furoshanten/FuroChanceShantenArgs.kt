@@ -1,8 +1,9 @@
 package io.ssttkkl.mahjongutils.app.models.furoshanten
 
 import androidx.compose.runtime.Immutable
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.serialization.Serializable
 import mahjongutils.models.Tile
 import mahjongutils.shanten.FuroChanceShantenResult

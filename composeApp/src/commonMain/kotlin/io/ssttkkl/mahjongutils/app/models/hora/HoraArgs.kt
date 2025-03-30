@@ -1,8 +1,9 @@
 package io.ssttkkl.mahjongutils.app.models.hora
 
 import androidx.compose.runtime.Immutable
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+
 import io.ssttkkl.mahjongutils.app.models.base.HistoryDataStore
-import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
 import kotlinx.serialization.Serializable
 import mahjongutils.hora.Hora
 import mahjongutils.hora.HoraOptions
