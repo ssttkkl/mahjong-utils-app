@@ -12,16 +12,22 @@ Web版：
 
 Android版：
 
-- [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)ページにアクセスし、最新リリースで**composeApp-release.apk**をダウンロードしてください。
+- [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)ページにアクセスし、最新リリースで
+  **composeApp-release.apk**をダウンロードしてください。
 
 デスクトップ版：
 
-- JAR (Javaが必要): [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)ページにアクセスし、最新リリースで**mahjong-utils-app-xxx-vvv.jar** (xxxはOSとアーキテクチャ、vvvはバージョン名)をダウンロードしてください。ダブルクリックで実行します。（例: Windows X64ユーザーは**mahjong-utils-app-windows-x64-xxx-release.jar**をダウンロードしてください）
-- インストールパッケージ (Java不要): [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)ページにアクセスし、最新リリースで**mahjong-utils-app-vvv.xxx** (xxxはOSのパッケージ形式、vvvはバージョン名)をダウンロードしてください。ダブルクリックでインストールします。（例: Windows X64ユーザーは**mahjong-utils-app-vvv.exe**をダウンロードしてください）
+| OS            | インストーラ（Java不要）                            | JAR（Java 11+が必要）                                  |
+|---------------|-------------------------------------------|---------------------------------------------------|
+| Windows (x64) | mahjong-utils-app-xxx-x64.**exe**         | mahjong-utils-app-**windows-x64**-xxx-release.jar |
+| macOS (arm64) | mahjong-utils-app-xxx-arm64.**app**       | mahjong-utils-app-**macos-arm64**-xxx-release.jar |
+| macOS (x64)   | mahjong-utils-app-xxx-x64.**app**         | mahjong-utils-app-**macos-arm64**-xxx-release.jar |
+| Linux (x64)   | mahjong-utils-app-xxx-**x86_64.AppImage** | mahjong-utils-app-**linux-x64**-xxx-release.jar   |
 
 iOS版：
 
-- [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)ページにアクセスし、最新リリースで**iosApp-unsigned.ipa**をダウンロードしてください。
+- [Releases](https://github.com/ssttkkl/mahjong-utils-app/releases)ページにアクセスし、最新リリースで
+  **iosApp-unsigned.ipa**をダウンロードしてください。
 - [Sideloadly](https://sideloadly.io/)やその他のサインツールを使って、IPAをサインしてインストールします。
 
 ## 機能
@@ -49,7 +55,8 @@ iOS版：
 
 アプリはKotlin/MultiplatformおよびCompose Multiplatformを基に作られています。PRは歓迎します。
 
-バグや翻訳ミスを発見した場合は、[issue](https://github.com/ssttkkl/mahjong-utils-app/issues)に報告してください。
+バグや翻訳ミスを発見した場合は、[issue](https://github.com/ssttkkl/mahjong-utils-app/issues)
+に報告してください。
 
 ## ライセンス
 
