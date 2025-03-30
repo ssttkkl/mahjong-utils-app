@@ -13,11 +13,9 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 fun init() {
-    configureLogback()
-
     val logger = LoggerFactory.getLogger("init")
-    logger.info { "App start" }
-    logger.info { "UserDataDir: ${FileUtils.sandboxPath}" }
+    logger.info("App start")
+    logger.info("UserDataDir: ${FileUtils.sandboxPath}")
 }
 
 fun main() = application {
