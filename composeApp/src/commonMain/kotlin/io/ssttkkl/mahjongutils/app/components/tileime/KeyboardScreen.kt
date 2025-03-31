@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
+import io.ssttkkl.mahjongutils.app.base.rememberWindowSizeClass
 
 interface KeyboardKeyItem {
     val weightOfRow: Float
@@ -28,7 +28,7 @@ fun <T : KeyboardKeyItem> KeyboardScreen(
     onLongPress: (T) -> Unit,
     onClick: (T) -> Unit,
 ) {
-    val windowSizeClass = LocalAppState.current.windowSizeClass
+    val windowSizeClass = rememberWindowSizeClass()
 
     Column(
         modifier = Modifier

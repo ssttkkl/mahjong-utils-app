@@ -11,8 +11,7 @@ import androidx.compose.runtime.Immutable
 @Immutable
 data class AppBarState(
     val title: String = "",
-    val actions: @Composable RowScope.() -> Unit = {},
-    val overrideNavigationIcon: (@Composable () -> Unit)? = null
+    val actions: @Composable RowScope.() -> Unit = {}
 ) {
     companion object {
         val NONE = AppBarState()
@@ -23,7 +22,7 @@ data class AppBarState(
 @Composable
 fun AppBar(
     stateList: List<AppBarState?>,
-    navigationIcon: @Composable () -> Unit
+    navigationIcon: (@Composable () -> Unit)? = null
 ) {
     TopAppBar(
         title = {
@@ -32,9 +31,7 @@ fun AppBar(
             )
         },
         navigationIcon = {
-            val lastOverride =
-                stateList.findLast { it?.overrideNavigationIcon != null }?.overrideNavigationIcon
-            (lastOverride ?: navigationIcon)()
+            navigationIcon?.invoke()
         },
         actions = {
             stateList.forEach {

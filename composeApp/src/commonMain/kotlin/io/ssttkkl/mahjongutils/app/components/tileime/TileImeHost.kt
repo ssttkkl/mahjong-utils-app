@@ -23,10 +23,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import com.quadible.feather.FloatingDraggableContainer
 import com.quadible.feather.FloatingDraggableItem
 import com.quadible.feather.FloatingDraggableState
+import io.ssttkkl.mahjongutils.app.base.rememberWindowSizeClass
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_drag_handle
 import org.jetbrains.compose.resources.painterResource
@@ -98,14 +98,15 @@ fun TileImeHost(
     content: @Composable () -> Unit
 ) {
     val scope = rememberCoroutineScope()
+    val windowSizeClass = rememberWindowSizeClass()
     val clipboardManager = LocalClipboard.current
     val state = remember { TileImeHostState(scope, clipboardManager) }
 
     CompositionLocalProvider(
         LocalTileImeHostState provides state,
     ) {
-        if (LocalAppState.current.windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
-            && LocalAppState.current.windowSizeClass.heightSizeClass >= WindowHeightSizeClass.Medium
+        if (windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
+            && windowSizeClass.heightSizeClass >= WindowHeightSizeClass.Medium
         ) {
             TileImeHostFloating(state, content)
         } else {

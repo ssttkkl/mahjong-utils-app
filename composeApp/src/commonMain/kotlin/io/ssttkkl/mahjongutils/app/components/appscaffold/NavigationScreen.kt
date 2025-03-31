@@ -1,10 +1,6 @@
 package io.ssttkkl.mahjongutils.app.components.appscaffold
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -13,9 +9,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
 import cafe.adriel.voyager.core.screen.Screen
@@ -71,53 +65,27 @@ abstract class NavigationScreen : Screen {
     open fun RowScope.TopBarActions() {
     }
 
-    open val overrideNavigationIcon: Boolean
-        @Composable
-        get() = screenState.nestedNavigator?.canPop == true
-
-    @Composable
-    open fun NavigationIcon() {
-        val curNestedNavigator by rememberUpdatedState(screenState.nestedNavigator)
-        Icon(Icons.AutoMirrored.Default.ArrowBack, "", Modifier.clickable {
-            curNestedNavigator?.pop()
-        })
-    }
-
     @Composable
     final override fun Content() {
         val curTitle = title
-        val curOverrideNavigationIcon = overrideNavigationIcon
+        val curCanPop = screenState.nestedNavigator?.canPop == true
         val curNavigator = LocalNavigator.currentOrThrow
-        val screenAppBarState = remember(curTitle, curOverrideNavigationIcon, curNavigator) {
+        val screenAppBarState = remember(curTitle, curCanPop, curNavigator) {
             AppBarState(
                 title = curTitle,
                 actions = {
                     CompositionLocalProvider(LocalNavigator provides curNavigator) {
                         TopBarActions()
                     }
-                },
-                overrideNavigationIcon = if (curOverrideNavigationIcon) {
-                    {
-                        CompositionLocalProvider(LocalNavigator provides curNavigator) {
-                            NavigationIcon()
-                        }
-                    }
-                } else {
-                    null
                 }
             )
         }
 
         // 替换掉appState.appBarStateList第level级的元素
-        val appBarStateList = LocalAppState.current.appBarStateList
-        val navigatorLevel = LocalNavigator.currentOrThrow.level
+        val appState = LocalAppState.current
+        val level = LocalNavigator.currentOrThrow.level
         SideEffect {
-            if (appBarStateList.getOrNull(navigatorLevel) != screenAppBarState) {
-                while (appBarStateList.size <= navigatorLevel) {
-                    appBarStateList.add(null)
-                }
-                appBarStateList[navigatorLevel] = screenAppBarState
-            }
+            appState.setAppBarState(screenAppBarState, level)
         }
 
         ScreenContent()
@@ -133,16 +101,14 @@ abstract class NavigationScreen : Screen {
             screenState.nestedNavigator = nestedNavigator
             content(nestedNavigator)
 
-            val appBarStateList = LocalAppState.current.appBarStateList
+            val appState = LocalAppState.current
             DisposableEffect(Unit) {
-                while (appBarStateList.size <= nestedNavigator.level) {
-                    appBarStateList.add(null)
-                }
+                appState.concernAppBarLevel(nestedNavigator.level)
+                appState.navigator.concernVoyagerLevel(nestedNavigator.level, nestedNavigator)
 
                 onDispose {
-                    while (appBarStateList.size > nestedNavigator.level) {
-                        appBarStateList.removeLast()
-                    }
+                    appState.concernAppBarLevel(nestedNavigator.level - 1)
+                    appState.navigator.concernVoyagerLevel(nestedNavigator.level - 1)
                 }
             }
         }
