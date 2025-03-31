@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
+import io.ssttkkl.mahjongutils.app.base.rememberWindowSizeClass
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreen
@@ -25,11 +26,6 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
         fun isTwoPanes(windowSizeClass: WindowSizeClass): Boolean {
             return windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
                     && windowSizeClass.heightSizeClass != WindowHeightSizeClass.Compact
-        }
-
-        @Composable
-        fun isTwoPanes(): Boolean {
-            return isTwoPanes(LocalAppState.current.windowSizeClass)
         }
     }
 
@@ -56,7 +52,8 @@ abstract class FormAndResultScreen<M : FormAndResultScreenModel<ARG, RES>, ARG, 
     @Composable
     override fun ScreenContent() {
         val appState = LocalAppState.current
-        val showTwoPanes by rememberUpdatedState(isTwoPanes(appState.windowSizeClass))
+        val windowSizeClass = rememberWindowSizeClass()
+        val showTwoPanes by rememberUpdatedState(isTwoPanes(windowSizeClass))
         val initialScreen = remember(showTwoPanes) {
             if (showTwoPanes) {
                 NestedFormAndResultScreen<ARG, RES>(key)

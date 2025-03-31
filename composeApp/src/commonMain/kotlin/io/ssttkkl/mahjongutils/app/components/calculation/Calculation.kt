@@ -24,7 +24,7 @@ fun PopAndShowSnackbarOnFailure(throwable: Throwable) {
     val unknownError = stringResource(Res.string.text_unknown_error)
 
     LaunchedEffect(throwable) {
-        appState.navigator.voyager.popUntilRoot()
+        appState.navigator.rootVoyager.popUntilRoot()
         withContext(NonCancellable) {
             appState.snackbarHostState.showSnackbar(unknownError)
         }

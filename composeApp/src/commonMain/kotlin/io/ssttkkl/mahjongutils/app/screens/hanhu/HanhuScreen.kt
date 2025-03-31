@@ -11,7 +11,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,13 +19,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
+import io.ssttkkl.mahjongutils.app.base.Spacing
+import io.ssttkkl.mahjongutils.app.base.components.ScrollBox
+import io.ssttkkl.mahjongutils.app.base.components.TopPanel
+import io.ssttkkl.mahjongutils.app.base.components.ValidationField
+import io.ssttkkl.mahjongutils.app.base.rememberWindowSizeClass
 import io.ssttkkl.mahjongutils.app.components.appscaffold.UrlNavigationScreen
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
-import io.ssttkkl.mahjongutils.app.base.components.TopPanel
-import io.ssttkkl.mahjongutils.app.base.components.ScrollBox
-import io.ssttkkl.mahjongutils.app.base.components.ValidationField
-import io.ssttkkl.mahjongutils.app.base.Spacing
+import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen.Companion.isTwoPanes
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_calc
 import mahjongutils.composeapp.generated.resources.label_han
@@ -60,6 +60,7 @@ object HanhuScreen : UrlNavigationScreen<HanhuScreenModel>() {
 
     @Composable
     override fun ScreenContent() {
+        val windowSizeClass = rememberWindowSizeClass()
         val model = rememberScreenModel()
         val form = model.form
 
@@ -141,7 +142,7 @@ object HanhuScreen : UrlNavigationScreen<HanhuScreenModel>() {
                 }
             }
 
-            if (LocalAppState.current.windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+            if (!isTwoPanes(windowSizeClass)) {
                 val verticalScrollState = rememberScrollState()
 
                 ScrollBox(verticalScrollState = verticalScrollState) {

@@ -6,6 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -13,14 +14,55 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState.Companion.logger
 
 
 @Stable
 class AppNavigator(
-    val voyager: Navigator,
+    rootVoyager: Navigator,
     val screenRegistry: Map<String, () -> UrlNavigationScreen<*>>
 ) {
     var url by mutableStateOf<Url?>(null)
+
+    val voyagers = mutableStateListOf<Navigator>()
+
+    val rootVoyager: Navigator
+        get() = voyagers.first()
+
+    val canPop: Boolean
+        get() = voyagers.any { it.canPop }
+
+    fun pop() {
+        voyagers.indices.reversed().forEach { i ->
+            if (voyagers[i].canPop) {
+                voyagers[i].pop()
+                return
+            }
+        }
+    }
+
+    fun concernVoyagerLevel(level: Int, setVoyager: Navigator? = null) {
+        while (voyagers.size > level) {
+            if (voyagers.size == level + 1) {
+                if (setVoyager == null || voyagers[level] == setVoyager) {
+                    return
+                }
+            }
+            voyagers.removeLast()
+        }
+        if (voyagers.size < level) {
+            error("invalid voyager level")
+        }
+        if (setVoyager != null) {
+            voyagers.add(setVoyager)
+        }
+
+        logger.debug("current voyager level: ${voyagers.size - 1}")
+    }
+
+    init {
+        concernVoyagerLevel(0, rootVoyager)
+    }
 }
 
 typealias AppNavigatorContent = @Composable (navigator: AppNavigator) -> Unit
@@ -62,13 +104,13 @@ fun AppNavigator(
             val pathParams = pathScreen?.rememberScreenParams()
             LaunchedEffect(url) {
                 // 页面不同，跳转到该页面并应用参数
-                if (pathScreen != null && myNavigator.voyager.lastItemOrNull != pathScreen) {
+                if (pathScreen != null && myNavigator.rootVoyager.lastItemOrNull != pathScreen) {
                     if (pathScreenModel != null && url != null) {
                         logger.info("apply screen params: $pathScreenModel ${url.params}")
                         pathScreen.applyScreenParams(pathScreenModel, url.params)
                     }
                     logger.info("jump to screen: $pathScreen")
-                    myNavigator.voyager.replaceAll(pathScreen)
+                    myNavigator.rootVoyager.replaceAll(pathScreen)
                     jumpingScreen = pathScreen
                 } else {
                     // 页面相同但参数不同，应用参数
@@ -81,7 +123,7 @@ fun AppNavigator(
 
             // 如果有路由跳转，更新url
             @Suppress("UNCHECKED_CAST")
-            val curScreen = myNavigator.voyager.lastItemOrNull
+            val curScreen = myNavigator.rootVoyager.lastItemOrNull
                     as? UrlNavigationScreen<UrlNavigationScreenModel>
             val curScreenPath = curScreen?.path
             val curScreenParams = curScreen?.rememberScreenParams()
@@ -103,12 +145,3 @@ fun AppNavigator(
         }
     }
 }
-
-val Navigator.rootNavigator: Navigator
-    get() {
-        var cur = this
-        while (cur.parent != null) {
-            cur = cur.parent!!
-        }
-        return cur
-    }
