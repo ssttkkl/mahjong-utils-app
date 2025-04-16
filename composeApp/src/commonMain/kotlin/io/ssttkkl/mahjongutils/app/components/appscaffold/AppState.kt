@@ -44,7 +44,7 @@ class AppState(
 
     fun concernAppBarLevel(level: Int) {
         while (appBarStateList.size > level + 1) {
-            appBarStateList.removeLast()
+            appBarStateList.removeAt(appBarStateList.size - 1)
         }
         while (appBarStateList.size < level) {
             appBarStateList.add(null)

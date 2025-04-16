@@ -48,7 +48,7 @@ class AppNavigator(
                     return
                 }
             }
-            voyagers.removeLast()
+            voyagers.removeAt(voyagers.size - 1)
         }
         if (voyagers.size < level) {
             error("invalid voyager level")
