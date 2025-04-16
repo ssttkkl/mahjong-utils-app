@@ -20,9 +20,11 @@ import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.web.WebExtension
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import java.util.Properties
 
@@ -87,6 +89,11 @@ class AppPlugin : Plugin<Project> {
     private fun Project.configAndroid() {
         val (versionName, versionCode) = readVersion()
 
+        extensions.getByType<KotlinMultiplatformExtension>().androidTarget {
+            @OptIn(ExperimentalKotlinGradlePluginApi::class)
+            instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+        }
+
         (extensions.getByName("android") as BaseAppModuleExtension).apply {
             namespace = APPLICATION_ID
             compileSdk = libs.findVersion("android-compileSdk").get().toString().toInt()
@@ -99,6 +106,7 @@ class AppPlugin : Plugin<Project> {
                 minSdk = libs.findVersion("android-minSdk").get().toString().toInt()
                 targetSdk = libs.findVersion("android-targetSdk").get().toString().toInt()
                 applicationId = APPLICATION_ID
+                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
             defaultConfig.versionName = versionName
             defaultConfig.versionCode = versionCode
@@ -132,6 +140,11 @@ class AppPlugin : Plugin<Project> {
                 includeInBundle = false
             }
 
+        }
+
+        dependencies.apply {
+            add("androidTestImplementation", "androidx.compose.ui:ui-test-junit4-android:1.6.8")
+            add("debugImplementation", "androidx.compose.ui:ui-test-manifest:1.6.8")
         }
     }
 

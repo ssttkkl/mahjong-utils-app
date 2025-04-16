@@ -9,6 +9,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByName
+import org.gradle.kotlin.dsl.kotlin
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -70,6 +71,11 @@ class KmpPlugin : Plugin<Project> {
 
             extensions.getByName<NamedDomainObjectContainer<KotlinSourceSet>>("sourceSets").apply {
                 val commonMain = getByName("commonMain")
+                val commonTest = getByName("commonTest").apply {
+                    dependencies {
+                        implementation(kotlin("test"))
+                    }
+                }
                 val nonAndroidMain = create("nonAndroidMain") {
                     dependsOn(commonMain)
                 }

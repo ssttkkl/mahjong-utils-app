@@ -3,6 +3,7 @@ import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
 import mahjongutils.buildlogic.utils.readVersion
+import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
     id("mahjongutils.buildlogic.app")
@@ -34,6 +35,13 @@ kotlin {
             }
         }
 
+        val commonTest by getting {
+            dependencies {
+                @OptIn(ExperimentalComposeLibrary::class)
+                implementation(compose.uiTest)
+            }
+        }
+
         if (enableAndroid) {
             val androidMain by getting {
                 dependencies {
@@ -49,6 +57,11 @@ kotlin {
                 dependencies {
                     implementation(compose.desktop.currentOs)
                     implementation(libs.kotlinx.coroutines.swing)
+                }
+            }
+            val desktopTest by getting {
+                dependencies {
+                    implementation(compose.desktop.currentOs)
                 }
             }
         }
