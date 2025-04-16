@@ -48,6 +48,7 @@ class AppNavigator(
                     return
                 }
             }
+            // Use removeAt instead of removeLast because https://youtrack.jetbrains.com/issue/KT-71375
             voyagers.removeAt(voyagers.size - 1)
         }
         if (voyagers.size < level) {
