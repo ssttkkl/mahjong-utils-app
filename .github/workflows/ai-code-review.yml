@@ -1,37 +1,29 @@
-name: Gemini AI Code Reviewer
+name: Code Review
+
+permissions:
+  contents: read
+  pull-requests: write
 
 on:
   pull_request:
-
-permissions: write-all
+    types: [opened, reopened, synchronize]
 
 jobs:
-  gemini-code-review:
+  test:
+    # if: ${{ contains(github.event.*.labels.*.name, 'gpt review') }} # Optional; to run only when a label is attached
     runs-on: ubuntu-latest
     steps:
-      - name: PR Info
-        run: |
-          echo "Comment: ${{ github.event.comment.body }}"
-          echo "Issue Number: ${{ github.event.issue.number }}"
-          echo "Repository: ${{ github.repository }}"
-
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Get PR Details
-        id: pr
-        run: |
-          PR_JSON=$(gh api repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }})
-          echo "head_sha=$(echo $PR_JSON | jq -r .head.sha)" >> $GITHUB_OUTPUT
-          echo "base_sha=$(echo $PR_JSON | jq -r .base.sha)" >> $GITHUB_OUTPUT
+      - uses: anc95/ChatGPT-CodeReview@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: truongnh1992/gemini-ai-code-reviewer@main
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_MODEL: gemini-2.0-flash
-          EXCLUDE: "*.md,*.txt,package-lock.json,*.yml,*.yaml,*.xml,*.json,*.xcconfig,*.lock,*.pbxproj"
+          OPENAI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Optional
+          LANGUAGE: Chinese
+          OPENAI_API_ENDPOINT: https://generativelanguage.googleapis.com/v1beta/openai/
+          MODEL: gemini-2.0-flash # https://platform.openai.com/docs/models
+          PROMPT: "请review以下代码diff，检查是否存在任何模糊或不规范之处："
+          top_p: 1 # https://platform.openai.com/docs/api-reference/chat/create#chat/create-top_p
+          temperature: 1 # https://platform.openai.com/docs/api-reference/chat/create#chat/create-temperature
+          max_tokens: 10000
+          MAX_PATCH_LENGTH: 10000 # if the patch/diff length is large than MAX_PATCH_LENGTH, will be ignored and won't review. By default, with no MAX_PATCH_LENGTH set, there is also no limit for the patch/diff length.
+          INCLUDE_PATTERNS: "*.js,*.ts,*.kt,*.kts,*.java,*.h,*.m,*.htm,*.html,*.sh,*.py,*.properties" # glob pattern or regex pattern to include files, separated by comma
