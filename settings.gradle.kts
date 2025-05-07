@@ -18,6 +18,7 @@ dependencyResolutionManagement {
     }
 }
 
+include(":third-party:dummy-for-aboutlibraries")
 include(":third-party:capturable")
 include(":third-party:feather")
 
