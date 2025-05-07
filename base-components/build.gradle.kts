@@ -16,6 +16,7 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(libs.material3.windowSizeClass)
+                implementation(libs.material.icons.core)
 
                 api(project(":third-party:capturable"))
                 api(project(":third-party:feather"))

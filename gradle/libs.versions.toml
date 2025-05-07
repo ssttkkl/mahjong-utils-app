@@ -17,6 +17,7 @@ kotlinx-atomicfu = "0.27.0"
 kotlinx-coroutines = "1.10.1"
 logbackClassic = "1.5.18"
 mahjongUtils = "0.7.7"
+materialIconsCore = "1.7.3"
 okio = "3.10.2"
 slf4jApi = "2.0.17"
 voyager = "1.1.0-beta03"
@@ -40,6 +41,7 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
 mahjong-utils = { module = "io.github.ssttkkl:mahjong-utils", version.ref = "mahjongUtils" }
+material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "materialIconsCore" }
 material3-windowSizeClass = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose-jb" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
