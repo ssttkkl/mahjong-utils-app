@@ -24,6 +24,9 @@ voyager = "1.1.0-beta03"
 aboutLibraries = "12.1.2"
 buildkonfig = "0.17.0"
 undercouch-download = "5.6.0"
+cmpImagePickNCrop = "1.0.8"
+filekitCore = "0.10.0-beta01"
+onnxruntime = "1.21.0"
 
 [libraries]
 androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastoreCore" }
@@ -53,7 +56,12 @@ about-libraries-compose-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3"
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref= "agp" }
 compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-jb" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-undercouch-download-gradle-plugin = { module = "de.undercouch:gradle-download-task", version.ref = "undercouch-download" }
+
+cmp-image-pick-n-crop = { module = "network.chaintech:cmp-image-pick-n-crop", version.ref = "cmpImagePickNCrop" }
+filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekitCore" }
+filekit-dialogs-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekitCore" }
+onnxruntime-android = { module = "com.microsoft.onnxruntime:onnxruntime-android", version.ref = "onnxruntime" }
+onnxruntime-jvm = { module = "com.microsoft.onnxruntime:onnxruntime", version.ref = "onnxruntime" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

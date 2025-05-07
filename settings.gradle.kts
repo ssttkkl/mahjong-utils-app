@@ -23,5 +23,6 @@ include(":third-party:capturable")
 include(":third-party:feather")
 
 include(":base-components")
+include(":mahjong-detector")
 include(":composeApp")
 
