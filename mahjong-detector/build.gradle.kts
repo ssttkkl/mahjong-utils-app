@@ -1,5 +1,9 @@
 import mahjongutils.buildlogic.APPLICATION_ID
-import mahjongutils.buildlogic.utils.*
+import mahjongutils.buildlogic.utils.OnnxRuntimeLibraryFilter
+import mahjongutils.buildlogic.utils.enableAndroid
+import mahjongutils.buildlogic.utils.enableDesktop
+import mahjongutils.buildlogic.utils.enableIos
+import mahjongutils.buildlogic.utils.enableWasm
 
 plugins {
     id("mahjongutils.buildlogic.lib")
@@ -11,10 +15,14 @@ kotlin {
             dependencies {
                 implementation(project(":base-components"))
 
-                implementation(libs.filekit.core)
-                implementation(libs.filekit.dialogs.compose)
-                implementation(libs.cmp.image.pick.n.crop)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.ui)
             }
+        }
+
+        val skiaMain by creating {
+            dependsOn(commonMain)
         }
 
         if (enableAndroid) {
@@ -27,6 +35,7 @@ kotlin {
 
         if (enableDesktop) {
             val desktopMain by getting {
+                dependsOn(skiaMain)
                 dependencies {
                     val hostOs = System.getProperty("os.name")
                     val arch = System.getProperty("os.arch")
@@ -54,10 +63,17 @@ kotlin {
 
         if (enableWasm) {
             val wasmJsMain by getting {
+                dependsOn(skiaMain)
                 dependencies {
                     implementation(npm("@tensorflow/tfjs", "^4.22.0"))
                     implementation(npm("onnxruntime-web", libs.versions.onnxruntime.get()))
                 }
+            }
+        }
+
+        if (enableIos) {
+            val iosMain by getting {
+                dependsOn(skiaMain)
             }
         }
     }

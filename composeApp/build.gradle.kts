@@ -1,5 +1,6 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import mahjongutils.buildlogic.APPLICATION_ID
+import mahjongutils.buildlogic.utils.OnnxRuntimeLibraryFilter
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
 import mahjongutils.buildlogic.utils.readVersion
@@ -15,6 +16,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":base-components"))
+                implementation(project(":mahjong-detector"))
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -29,6 +31,10 @@ kotlin {
 
                 implementation(libs.voyager.navigator)
                 implementation(libs.voyager.screenmodel)
+
+                implementation(libs.filekit.core)
+                implementation(libs.filekit.dialogs.compose)
+                implementation(libs.cmp.image.pick.n.crop)
 
                 implementation(libs.mahjong.utils)
             }
@@ -72,3 +78,13 @@ aboutLibraries {
     excludeFields = arrayOf("generated")
 }
 
+// 去掉非本平台的动态库
+dependencies {
+    listOf("linux-aarch64", "linux-x64", "osx-aarch64", "osx-x64", "win-x64").forEach {
+        registerTransform(OnnxRuntimeLibraryFilter::class.java) {
+            parameters.platform.set(it)
+            from.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "jar")
+            to.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "onnxruntime-${it}-jar")
+        }
+    }
+}
