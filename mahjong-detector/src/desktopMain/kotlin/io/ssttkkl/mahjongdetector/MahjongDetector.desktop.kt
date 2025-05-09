@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import mahjongutils.models.Tile
 import java.awt.image.BufferedImage
 import java.nio.FloatBuffer
 
@@ -43,7 +44,7 @@ actual object MahjongDetector {
         env.close()
     }
 
-    actual suspend fun predict(image: ImageBitmap): List<String> =
+    actual suspend fun predict(image: ImageBitmap): List<Tile> =
         withContext(Dispatchers.Default) {
             prepareModel()
 
@@ -65,7 +66,7 @@ actual object MahjongDetector {
             tensor.close()
             results.close()
 
-            detections.sortedBy { it.x1 }.map { CLASS_NAME[it.classId] }
+            detections.sortedBy { it.x1 }.map { Tile[CLASS_NAME[it.classId]] }
         }
 
     // 创建ONNX输入Tensor

@@ -1,8 +1,9 @@
-package io.ssttkkl.mahjongdetector
+package io.ssttkkl.mahjongutils.app.utils.image
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import io.github.vinceglb.filekit.PlatformFile
+import io.ssttkkl.mahjongdetector.get
 import org.jetbrains.skia.Image
 import org.khronos.webgl.ArrayBuffer
 import org.khronos.webgl.Uint8ClampedArray

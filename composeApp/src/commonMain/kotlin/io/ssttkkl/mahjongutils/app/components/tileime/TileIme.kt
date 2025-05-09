@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,16 +26,28 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
+import io.github.vinceglb.filekit.dialogs.FileKitType
+import io.github.vinceglb.filekit.dialogs.compose.PickerResultLauncher
+import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
+import io.ssttkkl.mahjongdetector.MahjongDetector
 import io.ssttkkl.mahjongutils.app.base.components.BackHandler
 import io.ssttkkl.mahjongutils.app.components.clickableButNotFocusable
 import io.ssttkkl.mahjongutils.app.components.tile.TileFieldPopMenu
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
+import io.ssttkkl.mahjongutils.app.utils.image.loadAsImage
+import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
+import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropResult
+import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
+import network.chaintech.cmpimagepickncrop.imagecropper.cropImage
+import network.chaintech.cmpimagepickncrop.imagecropper.rememberImageCropper
 
 private val tileImeMatrix = listOf(
     Tile.parseTiles("123456789m").map { TileImeKey.TileKey(it) },
@@ -112,10 +126,44 @@ fun TileIme(
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                 )
 
-                TileImeDropdownMenu(
+                Row(
                     Modifier.align(Alignment.CenterEnd)
-                        .padding(start = 8.dp)
-                )
+                        .padding(end = 8.dp)
+                ) {
+                    val coroutineScope = rememberCoroutineScope()
+                    val cropper = LocalImageCropper.current
+                    val picker = rememberFilePickerLauncher(
+                        type = FileKitType.Image
+                    ) { file ->
+                        coroutineScope.launch {
+                            runCatching { checkNotNull(file?.loadAsImage()) }
+                                .onFailure { e -> e.printStackTrace() }
+                                .map { originImg ->
+                                    val cropResult = cropper.cropImage(bmp = originImg)
+                                    if (cropResult is ImageCropResult.Success) {
+                                        val res = MahjongDetector.predict(cropResult.bitmap)
+                                        state.emitAction(ImeAction.Clear)
+                                        state.emitAction(ImeAction.Clear)
+                                        state.emitAction(ImeAction.Input(res))
+                                    }
+                                }
+                        }
+                    }
+
+                    Image(
+                        Icons.Outlined.LocationOn,
+                        "",
+                        Modifier
+                            .clickableButNotFocusable(remember { MutableInteractionSource() }) {
+                                picker.launch()
+                            }
+                            .padding(4.dp)
+                            .size(24.dp, 24.dp),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
+                    )
+
+                    TileImeDropdownMenu()
+                }
             }
         }
 
@@ -130,7 +178,7 @@ fun TileIme(
 }
 
 @Composable
-fun TileImeDropdownMenu(modifier: Modifier) {
+fun TileImeDropdownMenu(modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
 
     Column(modifier) {

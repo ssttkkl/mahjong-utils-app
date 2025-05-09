@@ -18,6 +18,10 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.ui)
+
+                implementation(libs.filekit.core)
+
+                implementation(libs.mahjong.utils)
             }
         }
 
@@ -28,6 +32,7 @@ kotlin {
         if (enableAndroid) {
             val androidMain by getting {
                 dependencies {
+                    implementation(libs.androidx.core.ktx)
                     implementation(libs.onnxruntime.android)
                 }
             }

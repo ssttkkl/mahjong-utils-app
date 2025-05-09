@@ -29,6 +29,9 @@ import com.quadible.feather.FloatingDraggableState
 import io.ssttkkl.mahjongutils.app.base.rememberWindowSizeClass
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_drag_handle
+import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
+import network.chaintech.cmpimagepickncrop.imagecropper.rememberImageCropper
+import network.chaintech.cmpimagepickncrop.ui.ImageCropperDialogContainer
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -101,9 +104,11 @@ fun TileImeHost(
     val windowSizeClass = rememberWindowSizeClass()
     val clipboardManager = LocalClipboard.current
     val state = remember { TileImeHostState(scope, clipboardManager) }
+    val cropper = rememberImageCropper()
 
     CompositionLocalProvider(
         LocalTileImeHostState provides state,
+        LocalImageCropper provides cropper
     ) {
         if (windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
             && windowSizeClass.heightSizeClass >= WindowHeightSizeClass.Medium
@@ -113,8 +118,16 @@ fun TileImeHost(
             TileImeHostOnBottom(state, content)
         }
     }
+
+    cropper.imageCropState?.let { cropState ->
+        ImageCropperDialogContainer(cropState)
+    }
 }
 
 val LocalTileImeHostState = compositionLocalOf<TileImeHostState> {
     error("CompositionLocal LocalTileImeHostState not present")
+}
+
+val LocalImageCropper = compositionLocalOf<ImageCropper> {
+    error("CompositionLocal LocalImageCropper not present")
 }

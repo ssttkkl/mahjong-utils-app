@@ -1,9 +1,10 @@
 package io.ssttkkl.mahjongdetector
 
 import androidx.compose.ui.graphics.ImageBitmap
+import mahjongutils.models.Tile
 
 expect object MahjongDetector {
-    suspend fun predict(image: ImageBitmap): List<String>
+    suspend fun predict(image: ImageBitmap): List<Tile>
 }
 
 internal val MahjongDetector.CLASS_NAME
@@ -17,5 +18,5 @@ internal val MahjongDetector.CLASS_NAME
         "7m", "7p", "7s",
         "8m", "8p", "8s",
         "9m", "9p", "9s",
-        "chun", "haku", "hatsu", "nan", "pe", "sha", "tou"
+        "7z", "5z", "6z", "2z", "4z", "3z", "1z"
     )

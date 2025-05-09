@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongdetector
+package io.ssttkkl.mahjongutils.app.utils.image
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap

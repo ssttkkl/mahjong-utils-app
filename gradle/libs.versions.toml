@@ -6,6 +6,7 @@ android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "35"
 androidx-activityCompose = "1.10.1"
+androidx-coreKtx = "1.16.0"
 appdirs = "1.4.0"
 compose = "1.8.0"
 compose-jb = "1.8.0"
@@ -33,6 +34,7 @@ androidx-datastore-core = { module = "androidx.datastore:datastore-core", versio
 androidx-datastore-core-okio = { module = "androidx.datastore:datastore-core-okio", version.ref = "datastoreCore" }
 appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-coreKtx" }
 commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
