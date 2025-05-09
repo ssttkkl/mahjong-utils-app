@@ -33,6 +33,8 @@ class TileImeHostState(
     sealed class ImeAction {
         data class Input(val data: List<Tile>) : ImeAction()
 
+        data class Replace(val data: List<Tile>) : ImeAction()
+
         data class Delete(val type: DeleteType) : ImeAction()
 
         data object Copy : ImeAction()
@@ -82,6 +84,7 @@ class TileImeHostState(
 
         fun consume(
             handlePendingTile: suspend (List<Tile>) -> Unit,
+            handleReplaceTile: suspend (List<Tile>) -> Unit,
             handleDeleteTile: suspend (DeleteType) -> Unit,
             handleCopyRequest: suspend () -> List<Tile>,
             handleClearRequest: suspend () -> Unit
@@ -94,6 +97,7 @@ class TileImeHostState(
                     pendingAction.collect { action ->
                         when (action) {
                             is ImeAction.Input -> handlePendingTile(action.data)
+                            is ImeAction.Replace -> handleReplaceTile(action.data)
                             ImeAction.Clear -> handleClearRequest()
                             ImeAction.Copy -> writeClipboardData(handleCopyRequest())
                             ImeAction.Paste -> readClipboardData()?.let { handlePendingTile(it) }

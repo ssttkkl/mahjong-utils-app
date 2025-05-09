@@ -1,10 +1,9 @@
 package io.ssttkkl.mahjongdetector
 
 import androidx.compose.ui.graphics.ImageBitmap
-import mahjongutils.models.Tile
 
 expect object MahjongDetector {
-    suspend fun predict(image: ImageBitmap): List<Tile>
+    suspend fun predict(image: ImageBitmap, confidenceThreshold: Float = 0.5f): List<Detection>
 }
 
 internal val MahjongDetector.CLASS_NAME

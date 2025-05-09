@@ -1,10 +1,9 @@
 package io.ssttkkl.mahjongdetector
 
 import androidx.compose.ui.graphics.ImageBitmap
-import mahjongutils.models.Tile
 
 actual object MahjongDetector {
-    actual fun predict(image: ImageBitmap): List<Tile> {
+    actual fun predict(image: ImageBitmap, confidenceThreshold: Float): List<Detection> {
         TODO("Not yet implemented")
     }
 }

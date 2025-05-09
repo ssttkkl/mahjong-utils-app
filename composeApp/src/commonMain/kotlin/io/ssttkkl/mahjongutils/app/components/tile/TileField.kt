@@ -72,6 +72,12 @@ private fun TileImeHostState.TileImeConsumer.consume(
                 TextRange(selection.start + tiles.size)
             }
         },
+        handleReplaceTile = { tiles ->
+            state.updateSelection(value.indices) { _ ->
+                onValueChange?.invoke(tiles)
+                TextRange(tiles.size)
+            }
+        },
         handleDeleteTile = {
             state.updateSelection(value.indices) { selection ->
                 val curCursor = selection.start

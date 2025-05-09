@@ -4,6 +4,7 @@ import ai.onnxruntime.OnnxJavaType
 import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtEnvironment
 import ai.onnxruntime.OrtSession
+import ai.onnxruntime.platform.Fp16Conversions.floatToFp16
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
@@ -14,8 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import mahjongutils.models.Tile
-import java.nio.FloatBuffer
 import java.nio.ShortBuffer
 
 
@@ -48,7 +47,7 @@ actual object MahjongDetector {
         env.close()
     }
 
-    actual suspend fun predict(image: ImageBitmap): List<Tile> =
+    actual suspend fun predict(image: ImageBitmap, confidenceThreshold: Float): List<Detection> =
         withContext(Dispatchers.Default) {
             prepareModel()
 
@@ -64,13 +63,18 @@ actual object MahjongDetector {
             // 获取输出张量 (你需要根据你的模型输出名称调整)
             val output = results.get(0).value as Array<Array<FloatArray>>
             val detections =
-                YoloV8PostProcessor.postprocess(output[0], paddingInfo, CLASS_NAME.size)
+                YoloV8PostProcessor.postprocess(
+                    output[0],
+                    paddingInfo,
+                    CLASS_NAME,
+                    confidenceThreshold
+                )
 
             // 释放资源
             tensor.close()
             results.close()
 
-            detections.sortedBy { it.x1 }.map { Tile[CLASS_NAME[it.classId]] }
+            detections
         }
 
     // 创建ONNX输入Tensor
@@ -91,9 +95,9 @@ actual object MahjongDetector {
                 val g = (pixel shr 8) and 0xFF
                 val b = pixel and 0xFF
 
-                bgrData[p] = floatToHalf(r / 255.0f)
-                bgrData[siz + p] = floatToHalf(g / 255.0f)
-                bgrData[siz * 2 + p] = floatToHalf(b / 255.0f)
+                bgrData[p] = floatToFp16(r / 255.0f)
+                bgrData[siz + p] = floatToFp16(g / 255.0f)
+                bgrData[siz * 2 + p] = floatToFp16(b / 255.0f)
                 p++
             }
         }
@@ -104,33 +108,5 @@ actual object MahjongDetector {
             longArrayOf(1, 3, height.toLong(), width.toLong()), // NCHW格式
             OnnxJavaType.FLOAT16
         )
-    }
-
-    // float32 转 float16 的辅助函数
-    private fun floatToHalf(f: Float): Short {
-        val bits = java.lang.Float.floatToIntBits(f)
-        val s = ((bits shr 16) and 0x8000)
-        var e = ((bits shr 23) and 0xff) - 127 + 15
-        var m = (bits and 0x007fffff)
-
-        if (e < 0) return s.toShort()
-        if (e > 30) return (s or 0x7c00).toShort()
-
-        if (e < 15) {
-            m = (m or 0x00800000) shr (14 - e)
-            if ((m and 0x1000) != 0) m += 0x2000
-            return (s or (m shr 13)).toShort()
-        }
-
-        if ((m and 0x1000) != 0) {
-            m += 0x2000
-            if ((m and 0x800000) != 0) {
-                m = 0
-                e += 1
-            }
-        }
-
-        if (e > 30) return (s or 0x7c00).toShort()
-        return (s or (e shl 10) or (m shr 13)).toShort()
     }
 }

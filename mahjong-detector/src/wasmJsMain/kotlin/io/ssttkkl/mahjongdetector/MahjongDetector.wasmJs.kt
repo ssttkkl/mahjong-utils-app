@@ -6,7 +6,6 @@ import androidx.compose.ui.graphics.asSkiaBitmap
 import kotlinx.coroutines.await
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import mahjongutils.models.Tile
 import org.jetbrains.skia.ColorAlphaType
 import org.jetbrains.skia.ColorType
 import org.jetbrains.skia.ImageInfo
@@ -45,7 +44,7 @@ actual object MahjongDetector {
         }
     }
 
-    actual suspend fun predict(image: ImageBitmap): List<Tile> {
+    actual suspend fun predict(image: ImageBitmap, confidenceThreshold: Float): List<Detection> {
         prepareModel()
 
         val (preprocessed, paddingInfo) = ImagePreprocessor.preprocessImage(image)
@@ -58,13 +57,14 @@ actual object MahjongDetector {
                 outputArr[0]!![i]!![j]!!.toDouble().toFloat()
             }
         }
-        val detections = YoloV8PostProcessor.postprocess(output, paddingInfo, CLASS_NAME.size)
+        val detections =
+            YoloV8PostProcessor.postprocess(output, paddingInfo, CLASS_NAME, confidenceThreshold)
         detections.forEach {
             println(it)
         }
 
         inputTensor.dispose()
-        return detections.sortedBy { it.x1 }.map { Tile[CLASS_NAME[it.classId]] }
+        return detections
     }
 
     private fun createInputTensor(image: ImageBitmap): JsAny {

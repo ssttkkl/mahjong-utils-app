@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,23 +30,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
 import io.github.vinceglb.filekit.dialogs.FileKitType
-import io.github.vinceglb.filekit.dialogs.compose.PickerResultLauncher
 import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
 import io.ssttkkl.mahjongdetector.MahjongDetector
 import io.ssttkkl.mahjongutils.app.base.components.BackHandler
+import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 import io.ssttkkl.mahjongutils.app.components.clickableButNotFocusable
 import io.ssttkkl.mahjongutils.app.components.tile.TileFieldPopMenu
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
 import io.ssttkkl.mahjongutils.app.utils.image.loadAsImage
 import kotlinx.coroutines.launch
+import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.icon_photo_camera
 import mahjongutils.models.Tile
 import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropResult
-import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
 import network.chaintech.cmpimagepickncrop.imagecropper.cropImage
-import network.chaintech.cmpimagepickncrop.imagecropper.rememberImageCropper
+import org.jetbrains.compose.resources.vectorResource
+import kotlin.time.measureTime
 
 private val tileImeMatrix = listOf(
     Tile.parseTiles("123456789m").map { TileImeKey.TileKey(it) },
@@ -132,26 +132,36 @@ fun TileIme(
                 ) {
                     val coroutineScope = rememberCoroutineScope()
                     val cropper = LocalImageCropper.current
+                    val logger = LoggerFactory.getLogger("MahjongDetector")
                     val picker = rememberFilePickerLauncher(
                         type = FileKitType.Image
                     ) { file ->
                         coroutineScope.launch {
                             runCatching { checkNotNull(file?.loadAsImage()) }
-                                .onFailure { e -> e.printStackTrace() }
                                 .map { originImg ->
                                     val cropResult = cropper.cropImage(bmp = originImg)
                                     if (cropResult is ImageCropResult.Success) {
-                                        val res = MahjongDetector.predict(cropResult.bitmap)
-                                        state.emitAction(ImeAction.Clear)
-                                        state.emitAction(ImeAction.Clear)
-                                        state.emitAction(ImeAction.Input(res))
+                                        val res: List<Tile>
+                                        val cost = measureTime {
+                                            val detections =
+                                                MahjongDetector.predict(cropResult.bitmap)
+                                            detections.forEach {
+                                                logger.debug("detection: ${it}")
+                                            }
+                                            res = detections
+                                                .sortedBy { it.x1 }
+                                                .map { Tile[it.className] }
+                                        }
+                                        logger.info("result: $res, cost: $cost")
+                                        state.emitAction(ImeAction.Replace(res))
                                     }
                                 }
+                                .onFailure { e -> logger.error(e) }
                         }
                     }
 
                     Image(
-                        Icons.Outlined.LocationOn,
+                        vectorResource(Res.drawable.icon_photo_camera),
                         "",
                         Modifier
                             .clickableButNotFocusable(remember { MutableInteractionSource() }) {

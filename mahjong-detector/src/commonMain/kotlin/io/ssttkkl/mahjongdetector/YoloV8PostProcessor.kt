@@ -3,7 +3,7 @@ package io.ssttkkl.mahjongdetector
 
 data class Detection(
     val x1: Int, val y1: Int, val x2: Int, val y2: Int,
-    val classId: Int,
+    val classId: Int, val className: String,
     val confidence: Float
 )
 
@@ -19,11 +19,12 @@ object YoloV8PostProcessor {
     fun postprocess(
         output: Array<FloatArray>,
         padding: PaddingInfo,
-        numClasses: Int,
+        classNameMapping: List<String>,
         confThreshold: Float = 0.5f,
         iouThreshold: Float = 0.5f
     ): List<Detection> {
         val detections = mutableListOf<Detection>()
+        val numClasses = classNameMapping.size
 
         // 1. 检查输出维度 (YOLOv11: [1,4+classes,8400])
         // when the output shape is (1,84,8400) this is how it is interpreted:
@@ -69,6 +70,7 @@ object YoloV8PostProcessor {
                         x2 = x2.toInt().coerceIn(0, padding.originWidth),
                         y2 = y2.toInt().coerceIn(0, padding.originHeight),
                         classId = classId,
+                        className = classNameMapping[classId],
                         confidence = maxConf
                     )
                 )
