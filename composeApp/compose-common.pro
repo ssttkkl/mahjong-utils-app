@@ -56,3 +56,6 @@
 -dontwarn org.codehaus.commons.compiler.CompileException
 -dontwarn org.codehaus.janino.ClassBodyEvaluator
 -dontwarn org.tukaani.xz.**
+
+# onnxruntime相关
+-dontwarn ai.onnxruntime.platform.Fp16Conversions
