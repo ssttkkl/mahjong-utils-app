@@ -59,3 +59,7 @@
 
 # onnxruntime相关
 -dontwarn ai.onnxruntime.platform.Fp16Conversions
+-keep class ai.onnxruntime.** { *; }
+
+# imageio相关
+-keep class com.github.jaiimageio.impl.** { *; }
