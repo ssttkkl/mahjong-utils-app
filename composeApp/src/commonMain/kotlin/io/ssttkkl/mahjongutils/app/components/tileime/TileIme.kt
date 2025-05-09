@@ -36,6 +36,7 @@ import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
 import io.ssttkkl.mahjongdetector.MahjongDetector
 import io.ssttkkl.mahjongutils.app.base.components.BackHandler
 import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
+import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalImageCropper
 import io.ssttkkl.mahjongutils.app.components.clickableButNotFocusable
 import io.ssttkkl.mahjongutils.app.components.tile.TileFieldPopMenu
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction

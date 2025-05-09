@@ -1,11 +1,15 @@
 package io.ssttkkl.mahjongutils.app.components.tileime
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.Clipboard
+import androidx.compose.ui.platform.LocalClipboard
 import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 import io.ssttkkl.mahjongutils.app.base.utils.getText
 import io.ssttkkl.mahjongutils.app.base.utils.setText
@@ -154,4 +158,12 @@ class TileImeHostState(
             tryParsePendingText()
         }
     }
+}
+
+@Composable
+fun rememberTileImeHostState(
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    clipboardManager: Clipboard = LocalClipboard.current
+): TileImeHostState {
+    return remember { TileImeHostState(coroutineScope, clipboardManager) }
 }

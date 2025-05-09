@@ -14,6 +14,8 @@
     <string name="title_about_opensource_repo">Open-Source Repository</string>
     <string name="title_about_opensource_licenses">Open-Source License</string>
 
+    <string name="title_crop_image">Crop Image</string>
+
     <string name="label_history">History</string>
     <string name="label_clear">Clear</string>
     <string name="label_share">Share</string>

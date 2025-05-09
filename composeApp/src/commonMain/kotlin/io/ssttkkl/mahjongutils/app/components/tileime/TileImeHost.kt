@@ -18,10 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.dp
 import com.quadible.feather.FloatingDraggableContainer
 import com.quadible.feather.FloatingDraggableItem
@@ -29,9 +27,6 @@ import com.quadible.feather.FloatingDraggableState
 import io.ssttkkl.mahjongutils.app.base.rememberWindowSizeClass
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_drag_handle
-import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
-import network.chaintech.cmpimagepickncrop.imagecropper.rememberImageCropper
-import network.chaintech.cmpimagepickncrop.ui.ImageCropperDialogContainer
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -98,17 +93,13 @@ private fun TileImeHostFloating(
 
 @Composable
 fun TileImeHost(
+    state: TileImeHostState = rememberTileImeHostState(),
     content: @Composable () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     val windowSizeClass = rememberWindowSizeClass()
-    val clipboardManager = LocalClipboard.current
-    val state = remember { TileImeHostState(scope, clipboardManager) }
-    val cropper = rememberImageCropper()
 
     CompositionLocalProvider(
-        LocalTileImeHostState provides state,
-        LocalImageCropper provides cropper
+        LocalTileImeHostState provides state
     ) {
         if (windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
             && windowSizeClass.heightSizeClass >= WindowHeightSizeClass.Medium
@@ -118,16 +109,8 @@ fun TileImeHost(
             TileImeHostOnBottom(state, content)
         }
     }
-
-    cropper.imageCropState?.let { cropState ->
-        ImageCropperDialogContainer(cropState)
-    }
 }
 
 val LocalTileImeHostState = compositionLocalOf<TileImeHostState> {
     error("CompositionLocal LocalTileImeHostState not present")
-}
-
-val LocalImageCropper = compositionLocalOf<ImageCropper> {
-    error("CompositionLocal LocalImageCropper not present")
 }

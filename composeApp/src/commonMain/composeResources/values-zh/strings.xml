@@ -14,6 +14,8 @@
     <string name="title_about_opensource_repo">开放源代码仓库</string>
     <string name="title_about_opensource_licenses">开放源代码许可</string>
 
+    <string name="title_crop_image">图片裁剪</string>
+
     <string name="label_history">历史记录</string>
     <string name="label_clear">清空</string>
     <string name="label_share">分享</string>
