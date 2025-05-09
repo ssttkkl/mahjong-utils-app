@@ -46,7 +46,7 @@ kotlin {
                     val arch = System.getProperty("os.arch")
                     val artifactTypeAttr = when {
                         hostOs == "Mac OS X" && arch == "aarch64" -> "onnxruntime-osx-aarch64-jar"
-                        hostOs == "Mac OS X" && arch == "amd64" -> "onnxruntime-osx-x64-jar"
+                        hostOs == "Mac OS X" && arch == "x86_64" -> "onnxruntime-osx-x64-jar"
                         hostOs == "Linux" && arch == "amd64" -> "onnxruntime-linux-x64-jar"
                         hostOs.startsWith("Windows") && arch == "amd64" -> "onnxruntime-win-x64-jar"
                         else -> error("Unsupported hostOs and arch: ${hostOs}, ${arch}")
