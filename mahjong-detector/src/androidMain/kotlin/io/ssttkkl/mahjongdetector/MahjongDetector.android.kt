@@ -51,30 +51,34 @@ actual object MahjongDetector {
         withContext(Dispatchers.Default) {
             prepareModel()
 
-            // 预处理图像
-            val (preprocessedImage, paddingInfo) = preprocessImage(image)
+            var tensor: OnnxTensor? = null
+            var results: OrtSession.Result? = null
 
-            // 将预处理后的图像数据转换为 ONNX 张量
-            val tensor = createTensor(preprocessedImage.asAndroidBitmap())
+            try {
+                // 预处理图像
+                val (preprocessedImage, paddingInfo) = preprocessImage(image)
 
-            // 执行推理
-            val results = session.run(mapOf(session.inputNames.first() to tensor))
+                // 将预处理后的图像数据转换为 ONNX 张量
+                tensor = createTensor(preprocessedImage.asAndroidBitmap())
 
-            // 获取输出张量 (你需要根据你的模型输出名称调整)
-            val output = results.get(0).value as Array<Array<FloatArray>>
-            val detections =
-                YoloV8PostProcessor.postprocess(
-                    output[0],
-                    paddingInfo,
-                    CLASS_NAME,
-                    confidenceThreshold
-                )
+                // 执行推理
+                results = session.run(mapOf(session.inputNames.first() to tensor))
 
-            // 释放资源
-            tensor.close()
-            results.close()
-
-            detections
+                // 获取输出张量 (你需要根据你的模型输出名称调整)
+                val output = results.get(0).value as Array<Array<FloatArray>>
+                val detections =
+                    YoloV8PostProcessor.postprocess(
+                        output[0],
+                        paddingInfo,
+                        CLASS_NAME,
+                        confidenceThreshold
+                    )
+                return@withContext detections
+            } finally {
+                // 释放资源
+                tensor?.close()
+                results?.close()
+            }
         }
 
     // 创建ONNX输入Tensor

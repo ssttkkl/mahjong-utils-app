@@ -40,28 +40,35 @@ actual object MahjongDetector {
     actual suspend fun predict(image: ImageBitmap, confidenceThreshold: Float): List<Detection> {
         prepareModel()
 
-        val (preprocessed, paddingInfo) = ImagePreprocessor.preprocessImage(image)
-        val inputTensor = createInputTensor(preprocessed)  // 1*640*640*3
-        inputTensor.print(verbose = true)
-        val outputTensor = checkNotNull(predict(model, inputTensor))  // 1*(4+classes)*8400
-        outputTensor.print(verbose = true)
-        val outputArr = outputTensor.array<JsArray<JsArray<JsArray<JsNumber>>>>()
-            .await<JsArray<JsArray<JsArray<JsNumber>>>>()
-        val output: Array<FloatArray> = Array(4 + CLASS_NAME.size) { i ->
-            FloatArray(8400) { j ->
-                outputArr[0]!![i]!![j]!!.toDouble().toFloat()
-            }
-        }
-        val detections = YoloV8PostProcessor.postprocess(
-            output, paddingInfo, CLASS_NAME,
-            confidenceThreshold
-        )
-        detections.forEach {
-            println(it)
-        }
+        var inputTensor: Tensor? = null
+        var outputTensor: Tensor? = null
 
-        inputTensor.dispose()
-        return detections
+        try {
+            val (preprocessed, paddingInfo) = ImagePreprocessor.preprocessImage(image)
+
+            inputTensor = createInputTensor(preprocessed)  // 1*640*640*3
+            inputTensor.print(verbose = true)
+
+            outputTensor = checkNotNull(predict(model, inputTensor))  // 1*(4+classes)*8400
+            outputTensor.print(verbose = true)
+
+            val outputArr = outputTensor.array<JsArray<JsArray<JsArray<JsNumber>>>>()
+                .await<JsArray<JsArray<JsArray<JsNumber>>>>()
+            val output: Array<FloatArray> = Array(4 + CLASS_NAME.size) { i ->
+                FloatArray(8400) { j ->
+                    outputArr[0]!![i]!![j]!!.toDouble().toFloat()
+                }
+            }
+
+            val detections = YoloV8PostProcessor.postprocess(
+                output, paddingInfo, CLASS_NAME,
+                confidenceThreshold
+            )
+            return detections
+        } finally {
+            inputTensor?.dispose()
+            outputTensor?.dispose()
+        }
     }
 
     private fun createInputTensor(image: ImageBitmap): Tensor {
