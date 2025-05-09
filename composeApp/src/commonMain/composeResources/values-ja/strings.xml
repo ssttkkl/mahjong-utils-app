@@ -22,6 +22,10 @@
     <string name="label_view">ビュー</string>
     <string name="label_copy">コピー</string>
     <string name="label_paste">ペースト</string>
+    <string name="label_recognize_from_image">画像から認識</string>
+    <string name="label_recognize_from_screenshot">スクリーンショットから認識</string>
+    <string name="label_recognize_from_camera">カメラで認識</string>
+    <string name="text_recognize_no_detection">牌が検出されません</string>
 
     <string name="text_empty_history">なし</string>
 

@@ -71,7 +71,6 @@ kotlin {
                 dependsOn(skiaMain)
                 dependencies {
                     implementation(npm("@tensorflow/tfjs", "^4.22.0"))
-                    implementation(npm("onnxruntime-web", libs.versions.onnxruntime.get()))
                 }
             }
         }

@@ -2,6 +2,7 @@ package io.ssttkkl.mahjongutils.app.components.tileime
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -166,4 +167,8 @@ fun rememberTileImeHostState(
     clipboardManager: Clipboard = LocalClipboard.current
 ): TileImeHostState {
     return remember { TileImeHostState(coroutineScope, clipboardManager) }
+}
+
+val LocalTileImeHostState = compositionLocalOf<TileImeHostState> {
+    error("CompositionLocal LocalTileImeHostState not present")
 }

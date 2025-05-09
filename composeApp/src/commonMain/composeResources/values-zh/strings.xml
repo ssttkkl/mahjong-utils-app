@@ -22,6 +22,10 @@
     <string name="label_view">查看</string>
     <string name="label_copy">复制</string>
     <string name="label_paste">粘贴</string>
+    <string name="label_recognize_from_image">从图片识别</string>
+    <string name="label_recognize_from_screenshot">从截屏识别</string>
+    <string name="label_recognize_from_camera">从拍照识别</string>
+    <string name="text_recognize_no_detection">未检测到麻将牌</string>
 
     <string name="text_empty_history">空</string>
 

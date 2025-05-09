@@ -301,6 +301,7 @@ internal fun CoreTileField(
             .focusRequester(focusRequester)
             .focusable(enabled, interactionSource = state.interactionSource)
             .onRightClick(enabled) {
+                focusRequester.requestFocus()  // 如果右键时还没有focus，则ime无法绑定到输入框，操作不生效
                 dropdownExpanded = true
             }
             .tapPress(
