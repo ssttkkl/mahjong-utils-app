@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -38,6 +37,7 @@ import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_content_copy
 import mahjongutils.composeapp.generated.resources.icon_content_paste
+import mahjongutils.composeapp.generated.resources.icon_image
 import mahjongutils.composeapp.generated.resources.label_clear
 import mahjongutils.composeapp.generated.resources.label_copy
 import mahjongutils.composeapp.generated.resources.label_paste
@@ -48,6 +48,7 @@ import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropResult
 import network.chaintech.cmpimagepickncrop.imagecropper.cropImage
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import kotlin.time.measureTime
 
 
@@ -181,6 +182,7 @@ fun PickFromImageMenuItem(
 ) {
     // 从图片选择
     val logger = remember { LoggerFactory.getLogger("PickFromImageMenuItem") }
+    // 使用手动的CoroutineScope，避免菜单项的composable移除后协程任务被取消
     val coroutineScope = remember { CoroutineScope(Dispatchers.Main) }
 
     val curOnDismissRequest by rememberUpdatedState(onDismissRequest)
@@ -207,7 +209,7 @@ fun PickFromImageMenuItem(
     DropdownMenuItem(
         text = {
             Row(Modifier.padding(vertical = 8.dp)) {
-                Icon(Icons.Default.Star, "")
+                Icon(vectorResource(Res.drawable.icon_image), "")
                 Text(
                     stringResource(Res.string.label_recognize_from_image),
                     Modifier.padding(horizontal = 8.dp)

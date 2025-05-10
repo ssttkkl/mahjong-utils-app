@@ -3,8 +3,6 @@ package io.ssttkkl.mahjongutils.app.components.tile
 import LocalMainWindowState
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -23,8 +21,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.icon_screenshot_frame
 import mahjongutils.composeapp.generated.resources.label_recognize_from_screenshot
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import java.awt.Rectangle
 import java.awt.Robot
 import java.awt.Toolkit
@@ -45,9 +45,10 @@ fun CaptureMenuItem(
     onDismissRequest: () -> Unit,
     onImagePicked: suspend (ImageBitmap) -> Unit
 ) {
+    val logger = LoggerFactory.getLogger("CaptureMenuItem")
+    // 使用手动的CoroutineScope，避免菜单项的composable移除后协程任务被取消
     val coroutineScope = remember { CoroutineScope(Dispatchers.Main) }
     val mainWindowState = LocalMainWindowState.current
-    val logger = LoggerFactory.getLogger("CaptureMenuItem")
 
     val curOnDismissRequest by rememberUpdatedState(onDismissRequest)
     val curOnImagePicked by rememberUpdatedState(onImagePicked)
@@ -55,7 +56,7 @@ fun CaptureMenuItem(
     DropdownMenuItem(
         text = {
             Row(Modifier.padding(vertical = 8.dp)) {
-                Icon(Icons.Default.Star, "")
+                Icon(vectorResource(Res.drawable.icon_screenshot_frame), "")
                 Text(
                     stringResource(Res.string.label_recognize_from_screenshot),
                     Modifier.padding(horizontal = 8.dp)
