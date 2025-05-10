@@ -144,7 +144,7 @@ fun TileFieldPopMenu(
         val cropper = LocalImageCropper.current
         val appState = LocalAppState.current
         val noDetectionMsg = stringResource(Res.string.text_recognize_no_detection)
-        TileFieldPickImageMenuItems(onDismissRequest) { bitmap ->
+        TileFieldRecognizeImageMenuItems(onDismissRequest) { bitmap ->
             val logger = LoggerFactory.getLogger("MahjongDetector")
             val cropResult = cropper.cropImage(bmp = bitmap)
             if (cropResult is ImageCropResult.Success) {
@@ -170,18 +170,18 @@ fun TileFieldPopMenu(
 }
 
 @Composable
-expect fun TileFieldPickImageMenuItems(
+expect fun TileFieldRecognizeImageMenuItems(
     onDismissRequest: () -> Unit,
     onImagePicked: suspend (ImageBitmap) -> Unit
 )
 
 @Composable
-fun PickFromImageMenuItem(
+fun PickImageMenuItem(
     onDismissRequest: () -> Unit,
     onImagePicked: suspend (ImageBitmap) -> Unit
 ) {
-    // 从图片选择
-    val logger = remember { LoggerFactory.getLogger("PickFromImageMenuItem") }
+    // 从图片识别
+    val logger = remember { LoggerFactory.getLogger("PickImageMenuItem") }
     // 使用手动的CoroutineScope，避免菜单项的composable移除后协程任务被取消
     val coroutineScope = remember { CoroutineScope(Dispatchers.Main) }
 

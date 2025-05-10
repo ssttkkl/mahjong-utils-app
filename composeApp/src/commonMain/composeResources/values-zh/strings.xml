@@ -25,7 +25,9 @@
     <string name="label_recognize_from_image">从图片识别</string>
     <string name="label_recognize_from_screenshot">从截屏识别</string>
     <string name="label_recognize_from_camera">从拍照识别</string>
+    <string name="label_recognize_from_clipboard">从剪切板识别</string>
     <string name="text_recognize_no_detection">未检测到麻将牌</string>
+    <string name="text_clipboard_no_image">剪切板中没有图片</string>
 
     <string name="text_empty_history">空</string>
 

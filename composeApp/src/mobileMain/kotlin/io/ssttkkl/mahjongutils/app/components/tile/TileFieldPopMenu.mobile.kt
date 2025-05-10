@@ -25,11 +25,11 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
-actual fun TileFieldPickImageMenuItems(
+actual fun TileFieldRecognizeImageMenuItems(
     onDismissRequest: () -> Unit,
     onImagePicked: suspend (ImageBitmap) -> Unit
 ) {
-    PickFromImageMenuItem(onDismissRequest, onImagePicked)
+    PickImageMenuItem(onDismissRequest, onImagePicked)
     CameraMenuItem(onDismissRequest, onImagePicked)
 }
 
