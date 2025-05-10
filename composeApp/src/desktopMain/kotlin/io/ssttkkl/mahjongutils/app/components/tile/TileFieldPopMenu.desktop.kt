@@ -39,6 +39,9 @@ import java.awt.Robot
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.awt.image.BufferedImage
+import java.io.File
+import java.nio.file.Files
+import javax.imageio.ImageIO
 
 
 @Composable
@@ -139,12 +142,27 @@ fun ClipboardImageMenuItem(
         onClick = {
             coroutineScope.launch(Dispatchers.IO) {
                 runCatching {
-                    val transferable = clipboard.getClipEntry()?.asAwtTransferable
-                    if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-                        val image =
-                            transferable.getTransferData(DataFlavor.imageFlavor) as Image
+                    var image: ImageBitmap? = null
 
-                        curOnImagePicked(image.toBufferedImage().toComposeImageBitmap())
+                    val transferable = clipboard.getClipEntry()?.asAwtTransferable ?: return@launch
+                    if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                        val fileList =
+                            transferable.getTransferData(DataFlavor.javaFileListFlavor) as List<File>
+                        val imgFile = fileList.firstOrNull {
+                            Files.probeContentType(it.toPath()).startsWith("image/")
+                        }
+
+                        if (imgFile != null) {
+                            image = ImageIO.read(imgFile)
+                                .toBufferedImage().toComposeImageBitmap()
+                        }
+                    } else if (transferable.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+                        image = (transferable.getTransferData(DataFlavor.imageFlavor) as Image)
+                            .toBufferedImage().toComposeImageBitmap()
+                    }
+
+                    if (image != null) {
+                        curOnImagePicked(image)
                     } else {
                         appState.snackbarHostState.showSnackbar(noImageInClipboardMsg)
                     }
