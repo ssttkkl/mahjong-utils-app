@@ -7,6 +7,7 @@ import mahjongutils.buildlogic.utils.enableWasm
 
 plugins {
     id("mahjongutils.buildlogic.lib")
+    alias(libs.plugins.kotlinNativeCocoapods)
 }
 
 kotlin {
@@ -18,6 +19,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.ui)
+                implementation(libs.okio)
 
                 implementation(libs.filekit.core)
 
@@ -80,6 +82,12 @@ kotlin {
                 dependsOn(skiaMain)
             }
         }
+    }
+
+    cocoapods {
+        noPodspec()
+        ios.deploymentTarget = "12.0"
+        pod("onnxruntime-objc", "~> 1.18.0")
     }
 }
 

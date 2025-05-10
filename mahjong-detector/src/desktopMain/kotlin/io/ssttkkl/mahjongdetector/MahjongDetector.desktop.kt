@@ -4,16 +4,13 @@ import ai.onnxruntime.OnnxJavaType
 import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtEnvironment
 import ai.onnxruntime.OrtSession
-import ai.onnxruntime.platform.Fp16Conversions.floatToFp16
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.toAwtImage
 import io.ssttkkl.mahjongdetector.ImagePreprocessor.preprocessImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import java.awt.image.BufferedImage
-import java.nio.ShortBuffer
+import java.nio.ByteBuffer
 
 
 actual object MahjongDetector {
@@ -57,7 +54,7 @@ actual object MahjongDetector {
                 val (preprocessedImage, paddingInfo) = preprocessImage(image)
 
                 // 将预处理后的图像数据转换为 ONNX 张量
-                tensor = createTensor(preprocessedImage.toAwtImage())
+                tensor = createTensor(preprocessedImage)
 
                 // 执行推理
                 results = session.run(mapOf(session.inputNames.first() to tensor))
@@ -80,34 +77,13 @@ actual object MahjongDetector {
         }
 
     // 创建ONNX输入Tensor
-    private fun createTensor(image: BufferedImage): OnnxTensor {
-        val width = image.width
-        val height = image.height
-
-        // 1. 获取ARGB像素数据
-        val pixels = IntArray(width * height)
-        image.getRGB(0, 0, width, height, pixels, 0, width)
-
-        // 2. 转换为BGR float数组（OpenCV兼容格式）
-        val bgrData = ShortArray(3 * width * height)
-        for (i in pixels.indices) {
-            val pixel = pixels[i]
-
-            val r = (pixel shr 16) and 0xFF
-            val g = (pixel shr 8) and 0xFF
-            val b = pixel and 0xFF
-
-            bgrData[i] = floatToFp16(r / 255.0f)
-            bgrData[pixels.size + i] = floatToFp16(g / 255.0f)
-            bgrData[pixels.size * 2 + i] = floatToFp16(b / 255.0f)
-        }
-
+    private fun createTensor(image: ImageBitmap): OnnxTensor {
+        val buffer = image.toNchwFp16Buffer()
         return OnnxTensor.createTensor(
             env,
-            ShortBuffer.wrap(bgrData),
-            longArrayOf(1, 3, height.toLong(), width.toLong()),  // NCHW格式
+            ByteBuffer.wrap(buffer.readByteArray()).asShortBuffer(),
+            longArrayOf(1, 3, image.height.toLong(), image.width.toLong()),  // NCHW格式
             OnnxJavaType.FLOAT16
         )
     }
-
 }
