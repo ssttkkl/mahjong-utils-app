@@ -1,12 +1,10 @@
-import com.android.build.gradle.AppExtension
+import com.android.build.gradle.BaseExtension
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.OnnxRuntimeLibraryFilter
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
 import mahjongutils.buildlogic.utils.enableIos
 import mahjongutils.buildlogic.utils.enableWasm
-import org.gradle.kotlin.dsl.getByType
-import kotlin.apply
 
 plugins {
     id("mahjongutils.buildlogic.lib")
@@ -98,7 +96,7 @@ kotlin {
 }
 
 if (enableAndroid) {
-    extensions.getByType<AppExtension>().apply {
+    extensions.getByType<BaseExtension>().apply {
         namespace = "$APPLICATION_ID.mahjong_detector"
     }
 }
