@@ -1,3 +1,4 @@
+import com.android.build.gradle.AppExtension
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
@@ -60,6 +61,8 @@ kotlin {
     }
 }
 
-android {
-    namespace = "$APPLICATION_ID.basecomponents"
+if (enableAndroid) {
+    extensions.getByType<AppExtension>().apply {
+        namespace = "$APPLICATION_ID.basecomponents"
+    }
 }
