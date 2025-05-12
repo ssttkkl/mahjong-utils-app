@@ -9,6 +9,7 @@ import cocoapods.onnxruntime_objc.ORTSession
 import cocoapods.onnxruntime_objc.ORTSessionOptions
 import cocoapods.onnxruntime_objc.ORTTensorElementDataType
 import cocoapods.onnxruntime_objc.ORTValue
+import com.rickclephas.kmp.nserrorkt.asThrowable
 import io.ssttkkl.mahjongdetector.ImagePreprocessor.preprocessImage
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.CPointer
@@ -142,7 +143,7 @@ private inline fun <T> withErrPtr(action: (CPointer<ObjCObjectVar<NSError?>>) ->
         val result = action(err.ptr)
         val nsError = err.value
         if (nsError != null) {
-            error(nsError.toString())
+            throw nsError.asThrowable()
         }
         return result
     }

@@ -80,6 +80,9 @@ kotlin {
         if (enableIos) {
             val iosMain by getting {
                 dependsOn(skiaMain)
+                dependencies {
+                    implementation(libs.nserror.kt)
+                }
             }
         }
     }
