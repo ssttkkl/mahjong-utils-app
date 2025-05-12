@@ -1,9 +1,12 @@
+import com.android.build.gradle.AppExtension
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.OnnxRuntimeLibraryFilter
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
 import mahjongutils.buildlogic.utils.enableIos
 import mahjongutils.buildlogic.utils.enableWasm
+import org.gradle.kotlin.dsl.getByType
+import kotlin.apply
 
 plugins {
     id("mahjongutils.buildlogic.lib")
@@ -94,8 +97,10 @@ kotlin {
     }
 }
 
-android {
-    namespace = "$APPLICATION_ID.mahjong_detector"
+if (enableAndroid) {
+    extensions.getByType<AppExtension>().apply {
+        namespace = "$APPLICATION_ID.mahjong_detector"
+    }
 }
 
 // 去掉非本平台的动态库
