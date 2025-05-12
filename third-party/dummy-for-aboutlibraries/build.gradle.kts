@@ -1,5 +1,8 @@
+import com.android.build.gradle.AppExtension
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.enableAndroid
+import org.gradle.kotlin.dsl.getByType
+import kotlin.apply
 
 plugins {
     id("mahjongutils.buildlogic.lib")
@@ -21,8 +24,10 @@ kotlin {
     }
 }
 
-android {
-    namespace = APPLICATION_ID + ".thirdparty.dummy"
+if (enableAndroid) {
+    extensions.getByType<AppExtension>().apply {
+        namespace = APPLICATION_ID + ".thirdparty.dummy"
+    }
 }
 
 aboutLibraries {

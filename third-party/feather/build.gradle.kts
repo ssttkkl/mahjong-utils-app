@@ -1,6 +1,9 @@
+import com.android.build.gradle.AppExtension
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
+import org.gradle.kotlin.dsl.getByType
+import kotlin.apply
 
 plugins {
     id("mahjongutils.buildlogic.lib")
@@ -18,6 +21,8 @@ kotlin {
     }
 }
 
-android {
-    namespace = "$APPLICATION_ID.thirdparty.feather"
+if (enableAndroid) {
+    extensions.getByType<AppExtension>().apply {
+        namespace = "$APPLICATION_ID.thirdparty.feather"
+    }
 }
