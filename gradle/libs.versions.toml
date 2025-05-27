@@ -23,6 +23,8 @@ voyager = "1.1.0-beta03"
 aboutLibraries = "11.6.3"
 buildkonfig = "0.17.0"
 undercouch-download = "5.6.0"
+sentryAndroid = "5.6.0"
+sentryKotlinCompilerGradle = "5.7.0"
 
 [libraries]
 androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastoreCore" }
@@ -65,3 +67,5 @@ kotlinxAtomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 undercouch-download = { id = "de.undercouch.download", version.ref = "undercouch-download" }
+sentryAndroid = { id = "io.sentry.android.gradle", version.ref = "sentryAndroid" }
+sentryKotlinCompilerGradle = { id = "io.sentry.kotlin.compiler.gradle", version.ref = "sentryKotlinCompilerGradle" }

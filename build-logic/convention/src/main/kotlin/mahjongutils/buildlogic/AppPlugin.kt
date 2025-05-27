@@ -1,6 +1,7 @@
 package mahjongutils.buildlogic
 
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import getLocalProperty
 import mahjongutils.buildlogic.utils.downloadFile
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
@@ -24,7 +25,6 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
-import java.util.Properties
 
 const val APPLICATION_ID = "io.ssttkkl.mahjongutils.app"
 const val APPLICATION_NAME = "mahjong-utils-app"
@@ -136,27 +136,15 @@ class AppPlugin : Plugin<Project> {
     }
 
     private fun Project.configAndroidSigning() {
-        val localProperties = Properties()
-        if (rootProject.file("local.properties").exists()) {
-            rootProject.file("local.properties").inputStream().use { inputStream ->
-                localProperties.load(inputStream)
-            }
-        }
-
         (extensions.getByName("android") as BaseAppModuleExtension).apply {
             signingConfigs {
                 val keystoreFile = rootProject.file("keystore.jks")
                 if (keystoreFile.exists()) {
                     create("release") {
                         storeFile = rootProject.file("keystore.jks")
-                        storePassword =
-                            localProperties["android.signing.release.storePassword"]?.toString()
-                                ?: System.getenv("ANDROID_SIGNING_RELEASE_STORE_PASSWORD")
-                        keyAlias = localProperties["android.signing.release.keyAlias"]?.toString()
-                            ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_ALIAS")
-                        keyPassword =
-                            localProperties["android.signing.release.keyPassword"]?.toString()
-                                ?: System.getenv("ANDROID_SIGNING_RELEASE_KEY_PASSWORD")
+                        storePassword = getLocalProperty("android.signing.release.storePassword")
+                        keyAlias = getLocalProperty("android.signing.release.keyAlias")
+                        keyPassword = getLocalProperty("android.signing.release.keyPassword")
                     }
                 }
             }

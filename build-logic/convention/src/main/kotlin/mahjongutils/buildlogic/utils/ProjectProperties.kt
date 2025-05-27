@@ -16,3 +16,9 @@ fun Project.readVersion(): Pair<String, Int> {
 
     return Pair(versionName, versionCode)
 }
+
+fun Project.readGitCommitHash(): String {
+    return Runtime.getRuntime().exec(
+        arrayOf("git", "rev-parse", "HEAD")
+    ).inputStream.bufferedReader().use { it.readLine() }
+}

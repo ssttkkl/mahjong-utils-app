@@ -55,6 +55,14 @@ object AboutScreen : NoParamUrlNavigationScreen() {
                         navigator?.push(OpenSourceLicensesScreen)
                     }
                 )
+                // 添加测试Sentry异常捕获的ListItem
+                ListItem(
+                    headlineContent = { Text("测试Sentry异常捕获") },
+                    supportingContent = { Text("点击此项将抛出一个测试异常") },
+                    modifier = Modifier.clickable {
+                        throw RuntimeException("这是一个测试Sentry异常捕获功能的异常")
+                    }
+                )
             }
         }
     }
