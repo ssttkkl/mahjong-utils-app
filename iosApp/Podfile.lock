@@ -1,16 +1,16 @@
 PODS:
-  - composeApp (1.0.14)
+  - shared (1.0.14)
 
 DEPENDENCIES:
-  - composeApp (from `../composeApp`)
+  - shared (from `../shared`)
 
 EXTERNAL SOURCES:
-  composeApp:
-    :path: "../composeApp"
+  shared:
+    :path: "../shared"
 
 SPEC CHECKSUMS:
-  composeApp: bcb01de9bbd23548b69930799e4183ad9feb2803
+  shared: c41d57853f814b94fb5872de78a5263d4d037f1e
 
-PODFILE CHECKSUM: bf64e6ebd10a8769e47bba479520b872a9a2d1a1
+PODFILE CHECKSUM: 495564eea6501014d8ec2e920d50f4afeb7a28a1
 
 COCOAPODS: 1.16.2

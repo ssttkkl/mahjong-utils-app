@@ -30,9 +30,21 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("app") {
-            id = "mahjongutils.buildlogic.app"
-            implementationClass = "mahjongutils.buildlogic.AppPlugin"
+        register("ios-framework") {
+            id = "mahjongutils.buildlogic.ios.framework"
+            implementationClass = "mahjongutils.buildlogic.IosFrameworkPlugin"
+        }
+        register("android-app") {
+            id = "mahjongutils.buildlogic.app.android"
+            implementationClass = "mahjongutils.buildlogic.AndroidAppPlugin"
+        }
+        register("desktop-app") {
+            id = "mahjongutils.buildlogic.app.desktop"
+            implementationClass = "mahjongutils.buildlogic.DesktopAppPlugin"
+        }
+        register("web-app") {
+            id = "mahjongutils.buildlogic.app.web"
+            implementationClass = "mahjongutils.buildlogic.WebAppPlugin"
         }
         register("lib") {
             id = "mahjongutils.buildlogic.lib"

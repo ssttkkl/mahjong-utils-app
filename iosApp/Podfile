@@ -5,5 +5,5 @@ target 'iosApp' do
   # use_frameworks! :linkage => :static
 
   # Pods for iosApp
-  pod 'composeApp', :path => '../composeApp'
+  pod 'shared', :path => '../shared'
 end

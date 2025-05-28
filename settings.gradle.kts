@@ -24,5 +24,8 @@ include(":third-party:capturable")
 include(":third-party:feather")
 
 include(":base-components")
-include(":composeApp")
+include(":shared")
 
+include(":composeApp")
+include(":desktopApp")
+include(":webApp")

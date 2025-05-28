@@ -1,0 +1,5 @@
+release/
+*.AppImage
+../desktopApp/mahjong-utils-app.AppDir/bin/
+../desktopApp/mahjong-utils-app.AppDir/lib/
+*.podspec
