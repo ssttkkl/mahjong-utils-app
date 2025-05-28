@@ -49,11 +49,11 @@ jobs:
 
     - name: Package Distribution
       run: |
-        ./gradlew composeApp:createReleaseDistributable composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
+        ./gradlew desktopApp:createReleaseDistributable desktopApp:packageReleaseDistributionForCurrentOS desktopApp:packageReleaseUberJarForCurrentOS
 
     - name: Rename Distribution
       run: |
-        Set-Location composeApp/build/compose/binaries/main-release/exe
+        Set-Location desktopApp/build/compose/binaries/main-release/exe
         Get-ChildItem *.exe | ForEach-Object {
           $newName = $_.Name -replace '\.exe$', '-x64.exe'
           Rename-Item -Path $_.FullName -NewName $newName
@@ -66,7 +66,7 @@ jobs:
           $versionName = $matches[1].Trim()
           Write-Host "提取的版本号: $versionName"
         
-          Set-Location composeApp\build\compose\binaries\main-release\app
+          Set-Location desktopApp\build\compose\binaries\main-release\app
           Compress-Archive -Path "mahjong-utils-app\*" -DestinationPath mahjong-utils-app-windows-x64-$versionName.zip -CompressionLevel Optimal
         }
         else {
@@ -79,16 +79,16 @@ jobs:
       with:
         name: distribution-windows
         path: |
-          composeApp/build/compose/binaries/main-release/exe/*.exe
-          composeApp/build/compose/binaries/main-release/app/*.zip
-          composeApp/build/compose/jars/*.jar
+          desktopApp/build/compose/binaries/main-release/exe/*.exe
+          desktopApp/build/compose/binaries/main-release/app/*.zip
+          desktopApp/build/compose/jars/*.jar
 
     - name: Upload Release Assets
       if: ${{ github.event_name == 'release' }}
       uses: AButler/upload-release-assets@v3.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: "composeApp/build/compose/binaries/main-release/exe/*.exe;composeApp/build/compose/binaries/main-release/app/*.zip;composeApp/build/compose/jars/*.jar"
+        files: "desktopApp/build/compose/binaries/main-release/exe/*.exe;desktopApp/build/compose/binaries/main-release/app/*.zip;desktopApp/build/compose/jars/*.jar"
         
   build-on-macos-arm64:
     runs-on: macos-latest
@@ -110,11 +110,11 @@ jobs:
 
     - name: Package Distribution
       run: |
-        ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
+        ./gradlew desktopApp:packageReleaseDistributionForCurrentOS desktopApp:packageReleaseUberJarForCurrentOS
 
     - name: Rename Distribution
       run: |
-        cd composeApp/build/compose/binaries/main-release/dmg
+        cd desktopApp/build/compose/binaries/main-release/dmg
         for file in *.dmg; do
           mv "$file" "${file%.dmg}-arm64.dmg"
         done
@@ -124,15 +124,15 @@ jobs:
       with:
         name: distribution-macos-arm64
         path: |
-          composeApp/build/compose/binaries/main-release/dmg/*
-          composeApp/build/compose/jars/*.jar
+          desktopApp/build/compose/binaries/main-release/dmg/*
+          desktopApp/build/compose/jars/*.jar
 
     - name: Upload Release Assets
       if: ${{ github.event_name == 'release' }}
       uses: AButler/upload-release-assets@v3.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        files: "composeApp/build/compose/binaries/main-release/dmg/*;composeApp/build/compose/jars/*.jar"
+        files: "desktopApp/build/compose/binaries/main-release/dmg/*;desktopApp/build/compose/jars/*.jar"
 
 
   build-on-macos-x64:
@@ -155,11 +155,11 @@ jobs:
 
       - name: Package Distribution
         run: |
-          ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
+          ./gradlew desktopApp:packageReleaseDistributionForCurrentOS desktopApp:packageReleaseUberJarForCurrentOS
 
       - name: Rename Distribution
         run: |
-          cd composeApp/build/compose/binaries/main-release/dmg
+          cd desktopApp/build/compose/binaries/main-release/dmg
           for file in *.dmg; do
             mv "$file" "${file%.dmg}-x64.dmg"
           done
@@ -169,15 +169,15 @@ jobs:
         with:
           name: distribution-macos-x64
           path: |
-            composeApp/build/compose/binaries/main-release/dmg/*
-            composeApp/build/compose/jars/*.jar
+            desktopApp/build/compose/binaries/main-release/dmg/*
+            desktopApp/build/compose/jars/*.jar
 
       - name: Upload Release Assets
         if: ${{ github.event_name == 'release' }}
         uses: AButler/upload-release-assets@v3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          files: "composeApp/build/compose/binaries/main-release/dmg/*;composeApp/build/compose/jars/*.jar"
+          files: "desktopApp/build/compose/binaries/main-release/dmg/*;desktopApp/build/compose/jars/*.jar"
 
 
   build-on-linux:
@@ -206,19 +206,19 @@ jobs:
 
       - name: Package Distribution
         run: |
-          ./gradlew composeApp:packageReleaseDistributionForCurrentOS composeApp:packageReleaseUberJarForCurrentOS
+          ./gradlew desktopApp:packageReleaseDistributionForCurrentOS desktopApp:packageReleaseUberJarForCurrentOS
 
       - name: Upload the Build Artifact
         uses: actions/upload-artifact@v4.6.1
         with:
           name: distribution-linux
           path: |
-            composeApp/build/appimage/main-release/*.AppImage
-            composeApp/build/compose/jars/*.jar
+            desktopApp/build/appimage/main-release/*.AppImage
+            desktopApp/build/compose/jars/*.jar
 
       - name: Upload Release Assets
         if: ${{ github.event_name == 'release' }}
         uses: AButler/upload-release-assets@v3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          files: "composeApp/build/appimage/main-release/*.AppImage;composeApp/build/compose/jars/*.jar"
+          files: "desktopApp/build/appimage/main-release/*.AppImage;desktopApp/build/compose/jars/*.jar"
