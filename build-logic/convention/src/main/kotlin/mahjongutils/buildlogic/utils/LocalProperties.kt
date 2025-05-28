@@ -1,15 +1,22 @@
 import org.gradle.api.Project
 import org.gradle.internal.extensions.core.extra
-import org.gradle.kotlin.dsl.get
+import java.io.File
 import java.util.Properties
+
+private val Project.localPropertiesFile: File
+    get() = rootProject.file("local.properties")
 
 private val Project.localProperties: Properties
     get() = rootProject.run {
         if (extra.has("localProperties")) {
             extra.get("localProperties") as Properties
         } else {
+            if (!localPropertiesFile.exists()) {
+                return Properties()
+            }
+
             val props = Properties().apply {
-                rootProject.file("local.properties").reader().use { rd ->
+                localPropertiesFile.reader().use { rd ->
                     load(rd)
                 }
             }
