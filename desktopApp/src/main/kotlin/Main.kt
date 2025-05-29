@@ -2,7 +2,11 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import io.sentry.SendCachedEnvelopeFireAndForgetIntegration
+import io.sentry.SendFireAndForgetEnvelopeSender
+import io.sentry.Sentry
 import io.ssttkkl.mahjongutils.app.App
+import io.ssttkkl.mahjongutils.app.BuildKonfig
 import io.ssttkkl.mahjongutils.app.base.utils.FileUtils
 import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 import io.ssttkkl.mahjongutils.app.getAppTypography
@@ -13,9 +17,29 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 fun init() {
+    initSentry()
+
     val logger = LoggerFactory.getLogger("init")
     logger.info("App start")
     logger.info("UserDataDir: ${FileUtils.sandboxPath}")
+}
+
+private fun initSentry() {
+    Sentry.init { options ->
+        options.dsn = BuildKonfig.SENTRY_DSN
+
+        options.release =
+            "${BuildKonfig.APPLICATION_ID}@${BuildKonfig.VERSION_NAME}+${BuildKonfig.GIT_COMMIT_HASH}"
+
+        options.isEnableUserInteractionTracing = true
+        options.isEnableUserInteractionBreadcrumbs = true
+
+        options.cacheDirPath = (FileUtils.sandboxPath / "sentryCache").toFile().absolutePath
+        options.addIntegration(
+            SendCachedEnvelopeFireAndForgetIntegration(
+                SendFireAndForgetEnvelopeSender { options.cacheDirPath })
+        )
+    }
 }
 
 fun main() = application {

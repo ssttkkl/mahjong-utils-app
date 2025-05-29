@@ -1,7 +1,20 @@
+import mahjongutils.buildlogic.utils.enableDesktop
+
 plugins {
     id("mahjongutils.buildlogic.app.desktop")
+    alias(libs.plugins.sentryJvm)
 }
 
-dependencies {
-    api(project(":shared"))
+if (enableDesktop) {
+    dependencies {
+        api(project(":shared"))
+    }
+}
+
+sentry {
+    org = "ssttkkl"
+    projectName = "mahjong-utils-app"
+    authToken = getLocalProperty("io.sentry.authToken")
+
+    includeSourceContext = true
 }

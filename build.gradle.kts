@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.aboutLibraries) apply false
     alias(libs.plugins.buildkonfig) apply false
     alias(libs.plugins.sentryAndroid) apply false
+    alias(libs.plugins.sentryJvm) apply false
     alias(libs.plugins.undercouch.download) apply false
     alias(libs.plugins.sentryKotlinCompilerGradle) apply false
 }
