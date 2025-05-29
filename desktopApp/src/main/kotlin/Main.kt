@@ -16,11 +16,18 @@ import mahjongutils.composeapp.generated.resources.icon_app
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-fun init() {
-    initSentry()
-
+fun init(args: Array<String>) {
     val logger = LoggerFactory.getLogger("init")
     logger.info("App start")
+
+    if (!args.contains("--disableSentry")) {
+        logger.info("sentry is enabled")
+        initSentry()
+        logger.info("sentry init success")
+    } else {
+        logger.info("sentry is disabled")
+    }
+
     logger.info("UserDataDir: ${FileUtils.sandboxPath}")
 }
 
@@ -42,8 +49,8 @@ private fun initSentry() {
     }
 }
 
-fun main() = application {
-    init()
+fun main(args: Array<String>) = application {
+    init(args)
     Window(
         onCloseRequest = ::exitApplication,
         title = stringResource(Res.string.app_name),

@@ -18,3 +18,7 @@ sentry {
 
     includeSourceContext = true
 }
+
+afterEvaluate {
+    (tasks["run"] as JavaExec).args("--disableSentry")
+}
