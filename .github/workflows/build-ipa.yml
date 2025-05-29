@@ -26,6 +26,8 @@ jobs:
           cache: 'gradle'
           
       - name: Archive
+        env:
+          IO_SENTRY_AUTH_TOKEN: ${{ secrets.IO_SENTRY_AUTH_TOKEN }}
         run: |
           cd iosApp
           xcodebuild \

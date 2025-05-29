@@ -44,6 +44,7 @@ jobs:
           ANDROID_SIGNING_RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_RELEASE_KEY_ALIAS }}
           ANDROID_SIGNING_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_RELEASE_KEY_PASSWORD }}
           ANDROID_SIGNING_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_RELEASE_STORE_PASSWORD }}
+          IO_SENTRY_AUTH_TOKEN: ${{ secrets.IO_SENTRY_AUTH_TOKEN }}
         run: |
           cp env.properties.fdroid env.properties
           ./gradlew composeApp:assembleRelease

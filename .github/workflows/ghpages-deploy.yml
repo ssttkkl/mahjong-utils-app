@@ -23,6 +23,8 @@ jobs:
           cache: 'gradle'
 
       - name: Build project
+        env:
+          IO_SENTRY_AUTH_TOKEN: ${{ secrets.IO_SENTRY_AUTH_TOKEN }}
         run: ./gradlew webApp:wasmJsBrowserDistribution
 
       - name: Deploy to GitHub Pages
