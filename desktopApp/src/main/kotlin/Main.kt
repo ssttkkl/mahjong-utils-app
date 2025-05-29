@@ -38,6 +38,9 @@ private fun initSentry() {
         options.release =
             "${BuildKonfig.APPLICATION_ID}@${BuildKonfig.VERSION_NAME}+${BuildKonfig.GIT_COMMIT_HASH}"
 
+        options.tags["os"] = System.getProperty("os.name") + " " + System.getProperty("os.version")
+        options.tags["arch"] = System.getProperty("os.arch")
+
         options.isEnableUserInteractionTracing = true
         options.isEnableUserInteractionBreadcrumbs = true
 
