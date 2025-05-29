@@ -6,7 +6,7 @@ import java.util.Properties
 
 fun Project.readVersion(): Pair<String, Int> {
     val versionProperties = Properties()
-    rootProject.findProject(":composeApp")!!.file("version.properties")
+    rootDir.resolve("composeApp/version.properties")
         .inputStream().use { inputStream ->
             versionProperties.load(inputStream)
         }

@@ -1,9 +1,11 @@
+import com.android.build.gradle.BaseExtension
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
 import mahjongutils.buildlogic.utils.readGitCommitHash
 import mahjongutils.buildlogic.utils.readVersion
+import kotlin.apply
 
 plugins {
     id("mahjongutils.buildlogic.lib")
@@ -57,7 +59,7 @@ kotlin {
 }
 
 if (enableAndroid) {
-    android {
+    (extensions.findByName("android") as BaseExtension?)?.apply {
         namespace = "$APPLICATION_ID.shared"
     }
 }

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 rootProject.name = "mahjongutils"
 
 pluginManagement {
@@ -18,6 +20,16 @@ dependencyResolutionManagement {
     }
 }
 
+val props = Properties().apply {
+    val envPropFile = file("env.properties")
+    if (envPropFile.exists()) {
+        envPropFile.reader().use { rd ->
+            load(rd)
+        }
+    }
+}
+println("=== props: ${props}")
+
 include(":third-party:dummy-for-aboutlibraries")
 include(":third-party:aboutlibraries-compose")
 include(":third-party:capturable")
@@ -26,6 +38,12 @@ include(":third-party:feather")
 include(":base-components")
 include(":shared")
 
-include(":composeApp")
-include(":desktopApp")
-include(":webApp")
+if (props.isEmpty || props["ENABLE_ANDROID"]?.toString()?.toBoolean() != false) {
+    include(":composeApp")
+}
+if (props.isEmpty || props["ENABLE_DESKTOP"]?.toString()?.toBoolean() != false) {
+    include(":desktopApp")
+}
+if (props.isEmpty || props["ENABLE_WASM"]?.toString()?.toBoolean() != false) {
+    include(":webApp")
+}
