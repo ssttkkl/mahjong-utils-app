@@ -8,7 +8,10 @@ import mahjongutils.buildlogic.utils.enableWasm
 
 plugins {
     id("mahjongutils.buildlogic.lib")
-    alias(libs.plugins.kotlinNativeCocoapods)
+}
+
+if (enableIos) {
+//    alias(libs.plugins.kotlinNativeCocoapods)
 }
 
 kotlin {
@@ -85,13 +88,13 @@ kotlin {
                     implementation(libs.nserror.kt)
                 }
             }
-        }
-    }
 
-    cocoapods {
-        noPodspec()
-        ios.deploymentTarget = "12.0"
-        pod("onnxruntime-objc", "~> 1.18.0")
+//            cocoapods {
+//                noPodspec()
+//                ios.deploymentTarget = "12.0"
+//                pod("onnxruntime-objc", "~> 1.18.0")
+//            }
+        }
     }
 }
 

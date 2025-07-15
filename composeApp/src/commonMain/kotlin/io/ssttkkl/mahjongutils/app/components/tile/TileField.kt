@@ -1,5 +1,8 @@
 package io.ssttkkl.mahjongutils.app.components.tile
 
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,6 +21,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isCtrlPressed
@@ -25,6 +30,8 @@ import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.pointer.PointerType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -35,6 +42,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import com.quadible.feather.LocalFloatingDraggableState
 import io.ssttkkl.mahjongutils.app.base.utils.PlatformUtils
+import io.ssttkkl.mahjongutils.app.components.onRightClick
+import io.ssttkkl.mahjongutils.app.components.tapPress
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
@@ -124,6 +133,48 @@ private fun TileImeHostState.TileImeConsumer.consume(
     )
 }
 
+private fun Modifier.handleCommandKeyEvent(tileImeHostState: TileImeHostState): Modifier {
+    return onKeyEvent {
+        if (it.type != KeyEventType.KeyDown) {
+            return@onKeyEvent false
+        }
+
+        // 注意判断苹果和其他系统
+        val isCtrlOrCmdPressed =
+            if (PlatformUtils.isApple) it.isMetaPressed else it.isCtrlPressed
+
+        if (it.key == Key.V && isCtrlOrCmdPressed) {
+            // 粘贴操作
+            tileImeHostState.emitAction(TileImeHostState.ImeAction.Paste)
+            true
+        } else if (it.key == Key.C && isCtrlOrCmdPressed) {
+            // 复制操作
+            tileImeHostState.emitAction(TileImeHostState.ImeAction.Copy)
+            true
+        } else {
+            false
+        }
+    }
+}
+
+// 点击时更改键盘的默认折叠
+private fun Modifier.onPressDetectTileImeDefaultCollapsed(
+    state: TileImeHostState,
+): Modifier {
+    return pointerInput(Unit) {
+        awaitEachGesture {
+            val e = awaitFirstDown()
+            // 如果是鼠标点击，默认折叠。否则默认展开
+            state.defaultCollapsed = e.type == PointerType.Mouse
+            // 如果是触摸点击，强制展开键盘
+            if (e.type == PointerType.Touch) {
+                state.specifiedCollapsed = false
+            }
+            waitForUpOrCancellation()
+        }
+    }
+}
+
 @Composable
 fun BaseTileField(
     value: List<Tile>,
@@ -198,6 +249,9 @@ fun BaseTileField(
         }
     }
 
+    var dropdownExpanded by remember { mutableStateOf(false) }
+    val focusRequester = remember { FocusRequester() }
+
     val cursorColor = when {
         isError -> colors.errorCursorColor
         else -> colors.cursorColor
@@ -205,32 +259,29 @@ fun BaseTileField(
 
     CoreTileField(
         value = value,
-        modifier = modifier.onGloballyPositioned {
-            layoutCoordinates = it
-        }.onKeyEvent {
-            if (it.type != KeyEventType.KeyDown) {
-                return@onKeyEvent false
+        modifier = modifier.onGloballyPositioned { layoutCoordinates = it }
+            .focusRequester(focusRequester)
+            .onRightClick(enabled) {
+                focusRequester.requestFocus()  // 如果右键时还没有focus，则ime无法绑定到输入框，操作不生效
+                dropdownExpanded = true
             }
-
-            // 注意判断苹果和其他系统
-            val isCtrlOrCmdPressed =
-                if (PlatformUtils.isApple) it.isMetaPressed else it.isCtrlPressed
-            if (it.key == Key.V && isCtrlOrCmdPressed) {
-                // 粘贴操作
-                tileImeHostState.emitAction(TileImeHostState.ImeAction.Paste)
-                true
-            } else if (it.key == Key.C && isCtrlOrCmdPressed) {
-                // 复制操作
-                tileImeHostState.emitAction(TileImeHostState.ImeAction.Copy)
-                true
-            } else {
-                false
-            }
-        },
+            .tapPress(
+                state.interactionSource,
+                enabled,
+                onLongPress = {
+                    dropdownExpanded = true
+                },
+                onTap = {
+                    focusRequester.requestFocus()
+                })
+            .onPressDetectTileImeDefaultCollapsed(tileImeHostState)
+            .handleCommandKeyEvent(tileImeHostState),
         state = state,
         cursorColor = cursorColor,
         fontSize = fontSize
     )
+
+    TileFieldPopMenu(dropdownExpanded, { dropdownExpanded = !dropdownExpanded })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
