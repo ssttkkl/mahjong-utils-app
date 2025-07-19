@@ -8,10 +8,13 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -62,10 +65,13 @@ expect class TileRecognizer : BaseTileRecognizer {
 
     @Composable
     override fun TileFieldRecognizeImageMenuItems(
+        expanded: Boolean,  // 这里的expand是指外层的菜单是否展开，用于在展开时更新一些状态
         onDismissRequest: () -> Unit
     )
 
-    override suspend fun readClipboardBitmap(clipboard: Clipboard): ImageBitmap?
+    override suspend fun clipboardHasImage(clipboard: Clipboard): Boolean
+
+    override suspend fun readClipboardImage(clipboard: Clipboard): ImageBitmap?
 }
 
 abstract class BaseTileRecognizer(
@@ -81,10 +87,11 @@ abstract class BaseTileRecognizer(
 
     @Composable
     open fun TileFieldRecognizeImageMenuItems(
+        expanded: Boolean,
         onDismissRequest: () -> Unit
     ) {
         PickImageMenuItem(onDismissRequest)
-        ClipboardImageMenuItem(onDismissRequest)
+        ClipboardImageMenuItem(expanded, onDismissRequest)
     }
 
     @Composable
@@ -132,6 +139,7 @@ abstract class BaseTileRecognizer(
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     fun ClipboardImageMenuItem(
+        expanded: Boolean,
         onDismissRequest: () -> Unit
     ) {
         // 从剪切板识别
@@ -140,6 +148,12 @@ abstract class BaseTileRecognizer(
         val noImageInClipboardMsg = stringResource(Res.string.text_clipboard_no_image)
 
         val curOnDismissRequest by rememberUpdatedState(onDismissRequest)
+
+        var enabled by remember { mutableStateOf<Boolean>(true) }
+
+        LaunchedEffect(expanded) {
+            enabled = clipboardHasImage(clipboard)
+        }
 
         DropdownMenuItem(
             text = {
@@ -153,17 +167,18 @@ abstract class BaseTileRecognizer(
             },
             onClick = {
                 coroutineScope.launch {
-                    val image = readClipboardBitmap(clipboard)
+                    val image = readClipboardImage(clipboard)
                     if (image != null) {
-                        logger.info("readClipboardBitmap: success")
+                        logger.info("readClipboardImage: success")
                         cropAndRecognizeAndFillFromBitmap(image)
                     } else {
-                        logger.info("readClipboardBitmap: no image")
+                        logger.info("readClipboardImage: no image")
                         snackbarHostState.showSnackbar(noImageInClipboardMsg)
                     }
                     curOnDismissRequest()
                 }
-            }
+            },
+            enabled = enabled
         )
     }
 
@@ -204,7 +219,9 @@ abstract class BaseTileRecognizer(
         return res
     }
 
-    abstract suspend fun readClipboardBitmap(clipboard: Clipboard): ImageBitmap?
+    abstract suspend fun clipboardHasImage(clipboard: Clipboard): Boolean
+
+    abstract suspend fun readClipboardImage(clipboard: Clipboard): ImageBitmap?
 }
 
 @Composable

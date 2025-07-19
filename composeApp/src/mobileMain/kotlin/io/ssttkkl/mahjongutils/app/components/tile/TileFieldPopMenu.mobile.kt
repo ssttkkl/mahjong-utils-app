@@ -32,9 +32,10 @@ actual class TileRecognizer actual constructor(
 ) : BaseTileRecognizer(cropper, tileImeHostState, snackbarHostState, noDetectionMsg) {
     @Composable
     actual override fun TileFieldRecognizeImageMenuItems(
+        expanded: Boolean,
         onDismissRequest: () -> Unit
     ) {
-        super.TileFieldRecognizeImageMenuItems(onDismissRequest)
+        super.TileFieldRecognizeImageMenuItems(expanded, onDismissRequest)
         CameraMenuItem(onDismissRequest)
     }
 
@@ -78,7 +79,11 @@ actual class TileRecognizer actual constructor(
         )
     }
 
-    actual override suspend fun readClipboardBitmap(clipboard: Clipboard): ImageBitmap? {
+    actual override suspend fun clipboardHasImage(clipboard: Clipboard): Boolean {
+        return false
+    }
+
+    actual override suspend fun readClipboardImage(clipboard: Clipboard): ImageBitmap? {
         return null
     }
 }

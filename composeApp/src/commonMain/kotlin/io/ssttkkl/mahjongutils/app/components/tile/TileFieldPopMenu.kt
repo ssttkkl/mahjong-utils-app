@@ -40,10 +40,10 @@ fun TileFieldPopMenu(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var clipboardData by remember { mutableStateOf<List<Tile>?>(null) }
-
     val tileImeHostState = LocalTileImeHostState.current
     val tileRecognizer = LocalTileRecognizer.current
+
+    var clipboardData by remember { mutableStateOf<List<Tile>?>(null) }
 
     LaunchedEffect(expanded) {
         clipboardData = tileImeHostState.readClipboardData()
@@ -124,6 +124,6 @@ fun TileFieldPopMenu(
         HorizontalDivider()
 
         // 麻将图像识别的选项组
-        tileRecognizer.TileFieldRecognizeImageMenuItems(curOnDismissRequest)
+        tileRecognizer.TileFieldRecognizeImageMenuItems(expanded, curOnDismissRequest)
     }
 }

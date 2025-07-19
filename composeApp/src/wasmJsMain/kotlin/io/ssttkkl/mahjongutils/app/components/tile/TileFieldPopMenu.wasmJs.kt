@@ -21,13 +21,34 @@ actual class TileRecognizer actual constructor(
 
     @Composable
     actual override fun TileFieldRecognizeImageMenuItems(
+        expanded: Boolean,
         onDismissRequest: () -> Unit
     ) {
-        super.TileFieldRecognizeImageMenuItems(onDismissRequest)
+        super.TileFieldRecognizeImageMenuItems(expanded, onDismissRequest)
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
-    actual override suspend fun readClipboardBitmap(clipboard: Clipboard): ImageBitmap? {
+    actual override suspend fun clipboardHasImage(clipboard: Clipboard): Boolean {
+        val items = clipboard.getClipEntry()?.clipboardItems
+        if (items != null) {
+            for (i in 0 until items.length) {
+                val item = items[i] ?: continue
+                println("item ${i}: ${item}")
+                for (j in 0 until item.types.length) {
+                    val type = item.types[j] ?: continue
+                    println("item ${i} type ${j}: ${type}")
+                    if (type.toString().startsWith("image/")) {
+                        return true
+                    }
+                }
+            }
+        }
+
+        return false
+    }
+
+    @OptIn(ExperimentalComposeUiApi::class)
+    actual override suspend fun readClipboardImage(clipboard: Clipboard): ImageBitmap? {
         var blob: Blob? = null
 
         val items = clipboard.getClipEntry()?.clipboardItems

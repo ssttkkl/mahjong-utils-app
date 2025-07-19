@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.platform.LocalClipboard
 import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
@@ -53,9 +54,14 @@ class TileImeHostState(
     val pendingAction = MutableSharedFlow<ImeAction>(extraBufferCapacity = 255)
 
     suspend fun readClipboardData(): List<Tile>? {
-        return clipboardManager.getText()?.let {
-            runCatching { Tile.parseTiles(it) }.getOrNull()
+        return clipboardManager.getClipEntry()?.let {
+            parseClipboardData(it)
         }
+    }
+
+    suspend fun parseClipboardData(clipEntry: ClipEntry): List<Tile>? {
+        val text = clipEntry.getText() ?: return emptyList()
+        return runCatching { Tile.parseTiles(text) }.getOrNull()
     }
 
     suspend fun writeClipboardData(data: List<Tile>?) {

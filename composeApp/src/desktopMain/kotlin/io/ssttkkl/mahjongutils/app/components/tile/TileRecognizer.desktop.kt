@@ -54,9 +54,10 @@ actual class TileRecognizer actual constructor(
 
     @Composable
     actual override fun TileFieldRecognizeImageMenuItems(
+        expanded: Boolean,
         onDismissRequest: () -> Unit
     ) {
-        super.TileFieldRecognizeImageMenuItems(onDismissRequest)
+        super.TileFieldRecognizeImageMenuItems(expanded, onDismissRequest)
         CaptureMenuItem(onDismissRequest)
     }
 
@@ -113,7 +114,33 @@ actual class TileRecognizer actual constructor(
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
-    actual override suspend fun readClipboardBitmap(clipboard: Clipboard): ImageBitmap? =
+    actual override suspend fun clipboardHasImage(clipboard: Clipboard): Boolean  =
+        withContext(Dispatchers.IO) {
+            try {
+                val transferable =
+                    clipboard.getClipEntry()?.asAwtTransferable ?: return@withContext false
+
+                if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                    val fileList =
+                        transferable.getTransferData(DataFlavor.javaFileListFlavor) as List<File>
+                    val imgFile = fileList.firstOrNull {
+                        Files.probeContentType(it.toPath()).startsWith("image/")
+                    }
+
+                    return@withContext imgFile != null
+                } else if (transferable.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+                    return@withContext true
+                } else {
+                    return@withContext false
+                }
+            } catch (t: Throwable) {
+                logger.error("failed to readClipboardImage", t)
+                return@withContext false
+            }
+        }
+
+    @OptIn(ExperimentalComposeUiApi::class)
+    actual override suspend fun readClipboardImage(clipboard: Clipboard): ImageBitmap? =
         withContext(Dispatchers.IO) {
             try {
                 var image: ImageBitmap? = null
@@ -139,7 +166,7 @@ actual class TileRecognizer actual constructor(
 
                 return@withContext image
             } catch (t: Throwable) {
-                logger.error("failed to readClipboardBitmap", t)
+                logger.error("failed to readClipboardImage", t)
                 return@withContext null
             }
         }
