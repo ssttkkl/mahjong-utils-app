@@ -47,6 +47,7 @@ import io.ssttkkl.mahjongutils.app.components.tapPress
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
+import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.text_tiles_num_short
 import mahjongutils.models.Tile
@@ -133,7 +134,10 @@ private fun TileImeHostState.TileImeConsumer.consume(
     )
 }
 
-private fun Modifier.handleCommandKeyEvent(tileImeHostState: TileImeHostState): Modifier {
+private fun Modifier.handleShortcutKeyEvent(
+    tileImeHostState: TileImeHostState,
+    tileRecognizer: TileRecognizer
+): Modifier {
     return onKeyEvent {
         if (it.type != KeyEventType.KeyDown) {
             return@onKeyEvent false
@@ -144,8 +148,19 @@ private fun Modifier.handleCommandKeyEvent(tileImeHostState: TileImeHostState): 
             if (PlatformUtils.isApple) it.isMetaPressed else it.isCtrlPressed
 
         if (it.key == Key.V && isCtrlOrCmdPressed) {
-            // 粘贴操作
-            tileImeHostState.emitAction(TileImeHostState.ImeAction.Paste)
+            tileImeHostState.coroutineScope.launch {
+                // 粘贴操作
+                // 先尝试从剪切板识别图片
+                val bitmap = tileRecognizer.readClipboardBitmap(tileImeHostState.clipboardManager)
+                if (bitmap != null) {
+                    val res = tileRecognizer.cropAndRecognizeFromBitmap(bitmap)
+                    if (res != null) {
+                        tileImeHostState.emitAction(TileImeHostState.ImeAction.Input(res))
+                    }
+                } else {
+                    tileImeHostState.emitAction(TileImeHostState.ImeAction.Paste)
+                }
+            }
             true
         } else if (it.key == Key.C && isCtrlOrCmdPressed) {
             // 复制操作
@@ -157,7 +172,6 @@ private fun Modifier.handleCommandKeyEvent(tileImeHostState: TileImeHostState): 
     }
 }
 
-// 点击时更改键盘的默认折叠
 private fun Modifier.onPressDetectTileImeDefaultCollapsed(
     state: TileImeHostState,
 ): Modifier {
@@ -257,14 +271,18 @@ fun BaseTileField(
         else -> colors.cursorColor
     }
 
+    val tileRecognizer = LocalTileRecognizer.current
+
     CoreTileField(
         value = value,
         modifier = modifier.onGloballyPositioned { layoutCoordinates = it }
             .focusRequester(focusRequester)
+            // 右键展开下拉框
             .onRightClick(enabled) {
                 focusRequester.requestFocus()  // 如果右键时还没有focus，则ime无法绑定到输入框，操作不生效
                 dropdownExpanded = true
             }
+            // 点击时获取焦点，长按展开下拉框
             .tapPress(
                 state.interactionSource,
                 enabled,
@@ -274,8 +292,10 @@ fun BaseTileField(
                 onTap = {
                     focusRequester.requestFocus()
                 })
+            // 点击时更改键盘的默认折叠
             .onPressDetectTileImeDefaultCollapsed(tileImeHostState)
-            .handleCommandKeyEvent(tileImeHostState),
+            // 处理复制粘贴快捷键
+            .handleShortcutKeyEvent(tileImeHostState, tileRecognizer),
         state = state,
         cursorColor = cursorColor,
         fontSize = fontSize

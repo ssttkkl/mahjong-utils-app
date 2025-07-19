@@ -24,8 +24,8 @@ import mahjongutils.models.toTilesString
 
 @Stable
 class TileImeHostState(
-    private val coroutineScope: CoroutineScope,
-    private val clipboardManager: Clipboard,
+    val coroutineScope: CoroutineScope,
+    val clipboardManager: Clipboard,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger("TileImeHostState")

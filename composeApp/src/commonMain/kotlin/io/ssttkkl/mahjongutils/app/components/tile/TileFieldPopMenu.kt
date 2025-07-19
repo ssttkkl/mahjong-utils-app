@@ -20,36 +20,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
-import io.github.vinceglb.filekit.dialogs.FileKitType
-import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
-import io.ssttkkl.mahjongdetector.MahjongDetector
-import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
-import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
-import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalImageCropper
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
-import io.ssttkkl.mahjongutils.app.utils.image.loadAsImage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_content_copy
 import mahjongutils.composeapp.generated.resources.icon_content_paste
-import mahjongutils.composeapp.generated.resources.icon_image
 import mahjongutils.composeapp.generated.resources.label_clear
 import mahjongutils.composeapp.generated.resources.label_copy
 import mahjongutils.composeapp.generated.resources.label_paste
-import mahjongutils.composeapp.generated.resources.label_recognize_from_image
-import mahjongutils.composeapp.generated.resources.text_recognize_no_detection
 import mahjongutils.models.Tile
-import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropResult
-import network.chaintech.cmpimagepickncrop.imagecropper.cropImage
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.resources.vectorResource
-import kotlin.time.measureTime
 
 
 @Composable
@@ -61,6 +43,7 @@ fun TileFieldPopMenu(
     var clipboardData by remember { mutableStateOf<List<Tile>?>(null) }
 
     val tileImeHostState = LocalTileImeHostState.current
+    val tileRecognizer = LocalTileRecognizer.current
 
     LaunchedEffect(expanded) {
         clipboardData = tileImeHostState.readClipboardData()
@@ -141,83 +124,6 @@ fun TileFieldPopMenu(
         HorizontalDivider()
 
         // 麻将图像识别的选项组
-        val cropper = LocalImageCropper.current
-        val appState = LocalAppState.current
-        val noDetectionMsg = stringResource(Res.string.text_recognize_no_detection)
-        TileFieldRecognizeImageMenuItems(onDismissRequest) { bitmap ->
-            val logger = LoggerFactory.getLogger("MahjongDetector")
-            val cropResult = cropper.cropImage(bmp = bitmap)
-            if (cropResult is ImageCropResult.Success) {
-                val res: List<Tile>
-                val cost = measureTime {
-                    val detections = MahjongDetector.predict(cropResult.bitmap)
-                    detections.forEach {
-                        logger.debug("detection: ${it}")
-                    }
-                    res = detections
-                        .sortedBy { it.x1 }
-                        .map { Tile[it.className] }
-                }
-                logger.info("result: $res, cost: $cost")
-                if (res.isNotEmpty()) {
-                    tileImeHostState.emitAction(ImeAction.Replace(res))
-                } else {
-                    appState.snackbarHostState.showSnackbar(noDetectionMsg)
-                }
-            }
-        }
+        tileRecognizer.TileFieldRecognizeImageMenuItems(curOnDismissRequest)
     }
-}
-
-@Composable
-expect fun TileFieldRecognizeImageMenuItems(
-    onDismissRequest: () -> Unit,
-    onImagePicked: suspend (ImageBitmap) -> Unit
-)
-
-@Composable
-fun PickImageMenuItem(
-    onDismissRequest: () -> Unit,
-    onImagePicked: suspend (ImageBitmap) -> Unit
-) {
-    // 从图片识别
-    val logger = remember { LoggerFactory.getLogger("PickImageMenuItem") }
-    // 使用手动的CoroutineScope，避免菜单项的composable移除后协程任务被取消
-    val coroutineScope = remember { CoroutineScope(Dispatchers.Main) }
-
-    val curOnDismissRequest by rememberUpdatedState(onDismissRequest)
-    val curOnImagePicked by rememberUpdatedState(onImagePicked)
-
-    val picker = rememberFilePickerLauncher(
-        type = FileKitType.Image
-    ) { file ->
-        logger.info("pick image: ${file}")
-
-        // 需要在这里消失，避免composable被过早移除导致picker的协程任务被取消
-        curOnDismissRequest()
-
-        coroutineScope.launch {
-            runCatching {
-                val bitmap = file?.loadAsImage()
-                if (bitmap != null) {
-                    curOnImagePicked(bitmap)
-                }
-            }.onFailure { e -> logger.error(e) }
-        }
-    }
-
-    DropdownMenuItem(
-        text = {
-            Row(Modifier.padding(vertical = 8.dp)) {
-                Icon(vectorResource(Res.drawable.icon_image), "")
-                Text(
-                    stringResource(Res.string.label_recognize_from_image),
-                    Modifier.padding(horizontal = 8.dp)
-                )
-            }
-        },
-        onClick = {
-            picker.launch()
-        }
-    )
 }
