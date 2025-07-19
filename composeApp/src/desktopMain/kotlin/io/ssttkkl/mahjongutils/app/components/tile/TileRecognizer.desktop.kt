@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -29,7 +30,6 @@ import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_screenshot_frame
 import mahjongutils.composeapp.generated.resources.label_recognize_from_screenshot
 import mahjongutils.composeapp.generated.resources.title_crop_image
-import mahjongutils.models.Tile
 import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
 import network.chaintech.cmpimagepickncrop.imagecropper.rememberImageCropper
 import network.chaintech.cmpimagepickncrop.ui.ImageCropperDialogContainer
@@ -47,17 +47,23 @@ import javax.imageio.ImageIO
 
 actual class TileRecognizer actual constructor(
     cropper: ImageCropper,
-    onResult: suspend (List<Tile>?) -> Unit
-) : BaseTileRecognizer(cropper, onResult) {
+    tileImeHostState: TileImeHostState,
+    snackbarHostState: SnackbarHostState,
+    noDetectionMsg: String
+) : BaseTileRecognizer(cropper, tileImeHostState, snackbarHostState, noDetectionMsg) {
 
     @Composable
-    actual override fun TileFieldRecognizeImageMenuItems(onDismissRequest: () -> Unit) {
+    actual override fun TileFieldRecognizeImageMenuItems(
+        onDismissRequest: () -> Unit
+    ) {
         super.TileFieldRecognizeImageMenuItems(onDismissRequest)
         CaptureMenuItem(onDismissRequest)
     }
 
     @Composable
-    fun CaptureMenuItem(onDismissRequest: () -> Unit) {
+    fun CaptureMenuItem(
+        onDismissRequest: () -> Unit
+    ) {
         val mainWindowState = LocalMainWindowState.current
 
         val curOnDismissRequest by rememberUpdatedState(onDismissRequest)
@@ -99,7 +105,7 @@ actual class TileRecognizer actual constructor(
                     }
 
                     image?.let { image ->
-                        onResult(cropAndRecognizeFromBitmap(image.toComposeImageBitmap()))
+                        cropAndRecognizeAndFillFromBitmap(image.toComposeImageBitmap())
                     }
                 }
             }

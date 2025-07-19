@@ -1,23 +1,28 @@
 package io.ssttkkl.mahjongutils.app.components.tile
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.Clipboard
 import io.ssttkkl.mahjongutils.app.base.utils.toImageBitmap
 import io.ssttkkl.mahjongutils.app.base.utils.toImageData
+import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import kotlinx.coroutines.await
-import mahjongutils.models.Tile
 import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
 import org.w3c.files.Blob
 
 actual class TileRecognizer actual constructor(
     cropper: ImageCropper,
-    onResult: suspend (List<Tile>?) -> Unit
-) : BaseTileRecognizer(cropper, onResult) {
+    tileImeHostState: TileImeHostState,
+    snackbarHostState: SnackbarHostState,
+    noDetectionMsg: String
+) : BaseTileRecognizer(cropper, tileImeHostState, snackbarHostState, noDetectionMsg) {
 
     @Composable
-    actual override fun TileFieldRecognizeImageMenuItems(onDismissRequest: () -> Unit) {
+    actual override fun TileFieldRecognizeImageMenuItems(
+        onDismissRequest: () -> Unit
+    ) {
         super.TileFieldRecognizeImageMenuItems(onDismissRequest)
     }
 

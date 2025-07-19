@@ -47,22 +47,32 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import kotlin.time.measureTime
 
+sealed class TileRecognizeResult {
+    data object Abort : TileRecognizeResult()
+    data class Success(val data: List<Tile>) : TileRecognizeResult()
+}
 
 expect class TileRecognizer : BaseTileRecognizer {
     constructor(
         cropper: ImageCropper,
-        onResult: suspend (List<Tile>?) -> Unit
+        tileImeHostState: TileImeHostState,
+        snackbarHostState: SnackbarHostState,
+        noDetectionMsg: String
     )
 
     @Composable
-    override fun TileFieldRecognizeImageMenuItems(onDismissRequest: () -> Unit)
+    override fun TileFieldRecognizeImageMenuItems(
+        onDismissRequest: () -> Unit
+    )
 
     override suspend fun readClipboardBitmap(clipboard: Clipboard): ImageBitmap?
 }
 
 abstract class BaseTileRecognizer(
     val cropper: ImageCropper,
-    val onResult: suspend (List<Tile>?) -> Unit
+    val tileImeHostState: TileImeHostState,
+    val snackbarHostState: SnackbarHostState,
+    val noDetectionMsg: String
 ) {
     // 使用手动的CoroutineScope，避免菜单项的composable移除后协程任务被取消
     val coroutineScope = CoroutineScope(Dispatchers.Main)
@@ -70,13 +80,17 @@ abstract class BaseTileRecognizer(
     val logger = LoggerFactory.getLogger("TileRecognizer")
 
     @Composable
-    open fun TileFieldRecognizeImageMenuItems(onDismissRequest: () -> Unit) {
+    open fun TileFieldRecognizeImageMenuItems(
+        onDismissRequest: () -> Unit
+    ) {
         PickImageMenuItem(onDismissRequest)
         ClipboardImageMenuItem(onDismissRequest)
     }
 
     @Composable
-    fun PickImageMenuItem(onDismissRequest: () -> Unit) {
+    fun PickImageMenuItem(
+        onDismissRequest: () -> Unit
+    ) {
         val curOnDismissRequest by rememberUpdatedState(onDismissRequest)
 
         // 从图片识别
@@ -92,7 +106,7 @@ abstract class BaseTileRecognizer(
                 runCatching {
                     val bitmap = file?.loadAsImage()
                     if (bitmap != null) {
-                        onResult(cropAndRecognizeFromBitmap(bitmap))
+                        cropAndRecognizeAndFillFromBitmap(bitmap)
                     }
                 }.onFailure { e -> logger.error(e) }
             }
@@ -117,7 +131,9 @@ abstract class BaseTileRecognizer(
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
-    fun ClipboardImageMenuItem(onDismissRequest: () -> Unit) {
+    fun ClipboardImageMenuItem(
+        onDismissRequest: () -> Unit
+    ) {
         // 从剪切板识别
         val snackbarHostState = LocalAppState.current.snackbarHostState
         val clipboard = LocalClipboard.current
@@ -140,7 +156,7 @@ abstract class BaseTileRecognizer(
                     val image = readClipboardBitmap(clipboard)
                     if (image != null) {
                         logger.info("readClipboardBitmap: success")
-                        onResult(cropAndRecognizeFromBitmap(image))
+                        cropAndRecognizeAndFillFromBitmap(image)
                     } else {
                         logger.info("readClipboardBitmap: no image")
                         snackbarHostState.showSnackbar(noImageInClipboardMsg)
@@ -151,23 +167,41 @@ abstract class BaseTileRecognizer(
         )
     }
 
-    suspend fun cropAndRecognizeFromBitmap(bitmap: ImageBitmap): List<Tile>? {
+    suspend fun cropAndRecognizeAndFillFromBitmap(bitmap: ImageBitmap): TileRecognizeResult {
+        val res = cropAndRecognizeFromBitmap(bitmap)
+        if (res is TileRecognizeResult.Success) {
+            if (res.data.isNotEmpty()) {
+                tileImeHostState.emitAction(ImeAction.Replace(res.data))
+            } else {
+                snackbarHostState.showSnackbar(noDetectionMsg)
+            }
+        }
+        return res
+    }
+
+    suspend fun cropAndRecognizeFromBitmap(bitmap: ImageBitmap): TileRecognizeResult {
         val cropResult = cropper.cropImage(bmp = bitmap)
         if (cropResult is ImageCropResult.Success) {
-            val res: List<Tile>
-            val cost = measureTime {
-                val detections = MahjongDetector.predict(cropResult.bitmap)
-                detections.forEach {
-                    logger.debug("detection: ${it}")
-                }
-                res = detections
-                    .sortedBy { it.x1 }
-                    .map { Tile[it.className] }
-            }
-            logger.info("result: $res, cost: $cost")
-            return res
+            return TileRecognizeResult.Success(
+                recognizeFromBitmap(cropResult.bitmap)
+            )
         }
-        return null
+        return TileRecognizeResult.Abort
+    }
+
+    suspend fun recognizeFromBitmap(bitmap: ImageBitmap): List<Tile> {
+        val res: List<Tile>
+        val cost = measureTime {
+            val detections = MahjongDetector.predict(bitmap)
+            detections.forEach {
+                logger.debug("detection: ${it}")
+            }
+            res = detections
+                .sortedBy { it.x1 }
+                .map { Tile[it.className] }
+        }
+        logger.info("result: $res, cost: $cost")
+        return res
     }
 
     abstract suspend fun readClipboardBitmap(clipboard: Clipboard): ImageBitmap?
@@ -181,15 +215,8 @@ fun rememberTileRecognizer(
 ): TileRecognizer {
     val noDetectionMsg = stringResource(Res.string.text_recognize_no_detection)
 
-    return remember(cropper, tileImeHostState, snackbarHostState) {
-        TileRecognizer(cropper) { res ->
-            if (res == null) return@TileRecognizer
-            if (res.isNotEmpty()) {
-                tileImeHostState.emitAction(ImeAction.Replace(res))
-            } else {
-                snackbarHostState.showSnackbar(noDetectionMsg)
-            }
-        }
+    return remember(cropper, tileImeHostState, snackbarHostState, noDetectionMsg) {
+        TileRecognizer(cropper, tileImeHostState, snackbarHostState, noDetectionMsg)
     }
 }
 

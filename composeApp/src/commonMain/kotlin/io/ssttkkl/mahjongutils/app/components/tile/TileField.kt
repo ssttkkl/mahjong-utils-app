@@ -153,10 +153,7 @@ private fun Modifier.handleShortcutKeyEvent(
                 // 先尝试从剪切板识别图片
                 val bitmap = tileRecognizer.readClipboardBitmap(tileImeHostState.clipboardManager)
                 if (bitmap != null) {
-                    val res = tileRecognizer.cropAndRecognizeFromBitmap(bitmap)
-                    if (res != null) {
-                        tileImeHostState.emitAction(TileImeHostState.ImeAction.Input(res))
-                    }
+                    tileRecognizer.cropAndRecognizeAndFillFromBitmap(bitmap)
                 } else {
                     tileImeHostState.emitAction(TileImeHostState.ImeAction.Paste)
                 }
