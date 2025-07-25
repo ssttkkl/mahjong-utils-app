@@ -26,7 +26,7 @@ kotlin {
                 implementation(compose.ui)
                 implementation(libs.okio)
 
-                implementation(libs.filekit.core)
+//                implementation(libs.filekit.core)
 
                 implementation(libs.mahjong.utils)
             }

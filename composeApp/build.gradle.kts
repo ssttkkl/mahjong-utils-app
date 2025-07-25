@@ -75,7 +75,7 @@ buildkonfig {
 
 aboutLibraries {
     // 移除 "generated" 时间戳
-    excludeFields = arrayOf("generated")
+    export.excludeFields.add("generated")
 }
 
 // 去掉非本平台的动态库

@@ -57,7 +57,7 @@ class KmpPlugin : Plugin<Project> {
             if (enableWasm) {
                 @OptIn(ExperimentalWasmDsl::class)
                 wasmJs {
-                    moduleName = project.name
+                    outputModuleName.set(project.name)
                     browser()
                 }
                 println("${project.name} target: wasmJs")
