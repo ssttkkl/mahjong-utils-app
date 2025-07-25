@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.unit.dp
 import io.github.vinceglb.filekit.dialogs.compose.rememberCameraPickerLauncher
+import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.utils.image.loadAsImage
 import kotlinx.coroutines.launch
@@ -86,4 +87,13 @@ actual class TileRecognizer actual constructor(
     actual override suspend fun readClipboardImage(clipboard: Clipboard): ImageBitmap? {
         return null
     }
+}
+
+@Composable
+actual fun TileRecognizerHost(
+    appState: AppState,
+    tileImeHostState: TileImeHostState,
+    content: @Composable () -> Unit
+) {
+    DefaultTileRecognizerHost(appState, tileImeHostState, content)
 }

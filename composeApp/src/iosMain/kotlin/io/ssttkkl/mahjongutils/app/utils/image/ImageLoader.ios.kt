@@ -10,17 +10,21 @@ import platform.Foundation.NSData
 import platform.Foundation.NSURLSession
 import platform.Foundation.dataTaskWithURL
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 actual suspend fun PlatformFile.loadAsImage(): ImageBitmap {
     val data: NSData = suspendCoroutine { cont ->
-        NSURLSession.sharedSession.dataTaskWithURL(nsUrl) { data, response, err ->
+        val task = NSURLSession.sharedSession.dataTaskWithURL(nsUrl) { data, response, err ->
             if (err != null) {
-                throw err.asThrowable()
+                cont.resumeWithException(err.asThrowable())
+            } else if (data == null) {
+                cont.resumeWithException(Exception("data is null"))
+            } else {
+                cont.resume(data)
             }
-            checkNotNull(data)
-            cont.resume(data)
         }
+        task.resume()
     }
 
     return Image.makeFromEncoded(data).toComposeImageBitmap()

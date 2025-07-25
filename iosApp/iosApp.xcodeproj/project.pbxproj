@@ -10,6 +10,7 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		126173731A2516723ED1B7CF /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E7A658123D39C85DBBA79B /* Pods_iosApp.framework */; };
+		DB516F972E33DAA500275DD3 /* best.fp16.onnx in Resources */ = {isa = PBXBuildFile; fileRef = DB516F962E33DAA500275DD3 /* best.fp16.onnx */; };
 		DBCB22732D98629F00E59BFB /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCB22722D98629F00E59BFB /* ComposeView.swift */; };
 		DBCB22752D98630600E59BFB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCB22742D98630600E59BFB /* ContentView.swift */; };
 		DBCB22772D98631E00E59BFB /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCB22762D98631E00E59BFB /* MainApp.swift */; };
@@ -24,6 +25,7 @@
 		7555FF7B242A565900829871 /* mahjongutils.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mahjongutils.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		DB516F962E33DAA500275DD3 /* best.fp16.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = best.fp16.onnx; sourceTree = "<group>"; };
 		DBCB22722D98629F00E59BFB /* ComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		DBCB22742D98630600E59BFB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DBCB22762D98631E00E59BFB /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
+				DB516F962E33DAA500275DD3 /* best.fp16.onnx */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
+				DB516F972E33DAA500275DD3 /* best.fp16.onnx in Resources */,
 				058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

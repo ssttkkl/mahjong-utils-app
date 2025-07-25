@@ -5,6 +5,7 @@ package io.ssttkkl.mahjongdetector
 
 import androidx.compose.ui.graphics.ImageBitmap
 import cocoapods.onnxruntime_objc.ORTEnv
+import cocoapods.onnxruntime_objc.ORTLoggingLevel
 import cocoapods.onnxruntime_objc.ORTSession
 import cocoapods.onnxruntime_objc.ORTSessionOptions
 import cocoapods.onnxruntime_objc.ORTTensorElementDataType
@@ -40,7 +41,6 @@ actual object MahjongDetector {
     private var modelLoaded: Boolean = false
     private val modelLoadMutex = Mutex()
 
-    private val env: ORTEnv = ORTEnv()
     private lateinit var session: ORTSession
 
     private suspend fun prepareModel() {
@@ -49,8 +49,15 @@ actual object MahjongDetector {
                 if (!modelLoaded) {
                     val modelPath = NSBundle.mainBundle.pathForResource(MODEL_FILENAME, MODEL_TYPE)
                         ?: error("Failed to find ONNX model file")
+                    println(modelPath)
+                    val env = withErrPtr { errPtr ->
+                        ORTEnv(loggingLevel = ORTLoggingLevel.ORTLoggingLevelInfo, errPtr)
+                    }
+                    val options = withErrPtr { errPtr ->
+                        ORTSessionOptions(errPtr)
+                    }
                     session = withErrPtr { errPtr ->
-                        ORTSession(env, modelPath, ORTSessionOptions(), errPtr)
+                        ORTSession(env, modelPath, options, errPtr)
                     }
                 }
                 modelLoaded = true
@@ -69,16 +76,20 @@ actual object MahjongDetector {
 
     actual suspend fun predict(image: ImageBitmap, confidenceThreshold: Float): List<Detection> =
         withContext(Dispatchers.Default) {
+            println("predict")
             prepareModel()
+            println("prepareModel")
 
             var tensor: ORTValue? = null
             var results: Map<String, ORTValue>? = null
 
             // 预处理图像
             val (preprocessedImage, paddingInfo) = preprocessImage(image)
+            println("preprocessImage")
 
             // 将预处理后的图像数据转换为 ONNX 张量
             tensor = createTensor(preprocessedImage)
+            println("createTensor")
 
             // 执行推理
             results = withErrPtr { errPtr ->
@@ -89,6 +100,7 @@ actual object MahjongDetector {
                     errPtr
                 ) as Map<String, ORTValue>?
             }
+            println("runWithInputs")
             checkNotNull(results)
 
             // 获取输出张量 (你需要根据你的模型输出名称调整)
@@ -96,6 +108,7 @@ actual object MahjongDetector {
             val outputData = withErrPtr { errPtr ->
                 output.tensorDataWithError(errPtr)
             }
+            println("tensorDataWithError")
             checkNotNull(outputData)
 
             val outputBytes = outputData.bytes as CPointer<ShortVar>
@@ -113,6 +126,7 @@ actual object MahjongDetector {
                     CLASS_NAME,
                     confidenceThreshold
                 )
+            println("postprocess")
             return@withContext detections
         }
 
