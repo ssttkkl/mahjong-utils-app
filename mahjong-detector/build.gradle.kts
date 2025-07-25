@@ -5,13 +5,14 @@ import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
 import mahjongutils.buildlogic.utils.enableIos
 import mahjongutils.buildlogic.utils.enableWasm
+import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 
 plugins {
     id("mahjongutils.buildlogic.lib")
 }
 
 if (enableIos) {
-//    alias(libs.plugins.kotlinNativeCocoapods)
+    apply(plugin = libs.plugins.kotlinNativeCocoapods.get().pluginId)
 }
 
 kotlin {
@@ -89,11 +90,11 @@ kotlin {
                 }
             }
 
-//            cocoapods {
-//                noPodspec()
-//                ios.deploymentTarget = "12.0"
-//                pod("onnxruntime-objc", "~> 1.18.0")
-//            }
+            extensions.getByType<CocoapodsExtension>().apply {
+                noPodspec()
+                ios.deploymentTarget = "12.0"
+                pod("onnxruntime-objc", "~> 1.18.0")
+            }
         }
     }
 }
