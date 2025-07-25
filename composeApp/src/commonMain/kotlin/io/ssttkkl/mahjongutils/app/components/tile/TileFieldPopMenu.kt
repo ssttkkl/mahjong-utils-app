@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.components.tile
 
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
@@ -33,12 +35,12 @@ import mahjongutils.models.Tile
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-
 @Composable
 fun TileFieldPopMenu(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    offset: DpOffset = DpOffset.Zero
 ) {
     val tileImeHostState = LocalTileImeHostState.current
     val tileRecognizer = LocalTileRecognizer.current
@@ -56,6 +58,7 @@ fun TileFieldPopMenu(
         expanded = expanded,
         onDismissRequest = curOnDismissRequest,
         modifier = modifier,
+        offset = offset
     ) {
         // 复制
         DropdownMenuItem(

@@ -35,9 +35,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import com.quadible.feather.LocalFloatingDraggableState
@@ -53,6 +55,7 @@ import mahjongutils.composeapp.generated.resources.text_tiles_num_short
 import mahjongutils.models.Tile
 import mahjongutils.models.toTilesString
 import org.jetbrains.compose.resources.stringResource
+import kotlin.math.roundToInt
 
 private fun TileImeHostState.TileImeConsumer.consume(
     state: CoreTileFieldState,
@@ -260,8 +263,10 @@ fun BaseTileField(
         }
     }
 
-    var dropdownExpanded by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
+    var dropdownExpanded by remember { mutableStateOf(false) }
+    var popupPosition by remember { mutableStateOf(IntOffset.Zero) }
+    val density = LocalDensity.current
 
     val cursorColor = when {
         isError -> colors.errorCursorColor
@@ -275,15 +280,23 @@ fun BaseTileField(
         modifier = modifier.onGloballyPositioned { layoutCoordinates = it }
             .focusRequester(focusRequester)
             // 右键展开下拉框
-            .onRightClick(enabled) {
-                focusRequester.requestFocus()  // 如果右键时还没有focus，则ime无法绑定到输入框，操作不生效
+            .onRightClick(enabled) { position ->
+                focusRequester.requestFocus()
+                popupPosition = IntOffset(
+                    position.x.roundToInt(),
+                    position.y.roundToInt()
+                )
                 dropdownExpanded = true
             }
             // 点击时获取焦点，长按展开下拉框
             .tapPress(
                 state.interactionSource,
                 enabled,
-                onLongPress = {
+                onLongPress = { position ->
+                    popupPosition = IntOffset(
+                        position.x.roundToInt(),
+                        position.y.roundToInt()
+                    )
                     dropdownExpanded = true
                 },
                 onTap = {
@@ -298,7 +311,13 @@ fun BaseTileField(
         fontSize = fontSize
     )
 
-    TileFieldPopMenu(dropdownExpanded, { dropdownExpanded = !dropdownExpanded })
+    TileFieldPopMenu(
+        expanded = dropdownExpanded,
+        onDismissRequest = { dropdownExpanded = false },
+        offset = with(density) {
+            DpOffset(popupPosition.x.toDp(), popupPosition.y.toDp())
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
