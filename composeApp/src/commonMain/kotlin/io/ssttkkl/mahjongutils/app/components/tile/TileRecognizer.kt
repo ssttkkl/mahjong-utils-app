@@ -43,7 +43,6 @@ import mahjongutils.composeapp.generated.resources.text_recognize_no_detection
 import mahjongutils.models.Tile
 import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropResult
 import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
-import network.chaintech.cmpimagepickncrop.imagecropper.cropImage
 import network.chaintech.cmpimagepickncrop.imagecropper.rememberImageCropper
 import network.chaintech.cmpimagepickncrop.ui.ImageCropperDialogContainer
 import org.jetbrains.compose.resources.stringResource
