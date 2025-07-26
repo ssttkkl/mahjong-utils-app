@@ -20,7 +20,7 @@ import io.ssttkkl.mahjongutils.app.utils.image.loadAsImage
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_photo_camera
-import mahjongutils.composeapp.generated.resources.label_recognize_from_image
+import mahjongutils.composeapp.generated.resources.label_recognize_from_camera
 import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -68,7 +68,7 @@ actual class TileRecognizer actual constructor(
                 Row(Modifier.padding(vertical = 8.dp)) {
                     Icon(vectorResource(Res.drawable.icon_photo_camera), "")
                     Text(
-                        stringResource(Res.string.label_recognize_from_image),
+                        stringResource(Res.string.label_recognize_from_camera),
                         Modifier.padding(horizontal = 8.dp)
                     )
                 }
