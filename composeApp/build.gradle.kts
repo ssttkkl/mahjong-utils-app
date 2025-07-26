@@ -35,7 +35,15 @@ kotlin {
 
                 implementation(libs.filekit.core)
                 implementation(libs.filekit.dialogs.compose)
-                implementation(libs.cmp.image.pick.n.crop)
+                implementation(
+                    libs.cmp.image.pick.n.crop.get().let {
+                        "${it.group}:${it.name}:${it.version}"
+                    }
+                ) {
+                    // 这个包引了一堆opencv、ffmpeg之类的库，应该只是拍照用
+                    // 但是我们拍照不走这个库
+                    exclude(group = "org.bytedeco")
+                }
 
                 implementation(libs.mahjong.utils)
             }

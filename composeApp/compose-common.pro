@@ -63,3 +63,6 @@
 
 # imageio相关
 -keep class com.github.jaiimageio.impl.** { *; }
+
+# 这个库的拍照引了一堆外部库，我们拍照不走这个库
+-dontwarn network.chaintech.cmpimagepickncrop.cameramanager.**
