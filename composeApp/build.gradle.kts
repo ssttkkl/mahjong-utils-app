@@ -5,6 +5,7 @@ import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
 import mahjongutils.buildlogic.utils.enableIos
 import mahjongutils.buildlogic.utils.readVersion
+import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 
 plugins {
     id("mahjongutils.buildlogic.app")
@@ -69,7 +70,7 @@ kotlin {
         }
 
         if (enableIos) {
-            cocoapods {
+            extensions.getByType<CocoapodsExtension>().apply {
                 framework {
                     export(project(":mahjong-detector"))
                 }
