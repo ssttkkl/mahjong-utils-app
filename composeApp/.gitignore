@@ -2,4 +2,3 @@ release/
 *.AppImage
 mahjong-utils-app.AppDir/bin/
 mahjong-utils-app.AppDir/lib/
-*.podspec
