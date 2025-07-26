@@ -1,5 +1,8 @@
 package io.ssttkkl.mahjongdetector
 
+import kotlin.math.max
+import kotlin.math.min
+
 
 data class Detection(
     val x1: Int, val y1: Int, val x2: Int, val y2: Int,
@@ -21,7 +24,7 @@ object YoloV8PostProcessor {
         padding: PaddingInfo,
         classNameMapping: List<String>,
         confThreshold: Float = 0.5f,
-        iouThreshold: Float = 0.5f
+        iouThreshold: Float = 0.3f
     ): List<Detection> {
         val detections = mutableListOf<Detection>()
         val numClasses = classNameMapping.size
@@ -65,10 +68,10 @@ object YoloV8PostProcessor {
 
                 detections.add(
                     Detection(
-                        x1 = x1.toInt().coerceIn(0, padding.originWidth),
-                        y1 = y1.toInt().coerceIn(0, padding.originHeight),
-                        x2 = x2.toInt().coerceIn(0, padding.originWidth),
-                        y2 = y2.toInt().coerceIn(0, padding.originHeight),
+                        x1 = x1.toInt(),
+                        y1 = y1.toInt(),
+                        x2 = x2.toInt(),
+                        y2 = y2.toInt(),
                         classId = classId,
                         className = classNameMapping[classId],
                         confidence = maxConf
@@ -90,11 +93,9 @@ object YoloV8PostProcessor {
             val current = sorted.removeAt(0)
             selected.add(current)
 
-            val iterator = sorted.iterator()
-            while (iterator.hasNext()) {
-                if (calculateIOU(current, iterator.next()) > iouThreshold) {
-                    iterator.remove()
-                }
+            sorted.removeAll { box ->
+                val iou = calculateIOU(current, box)
+                iou > iouThreshold
             }
         }
         return selected
@@ -102,10 +103,28 @@ object YoloV8PostProcessor {
 
     // 计算IoU
     private fun calculateIOU(a: Detection, b: Detection): Float {
-        val interArea = maxOf(0, minOf(a.x2, b.x2) - maxOf(a.x1, b.x1)) *
-                maxOf(0, minOf(a.y2, b.y2) - maxOf(a.y1, b.y1))
-        val unionArea = (a.x2 - a.x1) * (a.y2 - a.y1) +
-                (b.x2 - b.x1) * (b.y2 - b.y1) - interArea
-        return interArea / unionArea.toFloat()
+        // 计算相交矩形
+        val interx1 = max(a.x1, b.x1)
+        val intery1 = max(a.y1, b.y1)
+        val interx2 = min(a.x2, b.x2)
+        val intery2 = min(a.y2, b.y2)
+
+        // 如果没有相交区域
+        if (interx2 < interx1 || intery2 < intery1) {
+            return 0f
+        }
+
+        // 计算相交区域面积
+        val interArea = (interx2 - interx1) * (intery2 - intery1)
+
+        // 计算两个矩形的面积
+        val area1 = (a.x2 - a.x1) * (a.y2 - a.y1)
+        val area2 = (b.x2 - b.x1) * (b.y2 - b.y1)
+
+        // 计算并集面积
+        val unionArea = area1 + area2 - interArea
+
+        // 计算IoU
+        return interArea.toFloat() / unionArea
     }
 }
