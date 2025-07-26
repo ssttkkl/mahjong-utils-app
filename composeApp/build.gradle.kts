@@ -3,6 +3,7 @@ import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.OnnxRuntimeLibraryFilter
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
+import mahjongutils.buildlogic.utils.enableIos
 import mahjongutils.buildlogic.utils.readVersion
 
 plugins {
@@ -16,7 +17,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":base-components"))
-                implementation(project(":mahjong-detector"))
+                api(project(":mahjong-detector"))
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -55,6 +56,14 @@ kotlin {
                 dependencies {
                     implementation(compose.desktop.currentOs)
                     implementation(libs.kotlinx.coroutines.swing)
+                }
+            }
+        }
+
+        if (enableIos) {
+            cocoapods {
+                framework {
+                    export(project(":mahjong-detector"))
                 }
             }
         }

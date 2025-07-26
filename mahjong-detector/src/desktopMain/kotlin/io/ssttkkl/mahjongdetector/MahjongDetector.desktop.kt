@@ -5,15 +5,12 @@ import ai.onnxruntime.OnnxTensor
 import ai.onnxruntime.OrtEnvironment
 import ai.onnxruntime.OrtSession
 import androidx.compose.ui.graphics.ImageBitmap
-import io.ssttkkl.mahjongdetector.ImagePreprocessor.preprocessImage
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import java.nio.ByteBuffer
 
 
-actual object MahjongDetector {
+actual object MahjongDetector : AbsMahjongDetector() {
     private const val MODEL_FILENAME = "best.fp16.onnx"
 
     private var modelLoaded: Boolean = false
@@ -42,39 +39,28 @@ actual object MahjongDetector {
         env.close()
     }
 
-    actual suspend fun predict(image: ImageBitmap, confidenceThreshold: Float): List<Detection> =
-        withContext(Dispatchers.Default) {
-            prepareModel()
+    actual override suspend fun run(preprocessedImage: ImageBitmap): Array<FloatArray> {
+        prepareModel()
 
-            var tensor: OnnxTensor? = null
-            var results: OrtSession.Result? = null
+        var tensor: OnnxTensor? = null
+        var results: OrtSession.Result? = null
 
-            try {
-                // 预处理图像
-                val (preprocessedImage, paddingInfo) = preprocessImage(image)
+        try {
+            // 将预处理后的图像数据转换为 ONNX 张量
+            tensor = createTensor(preprocessedImage)
 
-                // 将预处理后的图像数据转换为 ONNX 张量
-                tensor = createTensor(preprocessedImage)
+            // 执行推理
+            results = session.run(mapOf(session.inputNames.first() to tensor))
 
-                // 执行推理
-                results = session.run(mapOf(session.inputNames.first() to tensor))
-
-                // 获取输出张量 (你需要根据你的模型输出名称调整)
-                val output = results.get(0).value as Array<Array<FloatArray>>
-                val detections =
-                    YoloV8PostProcessor.postprocess(
-                        output[0],
-                        paddingInfo,
-                        CLASS_NAME,
-                        confidenceThreshold
-                    )
-                return@withContext detections
-            } finally {
-                // 释放资源
-                tensor?.close()
-                results?.close()
-            }
+            // 获取输出张量 (你需要根据你的模型输出名称调整)
+            val output = results.get(0).value as Array<Array<FloatArray>>
+            return output[0]
+        } finally {
+            // 释放资源
+            tensor?.close()
+            results?.close()
         }
+    }
 
     // 创建ONNX输入Tensor
     private fun createTensor(image: ImageBitmap): OnnxTensor {

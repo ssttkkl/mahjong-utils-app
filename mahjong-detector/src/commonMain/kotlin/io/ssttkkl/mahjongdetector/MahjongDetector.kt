@@ -1,9 +1,35 @@
 package io.ssttkkl.mahjongdetector
 
 import androidx.compose.ui.graphics.ImageBitmap
+import io.ssttkkl.mahjongdetector.ImagePreprocessor.preprocessImage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-expect object MahjongDetector {
-    suspend fun predict(image: ImageBitmap, confidenceThreshold: Float = 0.5f): List<Detection>
+abstract class AbsMahjongDetector {
+    suspend fun predict(image: ImageBitmap, confidenceThreshold: Float = 0.5f): List<Detection> =
+        withContext(Dispatchers.Default) {
+            // 预处理图像
+            val (preprocessedImage, paddingInfo) = preprocessImage(image)
+
+            // 执行推理
+            val output = run(preprocessedImage)
+
+            val detections =
+                YoloV8PostProcessor.postprocess(
+                    output,
+                    paddingInfo,
+                    MahjongDetector.CLASS_NAME,
+                    confidenceThreshold
+                )
+            return@withContext detections
+        }
+
+    abstract suspend fun run(preprocessedImage: ImageBitmap): Array<FloatArray>
+}
+
+
+expect object MahjongDetector : AbsMahjongDetector {
+    override suspend fun run(preprocessedImage: ImageBitmap): Array<FloatArray>
 }
 
 internal val MahjongDetector.CLASS_NAME

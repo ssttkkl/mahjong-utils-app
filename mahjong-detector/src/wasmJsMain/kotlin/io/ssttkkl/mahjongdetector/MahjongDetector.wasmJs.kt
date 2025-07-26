@@ -21,7 +21,7 @@ private fun predict(model: GraphModel, tensor: Tensor): Tensor? = js(
     """
 )
 
-actual object MahjongDetector {
+actual object MahjongDetector : AbsMahjongDetector() {
     private lateinit var model: GraphModel
     private var modelLoaded: Boolean = false
     private val modelLoadMutex = Mutex()
@@ -37,16 +37,14 @@ actual object MahjongDetector {
         }
     }
 
-    actual suspend fun predict(image: ImageBitmap, confidenceThreshold: Float): List<Detection> {
+    actual override suspend fun run(preprocessedImage: ImageBitmap): Array<FloatArray> {
         prepareModel()
 
         var inputTensor: Tensor? = null
         var outputTensor: Tensor? = null
 
         try {
-            val (preprocessed, paddingInfo) = ImagePreprocessor.preprocessImage(image)
-
-            inputTensor = createInputTensor(preprocessed)  // 1*640*640*3
+            inputTensor = createInputTensor(preprocessedImage)  // 1*640*640*3
             inputTensor.print(verbose = true)
 
             outputTensor = checkNotNull(predict(model, inputTensor))  // 1*(4+classes)*8400
@@ -59,17 +57,14 @@ actual object MahjongDetector {
                     outputArr[0]!![i]!![j]!!.toDouble().toFloat()
                 }
             }
-
-            val detections = YoloV8PostProcessor.postprocess(
-                output, paddingInfo, CLASS_NAME,
-                confidenceThreshold
-            )
-            return detections
+            return output
         } finally {
+            // 释放资源
             inputTensor?.dispose()
             outputTensor?.dispose()
         }
     }
+
 
     private fun createInputTensor(image: ImageBitmap): Tensor {
         val imgData = image.asSkiaBitmap().toImageData()

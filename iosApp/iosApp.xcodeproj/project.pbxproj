@@ -10,7 +10,8 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		126173731A2516723ED1B7CF /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E7A658123D39C85DBBA79B /* Pods_iosApp.framework */; };
-		DB516F972E33DAA500275DD3 /* best.fp16.onnx in Resources */ = {isa = PBXBuildFile; fileRef = DB516F962E33DAA500275DD3 /* best.fp16.onnx */; };
+		DB9CCFF82E33F2B200593E7B /* best.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = DB9CCFF72E33F2B200593E7B /* best.mlpackage */; };
+		DB9CCFFB2E33F7D600593E7B /* MahjongDetectorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9CCFFA2E33F7D000593E7B /* MahjongDetectorImpl.swift */; };
 		DBCB22732D98629F00E59BFB /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCB22722D98629F00E59BFB /* ComposeView.swift */; };
 		DBCB22752D98630600E59BFB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCB22742D98630600E59BFB /* ContentView.swift */; };
 		DBCB22772D98631E00E59BFB /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCB22762D98631E00E59BFB /* MainApp.swift */; };
@@ -25,7 +26,8 @@
 		7555FF7B242A565900829871 /* mahjongutils.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mahjongutils.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		DB516F962E33DAA500275DD3 /* best.fp16.onnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = best.fp16.onnx; sourceTree = "<group>"; };
+		DB9CCFF72E33F2B200593E7B /* best.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = best.mlpackage; sourceTree = "<group>"; };
+		DB9CCFFA2E33F7D000593E7B /* MahjongDetectorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MahjongDetectorImpl.swift; sourceTree = "<group>"; };
 		DBCB22722D98629F00E59BFB /* ComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		DBCB22742D98630600E59BFB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DBCB22762D98631E00E59BFB /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
@@ -81,13 +83,14 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				DB9CCFFA2E33F7D000593E7B /* MahjongDetectorImpl.swift */,
 				DBCB22762D98631E00E59BFB /* MainApp.swift */,
 				DBCB22742D98630600E59BFB /* ContentView.swift */,
 				DBCB22722D98629F00E59BFB /* ComposeView.swift */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
-				DB516F962E33DAA500275DD3 /* best.fp16.onnx */,
+				DB9CCFF72E33F2B200593E7B /* best.mlpackage */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -173,7 +176,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
-				DB516F972E33DAA500275DD3 /* best.fp16.onnx in Resources */,
 				058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -245,9 +247,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB9CCFFB2E33F7D600593E7B /* MahjongDetectorImpl.swift in Sources */,
 				DBCB22732D98629F00E59BFB /* ComposeView.swift in Sources */,
 				DBCB22772D98631E00E59BFB /* MainApp.swift in Sources */,
 				DBCB22752D98630600E59BFB /* ContentView.swift in Sources */,
+				DB9CCFF82E33F2B200593E7B /* best.mlpackage in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,7 +395,7 @@
 				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Riichi Mahjong Calculator";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -428,7 +432,7 @@
 				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Riichi Mahjong Calculator";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
