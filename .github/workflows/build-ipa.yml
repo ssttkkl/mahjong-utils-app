@@ -32,6 +32,7 @@ jobs:
 
       - name: Pod Install
         run: |
+          ./gradlew :composeApp:generateDummyFramework
           cd iosApp
           pod install
           
