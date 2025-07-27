@@ -22,6 +22,7 @@ class AndroidAppPlugin : Plugin<Project> {
 
         pluginManager.apply(libs.findPlugin("androidApplication").get().get().pluginId)
         pluginManager.apply(libs.findPlugin("kotlinAndroid").get().get().pluginId)
+        pluginManager.apply(libs.findPlugin("compose-compiler").get().get().pluginId)
 
         val (versionName, versionCode) = readVersion()
         project.version = versionName
@@ -75,6 +76,9 @@ class AndroidAppPlugin : Plugin<Project> {
                         project.file("compose-r8.pro")
                     )
                 }
+            }
+            buildFeatures {
+                compose = true
             }
             compileOptions {
                 sourceCompatibility = JavaVersion.valueOf(
