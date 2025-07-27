@@ -48,6 +48,10 @@ string|label_no|Tm8=
 string|label_other_information|T3RoZXIgSW5mb3JtYXRpb24=
 string|label_other_options|T3B0aW9ucw==
 string|label_paste|UGFzdGU=
+string|label_recognize_from_camera|UmVjb2duaXplIGZyb20gQ2FtZXJh
+string|label_recognize_from_clipboard|UmVjb2duaXplIGZyb20gQ2xpcGJvYXJk
+string|label_recognize_from_image|UmVjb2duaXplIGZyb20gSW1hZ2U=
+string|label_recognize_from_screenshot|UmVjb2duaXplIGZyb20gU2NyZWVuc2hvdA==
 string|label_regular_shanten|UmVndWxhcg==
 string|label_renpuuJyantou4Hu|UmVucHV1IEp5YW50b3UgYXMgNCBtaW5pcG9pbnRz
 string|label_ron|Um9u
@@ -125,6 +129,7 @@ string|text_any_tile_must_not_be_more_than_4|WW91IGNhbm5vdCBoYXZlIGFueSB0aWxlIG1
 string|text_cannot_have_more_than_14_tiles|WW91IGNhbm5vdCBoYXZlIG1vcmUgdGhhbiAxNCB0aWxlcy4=
 string|text_child_ron|T3RoZXIgUm9uOiAlMSRz
 string|text_child_tsumo|T3RoZXIgVHN1bW86ICUxJHMgLSAlMiRzICglMyRzIHRvdGFsKQ==
+string|text_clipboard_no_image|Tm8gaW1hZ2UgaW4gY2xpcGJvYXJk
 string|text_comma|LA==
 string|text_empty_history|RW1wdHk=
 string|text_false_symbol|Tm8=
@@ -147,6 +152,7 @@ string|text_one|MQ==
 string|text_overwrite_hora_options_hint|RG8geW91IGFsc28gd2FudCB0byBvdmVyd3JpdGUgdGhlIGdhbWUgcnVsZSBvcHRpb25zPw==
 string|text_parent_ron|RWFzdCBSb246ICUxJHM=
 string|text_parent_tsumo|RWFzdCBUc3VtbzogJTEkcyBBTEwgKCUyJHMgdG90YWwp
+string|text_recognize_no_detection|Tm8gbWFoam9uZyB0aWxlcyBkZXRlY3RlZA==
 string|text_regular_shanten_desc|T25seSBjb25zaWRlciB0aGUgRk9VUiBzZXRzIGFuZCBPTkUgcGFpciBhcyB0aGUgd2lubmluZyBoYW5kIHBhdHRlcm4u
 string|text_save_result_success|UmVzdWx0IHNhdmVkIGFzIGltYWdlLg==
 string|text_shanten_action_ankan|Q29uY2VhbGVkLWtvbmcgJTEkcw==
@@ -178,6 +184,7 @@ string|title_about_appversion|QXBwIFZlcnNpb24=
 string|title_about_opensource_licenses|T3Blbi1Tb3VyY2UgTGljZW5zZQ==
 string|title_about_opensource_repo|T3Blbi1Tb3VyY2UgUmVwb3NpdG9yeQ==
 string|title_about|QWJvdXQ=
+string|title_crop_image|Q3JvcCBJbWFnZQ==
 string|title_furo_shanten_result|TWVsZCBIYW5kIEVmZmljaWVuY3kgUmVzdWx0
 string|title_furo_shanten|TWVsZCBIYW5kIEVmZmljaWVuY3k=
 string|title_hanhu|U2NvcmUgQ2FsY3VsYXRpb24gQnkgRmFuIGFuZCBNaW5pcG9pbnRz

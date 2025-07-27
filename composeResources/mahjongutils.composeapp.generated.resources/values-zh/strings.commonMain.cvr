@@ -48,6 +48,10 @@ string|label_no|5ZCm
 string|label_other_information|5YW25LuW5L+h5oGv
 string|label_other_options|6YCJ6aG5
 string|label_paste|57KY6LS0
+string|label_recognize_from_camera|5LuO5ouN54Wn6K+G5Yir
+string|label_recognize_from_clipboard|5LuO5Ymq5YiH5p2/6K+G5Yir
+string|label_recognize_from_image|5LuO5Zu+54mH6K+G5Yir
+string|label_recognize_from_screenshot|5LuO5oiq5bGP6K+G5Yir
 string|label_regular_shanten|5qCH5YeG5b2i
 string|label_renpuuJyantou4Hu|6L+e6aOO6ZuA5aS06K6hNOespg==
 string|label_ron|6I2j5ZKM
@@ -125,6 +129,7 @@ string|text_any_tile_must_not_be_more_than_4|5q+P56eN54mM55qE5pWw6YeP5LiN6IO96La
 string|text_cannot_have_more_than_14_tiles|5omL54mM5pWw6YeP5LiN6IO96LaF6L+HMTTmnprjgII=
 string|text_child_ron|5a2Q5a626I2j5ZKM77yaJTEkcw==
 string|text_child_tsumo|5a2Q5a626Ieq5pG477yaJTEkcyAtICUyJHPvvIjlhbElMyRz77yJ
+string|text_clipboard_no_image|5Ymq5YiH5p2/5Lit5rKh5pyJ5Zu+54mH
 string|text_comma|44CB
 string|text_empty_history|56m6
 string|text_false_symbol|w5c=
@@ -147,6 +152,7 @@ string|text_one|5LiA
 string|text_overwrite_hora_options_hint|6K+l5Y6G5Y+y6K6w5b2V5L2/55So55qE6KeE5YiZ5LiO5b2T5YmN5LiN5LiA6Ie077yM5piv5ZCm6KaG55uW77yf
 string|text_parent_ron|5Lqy5a626I2j5ZKM77yaJTEkcw==
 string|text_parent_tsumo|5Lqy5a626Ieq5pG477yaJTEkcyBBTEzvvIjlhbElMiRz77yJ
+string|text_recognize_no_detection|5pyq5qOA5rWL5Yiw6bq75bCG54mM
 string|text_regular_shanten_desc|5Y+q6ICD6JmR5Zub6Z2i5a2QK+S4gOmbgOWktOWSjOeJjOeahOaDheWGtQ==
 string|text_save_result_success|5oiQ5Yqf5L+d5a2Y57uT5p6c5Zu+54mH5Yiw5pys5Zyw44CC
 string|text_shanten_action_ankan|5pqX5p2gJTEkcw==
@@ -178,6 +184,7 @@ string|title_about_appversion|5bqU55So56iL5bqP54mI5pys
 string|title_about_opensource_licenses|5byA5pS+5rqQ5Luj56CB6K645Y+v
 string|title_about_opensource_repo|5byA5pS+5rqQ5Luj56CB5LuT5bqT
 string|title_about|5YWz5LqO
+string|title_crop_image|5Zu+54mH6KOB5Ymq
 string|title_furo_shanten_result|5Ymv6Zyy54mM55CG6K6h566X
 string|title_furo_shanten|5Ymv6Zyy54mM55CG
 string|title_hanhu|55Wq56ym5b6X54K56K6h566X
