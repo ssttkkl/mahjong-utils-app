@@ -1,3 +1,4 @@
+import com.android.build.gradle.BaseExtension
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.enableAndroid
 
@@ -21,8 +22,10 @@ kotlin {
     }
 }
 
-android {
-    namespace = APPLICATION_ID + ".thirdparty.dummy"
+if (enableAndroid) {
+    extensions.getByType<BaseExtension>().apply {
+        namespace = APPLICATION_ID + ".thirdparty.dummy"
+    }
 }
 
 aboutLibraries {

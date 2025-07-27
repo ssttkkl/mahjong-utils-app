@@ -1,14 +1,21 @@
 package io.ssttkkl.mahjongutils.app.base.utils
 
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asComposeImageBitmap
 import androidx.compose.ui.graphics.asSkiaBitmap
+import kotlinx.browser.document
+import kotlinx.browser.window
+import kotlinx.coroutines.await
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.ColorAlphaType
 import org.jetbrains.skia.ColorType
 import org.jetbrains.skia.Image
 import org.jetbrains.skia.ImageInfo
 import org.khronos.webgl.Uint8ClampedArray
+import org.w3c.dom.CanvasRenderingContext2D
+import org.w3c.dom.HTMLCanvasElement
 import org.w3c.dom.ImageData
+import org.w3c.files.Blob
 
 // JS: Uint8ClampedArray declaration unusable
 // https://youtrack.jetbrains.com/issue/KT-24583/JS-Uint8ClampedArray-declaration-unusable
@@ -46,6 +53,14 @@ fun Bitmap.toImageData(): ImageData {
     return ImageData(imageDataArray, width, height)
 }
 
+suspend fun Blob.toImageData(): ImageData {
+    val bitmap = window.createImageBitmap(this).await<org.w3c.dom.ImageBitmap>()
+    val canvas = document.createElement("canvas") as HTMLCanvasElement
+    val ctx = canvas.getContext("2d") as CanvasRenderingContext2D
+    ctx.drawImage(bitmap, 0.0, 0.0)
+    return ctx.getImageData(0.0, 0.0, canvas.width.toDouble(), canvas.height.toDouble())
+}
+
 fun ImageData.toBitmap(): Bitmap {
     return Image.makeRaster(
         ImageInfo(
@@ -62,3 +77,4 @@ fun ImageData.toBitmap(): Bitmap {
 }
 
 fun ImageBitmap.toImageData(): ImageData = asSkiaBitmap().toImageData()
+fun ImageData.toImageBitmap(): ImageBitmap = toBitmap().asComposeImageBitmap()

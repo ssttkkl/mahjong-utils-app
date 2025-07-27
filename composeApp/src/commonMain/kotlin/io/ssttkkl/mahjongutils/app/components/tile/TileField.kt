@@ -1,5 +1,8 @@
 package io.ssttkkl.mahjongutils.app.components.tile
 
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,6 +21,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isCtrlPressed
@@ -25,24 +30,32 @@ import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.pointer.PointerType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import com.quadible.feather.LocalFloatingDraggableState
 import io.ssttkkl.mahjongutils.app.base.utils.PlatformUtils
+import io.ssttkkl.mahjongutils.app.components.onRightClick
+import io.ssttkkl.mahjongutils.app.components.tapPress
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.utils.TileTextSize
+import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.text_tiles_num_short
 import mahjongutils.models.Tile
 import mahjongutils.models.toTilesString
 import org.jetbrains.compose.resources.stringResource
+import kotlin.math.roundToInt
 
 private fun TileImeHostState.TileImeConsumer.consume(
     state: CoreTileFieldState,
@@ -70,6 +83,12 @@ private fun TileImeHostState.TileImeConsumer.consume(
                 }
                 onValueChange?.invoke(newValue)
                 TextRange(selection.start + tiles.size)
+            }
+        },
+        handleReplaceTile = { tiles ->
+            state.updateSelection(value.indices) { _ ->
+                onValueChange?.invoke(tiles)
+                TextRange(tiles.size)
             }
         },
         handleDeleteTile = {
@@ -116,6 +135,58 @@ private fun TileImeHostState.TileImeConsumer.consume(
             onValueChange?.invoke(emptyList())
         }
     )
+}
+
+private fun Modifier.handleShortcutKeyEvent(
+    tileImeHostState: TileImeHostState,
+    tileRecognizer: TileRecognizer
+): Modifier {
+    return onKeyEvent {
+        if (it.type != KeyEventType.KeyDown) {
+            return@onKeyEvent false
+        }
+
+        // 注意判断苹果和其他系统
+        val isCtrlOrCmdPressed =
+            if (PlatformUtils.isApple) it.isMetaPressed else it.isCtrlPressed
+
+        if (it.key == Key.V && isCtrlOrCmdPressed) {
+            tileImeHostState.coroutineScope.launch {
+                // 粘贴操作
+                // 先尝试从剪切板识别图片
+                val bitmap = tileRecognizer.readClipboardImage(tileImeHostState.clipboardManager)
+                if (bitmap != null) {
+                    tileRecognizer.cropAndRecognizeAndFillFromBitmap(bitmap)
+                } else {
+                    tileImeHostState.emitAction(TileImeHostState.ImeAction.Paste)
+                }
+            }
+            true
+        } else if (it.key == Key.C && isCtrlOrCmdPressed) {
+            // 复制操作
+            tileImeHostState.emitAction(TileImeHostState.ImeAction.Copy)
+            true
+        } else {
+            false
+        }
+    }
+}
+
+private fun Modifier.onPressDetectTileImeDefaultCollapsed(
+    state: TileImeHostState,
+): Modifier {
+    return pointerInput(Unit) {
+        awaitEachGesture {
+            val e = awaitFirstDown()
+            // 如果是鼠标点击，默认折叠。否则默认展开
+            state.defaultCollapsed = e.type == PointerType.Mouse
+            // 如果是触摸点击，强制展开键盘
+            if (e.type == PointerType.Touch) {
+                state.specifiedCollapsed = false
+            }
+            waitForUpOrCancellation()
+        }
+    }
 }
 
 @Composable
@@ -192,38 +263,60 @@ fun BaseTileField(
         }
     }
 
+    val focusRequester = remember { FocusRequester() }
+    var dropdownExpanded by remember { mutableStateOf(false) }
+    var popupPosition by remember { mutableStateOf(IntOffset.Zero) }
+    val density = LocalDensity.current
+
     val cursorColor = when {
         isError -> colors.errorCursorColor
         else -> colors.cursorColor
     }
 
+    val tileRecognizer = LocalTileRecognizer.current
+
     CoreTileField(
         value = value,
-        modifier = modifier.onGloballyPositioned {
-            layoutCoordinates = it
-        }.onKeyEvent {
-            if (it.type != KeyEventType.KeyDown) {
-                return@onKeyEvent false
+        modifier = modifier.onGloballyPositioned { layoutCoordinates = it }
+            .focusRequester(focusRequester)
+            // 右键展开下拉框
+            .onRightClick(enabled) { position ->
+                focusRequester.requestFocus()
+                popupPosition = IntOffset(
+                    position.x.roundToInt(),
+                    position.y.roundToInt()
+                )
+                dropdownExpanded = true
             }
-
-            // 注意判断苹果和其他系统
-            val isCtrlOrCmdPressed =
-                if (PlatformUtils.isApple) it.isMetaPressed else it.isCtrlPressed
-            if (it.key == Key.V && isCtrlOrCmdPressed) {
-                // 粘贴操作
-                tileImeHostState.emitAction(TileImeHostState.ImeAction.Paste)
-                true
-            } else if (it.key == Key.C && isCtrlOrCmdPressed) {
-                // 复制操作
-                tileImeHostState.emitAction(TileImeHostState.ImeAction.Copy)
-                true
-            } else {
-                false
-            }
-        },
+            // 点击时获取焦点，长按展开下拉框
+            .tapPress(
+                state.interactionSource,
+                enabled,
+                onLongPress = { position ->
+                    popupPosition = IntOffset(
+                        position.x.roundToInt(),
+                        position.y.roundToInt()
+                    )
+                    dropdownExpanded = true
+                },
+                onTap = {
+                    focusRequester.requestFocus()
+                })
+            // 点击时更改键盘的默认折叠
+            .onPressDetectTileImeDefaultCollapsed(tileImeHostState)
+            // 处理复制粘贴快捷键
+            .handleShortcutKeyEvent(tileImeHostState, tileRecognizer),
         state = state,
         cursorColor = cursorColor,
         fontSize = fontSize
+    )
+
+    TileFieldPopMenu(
+        expanded = dropdownExpanded,
+        onDismissRequest = { dropdownExpanded = false },
+        offset = with(density) {
+            DpOffset(popupPosition.x.toDp(), popupPosition.y.toDp())
+        }
     )
 }
 

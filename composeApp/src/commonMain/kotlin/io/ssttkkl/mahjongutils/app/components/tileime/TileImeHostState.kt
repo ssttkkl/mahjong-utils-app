@@ -1,11 +1,17 @@
 package io.ssttkkl.mahjongutils.app.components.tileime
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.Clipboard
+import androidx.compose.ui.platform.LocalClipboard
 import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 import io.ssttkkl.mahjongutils.app.base.utils.getText
 import io.ssttkkl.mahjongutils.app.base.utils.setText
@@ -19,8 +25,8 @@ import mahjongutils.models.toTilesString
 
 @Stable
 class TileImeHostState(
-    private val coroutineScope: CoroutineScope,
-    private val clipboardManager: Clipboard,
+    val coroutineScope: CoroutineScope,
+    val clipboardManager: Clipboard,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger("TileImeHostState")
@@ -32,6 +38,8 @@ class TileImeHostState(
 
     sealed class ImeAction {
         data class Input(val data: List<Tile>) : ImeAction()
+
+        data class Replace(val data: List<Tile>) : ImeAction()
 
         data class Delete(val type: DeleteType) : ImeAction()
 
@@ -46,9 +54,14 @@ class TileImeHostState(
     val pendingAction = MutableSharedFlow<ImeAction>(extraBufferCapacity = 255)
 
     suspend fun readClipboardData(): List<Tile>? {
-        return clipboardManager.getText()?.let {
-            runCatching { Tile.parseTiles(it) }.getOrNull()
+        return clipboardManager.getClipEntry()?.let {
+            parseClipboardData(it)
         }
+    }
+
+    suspend fun parseClipboardData(clipEntry: ClipEntry): List<Tile>? {
+        val text = clipEntry.getText() ?: return emptyList()
+        return runCatching { Tile.parseTiles(text) }.getOrNull()
     }
 
     suspend fun writeClipboardData(data: List<Tile>?) {
@@ -82,6 +95,7 @@ class TileImeHostState(
 
         fun consume(
             handlePendingTile: suspend (List<Tile>) -> Unit,
+            handleReplaceTile: suspend (List<Tile>) -> Unit,
             handleDeleteTile: suspend (DeleteType) -> Unit,
             handleCopyRequest: suspend () -> List<Tile>,
             handleClearRequest: suspend () -> Unit
@@ -94,6 +108,7 @@ class TileImeHostState(
                     pendingAction.collect { action ->
                         when (action) {
                             is ImeAction.Input -> handlePendingTile(action.data)
+                            is ImeAction.Replace -> handleReplaceTile(action.data)
                             ImeAction.Clear -> handleClearRequest()
                             ImeAction.Copy -> writeClipboardData(handleCopyRequest())
                             ImeAction.Paste -> readClipboardData()?.let { handlePendingTile(it) }
@@ -150,4 +165,16 @@ class TileImeHostState(
             tryParsePendingText()
         }
     }
+}
+
+@Composable
+fun rememberTileImeHostState(
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    clipboardManager: Clipboard = LocalClipboard.current
+): TileImeHostState {
+    return remember { TileImeHostState(coroutineScope, clipboardManager) }
+}
+
+val LocalTileImeHostState = compositionLocalOf<TileImeHostState> {
+    error("CompositionLocal LocalTileImeHostState not present")
 }

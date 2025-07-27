@@ -1,3 +1,4 @@
+import com.android.build.gradle.BaseExtension
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
@@ -16,6 +17,7 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(libs.material3.windowSizeClass)
+                implementation(libs.material.icons.core)
 
                 api(project(":third-party:capturable"))
                 api(project(":third-party:feather"))
@@ -59,6 +61,8 @@ kotlin {
     }
 }
 
-android {
-    namespace = "$APPLICATION_ID.basecomponents"
+if (enableAndroid) {
+    extensions.getByType<BaseExtension>().apply {
+        namespace = "$APPLICATION_ID.basecomponents"
+    }
 }

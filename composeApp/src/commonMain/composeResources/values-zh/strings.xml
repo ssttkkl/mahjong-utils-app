@@ -14,12 +14,20 @@
     <string name="title_about_opensource_repo">开放源代码仓库</string>
     <string name="title_about_opensource_licenses">开放源代码许可</string>
 
+    <string name="title_crop_image">图片裁剪</string>
+
     <string name="label_history">历史记录</string>
     <string name="label_clear">清空</string>
     <string name="label_share">分享</string>
     <string name="label_view">查看</string>
     <string name="label_copy">复制</string>
     <string name="label_paste">粘贴</string>
+    <string name="label_recognize_from_image">从图片识别</string>
+    <string name="label_recognize_from_screenshot">从截屏识别</string>
+    <string name="label_recognize_from_camera">从拍照识别</string>
+    <string name="label_recognize_from_clipboard">从剪切板识别</string>
+    <string name="text_recognize_no_detection">未检测到麻将牌</string>
+    <string name="text_clipboard_no_image">剪切板中没有图片</string>
 
     <string name="text_empty_history">空</string>
 

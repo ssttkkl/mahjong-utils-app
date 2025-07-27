@@ -56,3 +56,13 @@
 -dontwarn org.codehaus.commons.compiler.CompileException
 -dontwarn org.codehaus.janino.ClassBodyEvaluator
 -dontwarn org.tukaani.xz.**
+
+# onnxruntime相关
+-dontwarn ai.onnxruntime.platform.Fp16Conversions
+-keep class ai.onnxruntime.** { *; }
+
+# imageio相关
+-keep class com.github.jaiimageio.impl.** { *; }
+
+# 这个库的拍照引了一堆外部库，我们拍照不走这个库
+-dontwarn network.chaintech.cmpimagepickncrop.cameramanager.**

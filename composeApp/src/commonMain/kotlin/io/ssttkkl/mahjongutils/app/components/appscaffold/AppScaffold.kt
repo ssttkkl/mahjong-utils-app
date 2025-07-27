@@ -40,7 +40,9 @@ import cafe.adriel.voyager.navigator.CurrentScreen
 import io.ssttkkl.mahjongutils.app.base.Spacing
 import io.ssttkkl.mahjongutils.app.base.components.ScrollBox
 import io.ssttkkl.mahjongutils.app.base.rememberWindowSizeClass
+import io.ssttkkl.mahjongutils.app.components.tile.TileRecognizerHost
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
+import io.ssttkkl.mahjongutils.app.components.tileime.rememberTileImeHostState
 import kotlinx.coroutines.launch
 
 
@@ -116,77 +118,80 @@ fun AppScaffold(
     AppNavigator(screenRegistry, initialScreenPath) { myNavigator ->
         val windowSizeClass: WindowSizeClass = rememberWindowSizeClass()
         val appState = rememberAppState(myNavigator)
+        val tileImeHostState = rememberTileImeHostState()
         CompositionLocalProvider(
             LocalAppState provides appState
         ) {
-            TileImeHost {
-                if (!windowSizeClass.useNavigationDrawer) {
-                    with(Spacing.current) {
-                        Row(Modifier.background(MaterialTheme.colorScheme.surface)) {
-                            val menuScrollState = rememberScrollState()
-                            ScrollBox(menuScrollState) {
-                                Column(Modifier.width(200.dp).verticalScroll(menuScrollState)) {
-                                    NavigationItems(appState.navigator, navigatableScreens)
-                                }
-                            }
-
-                            Spacer(Modifier.width(panesHorizontalSpacing))
-
-                            Column(Modifier.weight(1f)) {
-                                InnerScaffold(appState, additionalContent)
-                            }
-                        }
-                    }
-                } else {
-                    val drawerState = rememberDrawerState(DrawerValue.Closed)
-                    val coroutineScope = rememberCoroutineScope()
-
-                    val navigationIcon = @Composable {
-                        if (!appState.navigator.canPop) {
-                            if (windowSizeClass.useNavigationDrawer) {
-                                Icon(Icons.Default.Menu, "", Modifier.clickable {
-                                    coroutineScope.launch {
-                                        if (drawerState.isClosed) {
-                                            drawerState.open()
-                                        } else {
-                                            drawerState.close()
-                                        }
-                                    }
-                                })
-                            }
-                        } else {
-                            Icon(Icons.AutoMirrored.Default.ArrowBack, "", Modifier.clickable {
-                                appState.navigator.pop()
-                            })
-                        }
-                    }
-
-                    ModalNavigationDrawer(
-                        gesturesEnabled = !appState.navigator.canPop,
-                        drawerState = drawerState,
-                        drawerContent = {
-                            ModalDrawerSheet {
+            TileRecognizerHost(appState, tileImeHostState) {
+                TileImeHost(tileImeHostState) {
+                    if (!windowSizeClass.useNavigationDrawer) {
+                        with(Spacing.current) {
+                            Row(Modifier.background(MaterialTheme.colorScheme.surface)) {
                                 val menuScrollState = rememberScrollState()
                                 ScrollBox(menuScrollState) {
-                                    Column(Modifier.verticalScroll(menuScrollState)) {
-                                        IconButton(onClick = {
-                                            coroutineScope.launch {
-                                                drawerState.close()
-                                            }
-                                        }) {
-                                            Icon(Icons.Default.Close, "")
-                                        }
-                                        NavigationItems(
-                                            appState.navigator,
-                                            navigatableScreens,
-                                            drawerState
-                                        )
+                                    Column(Modifier.width(200.dp).verticalScroll(menuScrollState)) {
+                                        NavigationItems(appState.navigator, navigatableScreens)
                                     }
+                                }
+
+                                Spacer(Modifier.width(panesHorizontalSpacing))
+
+                                Column(Modifier.weight(1f)) {
+                                    InnerScaffold(appState, additionalContent)
                                 }
                             }
                         }
-                    ) {
-                        InnerScaffold(appState, additionalContent, navigationIcon)
+                    } else {
+                        val drawerState = rememberDrawerState(DrawerValue.Closed)
+                        val coroutineScope = rememberCoroutineScope()
+
+                        val navigationIcon = @Composable {
+                            if (!appState.navigator.canPop) {
+                                if (windowSizeClass.useNavigationDrawer) {
+                                    Icon(Icons.Default.Menu, "", Modifier.clickable {
+                                        coroutineScope.launch {
+                                            if (drawerState.isClosed) {
+                                                drawerState.open()
+                                            } else {
+                                                drawerState.close()
+                                            }
+                                        }
+                                    })
+                                }
+                            } else {
+                                Icon(Icons.AutoMirrored.Default.ArrowBack, "", Modifier.clickable {
+                                    appState.navigator.pop()
+                                })
+                            }
+                        }
+
+                        ModalNavigationDrawer(
+                            gesturesEnabled = !appState.navigator.canPop,
+                            drawerState = drawerState,
+                            drawerContent = {
+                                ModalDrawerSheet {
+                                    val menuScrollState = rememberScrollState()
+                                    ScrollBox(menuScrollState) {
+                                        Column(Modifier.verticalScroll(menuScrollState)) {
+                                            IconButton(onClick = {
+                                                coroutineScope.launch {
+                                                    drawerState.close()
+                                                }
+                                            }) {
+                                                Icon(Icons.Default.Close, "")
+                                            }
+                                            NavigationItems(
+                                                appState.navigator,
+                                                navigatableScreens,
+                                                drawerState
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        ) {
+                            InnerScaffold(appState, additionalContent, navigationIcon)
+                        }
                     }
                 }
             }
