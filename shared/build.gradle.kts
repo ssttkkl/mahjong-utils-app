@@ -21,6 +21,8 @@ kotlin {
                 api(project(":base-components"))
                 api(project(":mahjong-detector"))
 
+                api(compose.components.resources)
+
                 api(libs.about.libraries.core)
                 api(libs.about.libraries.compose)
 
