@@ -23,12 +23,14 @@ jobs:
           cache: 'gradle'
 
       - name: Build project
-        run: ./gradlew composeApp:wasmJsBrowserDistribution
+        env:
+          IO_SENTRY_AUTH_TOKEN: ${{ secrets.IO_SENTRY_AUTH_TOKEN }}
+        run: ./gradlew webApp:wasmJsBrowserDistribution
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./composeApp/build/dist/wasmJs/productionExecutable
+          publish_dir: ./webApp/build/dist/wasmJs/productionExecutable
           destination_dir: .
           publish_branch: gh-pages

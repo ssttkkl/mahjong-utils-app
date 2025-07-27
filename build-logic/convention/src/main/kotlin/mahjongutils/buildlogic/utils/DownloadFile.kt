@@ -3,7 +3,7 @@ package mahjongutils.buildlogic.utils
 import java.io.File
 import java.net.URI
 
-internal fun downloadFile(url: String, destFile: File) {
+fun downloadFile(url: String, destFile: File) {
     val destParent = destFile.parentFile
     destParent.mkdirs()
 

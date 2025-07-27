@@ -26,6 +26,9 @@ voyager = "1.1.0-beta03"
 aboutLibraries = "12.1.2"
 buildkonfig = "0.17.0"
 undercouch-download = "5.6.0"
+sentryAndroid = "5.6.0"
+sentryJvm = "5.7.0"
+sentryKotlinCompilerGradle = "5.7.0"
 cmpImagePickNCrop = "1.1.2"
 filekitCore = "0.10.0-beta04"
 onnxruntime = "1.21.0"
@@ -55,7 +58,7 @@ slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenmodel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 about-libraries-core = { module = "com.mikepenz:aboutlibraries-core", version.ref = "aboutLibraries" }
-about-libraries-compose-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutLibraries" }
+about-libraries-compose = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutLibraries" }
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref= "agp" }
 compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-jb" }
@@ -73,9 +76,14 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-jb" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinNativeCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinxAtomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 undercouch-download = { id = "de.undercouch.download", version.ref = "undercouch-download" }
+sentryAndroid = { id = "io.sentry.android.gradle", version.ref = "sentryAndroid" }
+sentryJvm = { id = "io.sentry.jvm.gradle", version.ref = "sentryJvm" }
+sentryKotlinCompilerGradle = { id = "io.sentry.kotlin.compiler.gradle", version.ref = "sentryKotlinCompilerGradle" }

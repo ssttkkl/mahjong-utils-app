@@ -6,4 +6,6 @@ tar -xzf /tmp/openjdk-17.tar.gz -C /tmp/
 export JAVA_HOME=/tmp/jdk-17.0.14+7
 export PATH=$PATH:$JAVA_HOME/bin
 
-./gradlew :kotlinUpgradeYarnLock composeApp:wasmJsBrowserDistribution --no-daemon
+cp env.properties.vercel env.properties
+
+./gradlew :kotlinUpgradeYarnLock webApp:wasmJsBrowserDistribution --no-daemon

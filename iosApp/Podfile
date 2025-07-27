@@ -4,6 +4,5 @@ use_frameworks!
 
 target 'iosApp' do
   # Pods for iosApp
-  pod 'composeApp', :path => '../composeApp'
-  pod "onnxruntime-objc", "~> 1.18.0"
+  pod 'shared', :path => '../shared'
 end

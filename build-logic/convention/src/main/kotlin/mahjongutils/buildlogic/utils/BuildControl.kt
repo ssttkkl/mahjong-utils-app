@@ -12,14 +12,11 @@ private fun ExtraPropertiesExtension.getBoolean(name: String, default: Boolean =
         default
 }
 
-// vercel自带的Java 11，但是AGP要求17，所以添加开关
 val Project.enableAndroid
     get() = rootProject.extra.getBoolean("ENABLE_ANDROID")
-            && JavaVersion.current() >= JavaVersion.VERSION_17
 
 val Project.enableIos
     get() = rootProject.extra.getBoolean("ENABLE_IOS")
-            && System.getProperty("os.name").startsWith("Mac")
 
 val Project.enableDesktop
     get() = rootProject.extra.getBoolean("ENABLE_DESKTOP")

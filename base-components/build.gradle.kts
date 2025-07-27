@@ -11,13 +11,13 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.ui)
-                implementation(compose.components.resources)
-                implementation(libs.material3.windowSizeClass)
-                implementation(libs.material.icons.core)
+                api(compose.runtime)
+                api(compose.foundation)
+                api(compose.material3)
+                api(compose.ui)
+                api(compose.components.resources)
+                api(libs.material3.windowSizeClass)
+                api(libs.material.icons.core)
 
                 api(project(":third-party:capturable"))
                 api(project(":third-party:feather"))
@@ -32,17 +32,17 @@ kotlin {
 
         val nonWasmJsMain by getting {
             dependencies {
-                implementation(libs.androidx.datastore.core)
-                implementation(libs.androidx.datastore.core.okio)
+                api(libs.androidx.datastore.core)
+                api(libs.androidx.datastore.core.okio)
             }
         }
 
         if (enableAndroid) {
             val androidMain by getting {
                 dependencies {
-                    implementation(libs.compose.ui.tooling.preview)
-                    implementation(libs.androidx.activity.compose)
-                    implementation(libs.kotlinx.coroutines.android)
+                    api(libs.compose.ui.tooling.preview)
+                    api(libs.androidx.activity.compose)
+                    api(libs.kotlinx.coroutines.android)
                 }
             }
         }
@@ -50,11 +50,11 @@ kotlin {
         if (enableDesktop) {
             val desktopMain by getting {
                 dependencies {
-                    implementation(compose.desktop.currentOs)
-                    implementation(libs.kotlinx.coroutines.swing)
-                    implementation(libs.appdirs)
-                    implementation(libs.slf4j.api)
-                    implementation(libs.logback.classic)
+                    api(compose.desktop.currentOs)
+                    api(libs.kotlinx.coroutines.swing)
+                    api(libs.appdirs)
+                    api(libs.slf4j.api)
+                    api(libs.logback.classic)
                 }
             }
         }

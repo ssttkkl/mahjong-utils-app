@@ -6,7 +6,7 @@
 //  Copyright © 2025 orgName. All rights reserved.
 //
 
-import composeApp
+import shared
 import UIKit
 import CoreML
 
