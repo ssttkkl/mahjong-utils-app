@@ -57,7 +57,7 @@ class KmpPlugin : Plugin<Project> {
             if (enableWasm) {
                 @OptIn(ExperimentalWasmDsl::class)
                 wasmJs {
-                    moduleName = project.name
+                    outputModuleName.set(project.name)
                     browser()
                 }
                 println("${project.name} target: wasmJs")
@@ -73,6 +73,9 @@ class KmpPlugin : Plugin<Project> {
                 val nonAndroidMain = create("nonAndroidMain") {
                     dependsOn(commonMain)
                 }
+                val mobileMain = create("mobileMain") {
+                    dependsOn(commonMain)
+                }
                 val nonWasmJsMain = create("nonWasmJsMain") {
                     dependsOn(commonMain)
                 }
@@ -82,12 +85,14 @@ class KmpPlugin : Plugin<Project> {
                 if (enableAndroid) {
                     androidMain {
                         dependsOn(nonWasmJsMain)
+                        dependsOn(mobileMain)
                     }
                 }
                 if (enableIos) {
                     iosMain {
                         dependsOn(nonWasmJsMain)
                         dependsOn(nonAndroidMain)
+                        dependsOn(mobileMain)
                     }
                 }
 

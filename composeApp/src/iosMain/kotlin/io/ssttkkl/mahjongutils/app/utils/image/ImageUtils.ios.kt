@@ -1,9 +1,9 @@
 package io.ssttkkl.mahjongutils.app.utils.image
 
 import androidx.compose.ui.graphics.ImageBitmap
+import io.ssttkkl.mahjongutils.app.base.utils.toUIImage
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.uiViewController
-import io.ssttkkl.mahjongutils.app.utils.cocoa.toUIImage
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.CoreGraphics.CGRectGetMidX
 import platform.CoreGraphics.CGRectGetMidY

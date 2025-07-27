@@ -24,6 +24,17 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: 'gradle'
+
+      - name: Setup Cocoapods
+        uses: maxim-lobanov/setup-cocoapods@v1
+        with:
+          podfile-path: iosApp/Podfile.lock
+
+      - name: Pod Install
+        run: |
+          ./gradlew :composeApp:generateDummyFramework
+          cd iosApp
+          pod install
           
       - name: Archive
         run: |

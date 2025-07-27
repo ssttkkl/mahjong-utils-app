@@ -14,12 +14,20 @@
     <string name="title_about_opensource_repo">Open-Source Repository</string>
     <string name="title_about_opensource_licenses">Open-Source License</string>
 
+    <string name="title_crop_image">Crop Image</string>
+
     <string name="label_history">History</string>
     <string name="label_clear">Clear</string>
     <string name="label_share">Share</string>
     <string name="label_view">View</string>
     <string name="label_copy">Copy</string>
     <string name="label_paste">Paste</string>
+    <string name="label_recognize_from_image">Recognize from Image</string>
+    <string name="label_recognize_from_screenshot">Recognize from Screenshot</string>
+    <string name="label_recognize_from_camera">Recognize from Camera</string>
+    <string name="label_recognize_from_clipboard">Recognize from Clipboard</string>
+    <string name="text_recognize_no_detection">No mahjong tiles detected</string>
+    <string name="text_clipboard_no_image">No image in clipboard</string>
 
     <string name="text_empty_history">Empty</string>
 

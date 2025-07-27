@@ -1,0 +1,18 @@
+{
+  "MLModelVersionStringKey": "8.3.40",
+  "MLModelDescriptionKey": "Ultralytics YOLO11n model trained on datasets\/data.yaml",
+  "MLModelCreatorDefinedKey": {
+    "stride": "32",
+    "com.github.apple.coremltools.source_dialect": "TorchScript",
+    "com.github.apple.coremltools.source": "torch==2.6.0",
+    "docs": "https:\/\/docs.ultralytics.com",
+    "task": "detect",
+    "com.github.apple.coremltools.version": "8.3.0",
+    "date": "2025-07-26T00:06:04.020704",
+    "imgsz": "[640, 640]",
+    "batch": "1",
+    "names": "{0: '1m', 1: '1p', 2: '1s', 3: '2m', 4: '2p', 5: '2s', 6: '3m', 7: '3p', 8: '3s', 9: '4m', 10: '4p', 11: '4s', 12: '5m', 13: '5p', 14: '5s', 15: '6m', 16: '6p', 17: '6s', 18: '7m', 19: '7p', 20: '7s', 21: '8m', 22: '8p', 23: '8s', 24: '9m', 25: '9p', 26: '9s', 27: 'chun', 28: 'haku', 29: 'hatsu', 30: 'nan', 31: 'pe', 32: 'sha', 33: 'tou'}"
+  },
+  "MLModelAuthorKey": "Ultralytics",
+  "MLModelLicenseKey": "AGPL-3.0 License (https:\/\/ultralytics.com\/license)"
+}

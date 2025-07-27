@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.components.tile
 
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,8 +18,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
@@ -31,27 +35,32 @@ import mahjongutils.models.Tile
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-
 @Composable
 fun TileFieldPopMenu(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    offset: DpOffset = DpOffset.Zero
 ) {
-    var clipboardData by remember { mutableStateOf<List<Tile>?>(null) }
-
     val tileImeHostState = LocalTileImeHostState.current
+    val tileRecognizer = LocalTileRecognizer.current
+
+    var clipboardData by remember { mutableStateOf<List<Tile>?>(null) }
 
     LaunchedEffect(expanded) {
         clipboardData = tileImeHostState.readClipboardData()
     }
 
+    val curOnDismissRequest by rememberUpdatedState(onDismissRequest)
+
     // 下拉菜单
     DropdownMenu(
         expanded = expanded,
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = curOnDismissRequest,
         modifier = modifier,
+        offset = offset
     ) {
+        // 复制
         DropdownMenuItem(
             text = {
                 Row(Modifier.padding(vertical = 8.dp)) {
@@ -64,10 +73,11 @@ fun TileFieldPopMenu(
             },
             onClick = {
                 tileImeHostState.emitAction(ImeAction.Copy)
-                onDismissRequest()
+                curOnDismissRequest()
             }
         )
 
+        // 粘贴
         DropdownMenuItem(
             text = {
                 Column {
@@ -92,11 +102,12 @@ fun TileFieldPopMenu(
             },
             onClick = {
                 tileImeHostState.emitAction(ImeAction.Paste)
-                onDismissRequest()
+                curOnDismissRequest()
             },
             enabled = !clipboardData.isNullOrEmpty()
         )
 
+        // 清空
         DropdownMenuItem(
             text = {
                 Row(Modifier.padding(vertical = 8.dp)) {
@@ -109,8 +120,13 @@ fun TileFieldPopMenu(
             },
             onClick = {
                 tileImeHostState.emitAction(ImeAction.Clear)
-                onDismissRequest()
+                curOnDismissRequest()
             }
         )
+
+        HorizontalDivider()
+
+        // 麻将图像识别的选项组
+        tileRecognizer.TileFieldRecognizeImageMenuItems(expanded, curOnDismissRequest)
     }
 }

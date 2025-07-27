@@ -1,8 +1,11 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import mahjongutils.buildlogic.APPLICATION_ID
+import mahjongutils.buildlogic.utils.OnnxRuntimeLibraryFilter
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
+import mahjongutils.buildlogic.utils.enableIos
 import mahjongutils.buildlogic.utils.readVersion
+import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 
 plugins {
     id("mahjongutils.buildlogic.app")
@@ -15,6 +18,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":base-components"))
+                api(project(":mahjong-detector"))
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -22,13 +26,27 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(libs.material3.windowSizeClass)
+                implementation(libs.material.icons.core)
 
                 implementation(libs.about.libraries.core)
-//                implementation(libs.about.libraries.compose)
-                implementation(project(":third-party:aboutlibraries-compose"))
+                implementation(libs.about.libraries.compose.m3)
 
                 implementation(libs.voyager.navigator)
                 implementation(libs.voyager.screenmodel)
+
+                implementation(libs.filekit.core)
+                implementation(libs.filekit.dialogs.compose)
+                implementation(
+                    libs.cmp.image.pick.n.crop.get().let {
+                        "${it.group}:${it.name}:${it.version}"
+                    }
+                ) {
+                    // 这个包引了一堆opencv、ffmpeg之类的库，应该只是拍照用
+                    // 但是我们拍照不走这个库
+                    exclude(group = "org.bytedeco")
+
+                    exclude(group = "androidx.compose.ui", module = "ui-test-junit4")
+                }
 
                 implementation(libs.mahjong.utils)
             }
@@ -52,6 +70,14 @@ kotlin {
                 }
             }
         }
+
+        if (enableIos) {
+            extensions.getByType<CocoapodsExtension>().apply {
+                framework {
+                    export(project(":mahjong-detector"))
+                }
+            }
+        }
     }
 }
 
@@ -69,6 +95,16 @@ buildkonfig {
 
 aboutLibraries {
     // 移除 "generated" 时间戳
-    excludeFields = arrayOf("generated")
+    export.excludeFields.add("generated")
 }
 
+// 去掉非本平台的动态库
+dependencies {
+    listOf("linux-aarch64", "linux-x64", "osx-aarch64", "osx-x64", "win-x64").forEach {
+        registerTransform(OnnxRuntimeLibraryFilter::class.java) {
+            parameters.platform.set(it)
+            from.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "jar")
+            to.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "onnxruntime-${it}-jar")
+        }
+    }
+}
