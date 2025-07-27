@@ -6,7 +6,7 @@ import java.util.Properties
 
 fun Project.readVersion(): Pair<String, Int> {
     val versionProperties = Properties()
-    rootProject.findProject(":composeApp")!!.file("version.properties")
+    rootDir.resolve("composeApp/version.properties")
         .inputStream().use { inputStream ->
             versionProperties.load(inputStream)
         }
@@ -15,4 +15,10 @@ fun Project.readVersion(): Pair<String, Int> {
     val versionCode = versionProperties["versionCode"].toString().toInt()
 
     return Pair(versionName, versionCode)
+}
+
+fun Project.readGitCommitHash(): String {
+    return Runtime.getRuntime().exec(
+        arrayOf("git", "rev-parse", "HEAD")
+    ).inputStream.bufferedReader().use { it.readLine() }
 }

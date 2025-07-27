@@ -1,4 +1,4 @@
-import composeApp
+import shared
 import SwiftUI
 
 struct ComposeView: UIViewControllerRepresentable {

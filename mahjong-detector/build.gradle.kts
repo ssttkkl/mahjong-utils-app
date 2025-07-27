@@ -26,8 +26,6 @@ kotlin {
                 implementation(compose.ui)
                 implementation(libs.okio)
 
-//                implementation(libs.filekit.core)
-
                 implementation(libs.mahjong.utils)
             }
         }
@@ -40,10 +38,7 @@ kotlin {
             val androidMain by getting {
                 dependencies {
                     implementation(libs.androidx.core.ktx)
-//                    implementation(libs.onnxruntime.android)
                     implementation("com.google.ai.edge.litert:litert:1.4.0")
-//                    implementation("com.google.ai.edge.litert:litert-gpu:1.4.0")
-//                    implementation("com.google.ai.edge.litert:litert-gpu-api:1.4.0")
                 }
             }
         }
@@ -96,7 +91,6 @@ kotlin {
             extensions.getByType<CocoapodsExtension>().apply {
                 noPodspec()
                 ios.deploymentTarget = "12.0"
-                pod("onnxruntime-objc", "~> 1.18.0")
             }
         }
     }

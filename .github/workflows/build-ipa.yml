@@ -32,11 +32,13 @@ jobs:
 
       - name: Pod Install
         run: |
-          ./gradlew :composeApp:generateDummyFramework
+          ./gradlew :shared:generateDummyFramework
           cd iosApp
           pod install
           
       - name: Archive
+        env:
+          IO_SENTRY_AUTH_TOKEN: ${{ secrets.IO_SENTRY_AUTH_TOKEN }}
         run: |
           cd iosApp
           xcodebuild \
