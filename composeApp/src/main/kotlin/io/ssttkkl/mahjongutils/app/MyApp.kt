@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import io.sentry.android.core.SentryAndroid
+import io.ssttkkl.mahjongutils.app.base.utils.AppInstance
 import io.ssttkkl.mahjongutils.app.base.utils.FileUtils
 import io.ssttkkl.mahjongutils.app.utils.ActivityHelper
 import okio.Path.Companion.toOkioPath
@@ -11,7 +12,7 @@ import okio.Path.Companion.toOkioPath
 class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        _current = this
+        AppInstance.app = this
 
         initSentry()
 
@@ -57,11 +58,5 @@ class MyApp : Application() {
             options.isEnableUserInteractionTracing = true
             options.isEnableUserInteractionBreadcrumbs = true
         }
-    }
-
-    companion object {
-        private var _current: MyApp? = null
-        val current: MyApp
-            get() = checkNotNull(_current)
     }
 }

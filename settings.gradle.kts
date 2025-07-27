@@ -31,11 +31,11 @@ val props = Properties().apply {
 println("=== props: ${props}")
 
 include(":third-party:dummy-for-aboutlibraries")
-include(":third-party:aboutlibraries-compose")
 include(":third-party:capturable")
 include(":third-party:feather")
 
 include(":base-components")
+include(":mahjong-detector")
 include(":shared")
 
 if (props.isEmpty || props["ENABLE_ANDROID"]?.toString()?.toBoolean() != false) {
@@ -47,3 +47,4 @@ if (props.isEmpty || props["ENABLE_DESKTOP"]?.toString()?.toBoolean() != false) 
 if (props.isEmpty || props["ENABLE_WASM"]?.toString()?.toBoolean() != false) {
     include(":webApp")
 }
+

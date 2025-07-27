@@ -16,12 +16,9 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.dp
 import com.quadible.feather.FloatingDraggableContainer
 import com.quadible.feather.FloatingDraggableItem
@@ -95,15 +92,13 @@ private fun TileImeHostFloating(
 
 @Composable
 fun TileImeHost(
+    state: TileImeHostState = rememberTileImeHostState(),
     content: @Composable () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     val windowSizeClass = rememberWindowSizeClass()
-    val clipboardManager = LocalClipboard.current
-    val state = remember { TileImeHostState(scope, clipboardManager) }
 
     CompositionLocalProvider(
-        LocalTileImeHostState provides state,
+        LocalTileImeHostState provides state
     ) {
         if (windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
             && windowSizeClass.heightSizeClass >= WindowHeightSizeClass.Medium
@@ -113,8 +108,4 @@ fun TileImeHost(
             TileImeHostOnBottom(state, content)
         }
     }
-}
-
-val LocalTileImeHostState = compositionLocalOf<TileImeHostState> {
-    error("CompositionLocal LocalTileImeHostState not present")
 }

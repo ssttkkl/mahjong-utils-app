@@ -8,4 +8,4 @@ export PATH=$PATH:$JAVA_HOME/bin
 
 cp env.properties.vercel env.properties
 
-./gradlew webApp:wasmJsBrowserDistribution --no-daemon
+./gradlew :kotlinUpgradeYarnLock webApp:wasmJsBrowserDistribution --no-daemon

@@ -1,0 +1,47 @@
+description: Ultralytics YOLO11n model trained on datasets/data.yaml
+author: Ultralytics
+date: '2025-04-13T15:43:57.513946'
+version: 8.3.40
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+  - 640
+  - 640
+names:
+  0: 1m
+  1: 1p
+  2: 1s
+  3: 2m
+  4: 2p
+  5: 2s
+  6: 3m
+  7: 3p
+  8: 3s
+  9: 4m
+  10: 4p
+  11: 4s
+  12: 5m
+  13: 5p
+  14: 5s
+  15: 6m
+  16: 6p
+  17: 6s
+  18: 7m
+  19: 7p
+  20: 7s
+  21: 8m
+  22: 8p
+  23: 8s
+  24: 9m
+  25: 9p
+  26: 9s
+  27: chun
+  28: haku
+  29: hatsu
+  30: nan
+  31: pe
+  32: sha
+  33: tou

@@ -1,9 +1,8 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '13.0'
+use_frameworks!
 
 target 'iosApp' do
-  # use_frameworks! :linkage => :static
-
   # Pods for iosApp
   pod 'shared', :path => '../shared'
 end

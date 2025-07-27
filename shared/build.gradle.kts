@@ -3,9 +3,10 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
+import mahjongutils.buildlogic.utils.enableIos
 import mahjongutils.buildlogic.utils.readGitCommitHash
 import mahjongutils.buildlogic.utils.readVersion
-import kotlin.apply
+import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 
 plugins {
     id("mahjongutils.buildlogic.lib")
@@ -19,6 +20,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":base-components"))
+                api(project(":mahjong-detector"))
 
                 api(compose.runtime)
                 api(compose.foundation)
@@ -26,13 +28,27 @@ kotlin {
                 api(compose.ui)
                 api(compose.components.resources)
                 api(libs.material3.windowSizeClass)
+                api(libs.material.icons.core)
 
                 api(libs.about.libraries.core)
-//                api(libs.about.libraries.compose)
-                api(project(":third-party:aboutlibraries-compose"))
+                api(libs.about.libraries.compose)
 
                 api(libs.voyager.navigator)
                 api(libs.voyager.screenmodel)
+
+                api(libs.filekit.core)
+                api(libs.filekit.dialogs.compose)
+                api(
+                    libs.cmp.image.pick.n.crop.get().let {
+                        "${it.group}:${it.name}:${it.version}"
+                    }
+                ) {
+                    // 这个包引了一堆opencv、ffmpeg之类的库，应该只是拍照用
+                    // 但是我们拍照不走这个库
+                    exclude(group = "org.bytedeco")
+
+                    exclude(group = "androidx.compose.ui", module = "ui-test-junit4")
+                }
 
                 api(libs.mahjong.utils)
             }
@@ -52,6 +68,14 @@ kotlin {
                 dependencies {
                     api(compose.desktop.currentOs)
                     api(libs.kotlinx.coroutines.swing)
+                }
+            }
+        }
+
+        if (enableIos) {
+            extensions.getByType<CocoapodsExtension>().apply {
+                framework {
+                    export(project(":mahjong-detector"))
                 }
             }
         }
@@ -89,5 +113,5 @@ buildkonfig {
 
 aboutLibraries {
     // 移除 "generated" 时间戳
-    excludeFields = arrayOf("generated")
+    export.excludeFields.add("generated")
 }

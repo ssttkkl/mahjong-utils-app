@@ -108,7 +108,7 @@ fun Modifier.onEnterKeyDown(
 
 fun Modifier.onRightClick(
     enabled: Boolean = true,
-    onRightClick: () -> Unit
+    onRightClick: (Offset) -> Unit
 ): Modifier = composed {
     if (!enabled) return@composed this
 
@@ -118,7 +118,7 @@ fun Modifier.onRightClick(
                 val event = awaitPointerEvent()
                 if (event.type == PointerEventType.Press &&
                     event.buttons.isSecondaryPressed) {
-                    onRightClick()
+                    onRightClick(event.changes.last().position)
                 }
             }
         }

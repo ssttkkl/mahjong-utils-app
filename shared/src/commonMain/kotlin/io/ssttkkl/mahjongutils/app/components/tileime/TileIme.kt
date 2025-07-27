@@ -111,10 +111,9 @@ fun TileIme(
                     alignment = Alignment.Center,
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                 )
-
                 TileImeDropdownMenu(
                     Modifier.align(Alignment.CenterEnd)
-                        .padding(start = 8.dp)
+                        .padding(end = 8.dp)
                 )
             }
         }
@@ -130,7 +129,7 @@ fun TileIme(
 }
 
 @Composable
-fun TileImeDropdownMenu(modifier: Modifier) {
+fun TileImeDropdownMenu(modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
 
     Column(modifier) {
