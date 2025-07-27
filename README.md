@@ -63,6 +63,18 @@ For iOS:
 
 ![Score Calculation By Fan and Minipoints](fastlane/metadata/android/en-US/images/tenInchScreenshots/5.jpg)
 
+### Image Recognition for Mahjong Tiles
+
+Any input field that requires Mahjong tiles can utilize the image recognition feature.
+Open the menu from the input keyboard, or long-press/right-click on the input field
+to select options like "Recognize from Image". You can also paste from the clipboard
+using the shortcut `Ctrl`+`V` (or `Cmd`+`V` on macOS).
+
+Note: For optimal recognition results, use screenshots from ~Majsoul~ (the trained model is
+specifically designed for ~Majsoul~).
+
+![image-recognize.gif](images/image-recognize.gif)
+
 ## Addition
 
 The algorithm runs at local, no network access will be made.

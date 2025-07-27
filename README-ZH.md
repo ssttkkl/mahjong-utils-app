@@ -57,6 +57,15 @@ iOS版：
 
 ![番符得点计算](fastlane/metadata/android/zh-CN/images/tenInchScreenshots/5.jpg)
 
+### 图像识别麻将牌
+
+任何需要输入麻将牌的输入框都可以使用图像识别功能，从输入键盘打开菜单，或是输入框长按/右键打开菜单，选择“从图片识别”等选项，
+还可以通过快捷键 `Ctrl`+`V`（macOS则为 `Cmd`+`V`）从剪切板中粘贴。
+
+注意：从~雀魂~截图中识别效果最佳（因为训练的模型只适用于~雀魂~）
+
+![image-recognize.gif](images/image-recognize.gif)
+
 ## App说明
 
 算法为纯手工自制，App无需网络，纯本地计算
