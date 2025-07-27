@@ -44,6 +44,8 @@ kotlin {
                     // 这个包引了一堆opencv、ffmpeg之类的库，应该只是拍照用
                     // 但是我们拍照不走这个库
                     exclude(group = "org.bytedeco")
+
+                    exclude(group = "androidx.compose.ui", module = "ui-test-junit4")
                 }
 
                 implementation(libs.mahjong.utils)

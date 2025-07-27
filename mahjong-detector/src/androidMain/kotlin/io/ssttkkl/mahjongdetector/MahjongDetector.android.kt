@@ -1,34 +1,44 @@
 package io.ssttkkl.mahjongdetector
 
-import ai.onnxruntime.OnnxJavaType
-import ai.onnxruntime.OnnxTensor
-import ai.onnxruntime.OrtEnvironment
-import ai.onnxruntime.OrtSession
 import androidx.compose.ui.graphics.ImageBitmap
 import io.ssttkkl.mahjongutils.app.base.utils.AppInstance
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import org.tensorflow.lite.InterpreterApi
+import org.tensorflow.lite.InterpreterApi.Options.TfLiteRuntime
 import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 
 actual object MahjongDetector : AbsMahjongDetector() {
-    private const val MODEL_FILENAME = "best.fp16.onnx"
+    private const val MODEL_FILENAME = "best_float16.tflite"
 
     private var modelLoaded: Boolean = false
     private val modelLoadMutex = Mutex()
 
-    private val env: OrtEnvironment = OrtEnvironment.getEnvironment()
-    private lateinit var session: OrtSession
+    private lateinit var interpreter: InterpreterApi
+
+    private fun loadModelBytes(modelBytes: ByteArray): ByteBuffer {
+        val byteBuffer = ByteBuffer.allocateDirect(modelBytes.size)
+        byteBuffer.order(ByteOrder.nativeOrder())
+        byteBuffer.put(modelBytes)
+        return byteBuffer
+    }
 
     private suspend fun prepareModel() {
         if (!modelLoaded) {
             modelLoadMutex.withLock {
                 if (!modelLoaded) {
+                    val interpreterOption = InterpreterApi.Options()
+                        .setRuntime(TfLiteRuntime.FROM_APPLICATION_ONLY)
                     val bytes = AppInstance.app.assets.open(MODEL_FILENAME)
                         .use { stream ->
                             stream.readBytes()
                         }
-                    session = env.createSession(bytes, OrtSession.SessionOptions())
+                    interpreter = InterpreterApi.create(
+                        loadModelBytes(bytes),
+                        interpreterOption
+                    )
                 }
                 modelLoaded = true
             }
@@ -36,41 +46,45 @@ actual object MahjongDetector : AbsMahjongDetector() {
     }
 
     fun close() {
-        session.close()
-        env.close()
+        interpreter.close()
     }
 
     actual override suspend fun run(preprocessedImage: ImageBitmap): Array<FloatArray> {
         prepareModel()
 
-        var tensor: OnnxTensor? = null
-        var results: OrtSession.Result? = null
+        val input = createInputTensor(preprocessedImage)
+        val output = createOutputTensor()
 
-        try {
-            // 将预处理后的图像数据转换为 ONNX 张量
-            tensor = createTensor(preprocessedImage)
+        // 执行推理
+        interpreter.run(input, output)
+        return output[0]
+    }
 
-            // 执行推理
-            results = session.run(mapOf(session.inputNames.first() to tensor))
+    // float[1][640][640][3]
+    private fun createInputTensor(image: ImageBitmap): Array<Array<Array<FloatArray>>> {
+        val pixels = IntArray(image.height * image.width)
+        image.readPixels(pixels)
 
-            // 获取输出张量 (你需要根据你的模型输出名称调整)
-            val output = results.get(0).value as Array<Array<FloatArray>>
-            return output[0]
-        } finally {
-            // 释放资源
-            tensor?.close()
-            results?.close()
+        return Array(1) {
+            Array(640) { i ->
+                Array(640) { j ->
+                    FloatArray(3) { c ->
+                        // c=0 -> R, c=1 -> G, c=2 -> B
+                        val pixel = pixels[i * 640 + j]
+                        val v = (pixel shr (c * 8)) and 0xFF
+                        v / 255.0f
+                    }
+                }
+            }
         }
     }
 
-    // 创建ONNX输入Tensor
-    private fun createTensor(image: ImageBitmap): OnnxTensor {
-        val buffer = image.toNchwFp16Buffer()
-        return OnnxTensor.createTensor(
-            env,
-            ByteBuffer.wrap(buffer.readByteArray()).asShortBuffer(),
-            longArrayOf(1, 3, image.height.toLong(), image.width.toLong()),  // NCHW格式
-            OnnxJavaType.FLOAT16
-        )
+    // float[1][4 + MahjongDetector.CLASS_NAME.size][8400]
+    private fun createOutputTensor(): Array<Array<FloatArray>> {
+        return Array(1) {
+            Array(4 + MahjongDetector.CLASS_NAME.size) {
+                FloatArray(8400)
+            }
+        }
     }
 }

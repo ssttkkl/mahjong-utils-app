@@ -40,7 +40,10 @@ kotlin {
             val androidMain by getting {
                 dependencies {
                     implementation(libs.androidx.core.ktx)
-                    implementation(libs.onnxruntime.android)
+//                    implementation(libs.onnxruntime.android)
+                    implementation("com.google.ai.edge.litert:litert:1.4.0")
+//                    implementation("com.google.ai.edge.litert:litert-gpu:1.4.0")
+//                    implementation("com.google.ai.edge.litert:litert-gpu-api:1.4.0")
                 }
             }
         }
