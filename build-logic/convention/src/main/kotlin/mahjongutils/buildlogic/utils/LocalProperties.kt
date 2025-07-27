@@ -28,7 +28,7 @@ private val Project.localProperties: Properties
 fun Project.getLocalProperty(name: String): String? {
     val underscoreName = name.split(".").joinToString("_") {
         it.replace(Regex("(?<=.)([A-Z])"), "_$1")
-    }
+    }.uppercase()
     println("getLocalProperty: $name, $underscoreName")
     return localProperties[name]?.toString()
         ?: System.getenv(underscoreName)
