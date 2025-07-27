@@ -2,7 +2,6 @@ import com.android.build.gradle.BaseExtension
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.enableAndroid
-import mahjongutils.buildlogic.utils.enableDesktop
 import mahjongutils.buildlogic.utils.enableIos
 import mahjongutils.buildlogic.utils.readGitCommitHash
 import mahjongutils.buildlogic.utils.readVersion
@@ -21,14 +20,6 @@ kotlin {
             dependencies {
                 api(project(":base-components"))
                 api(project(":mahjong-detector"))
-
-                api(compose.runtime)
-                api(compose.foundation)
-                api(compose.material3)
-                api(compose.ui)
-                api(compose.components.resources)
-                api(libs.material3.windowSizeClass)
-                api(libs.material.icons.core)
 
                 api(libs.about.libraries.core)
                 api(libs.about.libraries.compose)
@@ -51,24 +42,6 @@ kotlin {
                 }
 
                 api(libs.mahjong.utils)
-            }
-        }
-
-        if (enableAndroid) {
-            val androidMain by getting {
-                dependencies {
-                    api(libs.androidx.activity.compose)
-                    api(libs.kotlinx.coroutines.android)
-                }
-            }
-        }
-
-        if (enableDesktop) {
-            val desktopMain by getting {
-                dependencies {
-                    api(compose.desktop.currentOs)
-                    api(libs.kotlinx.coroutines.swing)
-                }
             }
         }
 

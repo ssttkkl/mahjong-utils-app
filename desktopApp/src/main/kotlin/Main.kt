@@ -8,11 +8,11 @@ import io.sentry.SendCachedEnvelopeFireAndForgetIntegration
 import io.sentry.SendFireAndForgetEnvelopeSender
 import io.sentry.Sentry
 import io.ssttkkl.mahjongutils.app.App
-import io.ssttkkl.mahjongutils.app.BuildKonfig
 import io.ssttkkl.mahjongutils.app.base.utils.FileUtils
 import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalMainWindowState
 import io.ssttkkl.mahjongutils.app.getAppTypography
+import io.ssttkkl.mahjongutils.app.utils.SentryConfig
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.app_name
 import mahjongutils.composeapp.generated.resources.icon_app
@@ -37,10 +37,8 @@ fun init(args: Array<String>) {
 
 private fun initSentry() {
     Sentry.init { options ->
-        options.dsn = BuildKonfig.SENTRY_DSN
-
-        options.release =
-            "${BuildKonfig.APPLICATION_ID}@${BuildKonfig.VERSION_NAME}+${BuildKonfig.GIT_COMMIT_HASH}"
+        options.dsn = SentryConfig.dsn
+        options.release = SentryConfig.release
 
         options.tags["os"] = System.getProperty("os.name") + " " + System.getProperty("os.version")
         options.tags["arch"] = System.getProperty("os.arch")

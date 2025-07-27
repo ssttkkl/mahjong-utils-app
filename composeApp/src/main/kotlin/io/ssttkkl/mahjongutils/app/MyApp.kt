@@ -7,6 +7,7 @@ import io.sentry.android.core.SentryAndroid
 import io.ssttkkl.mahjongutils.app.base.utils.AppInstance
 import io.ssttkkl.mahjongutils.app.base.utils.FileUtils
 import io.ssttkkl.mahjongutils.app.utils.ActivityHelper
+import io.ssttkkl.mahjongutils.app.utils.SentryConfig
 import okio.Path.Companion.toOkioPath
 
 class MyApp : Application() {
@@ -50,10 +51,8 @@ class MyApp : Application() {
 
     private fun initSentry() {
         SentryAndroid.init(this) { options ->
-            options.dsn = BuildKonfig.SENTRY_DSN
-
-            options.release =
-                "${BuildKonfig.APPLICATION_ID}@${BuildKonfig.VERSION_NAME}+${BuildKonfig.GIT_COMMIT_HASH}"
+            options.dsn = SentryConfig.dsn
+            options.release = SentryConfig.release
 
             options.isEnableUserInteractionTracing = true
             options.isEnableUserInteractionBreadcrumbs = true

@@ -6,7 +6,6 @@ plugins {
 
 dependencies {
     api(project(":shared"))
-    implementation(libs.androidx.activity.compose)
     implementation(libs.compose.ui.tooling.preview)
 }
 
