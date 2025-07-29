@@ -1,0 +1,140 @@
+name: Verify F-droid build
+
+on:
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  set-up-env:
+    name: Setup commit hash
+    runs-on: ubuntu-latest
+    steps:
+      - id: hash
+        name: Set commit hash or default to github.sha
+        run: |
+          # If the input has a value, it is filled by that value; otherwise, fallback to PR sha.
+          # If it is not triggered by a PR, use github.sha.
+          if [ -n "${{ inputs.commit_hash }}" ]; then
+            echo "commit_hash=${{ inputs.commit_hash }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "commit_hash=${{ github.event.pull_request.head.sha || github.sha }}" >> "$GITHUB_OUTPUT"
+          fi
+    outputs:
+      COMMIT_HASH: ${{ steps.hash.outputs.commit_hash }}
+
+  build:
+    runs-on: ubuntu-latest
+    needs: set-up-env
+    steps:
+      - name: Checkout my repository
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+          ref: ${{ needs.set-up-env.outputs.COMMIT_HASH }}
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Build Apk
+        env:
+          IO_SENTRY_AUTH_TOKEN: ${{ secrets.IO_SENTRY_AUTH_TOKEN }}
+        run: |
+          cp env.properties.fdroid env.properties
+          ./gradlew composeApp:assembleRelease
+
+      - name: Upload apks
+        uses: actions/upload-artifact@v4.6.1
+        with:
+          name: apk-unsigned
+          path: composeApp/build/outputs/apk/release/composeApp-release-unsigned.apk
+          if-no-files-found: error
+          retention-days: 7
+
+
+  # Reference: https://github.com/mullvad/mullvadvpn-app/blob/main/.github/workflows/android-reproducible-builds.yml
+  fdroid-build:
+    runs-on: ubuntu-latest
+    needs: set-up-env
+    steps:
+      - name: Install fdroidserver
+        run: |
+          sudo apt-get -y update
+          sudo apt-get -y install fdroidserver
+
+      - name: Check out gradle properties
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.set-up-env.outputs.COMMIT_HASH }}
+          path: app-gradle
+          sparse-checkout: |
+            gradle/wrapper/gradle-wrapper.properties
+          sparse-checkout-cone-mode: false
+
+      - name: Extract gradle version
+        run: |
+          echo "gradle_version=\
+          $(grep -oP 'gradle-\K[0-9]+\.[0-9]+\.[0-9]+' gradle/wrapper/gradle-wrapper.properties)" \
+          >> $GITHUB_ENV
+
+      - name: Install gradle
+        run: |
+          sudo apt-get -y remove gradle
+          mkdir /opt/gradle
+          curl -sfLo /opt/gradle/gradle-${{ env.gradle_version }}-bin.zip \
+          https\://services.gradle.org/distributions/gradle-${{ env.gradle_version }}-bin.zip
+          unzip -d /opt/gradle /opt/gradle/gradle-${{ env.gradle_version }}-bin.zip
+
+      - name: Init fdroid
+        run: fdroid init
+
+      - name: Check out metadata
+        uses: actions/checkout@v4
+        with:
+          path: app-metadata
+          sparse-checkout: |
+            fdroid-build/metadata/io.ssttkkl.mahjongutils.app.yml
+          sparse-checkout-cone-mode: false
+
+      - name: Prepare metadata
+        run: |
+          mkdir metadata
+          cp fdroid-build/metadata/io.ssttkkl.mahjongutils.app.yml metadata/io.ssttkkl.mahjongutils.app.yml
+          sed -i 's/commit-hash/${{ needs.set-up-env.outputs.COMMIT_HASH }}/' metadata/io.ssttkkl.mahjongutils.app.yml
+
+      - name: Build app
+        run: |
+          export PATH=$PATH:/opt/gradle/gradle-${{ env.gradle_version }}/bin
+          fdroid build net.mullvad.mullvadvpn:1
+
+      - name: Upload apks
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-fdroidserver
+          path: |
+            build/io\.ssttkkl\.mahjongutils\.app/composeApp/build/outputs/apk/release/composeApp-release-unsigned.apk
+          if-no-files-found: error
+          retention-days: 7
+
+    compare-builds:
+      name: Check builds
+      runs-on: ubuntu-latest
+      needs: [ build, fdroid-build ]
+      steps:
+        - name: Download artifacts
+          uses: actions/download-artifact@v4
+          with:
+            path: artifacts
+            pattern: apk-*
+            merge-multiple: false
+
+        - name: Print checksums
+          working-directory: ./artifacts
+          run: sha256sum */*
+
+        - name: Compare files
+          working-directory: ./artifacts
+          run: diff apk-unsigned/composeApp-release-unsigned.apk apk-fdroidserver/composeApp-release-unsigned.apk
