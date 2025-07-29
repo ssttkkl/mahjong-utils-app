@@ -1,0 +1,33 @@
+Categories:
+  - Science & Education
+License: MIT
+AuthorName: ssttkkl
+AuthorEmail: huang.wen.long@hotmail.com
+SourceCode: https://github.com/ssttkkl/mahjong-utils-app
+IssueTracker: https://github.com/ssttkkl/mahjong-utils-app/issues
+Changelog: https://github.com/ssttkkl/mahjong-utils-app/releases
+
+RepoType: git
+Repo: https://github.com/ssttkkl/mahjong-utils-app.git
+
+Builds:
+  - versionName: 'Reproducible'
+    versionCode: 1
+    commit: commit-hash
+    subdir: composeApp
+    init: cp ../env.properties.fdroid ../env.properties
+    gradle:
+      - yes
+    rm:
+      - iosApp
+    scandelete:
+      - build-logic/convention/build
+      - mahjong-detector/src/wasmJsMain  # remove tfjs model (fdroidserver will prevent build with .bin extension)
+
+AllowedAPKSigningKeys: 5c39f22ed1192933884426cc8cd14f3302f0d481573c056a66f0a5bec11e7186
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: composeApp/version.properties|versionCode=(\d+)|.|versionName=(.*)
+CurrentVersion: 'Reproducible'
+CurrentVersionCode: 1
