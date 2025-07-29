@@ -119,22 +119,22 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-    compare-builds:
-      name: Check builds
-      runs-on: ubuntu-latest
-      needs: [ build, fdroid-build ]
-      steps:
-        - name: Download artifacts
-          uses: actions/download-artifact@v4
-          with:
-            path: artifacts
-            pattern: apk-*
-            merge-multiple: false
+  compare-builds:
+    name: Check builds
+    runs-on: ubuntu-latest
+    needs: [ build, fdroid-build ]
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: apk-*
+          merge-multiple: false
 
-        - name: Print checksums
-          working-directory: ./artifacts
-          run: sha256sum */*
+      - name: Print checksums
+        working-directory: ./artifacts
+        run: sha256sum */*
 
-        - name: Compare files
-          working-directory: ./artifacts
-          run: diff apk-unsigned/composeApp-release-unsigned.apk apk-fdroidserver/composeApp-release-unsigned.apk
+      - name: Compare files
+        working-directory: ./artifacts
+        run: diff apk-unsigned/composeApp-release-unsigned.apk apk-fdroidserver/composeApp-release-unsigned.apk
