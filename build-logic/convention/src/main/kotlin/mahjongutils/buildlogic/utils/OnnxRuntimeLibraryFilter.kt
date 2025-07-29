@@ -38,6 +38,7 @@ abstract class OnnxRuntimeLibraryFilter @Inject constructor(
             from(unzipDir)
             include("**/*")
             exclude("**/*.dSYM/**")
+            exclude("**/*.pdb")
             listOf("linux-aarch64", "linux-x64", "osx-aarch64", "osx-x64", "win-x64")
                 .minus(parameters.platform.get())
                 .forEach {
