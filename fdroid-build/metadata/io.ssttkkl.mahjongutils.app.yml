@@ -22,6 +22,7 @@ Builds:
       - iosApp
     scandelete:
       - build-logic/convention/build
+      - mahjong-detector/src/wasmJsMain  # remove tfjs model (fdroidserver will prevent build with .bin extension)
 
 AllowedAPKSigningKeys: 5c39f22ed1192933884426cc8cd14f3302f0d481573c056a66f0a5bec11e7186
 
