@@ -70,19 +70,17 @@ jobs:
         with:
           packages: fdroidserver
 
-      - name: Check out gradle properties
-        uses: actions/checkout@v4
+      - name: Checkout my repository
+        uses: actions/checkout@v3
         with:
+          path: build/io.ssttkkl.mahjongutils.app
+          submodules: 'true'
           ref: ${{ needs.set-up-env.outputs.COMMIT_HASH }}
-          path: app-gradle
-          sparse-checkout: |
-            gradle/wrapper/gradle-wrapper.properties
-          sparse-checkout-cone-mode: false
 
       - name: Extract gradle version
         run: |
           echo "gradle_version=\
-          $(grep -oP 'gradle-\K[0-9]+\.[0-9]+\.[0-9]+' app-gradle/gradle/wrapper/gradle-wrapper.properties)" \
+          $(grep -oP 'gradle-\K[0-9]+\.[0-9]+\.[0-9]+' build/io.ssttkkl.mahjongutils.app/gradle/wrapper/gradle-wrapper.properties)" \
           >> $GITHUB_ENV
 
       - name: Install gradle
@@ -96,18 +94,10 @@ jobs:
       - name: Init fdroid
         run: fdroid init
 
-      - name: Check out metadata
-        uses: actions/checkout@v4
-        with:
-          path: app-metadata
-          sparse-checkout: |
-            fdroid-build/metadata/io.ssttkkl.mahjongutils.app.yml
-          sparse-checkout-cone-mode: false
-
       - name: Prepare metadata
         run: |
           mkdir metadata
-          cp app-metadata/fdroid-build/metadata/io.ssttkkl.mahjongutils.app.yml metadata/io.ssttkkl.mahjongutils.app.yml
+          cp build/io.ssttkkl.mahjongutils.app/fdroid-build/metadata/io.ssttkkl.mahjongutils.app.yml metadata/io.ssttkkl.mahjongutils.app.yml
           sed -i 's/commit-hash/${{ needs.set-up-env.outputs.COMMIT_HASH }}/' metadata/io.ssttkkl.mahjongutils.app.yml
           cat metadata/io.ssttkkl.mahjongutils.app.yml
 
