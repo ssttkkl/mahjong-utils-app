@@ -60,10 +60,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: set-up-env
     steps:
+      - name: Add fdroid/fdroidserver PPA
+        uses: gerlero/add-apt-repository@v1
+        with:
+          uri: http://example.com/repo
+          key: ppa:fdroid/fdroidserver
+
       - name: Install fdroidserver
-        run: |
-          sudo apt-get -y update
-          sudo apt-get -y install fdroidserver
+        uses: gerlero/apt-install@v1
+        with:
+          packages: fdroidserver
 
       - name: Check out gradle properties
         uses: actions/checkout@v4
