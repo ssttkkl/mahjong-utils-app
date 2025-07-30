@@ -31,17 +31,7 @@ kotlin {
 
                 api(libs.filekit.core)
                 api(libs.filekit.dialogs.compose)
-                api(
-                    libs.cmp.image.pick.n.crop.get().let {
-                        "${it.group}:${it.name}:${it.version}"
-                    }
-                ) {
-                    // 这个包引了一堆opencv、ffmpeg之类的库，应该只是拍照用
-                    // 但是我们拍照不走这个库
-                    exclude(group = "org.bytedeco")
-
-                    exclude(group = "androidx.compose.ui", module = "ui-test-junit4")
-                }
+                api(libs.krop.ui)
 
                 api(libs.mahjong.utils)
             }

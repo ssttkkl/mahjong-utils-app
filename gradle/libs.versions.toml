@@ -29,7 +29,7 @@ undercouch-download = "5.6.0"
 sentryAndroid = "5.6.0"
 sentryJvm = "5.7.0"
 sentryKotlinCompilerGradle = "5.7.0"
-cmpImagePickNCrop = "1.1.2"
+krop = "0.2.0"
 filekitCore = "0.10.0-beta04"
 onnxruntime = "1.21.0"
 
@@ -64,7 +64,7 @@ android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref
 compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-jb" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
-cmp-image-pick-n-crop = { module = "network.chaintech:cmp-image-pick-n-crop", version.ref = "cmpImagePickNCrop" }
+krop-ui = { module = "com.attafitamim.krop:ui", version.ref = "krop" }
 filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekitCore" }
 filekit-dialogs-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekitCore" }
 onnxruntime-android = { module = "com.microsoft.onnxruntime:onnxruntime-android", version.ref = "onnxruntime" }

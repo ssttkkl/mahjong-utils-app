@@ -19,6 +19,9 @@ import androidx.compose.ui.platform.asAwtTransferable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
+import com.attafitamim.krop.core.crop.ImageCropper
+import com.attafitamim.krop.core.crop.rememberImageCropper
+import io.ssttkkl.mahjongutils.app.base.components.ImageCropperDialog
 import io.ssttkkl.mahjongutils.app.base.utils.toBufferedImage
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalMainWindowState
@@ -30,9 +33,6 @@ import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_screenshot_frame
 import mahjongutils.composeapp.generated.resources.label_recognize_from_screenshot
 import mahjongutils.composeapp.generated.resources.title_crop_image
-import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
-import network.chaintech.cmpimagepickncrop.imagecropper.rememberImageCropper
-import network.chaintech.cmpimagepickncrop.ui.ImageCropperDialogContainer
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import java.awt.Image
@@ -187,18 +187,12 @@ actual fun TileRecognizerHost(
     ) {
         content()
     }
-    cropper.imageCropState?.let { cropState ->
+    cropper.cropState?.let { cropState ->
         Window(
             onCloseRequest = { cropState.done(accept = false) },
             title = stringResource(Res.string.title_crop_image)
         ) {
-            ImageCropperDialogContainer(
-                cropState,
-                enableRotationOption = false,
-                enabledFlipOption = false,
-                shapes = null,
-                aspects = null
-            )
+            ImageCropperDialog(cropState)
         }
     }
 }

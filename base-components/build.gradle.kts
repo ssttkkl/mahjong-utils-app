@@ -27,6 +27,8 @@ kotlin {
                 api(libs.kotlinx.datetime)
                 api(libs.kotlinx.atomicfu)
                 api(libs.kotlinx.coroutines.core)
+
+                api(libs.krop.ui)
             }
         }
 

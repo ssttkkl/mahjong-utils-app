@@ -5,11 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.Clipboard
+import com.attafitamim.krop.core.crop.ImageCropper
 import io.ssttkkl.mahjongutils.app.base.utils.toImageBitmap
 import io.ssttkkl.mahjongutils.app.base.utils.toImageData
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import kotlinx.coroutines.await
-import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
 import org.w3c.files.Blob
 
 actual class TileRecognizer actual constructor(
