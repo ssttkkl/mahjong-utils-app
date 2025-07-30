@@ -148,7 +148,7 @@ fun AppScaffold(
                         val navigationIcon = @Composable {
                             if (!appState.navigator.canPop) {
                                 if (windowSizeClass.useNavigationDrawer) {
-                                    Icon(Icons.Default.Menu, "", Modifier.clickable {
+                                    Icon(Icons.Default.Menu, "Menu", Modifier.clickable {
                                         coroutineScope.launch {
                                             if (drawerState.isClosed) {
                                                 drawerState.open()
@@ -159,7 +159,10 @@ fun AppScaffold(
                                     })
                                 }
                             } else {
-                                Icon(Icons.AutoMirrored.Default.ArrowBack, "", Modifier.clickable {
+                                Icon(
+                                    Icons.AutoMirrored.Default.ArrowBack,
+                                    "Back",
+                                    Modifier.clickable {
                                     appState.navigator.pop()
                                 })
                             }
@@ -178,7 +181,7 @@ fun AppScaffold(
                                                     drawerState.close()
                                                 }
                                             }) {
-                                                Icon(Icons.Default.Close, "")
+                                                Icon(Icons.Default.Close, "Close")
                                             }
                                             NavigationItems(
                                                 appState.navigator,
