@@ -21,9 +21,15 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.dp
+import com.attafitamim.krop.core.crop.CropError
+import com.attafitamim.krop.core.crop.CropResult
+import com.attafitamim.krop.core.crop.ImageCropper
+import com.attafitamim.krop.core.crop.crop
+import com.attafitamim.krop.core.crop.rememberImageCropper
 import io.github.vinceglb.filekit.dialogs.FileKitType
 import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
 import io.ssttkkl.mahjongdetector.MahjongDetector
+import io.ssttkkl.mahjongutils.app.base.components.ImageCropperDialog
 import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
@@ -41,10 +47,6 @@ import mahjongutils.composeapp.generated.resources.label_recognize_from_image
 import mahjongutils.composeapp.generated.resources.text_clipboard_no_image
 import mahjongutils.composeapp.generated.resources.text_recognize_no_detection
 import mahjongutils.models.Tile
-import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropResult
-import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
-import network.chaintech.cmpimagepickncrop.imagecropper.rememberImageCropper
-import network.chaintech.cmpimagepickncrop.ui.ImageCropperDialogContainer
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import kotlin.time.measureTime
@@ -194,11 +196,13 @@ abstract class BaseTileRecognizer(
     }
 
     suspend fun cropAndRecognizeFromBitmap(bitmap: ImageBitmap): TileRecognizeResult {
-        val cropResult = cropper.cropImage(bmp = bitmap)
-        if (cropResult is ImageCropResult.Success) {
+        val cropResult = cropper.crop(bitmap)
+        if (cropResult is CropResult.Success) {
             return TileRecognizeResult.Success(
                 recognizeFromBitmap(cropResult.bitmap)
             )
+        } else if (cropResult is CropError) {
+            logger.error("crop error: $cropResult")
         }
         return TileRecognizeResult.Abort
     }
@@ -259,14 +263,8 @@ fun DefaultTileRecognizerHost(
         content()
     }
 
-    cropper.imageCropState?.let { cropState ->
-        ImageCropperDialogContainer(
-            cropState,
-            enableRotationOption = false,
-            enabledFlipOption = false,
-            shapes = null,
-            aspects = null
-        )
+    cropper.cropState?.let { cropState ->
+        ImageCropperDialog(cropState)
     }
 }
 

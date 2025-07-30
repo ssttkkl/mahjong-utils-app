@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.unit.dp
+import com.attafitamim.krop.core.crop.ImageCropper
 import io.github.vinceglb.filekit.dialogs.compose.rememberCameraPickerLauncher
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
@@ -21,7 +22,6 @@ import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_photo_camera
 import mahjongutils.composeapp.generated.resources.label_recognize_from_camera
-import network.chaintech.cmpimagepickncrop.imagecropper.ImageCropper
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
