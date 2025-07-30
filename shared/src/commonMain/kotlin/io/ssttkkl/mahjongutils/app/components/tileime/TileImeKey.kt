@@ -73,7 +73,7 @@ sealed class TileImeKey<T : TileImeKey<T>> : KeyboardKeyItem {
             ) {
                 Image(
                     painterResource(Res.drawable.icon_backspace),
-                    "",
+                    "Backspace",
                     Modifier.size(with(density) { 36.sp.toDp() }),
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
                 )
