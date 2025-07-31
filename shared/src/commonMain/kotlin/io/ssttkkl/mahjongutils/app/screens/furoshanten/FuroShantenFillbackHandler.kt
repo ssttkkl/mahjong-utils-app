@@ -13,7 +13,7 @@ class FuroShantenFillbackHandler(
     val panelState: EditablePanelState<FuroShantenFormState, FuroChanceShantenArgs>,
     val requestFocus: () -> Unit
 ) : FillbackHandler {
-    private fun fillbackAction(action: ShantenAction, draw: Tile?, discard: Tile?) {
+    override fun fillbackAction(action: ShantenAction?, draw: Tile?, discard: Tile?) {
         val args = panelState.originArgs
         panelState.editing = true
         panelState.form.fillFormWithArgs(args)
@@ -44,7 +44,7 @@ class FuroShantenFillbackHandler(
             }
 
             else -> {
-                return
+                args.tiles.toMutableList()
             }
         }
 
@@ -52,17 +52,5 @@ class FuroShantenFillbackHandler(
         discard?.let { newTiles.removeLast(discard) }
         panelState.form.tiles = newTiles
         panelState.form.chanceTile = null
-    }
-
-    override fun fillbackAction(action: ShantenAction) {
-        fillbackAction(action, null, null)
-    }
-
-    override fun fillbackActionAndDraw(action: ShantenAction, draw: Tile) {
-        fillbackAction(action, draw, null)
-    }
-
-    override fun fillbackActionAndDrawAndDiscard(action: ShantenAction, draw: Tile, discard: Tile) {
-        fillbackAction(action, draw, discard)
     }
 }
