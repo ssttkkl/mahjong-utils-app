@@ -37599,7 +37599,7 @@
   "weightsManifest": [
     {
       "paths": [
-        "group1-shard1of1.bin"
+        "group1-shard1of1.model"
       ],
       "weights": [
         {
