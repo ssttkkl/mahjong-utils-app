@@ -21,10 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
+import io.ssttkkl.mahjongutils.app.utils.readTiles
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_content_copy
 import mahjongutils.composeapp.generated.resources.icon_content_paste
@@ -38,19 +39,21 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun TileFieldPopMenu(
     expanded: Boolean,
+    onAction: (ImeAction) -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     offset: DpOffset = DpOffset.Zero
 ) {
-    val tileImeHostState = LocalTileImeHostState.current
+    val clipboard = LocalClipboard.current
     val tileRecognizer = LocalTileRecognizer.current
 
     var clipboardData by remember { mutableStateOf<List<Tile>?>(null) }
 
     LaunchedEffect(expanded) {
-        clipboardData = tileImeHostState.readClipboardData()
+        clipboardData = clipboard.readTiles()
     }
 
+    val curOnAction by rememberUpdatedState(onAction)
     val curOnDismissRequest by rememberUpdatedState(onDismissRequest)
 
     // 下拉菜单
@@ -72,7 +75,7 @@ fun TileFieldPopMenu(
                 }
             },
             onClick = {
-                tileImeHostState.emitAction(ImeAction.Copy)
+                onAction(ImeAction.Copy)
                 curOnDismissRequest()
             }
         )
@@ -101,7 +104,7 @@ fun TileFieldPopMenu(
                 }
             },
             onClick = {
-                tileImeHostState.emitAction(ImeAction.Paste)
+                onAction(ImeAction.Paste)
                 curOnDismissRequest()
             },
             enabled = !clipboardData.isNullOrEmpty()
@@ -119,7 +122,7 @@ fun TileFieldPopMenu(
                 }
             },
             onClick = {
-                tileImeHostState.emitAction(ImeAction.Clear)
+                onAction(ImeAction.Clear)
                 curOnDismissRequest()
             }
         )
@@ -127,6 +130,6 @@ fun TileFieldPopMenu(
         HorizontalDivider()
 
         // 麻将图像识别的选项组
-        tileRecognizer.TileFieldRecognizeImageMenuItems(expanded, curOnDismissRequest)
+        tileRecognizer.TileFieldRecognizeImageMenuItems(expanded, curOnAction, curOnDismissRequest)
     }
 }

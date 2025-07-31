@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.attafitamim.krop.core.crop.ImageCropper
 import io.github.vinceglb.filekit.dialogs.compose.rememberCameraPickerLauncher
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
-import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
+import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
 import io.ssttkkl.mahjongutils.app.utils.image.loadAsImage
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
@@ -27,24 +27,26 @@ import org.jetbrains.compose.resources.vectorResource
 
 actual class TileRecognizer actual constructor(
     cropper: ImageCropper,
-    tileImeHostState: TileImeHostState,
     snackbarHostState: SnackbarHostState,
     noDetectionMsg: String
-) : BaseTileRecognizer(cropper, tileImeHostState, snackbarHostState, noDetectionMsg) {
+) : BaseTileRecognizer(cropper, snackbarHostState, noDetectionMsg) {
     @Composable
     actual override fun TileFieldRecognizeImageMenuItems(
         expanded: Boolean,
+        onAction: (ImeAction) -> Unit,
         onDismissRequest: () -> Unit
     ) {
-        super.TileFieldRecognizeImageMenuItems(expanded, onDismissRequest)
-        CameraMenuItem(onDismissRequest)
+        super.TileFieldRecognizeImageMenuItems(expanded, onAction, onDismissRequest)
+        CameraMenuItem(onAction, onDismissRequest)
     }
 
     @Composable
     fun CameraMenuItem(
+        onAction: (ImeAction) -> Unit,
         onDismissRequest: () -> Unit
     ) {
         // 拍照识别
+        val curOnAction by rememberUpdatedState(onAction)
         val curOnDismissRequest by rememberUpdatedState(onDismissRequest)
 
         val launcher = rememberCameraPickerLauncher { file ->
@@ -57,7 +59,7 @@ actual class TileRecognizer actual constructor(
                 runCatching {
                     val bitmap = file?.loadAsImage()
                     if (bitmap != null) {
-                        cropAndRecognizeAndFillFromBitmap(bitmap)
+                        cropAndRecognizeAndFillFromBitmap(bitmap, curOnAction)
                     }
                 }.onFailure { e -> logger.error(e) }
             }
@@ -92,8 +94,7 @@ actual class TileRecognizer actual constructor(
 @Composable
 actual fun TileRecognizerHost(
     appState: AppState,
-    tileImeHostState: TileImeHostState,
     content: @Composable () -> Unit
 ) {
-    DefaultTileRecognizerHost(appState, tileImeHostState, content)
+    DefaultTileRecognizerHost(appState, content)
 }

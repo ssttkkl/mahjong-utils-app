@@ -42,7 +42,6 @@ import io.ssttkkl.mahjongutils.app.base.components.ScrollBox
 import io.ssttkkl.mahjongutils.app.base.rememberWindowSizeClass
 import io.ssttkkl.mahjongutils.app.components.tile.TileRecognizerHost
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
-import io.ssttkkl.mahjongutils.app.components.tileime.rememberTileImeHostState
 import kotlinx.coroutines.launch
 
 
@@ -118,12 +117,11 @@ fun AppScaffold(
     AppNavigator(screenRegistry, initialScreenPath) { myNavigator ->
         val windowSizeClass: WindowSizeClass = rememberWindowSizeClass()
         val appState = rememberAppState(myNavigator)
-        val tileImeHostState = rememberTileImeHostState()
         CompositionLocalProvider(
             LocalAppState provides appState
         ) {
-            TileRecognizerHost(appState, tileImeHostState) {
-                TileImeHost(tileImeHostState) {
+            TileRecognizerHost(appState) {
+                TileImeHost {
                     if (!windowSizeClass.useNavigationDrawer) {
                         with(Spacing.current) {
                             Row(Modifier.background(MaterialTheme.colorScheme.surface)) {

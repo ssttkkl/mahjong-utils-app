@@ -14,11 +14,11 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -35,8 +35,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.Clipboard
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.DpOffset
@@ -57,89 +58,11 @@ import mahjongutils.models.toTilesString
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.roundToInt
 
-private fun TileImeHostState.TileImeConsumer.consume(
-    state: CoreTileFieldState,
-    valueState: State<List<Tile>>,
-    onValueChangeState: State<((List<Tile>) -> Unit)?>
-) {
-    val value by valueState
-    val onValueChange by onValueChangeState
-
-    this.consume(
-        handlePendingTile = { tiles ->
-            state.updateSelection(value.indices) { selection ->
-                val newValue = buildList {
-                    addAll(value.subList(0, selection.start))
-                    addAll(tiles)
-
-                    if (selection.end != value.size) {
-                        addAll(
-                            value.subList(
-                                selection.end,
-                                value.size
-                            )
-                        )
-                    }
-                }
-                onValueChange?.invoke(newValue)
-                TextRange(selection.start + tiles.size)
-            }
-        },
-        handleReplaceTile = { tiles ->
-            state.updateSelection(value.indices) { _ ->
-                onValueChange?.invoke(tiles)
-                TextRange(tiles.size)
-            }
-        },
-        handleDeleteTile = {
-            state.updateSelection(value.indices) { selection ->
-                val curCursor = selection.start
-                if (selection.length == 0) {
-                    val indexToRemove = if (it == TileImeHostState.DeleteType.Backspace) {
-                        curCursor - 1
-                    } else {
-                        curCursor
-                    }
-
-                    if (indexToRemove in value.indices) {
-                        val newValue = ArrayList(value).apply {
-                            removeAt(indexToRemove)
-                        }
-                        onValueChange?.invoke(newValue)
-                        TextRange(indexToRemove)
-                    } else {
-                        selection
-                    }
-                } else {
-                    val newValue = buildList {
-                        addAll(value.subList(0, selection.start))
-
-                        if (selection.end != value.size) {
-                            addAll(
-                                value.subList(
-                                    selection.end + 1,
-                                    value.size
-                                )
-                            )
-                        }
-                    }
-                    onValueChange?.invoke(newValue)
-                    TextRange(curCursor)
-                }
-            }
-        },
-        handleCopyRequest = {
-            value
-        },
-        handleClearRequest = {
-            onValueChange?.invoke(emptyList())
-        }
-    )
-}
 
 private fun Modifier.handleShortcutKeyEvent(
-    tileImeHostState: TileImeHostState,
-    tileRecognizer: TileRecognizer
+    tileRecognizer: TileRecognizer,
+    clipboard: Clipboard,
+    onAction: (TileImeHostState.ImeAction) -> Unit
 ): Modifier {
     return onKeyEvent {
         if (it.type != KeyEventType.KeyDown) {
@@ -151,20 +74,20 @@ private fun Modifier.handleShortcutKeyEvent(
             if (PlatformUtils.isApple) it.isMetaPressed else it.isCtrlPressed
 
         if (it.key == Key.V && isCtrlOrCmdPressed) {
-            tileImeHostState.coroutineScope.launch {
+            tileRecognizer.coroutineScope.launch {
                 // 粘贴操作
                 // 先尝试从剪切板识别图片
-                val bitmap = tileRecognizer.readClipboardImage(tileImeHostState.clipboardManager)
+                val bitmap = tileRecognizer.readClipboardImage(clipboard)
                 if (bitmap != null) {
-                    tileRecognizer.cropAndRecognizeAndFillFromBitmap(bitmap)
+                    tileRecognizer.cropAndRecognizeAndFillFromBitmap(bitmap, onAction)
                 } else {
-                    tileImeHostState.emitAction(TileImeHostState.ImeAction.Paste)
+                    onAction(TileImeHostState.ImeAction.Paste)
                 }
             }
             true
         } else if (it.key == Key.C && isCtrlOrCmdPressed) {
             // 复制操作
-            tileImeHostState.emitAction(TileImeHostState.ImeAction.Copy)
+            onAction(TileImeHostState.ImeAction.Copy)
             true
         } else {
             false
@@ -190,9 +113,8 @@ private fun Modifier.onPressDetectTileImeDefaultCollapsed(
 }
 
 @Composable
-fun BaseTileField(
-    value: List<Tile>,
-    onValueChange: (List<Tile>) -> Unit,
+private fun BaseTileField(
+    valueState: MutableState<List<Tile>>,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     fontSize: TextUnit = TileTextSize.Default.bodyLarge,
@@ -200,21 +122,25 @@ fun BaseTileField(
     isError: Boolean = false,
     interactionSource: MutableInteractionSource,
 ) {
+    val clipboard = LocalClipboard.current
     val state = remember(interactionSource) {
-        CoreTileFieldState(interactionSource)
+        CoreTileFieldState(
+            valueState = valueState,
+            interactionSource = interactionSource,
+            clipboard = clipboard
+        )
     }
 
-    val currentValueState = rememberUpdatedState(value)
-    val currentOnValueChangeState = rememberUpdatedState(onValueChange)
+    val coroutineScope = rememberCoroutineScope()
 
     val tileImeHostState = LocalTileImeHostState.current
     val consumer = remember(state, tileImeHostState) {
         tileImeHostState.TileImeConsumer()
     }
 
-    LaunchedEffect(value) {
+    LaunchedEffect(valueState.value) {
         // 限制selection在值范围内
-        state.selection = state.selection.coerceIn(0, value.size)
+        state.selection = state.selection.coerceIn(0, valueState.value.size)
     }
 
     // 退出时隐藏键盘
@@ -226,16 +152,11 @@ fun BaseTileField(
 
     // 绑定键盘到该输入框
     val focused by interactionSource.collectIsFocusedAsState()
-    DisposableEffect(enabled && focused, consumer) {
+    LaunchedEffect(enabled && focused) {
         if (enabled && focused) {
-            consumer.consume(state, currentValueState, currentOnValueChangeState)
-
-            onDispose {
-                consumer.release()
-            }
+            consumer.consume(state::handleImeAction)
         } else {
             consumer.release()
-            onDispose { }
         }
     }
 
@@ -276,7 +197,6 @@ fun BaseTileField(
     val tileRecognizer = LocalTileRecognizer.current
 
     CoreTileField(
-        value = value,
         modifier = modifier.onGloballyPositioned { layoutCoordinates = it }
             .focusRequester(focusRequester)
             // 右键展开下拉框
@@ -293,6 +213,7 @@ fun BaseTileField(
                 state.interactionSource,
                 enabled,
                 onLongPress = { position ->
+                    focusRequester.requestFocus()
                     popupPosition = IntOffset(
                         position.x.roundToInt(),
                         position.y.roundToInt()
@@ -305,7 +226,7 @@ fun BaseTileField(
             // 点击时更改键盘的默认折叠
             .onPressDetectTileImeDefaultCollapsed(tileImeHostState)
             // 处理复制粘贴快捷键
-            .handleShortcutKeyEvent(tileImeHostState, tileRecognizer),
+            .handleShortcutKeyEvent(tileRecognizer, clipboard, tileImeHostState::emitAction),
         state = state,
         cursorColor = cursorColor,
         fontSize = fontSize
@@ -313,6 +234,9 @@ fun BaseTileField(
 
     TileFieldPopMenu(
         expanded = dropdownExpanded,
+        onAction = {
+            coroutineScope.launch { state.handleImeAction(it) }
+        },
         onDismissRequest = { dropdownExpanded = false },
         offset = with(density) {
             DpOffset(popupPosition.x.toDp(), popupPosition.y.toDp())
@@ -334,6 +258,10 @@ fun TileField(
     isError: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
+    val valueState = remember { mutableStateOf(value) }
+    LaunchedEffect(value) { valueState.value = value }
+    LaunchedEffect(valueState.value) { onValueChange(valueState.value) }
+
     val shape = TextFieldDefaults.shape
     val colors = TextFieldDefaults.colors()
 
@@ -369,8 +297,7 @@ fun TileField(
     }
     decorationBox {
         BaseTileField(
-            value,
-            onValueChange,
+            valueState,
             modifier,
             enabled = enabled,
             fontSize = fontSize,
@@ -395,6 +322,10 @@ fun OutlinedTileField(
     isError: Boolean = false,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
+    val valueState = remember { mutableStateOf(value) }
+    LaunchedEffect(value) { valueState.value = value }
+    LaunchedEffect(valueState.value) { onValueChange(valueState.value) }
+
     val shape = OutlinedTextFieldDefaults.shape
     val colors = OutlinedTextFieldDefaults.colors()
 
@@ -430,8 +361,7 @@ fun OutlinedTileField(
     }
     decorationBox {
         BaseTileField(
-            value,
-            onValueChange,
+            valueState,
             modifier,
             enabled = enabled,
             fontSize = fontSize,

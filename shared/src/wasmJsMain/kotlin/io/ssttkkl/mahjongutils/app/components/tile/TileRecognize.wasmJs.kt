@@ -14,17 +14,17 @@ import org.w3c.files.Blob
 
 actual class TileRecognizer actual constructor(
     cropper: ImageCropper,
-    tileImeHostState: TileImeHostState,
     snackbarHostState: SnackbarHostState,
     noDetectionMsg: String
-) : BaseTileRecognizer(cropper, tileImeHostState, snackbarHostState, noDetectionMsg) {
+) : BaseTileRecognizer(cropper, snackbarHostState, noDetectionMsg) {
 
     @Composable
     actual override fun TileFieldRecognizeImageMenuItems(
         expanded: Boolean,
+        onAction: (TileImeHostState.ImeAction) -> Unit,
         onDismissRequest: () -> Unit
     ) {
-        super.TileFieldRecognizeImageMenuItems(expanded, onDismissRequest)
+        super.TileFieldRecognizeImageMenuItems(expanded, onAction, onDismissRequest)
     }
 
     @OptIn(ExperimentalComposeUiApi::class)

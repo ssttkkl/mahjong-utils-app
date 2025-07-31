@@ -9,24 +9,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.ClipEntry
-import androidx.compose.ui.platform.Clipboard
-import androidx.compose.ui.platform.LocalClipboard
 import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
-import io.ssttkkl.mahjongutils.app.base.utils.getText
-import io.ssttkkl.mahjongutils.app.base.utils.setText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import mahjongutils.models.Tile
-import mahjongutils.models.toTilesString
 
 @Stable
 class TileImeHostState(
-    val coroutineScope: CoroutineScope,
-    val clipboardManager: Clipboard,
+    val coroutineScope: CoroutineScope
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger("TileImeHostState")
@@ -53,23 +46,6 @@ class TileImeHostState(
     var consumer by mutableStateOf(0)
     val pendingAction = MutableSharedFlow<ImeAction>(extraBufferCapacity = 255)
 
-    suspend fun readClipboardData(): List<Tile>? {
-        return clipboardManager.getClipEntry()?.let {
-            parseClipboardData(it)
-        }
-    }
-
-    suspend fun parseClipboardData(clipEntry: ClipEntry): List<Tile>? {
-        val text = clipEntry.getText() ?: return emptyList()
-        return runCatching { Tile.parseTiles(text) }.getOrNull()
-    }
-
-    suspend fun writeClipboardData(data: List<Tile>?) {
-        data?.let {
-            clipboardManager.setText(it.toTilesString())
-        }
-    }
-
     fun emitAction(action: ImeAction) {
         pendingAction.tryEmit(action)
     }
@@ -93,28 +69,13 @@ class TileImeHostState(
 
         private var collectPendingActionJob: Job? = null
 
-        fun consume(
-            handlePendingTile: suspend (List<Tile>) -> Unit,
-            handleReplaceTile: suspend (List<Tile>) -> Unit,
-            handleDeleteTile: suspend (DeleteType) -> Unit,
-            handleCopyRequest: suspend () -> List<Tile>,
-            handleClearRequest: suspend () -> Unit
-        ) {
+        fun consume(handleImeAction: suspend (action: ImeAction) -> Unit) {
             if (!consuming) {
                 consumer += 1
                 consuming = true
 
                 collectPendingActionJob = coroutineScope.launch(Dispatchers.Main) {
-                    pendingAction.collect { action ->
-                        when (action) {
-                            is ImeAction.Input -> handlePendingTile(action.data)
-                            is ImeAction.Replace -> handleReplaceTile(action.data)
-                            ImeAction.Clear -> handleClearRequest()
-                            ImeAction.Copy -> writeClipboardData(handleCopyRequest())
-                            ImeAction.Paste -> readClipboardData()?.let { handlePendingTile(it) }
-                            is ImeAction.Delete -> handleDeleteTile(action.type)
-                        }
-                    }
+                    pendingAction.collect(handleImeAction)
                 }
 
                 logger.debug("start consuming")
@@ -169,10 +130,9 @@ class TileImeHostState(
 
 @Composable
 fun rememberTileImeHostState(
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    clipboardManager: Clipboard = LocalClipboard.current
+    coroutineScope: CoroutineScope = rememberCoroutineScope()
 ): TileImeHostState {
-    return remember { TileImeHostState(coroutineScope, clipboardManager) }
+    return remember { TileImeHostState(coroutineScope) }
 }
 
 val LocalTileImeHostState = compositionLocalOf<TileImeHostState> {

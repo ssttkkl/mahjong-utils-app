@@ -24,6 +24,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -114,7 +115,9 @@ fun TileIme(
                 TileImeDropdownMenu(
                     Modifier.align(Alignment.CenterEnd)
                         .padding(end = 8.dp)
-                )
+                ) {
+                    state.emitAction(it)
+                }
             }
         }
 
@@ -129,8 +132,13 @@ fun TileIme(
 }
 
 @Composable
-fun TileImeDropdownMenu(modifier: Modifier = Modifier) {
+fun TileImeDropdownMenu(
+    modifier: Modifier = Modifier,
+    onAction: (ImeAction) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
+
+    val curOnAction by rememberUpdatedState(onAction)
 
     Column(modifier) {
         // 触发按钮
@@ -147,6 +155,6 @@ fun TileImeDropdownMenu(modifier: Modifier = Modifier) {
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
         )
 
-        TileFieldPopMenu(expanded, { expanded = !expanded })
+        TileFieldPopMenu(expanded, curOnAction, { expanded = !expanded })
     }
 }
