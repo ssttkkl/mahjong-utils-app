@@ -39,21 +39,21 @@ fun <F : FormState<ARG>, ARG> TilesPanelHeader(
                 },
                 Modifier.align(Alignment.CenterVertically)
             ) {
-                Icon(Icons.Outlined.Edit, "", tint = MaterialTheme.colorScheme.primary)
+                Icon(Icons.Outlined.Edit, "Edit", tint = MaterialTheme.colorScheme.primary)
             }
         } else {
             IconButton(
                 onSubmit,
                 Modifier.align(Alignment.CenterVertically)
             ) {
-                Icon(Icons.Outlined.Check, "", tint = MaterialTheme.colorScheme.primary)
+                Icon(Icons.Outlined.Check, "Apply", tint = MaterialTheme.colorScheme.primary)
             }
 
             IconButton(
                 onCancel,
                 Modifier.align(Alignment.CenterVertically)
             ) {
-                Icon(Icons.Outlined.Clear, "", tint = MaterialTheme.colorScheme.primary)
+                Icon(Icons.Outlined.Clear, "Cancel", tint = MaterialTheme.colorScheme.primary)
             }
         }
     }

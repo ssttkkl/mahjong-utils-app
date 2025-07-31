@@ -5,6 +5,8 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -38,6 +40,9 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.DpOffset
@@ -121,6 +126,8 @@ private fun BaseTileField(
     colors: TextFieldColors = TextFieldDefaults.colors(),
     isError: Boolean = false,
     interactionSource: MutableInteractionSource,
+    decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit =
+        @Composable { innerTextField -> innerTextField() }
 ) {
     val clipboard = LocalClipboard.current
     val state = remember(interactionSource) {
@@ -196,52 +203,62 @@ private fun BaseTileField(
 
     val tileRecognizer = LocalTileRecognizer.current
 
-    CoreTileField(
-        modifier = modifier.onGloballyPositioned { layoutCoordinates = it }
-            .focusRequester(focusRequester)
-            // 右键展开下拉框
-            .onRightClick(enabled) { position ->
-                focusRequester.requestFocus()
-                popupPosition = IntOffset(
-                    position.x.roundToInt(),
-                    position.y.roundToInt()
-                )
-                dropdownExpanded = true
+    Box(
+        modifier.onGloballyPositioned { layoutCoordinates = it }
+            .semantics {
+                // 使组件在视图树中显示为可点击
+                onClick(action = null)
             }
-            // 点击时获取焦点，长按展开下拉框
-            .tapPress(
-                state.interactionSource,
-                enabled,
-                onLongPress = { position ->
-                    focusRequester.requestFocus()
-                    popupPosition = IntOffset(
-                        position.x.roundToInt(),
-                        position.y.roundToInt()
-                    )
-                    dropdownExpanded = true
-                },
-                onTap = {
-                    focusRequester.requestFocus()
-                })
-            // 点击时更改键盘的默认折叠
-            .onPressDetectTileImeDefaultCollapsed(tileImeHostState)
-            // 处理复制粘贴快捷键
-            .handleShortcutKeyEvent(tileRecognizer, clipboard, tileImeHostState::emitAction),
-        state = state,
-        cursorColor = cursorColor,
-        fontSize = fontSize
-    )
+    ) {
+        decorationBox {
+            CoreTileField(
+                modifier = modifier.onGloballyPositioned { layoutCoordinates = it }
+                    .focusRequester(focusRequester)
+                    // 右键展开下拉框
+                    .onRightClick(enabled) { position ->
+                        focusRequester.requestFocus()
+                        popupPosition = IntOffset(
+                            position.x.roundToInt(),
+                            position.y.roundToInt()
+                        )
+                        dropdownExpanded = true
+                    }
+                    // 点击时获取焦点，长按展开下拉框
+                    .tapPress(
+                        state.interactionSource,
+                        enabled,
+                        onLongPress = { position ->
+                            focusRequester.requestFocus()
+                            popupPosition = IntOffset(
+                                position.x.roundToInt(),
+                                position.y.roundToInt()
+                            )
+                            dropdownExpanded = true
+                        },
+                        onTap = {
+                            focusRequester.requestFocus()
+                        })
+                    // 点击时更改键盘的默认折叠
+                    .onPressDetectTileImeDefaultCollapsed(tileImeHostState)
+                    // 处理复制粘贴快捷键
+                    .handleShortcutKeyEvent(tileRecognizer, clipboard, tileImeHostState::emitAction),
+                state = state,
+                cursorColor = cursorColor,
+                fontSize = fontSize
+            )
 
-    TileFieldPopMenu(
-        expanded = dropdownExpanded,
-        onAction = {
-            coroutineScope.launch { state.handleImeAction(it) }
-        },
-        onDismissRequest = { dropdownExpanded = false },
-        offset = with(density) {
-            DpOffset(popupPosition.x.toDp(), popupPosition.y.toDp())
+            TileFieldPopMenu(
+                expanded = dropdownExpanded,
+                onAction = {
+                    coroutineScope.launch { state.handleImeAction(it) }
+                },
+                onDismissRequest = { dropdownExpanded = false },
+                offset = with(density) {
+                    DpOffset(popupPosition.x.toDp(), popupPosition.y.toDp())
+                }
+            )
         }
-    )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -295,17 +312,16 @@ fun TileField(
             }
         )
     }
-    decorationBox {
-        BaseTileField(
-            valueState,
-            modifier,
-            enabled = enabled,
-            fontSize = fontSize,
-            colors = colors,
-            isError = isError,
-            interactionSource = interactionSource
-        )
-    }
+    BaseTileField(
+        valueState,
+        modifier,
+        enabled = enabled,
+        fontSize = fontSize,
+        colors = colors,
+        isError = isError,
+        interactionSource = interactionSource,
+        decorationBox = decorationBox
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -359,15 +375,14 @@ fun OutlinedTileField(
             }
         )
     }
-    decorationBox {
-        BaseTileField(
-            valueState,
-            modifier,
-            enabled = enabled,
-            fontSize = fontSize,
-            colors = colors,
-            isError = isError,
-            interactionSource = interactionSource
-        )
-    }
+    BaseTileField(
+        valueState,
+        modifier,
+        enabled = enabled,
+        fontSize = fontSize,
+        colors = colors,
+        isError = isError,
+        interactionSource = interactionSource,
+        decorationBox = decorationBox
+    )
 }

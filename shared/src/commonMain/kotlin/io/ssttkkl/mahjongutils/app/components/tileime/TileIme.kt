@@ -100,7 +100,10 @@ fun TileIme(
                         Icons.Filled.KeyboardArrowUp
                     else
                         Icons.Filled.KeyboardArrowDown,
-                    "",
+                    if (!collapsed)
+                        "Collapse Tile IME"
+                    else
+                        "Expand Tile IME",
                     Modifier
                         .padding(start = 8.dp)
                         .clickableButNotFocusable(remember { MutableInteractionSource() }) {
@@ -144,7 +147,7 @@ fun TileImeDropdownMenu(
         // 触发按钮
         Image(
             Icons.Default.MoreVert,
-            "",
+            "Tile IME Options",
             Modifier
                 .padding(start = 8.dp)
                 .clickableButNotFocusable(remember { MutableInteractionSource() }) {
