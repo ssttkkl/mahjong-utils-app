@@ -22,6 +22,8 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
 import kotlinx.coroutines.launch
 
 
@@ -90,6 +92,9 @@ fun Modifier.clickableButNotFocusable(
                 onLongPress = onLongPress?.let { { it() } },
                 onTap = onClick?.let { { it() } }
             )
+            .semantics {
+                onClick(action = null)
+            }
     }
 }
 

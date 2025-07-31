@@ -42,7 +42,6 @@ import io.ssttkkl.mahjongutils.app.base.components.ScrollBox
 import io.ssttkkl.mahjongutils.app.base.rememberWindowSizeClass
 import io.ssttkkl.mahjongutils.app.components.tile.TileRecognizerHost
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHost
-import io.ssttkkl.mahjongutils.app.components.tileime.rememberTileImeHostState
 import kotlinx.coroutines.launch
 
 
@@ -118,12 +117,11 @@ fun AppScaffold(
     AppNavigator(screenRegistry, initialScreenPath) { myNavigator ->
         val windowSizeClass: WindowSizeClass = rememberWindowSizeClass()
         val appState = rememberAppState(myNavigator)
-        val tileImeHostState = rememberTileImeHostState()
         CompositionLocalProvider(
             LocalAppState provides appState
         ) {
-            TileRecognizerHost(appState, tileImeHostState) {
-                TileImeHost(tileImeHostState) {
+            TileRecognizerHost(appState) {
+                TileImeHost {
                     if (!windowSizeClass.useNavigationDrawer) {
                         with(Spacing.current) {
                             Row(Modifier.background(MaterialTheme.colorScheme.surface)) {
@@ -148,7 +146,7 @@ fun AppScaffold(
                         val navigationIcon = @Composable {
                             if (!appState.navigator.canPop) {
                                 if (windowSizeClass.useNavigationDrawer) {
-                                    Icon(Icons.Default.Menu, "", Modifier.clickable {
+                                    Icon(Icons.Default.Menu, "Menu", Modifier.clickable {
                                         coroutineScope.launch {
                                             if (drawerState.isClosed) {
                                                 drawerState.open()
@@ -159,7 +157,10 @@ fun AppScaffold(
                                     })
                                 }
                             } else {
-                                Icon(Icons.AutoMirrored.Default.ArrowBack, "", Modifier.clickable {
+                                Icon(
+                                    Icons.AutoMirrored.Default.ArrowBack,
+                                    "Back",
+                                    Modifier.clickable {
                                     appState.navigator.pop()
                                 })
                             }
@@ -178,7 +179,7 @@ fun AppScaffold(
                                                     drawerState.close()
                                                 }
                                             }) {
-                                                Icon(Icons.Default.Close, "")
+                                                Icon(Icons.Default.Close, "Close")
                                             }
                                             NavigationItems(
                                                 appState.navigator,

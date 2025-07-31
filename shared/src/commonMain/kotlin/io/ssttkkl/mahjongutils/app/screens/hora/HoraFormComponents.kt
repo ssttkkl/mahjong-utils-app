@@ -134,7 +134,7 @@ class HoraFormComponents(
                                 }
                             },
                             leadingContent = {
-                                Icon(Icons.Filled.Close, "", Modifier.clickable {
+                                Icon(Icons.Filled.Close, "Remove Melded Chow", Modifier.clickable {
                                     form.furo.removeAt(index)
                                 })
                             },
@@ -161,7 +161,7 @@ class HoraFormComponents(
                         },
                         Modifier.fillMaxWidth().windowHorizontalMargin()
                     ) {
-                        Icon(Icons.Filled.Add, "")
+                        Icon(Icons.Filled.Add, "Add Melded Chow")
                     }
                 }
             }

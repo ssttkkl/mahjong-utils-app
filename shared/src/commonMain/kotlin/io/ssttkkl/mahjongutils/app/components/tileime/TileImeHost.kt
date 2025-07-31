@@ -76,7 +76,7 @@ private fun TileImeHostFloating(
                             if (state.pendingText.isEmpty()) {
                                 Icon(
                                     painterResource(Res.drawable.icon_drag_handle),
-                                    "",
+                                    "Move Tile IME",
                                     Modifier.align(Alignment.Center),
                                     tint = MaterialTheme.colorScheme.onSurface
                                 )

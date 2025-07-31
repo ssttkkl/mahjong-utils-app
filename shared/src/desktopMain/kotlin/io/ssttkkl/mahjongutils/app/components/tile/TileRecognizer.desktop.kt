@@ -47,26 +47,28 @@ import javax.imageio.ImageIO
 
 actual class TileRecognizer actual constructor(
     cropper: ImageCropper,
-    tileImeHostState: TileImeHostState,
     snackbarHostState: SnackbarHostState,
     noDetectionMsg: String
-) : BaseTileRecognizer(cropper, tileImeHostState, snackbarHostState, noDetectionMsg) {
+) : BaseTileRecognizer(cropper, snackbarHostState, noDetectionMsg) {
 
     @Composable
     actual override fun TileFieldRecognizeImageMenuItems(
         expanded: Boolean,
+        onAction: (TileImeHostState.ImeAction) -> Unit,
         onDismissRequest: () -> Unit
     ) {
-        super.TileFieldRecognizeImageMenuItems(expanded, onDismissRequest)
-        CaptureMenuItem(onDismissRequest)
+        super.TileFieldRecognizeImageMenuItems(expanded, onAction, onDismissRequest)
+        CaptureMenuItem(onAction, onDismissRequest)
     }
 
     @Composable
     fun CaptureMenuItem(
+        onAction: (TileImeHostState.ImeAction) -> Unit,
         onDismissRequest: () -> Unit
     ) {
         val mainWindowState = LocalMainWindowState.current
 
+        val curOnAction by rememberUpdatedState(onAction)
         val curOnDismissRequest by rememberUpdatedState(onDismissRequest)
 
         DropdownMenuItem(
@@ -106,7 +108,7 @@ actual class TileRecognizer actual constructor(
                     }
 
                     image?.let { image ->
-                        cropAndRecognizeAndFillFromBitmap(image.toComposeImageBitmap())
+                        cropAndRecognizeAndFillFromBitmap(image.toComposeImageBitmap(), curOnAction)
                     }
                 }
             }
@@ -175,12 +177,11 @@ actual class TileRecognizer actual constructor(
 @Composable
 actual fun TileRecognizerHost(
     appState: AppState,
-    tileImeHostState: TileImeHostState,
     content: @Composable () -> Unit
 ) {
     val cropper = rememberImageCropper()
     val tileRecognizer =
-        rememberTileRecognizer(cropper, tileImeHostState, appState.snackbarHostState)
+        rememberTileRecognizer(cropper, appState.snackbarHostState)
 
     CompositionLocalProvider(
         LocalTileRecognizer provides tileRecognizer

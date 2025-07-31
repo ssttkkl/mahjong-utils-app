@@ -31,6 +31,7 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.coerceIn
@@ -39,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
+import io.ssttkkl.mahjongutils.app.utils.readTiles
+import io.ssttkkl.mahjongutils.app.utils.writeTiles
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -46,9 +49,100 @@ import mahjongutils.models.Tile
 
 @Stable
 class CoreTileFieldState(
-    val interactionSource: MutableInteractionSource
+    val valueState: MutableState<List<Tile>> = mutableStateOf<List<Tile>>(emptyList()),
+    val selectionState: MutableState<TextRange> = mutableStateOf(TextRange.Zero),
+    val interactionSource: MutableInteractionSource,
+    val clipboard: Clipboard,
 ) {
-    var selection by mutableStateOf(TextRange.Zero)
+    var value by valueState
+
+    var selection by selectionState
+}
+
+suspend fun CoreTileFieldState.handleImeAction(action: ImeAction) {
+    when (action) {
+        is ImeAction.Input -> {
+            val tiles = action.data
+            updateSelection(value.indices) { selection ->
+                val newValue = buildList {
+                    addAll(value.subList(0, selection.start))
+                    addAll(tiles)
+
+                    if (selection.end != value.size) {
+                        addAll(
+                            value.subList(
+                                selection.end,
+                                value.size
+                            )
+                        )
+                    }
+                }
+                value = newValue
+                TextRange(selection.start + tiles.size)
+            }
+        }
+
+        is ImeAction.Replace -> {
+            val tiles = action.data
+            updateSelection(value.indices) { _ ->
+                value = tiles
+                TextRange(tiles.size)
+            }
+        }
+
+        ImeAction.Clear -> {
+            value = emptyList()
+        }
+
+        ImeAction.Copy -> {
+            clipboard.writeTiles(value)
+        }
+
+        ImeAction.Paste -> {
+            clipboard.readTiles()?.let {
+                value += it
+            }
+        }
+
+        is ImeAction.Delete -> {
+            val deleteType = action.type
+            updateSelection(value.indices) { selection ->
+                val curCursor = selection.start
+                if (selection.length == 0) {
+                    val indexToRemove = if (deleteType == TileImeHostState.DeleteType.Backspace) {
+                        curCursor - 1
+                    } else {
+                        curCursor
+                    }
+
+                    if (indexToRemove in value.indices) {
+                        val newValue = ArrayList(value).apply {
+                            removeAt(indexToRemove)
+                        }
+                        value = newValue
+                        TextRange(indexToRemove)
+                    } else {
+                        selection
+                    }
+                } else {
+                    val newValue = buildList {
+                        addAll(value.subList(0, selection.start))
+
+                        if (selection.end != value.size) {
+                            addAll(
+                                value.subList(
+                                    selection.end + 1,
+                                    value.size
+                                )
+                            )
+                        }
+                    }
+                    value = newValue
+                    TextRange(curCursor)
+                }
+            }
+        }
+    }
 }
 
 inline fun CoreTileFieldState.updateSelection(
@@ -257,10 +351,9 @@ private fun Modifier.handleKeyEvent(tilesCount: Int, state: CoreTileFieldState):
 
 @Composable
 internal fun CoreTileField(
-    value: List<Tile>,
     modifier: Modifier,
-    enabled: Boolean = true,
     state: CoreTileFieldState,
+    enabled: Boolean = true,
     cursorColor: Color,
     fontSize: TextUnit
 ) {
@@ -271,7 +364,7 @@ internal fun CoreTileField(
     Box(
         modifier
             .focusable(enabled, interactionSource = state.interactionSource)
-            .handleKeyEvent(value.size, state)
+            .handleKeyEvent(state.value.size, state)
             .pointerHoverIcon(PointerIcon.Text)
             .onTapChangeCursor(rectsState) {
                 state.selection = TextRange(it)
@@ -288,7 +381,7 @@ internal fun CoreTileField(
             }
     ) {
         Tiles(
-            value,
+            state.value,
             fontSize = fontSize,
             onTextLayout = { layoutResult ->
                 rectsState.value = layoutResult.multiParagraph.placeholderRects.filterNotNull()

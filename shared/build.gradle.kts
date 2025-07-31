@@ -1,6 +1,7 @@
 import com.android.build.gradle.BaseExtension
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import mahjongutils.buildlogic.APPLICATION_ID
+import mahjongutils.buildlogic.utils.OnnxRuntimeLibraryFilter
 import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableIos
 import mahjongutils.buildlogic.utils.readGitCommitHash
@@ -34,6 +35,15 @@ kotlin {
                 api(libs.krop.ui)
 
                 api(libs.mahjong.utils)
+            }
+        }
+
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.uiTest)
             }
         }
 
@@ -79,4 +89,15 @@ buildkonfig {
 aboutLibraries {
     // 移除 "generated" 时间戳
     export.excludeFields.add("generated")
+}
+
+// 去掉非本平台的动态库
+dependencies {
+    listOf("linux-aarch64", "linux-x64", "osx-aarch64", "osx-x64", "win-x64").forEach {
+        registerTransform(OnnxRuntimeLibraryFilter::class.java) {
+            parameters.platform.set(it)
+            from.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "jar")
+            to.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "onnxruntime-${it}-jar")
+        }
+    }
 }
