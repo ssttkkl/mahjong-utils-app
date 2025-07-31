@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'shared'
-    spec.version                  = '1.1.1'
+    spec.version                  = '1.1.2'
     spec.homepage                 = 'https://github.com/ssttkkl/mahjong-utils-app'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
