@@ -13,7 +13,7 @@ class ShantenFillbackHandler(
     val panelState: EditablePanelState<ShantenFormState, ShantenArgs>,
     val requestFocus: () -> Unit
 ) : FillbackHandler {
-    private fun fillbackAction(action: ShantenAction, draw: Tile?, discard: Tile?) {
+    override fun fillbackAction(action: ShantenAction?, draw: Tile?, discard: Tile?) {
         panelState.editing = true
         requestFocus()
         val args = panelState.originArgs
@@ -25,7 +25,7 @@ class ShantenFillbackHandler(
                 args.tiles.removeLast(action.tile, action.tile, action.tile, action.tile).toMutableList()
             }
             else -> {
-                return
+                args.tiles.toMutableList()
             }
         }
         draw?.let { newTiles.add(draw) }
@@ -34,17 +34,5 @@ class ShantenFillbackHandler(
         panelState.form.fillFormWithArgs(
             args.copy(tiles = newTiles)
         )
-    }
-
-    override fun fillbackAction(action: ShantenAction) {
-        fillbackAction(action, null, null)
-    }
-
-    override fun fillbackActionAndDraw(action: ShantenAction, draw: Tile) {
-        fillbackAction(action, draw, null)
-    }
-
-    override fun fillbackActionAndDrawAndDiscard(action: ShantenAction, draw: Tile, discard: Tile) {
-        fillbackAction(action, draw, discard)
     }
 }

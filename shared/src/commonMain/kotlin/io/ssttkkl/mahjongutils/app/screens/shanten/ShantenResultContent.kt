@@ -1,5 +1,6 @@
 package io.ssttkkl.mahjongutils.app.screens.shanten
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
@@ -19,6 +20,7 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsC
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesWithNumTopCardPanel
 import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
+import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.screens.common.EditablePanelState
 import io.ssttkkl.mahjongutils.app.screens.common.TilesPanelHeader
@@ -67,7 +69,15 @@ private fun ShantenWithoutGotResultContent(
         panelState.originArgs = args
     }
 
+    val scope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
+    val fillbackHandler = remember {
+        ShantenFillbackHandler(panelState) {
+            scope.launch {
+                lazyListState.animateScrollToItem(0)
+            }
+        }
+    }
 
     with(Spacing.current) {
         VerticalScrollBox(lazyListState) {
@@ -91,7 +101,12 @@ private fun ShantenWithoutGotResultContent(
                     TilesWithNumTopCardPanel(
                         stringResource(Res.string.label_advance_tiles),
                         shanten.advance,
-                        shanten.advanceNum
+                        shanten.advanceNum,
+                        tileImage = {
+                            TileImage(it, Modifier.clickable {
+                                fillbackHandler.fillbackDraw(it)
+                            })
+                        }
                     )
                 }
 
@@ -103,7 +118,12 @@ private fun ShantenWithoutGotResultContent(
                                 stringResource(Res.string.label_good_shape_advance_tiles),
                                 goodShapeAdvance,
                                 goodShapeAdvanceNum,
-                                1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
+                                1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum,
+                                tileImage = {
+                                    TileImage(it, Modifier.clickable {
+                                        fillbackHandler.fillbackDraw(it)
+                                    })
+                                }
                             )
                         }
                     }
