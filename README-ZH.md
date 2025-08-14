@@ -27,9 +27,9 @@ height="80">](https://f-droid.org/packages/io.ssttkkl.mahjongutils.app)
 
 | 系统            | 安装包文件（需要安装后运行，无需Java）                     | JAR文件（可直接运行，需要Java11或以上）                          |
 |---------------|-------------------------------------------|---------------------------------------------------|
-| Windows (x64) | mahjong-utils-app-xxx-x64.**exe**         | mahjong-utils-app-**windows-x64**-xxx-release.jar |
-| macOS (arm64) | mahjong-utils-app-xxx-arm64.**app**       | mahjong-utils-app-**macos-arm64**-xxx-release.jar |
-| macOS (x64)   | mahjong-utils-app-xxx-x64.**app**         | mahjong-utils-app-**macos-arm64**-xxx-release.jar |
+| Windows (x64) | mahjong-utils-app-xxx-**x64.exe**         | mahjong-utils-app-**windows-x64**-xxx-release.jar |
+| macOS (arm64) | mahjong-utils-app-xxx-**arm64.dmg**       | mahjong-utils-app-**macos-arm64**-xxx-release.jar |
+| macOS (x64)   | mahjong-utils-app-xxx-**x64.dmg**         | mahjong-utils-app-**macos-x64**-xxx-release.jar |
 | Linux (x64)   | mahjong-utils-app-xxx-**x86_64.AppImage** | mahjong-utils-app-**linux-x64**-xxx-release.jar   |
 
 iOS版：
