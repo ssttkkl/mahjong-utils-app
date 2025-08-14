@@ -28,9 +28,9 @@ For Desktop:
 
 | OS            | Installer File (install to run, no Java required) | JAR File (click to run, Java 11+ required)        |
 |---------------|---------------------------------------------------|---------------------------------------------------|
-| Windows (x64) | mahjong-utils-app-xxx-x64.**exe**                 | mahjong-utils-app-**windows-x64**-xxx-release.jar |
-| macOS (arm64) | mahjong-utils-app-xxx-arm64.**app**               | mahjong-utils-app-**macos-arm64**-xxx-release.jar |
-| macOS (x64)   | mahjong-utils-app-xxx-x64.**app**                 | mahjong-utils-app-**macos-arm64**-xxx-release.jar |
+| Windows (x64) | mahjong-utils-app-xxx-**x64.exe**                 | mahjong-utils-app-**windows-x64**-xxx-release.jar |
+| macOS (arm64) | mahjong-utils-app-xxx-**arm64.dmg**               | mahjong-utils-app-**macos-arm64**-xxx-release.jar |
+| macOS (x64)   | mahjong-utils-app-xxx-**x64.dmg**                 | mahjong-utils-app-**macos-x64**-xxx-release.jar |
 | Linux (x64)   | mahjong-utils-app-xxx-**x86_64.AppImage**         | mahjong-utils-app-**linux-x64**-xxx-release.jar   |
 
 For iOS:
