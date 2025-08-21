@@ -17,9 +17,9 @@ import io.ssttkkl.mahjongutils.app.base.Spacing
 import io.ssttkkl.mahjongutils.app.base.components.Panel
 import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.components.tile.TileInlineText
-import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
-import io.ssttkkl.mahjongutils.app.utils.TileTextSize
-import io.ssttkkl.mahjongutils.app.utils.emoji
+import io.ssttkkl.mahjongutils.app.base.utils.LocalTileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.TileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.emoji
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_advance_tiles
 import mahjongutils.composeapp.generated.resources.label_good_shape_advance_tiles

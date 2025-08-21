@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     api(project(":shared"))
+    api(project(":kuikly-android"))
     implementation(libs.compose.ui.tooling.preview)
 }
 

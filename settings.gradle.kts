@@ -39,9 +39,11 @@ include(":third-party:capturable")
 include(":third-party:feather")
 
 include(":base-components")
+include(":base-utils")
 include(":mahjong-detector")
 include(":shared")
 include(":kuikly-shared")
+include(":kuikly-android")
 
 if (props.isEmpty || props["ENABLE_ANDROID"]?.toString()?.toBoolean() != false) {
     include(":composeApp")

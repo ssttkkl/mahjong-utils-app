@@ -9,7 +9,7 @@ import mahjongutils.buildlogic.utils.readVersion
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 
 plugins {
-    id("mahjongutils.buildlogic.lib")
+    id("mahjongutils.buildlogic.kmp.lib")
     id("mahjongutils.buildlogic.compose")
     id("mahjongutils.buildlogic.ios.framework")
     alias(libs.plugins.aboutLibraries)

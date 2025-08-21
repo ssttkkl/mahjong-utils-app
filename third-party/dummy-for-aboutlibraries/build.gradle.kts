@@ -3,7 +3,7 @@ import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.enableAndroid
 
 plugins {
-    id("mahjongutils.buildlogic.lib")
+    id("mahjongutils.buildlogic.kmp.lib")
     alias(libs.plugins.aboutLibraries)
 }
 

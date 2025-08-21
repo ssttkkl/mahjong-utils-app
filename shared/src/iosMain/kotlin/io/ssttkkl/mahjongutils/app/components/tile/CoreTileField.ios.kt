@@ -20,9 +20,9 @@
 //import androidx.compose.ui.text.TextRange
 //import androidx.compose.ui.unit.dp
 //import androidx.compose.ui.unit.sp
-//import io.ssttkkl.mahjongutils.app.utils.log.LoggerFactory
-//import io.ssttkkl.mahjongutils.app.utils.toUIColor
-//import io.ssttkkl.mahjongutils.app.utils.toUIImage
+//import io.ssttkkl.mahjongutils.app.base.utils.log.LoggerFactory
+//import io.ssttkkl.mahjongutils.app.base.utils.toUIColor
+//import io.ssttkkl.mahjongutils.app.base.utils.toUIImage
 //import kotlinx.cinterop.ExperimentalForeignApi
 //import kotlinx.cinterop.useContents
 //import kotlinx.coroutines.launch

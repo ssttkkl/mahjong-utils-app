@@ -27,9 +27,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 import io.ssttkkl.mahjongutils.app.base.components.AutoSingleLineText
 import io.ssttkkl.mahjongutils.app.base.components.TextSizeConstrainedResult
-import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
-import io.ssttkkl.mahjongutils.app.utils.emoji
-import io.ssttkkl.mahjongutils.app.utils.emojiToTile
+import io.ssttkkl.mahjongutils.app.base.utils.LocalTileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.emoji
+import io.ssttkkl.mahjongutils.app.base.utils.emojiToTile
 import mahjongutils.models.Tile
 import mahjongutils.models.Tile as TileModel
 

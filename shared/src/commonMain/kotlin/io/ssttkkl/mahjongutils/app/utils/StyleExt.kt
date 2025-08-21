@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.utils
+package io.ssttkkl.mahjongutils.app.base.utils
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf

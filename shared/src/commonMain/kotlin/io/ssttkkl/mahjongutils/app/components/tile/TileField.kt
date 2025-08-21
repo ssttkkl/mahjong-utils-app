@@ -54,7 +54,7 @@ import io.ssttkkl.mahjongutils.app.components.onRightClick
 import io.ssttkkl.mahjongutils.app.components.tapPress
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
-import io.ssttkkl.mahjongutils.app.utils.TileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.TileTextSize
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.text_tiles_num_short

@@ -40,8 +40,8 @@ import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.tileime.LocalTileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
-import io.ssttkkl.mahjongutils.app.utils.readTiles
-import io.ssttkkl.mahjongutils.app.utils.writeTiles
+import io.ssttkkl.mahjongutils.app.base.utils.readTiles
+import io.ssttkkl.mahjongutils.app.base.utils.writeTiles
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

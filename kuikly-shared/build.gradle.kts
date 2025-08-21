@@ -11,7 +11,7 @@ import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 
 plugins {
-    id("mahjongutils.buildlogic.lib")
+    id("mahjongutils.buildlogic.kmp.lib")
     id("mahjongutils.buildlogic.compose")
     id("com.tencent.kuikly-open.kuikly")
     alias(libs.plugins.buildkonfig)
@@ -21,6 +21,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api(project(":base-utils"))
+
                 implementation(libs.kuikly.core)
                 implementation(libs.kuikly.core.annotations)
                 implementation(libs.kuikly.compose)

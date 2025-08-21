@@ -10,7 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.calculation.Calculation
 import io.ssttkkl.mahjongutils.app.components.calculation.PopAndShowSnackbarOnFailure
-import io.ssttkkl.mahjongutils.app.utils.image.ImageSaver
+import io.ssttkkl.mahjongutils.app.base.utils.image.ImageSaver
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_share

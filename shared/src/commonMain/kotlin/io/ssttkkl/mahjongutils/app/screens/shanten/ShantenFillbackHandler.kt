@@ -5,7 +5,7 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.FillbackHandler
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.screens.common.EditablePanelState
-import io.ssttkkl.mahjongutils.app.utils.removeLast
+import io.ssttkkl.mahjongutils.app.base.utils.removeLast
 import mahjongutils.models.Tile
 
 @Stable

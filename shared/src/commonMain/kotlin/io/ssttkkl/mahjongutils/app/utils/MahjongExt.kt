@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.utils
+package io.ssttkkl.mahjongutils.app.base.utils
 
 import androidx.compose.runtime.Composable
 import mahjongutils.composeapp.generated.resources.Res

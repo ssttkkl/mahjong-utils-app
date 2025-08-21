@@ -22,8 +22,8 @@ import io.ssttkkl.mahjongutils.app.components.tile.TileInlineAutoSingleLineText
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.components.tile.annotatedAsInline
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
-import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
-import io.ssttkkl.mahjongutils.app.utils.removeLast
+import io.ssttkkl.mahjongutils.app.base.utils.LocalTileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.removeLast
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

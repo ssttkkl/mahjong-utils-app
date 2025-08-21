@@ -38,7 +38,7 @@ import io.ssttkkl.mahjongutils.app.models.base.History
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.models.hora.HoraCalcResult
 import io.ssttkkl.mahjongutils.app.screens.base.FormAndResultScreen
-import io.ssttkkl.mahjongutils.app.utils.localizedName
+import io.ssttkkl.mahjongutils.app.base.utils.localizedName
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_calc
 import mahjongutils.composeapp.generated.resources.label_dora_count

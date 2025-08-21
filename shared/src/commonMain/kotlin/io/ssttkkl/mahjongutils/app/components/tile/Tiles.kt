@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import io.ssttkkl.mahjongutils.app.base.components.TextSizeConstrainedResult
-import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.LocalTileTextSize
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.tile_1m
 import mahjongutils.composeapp.generated.resources.tile_1m_lie

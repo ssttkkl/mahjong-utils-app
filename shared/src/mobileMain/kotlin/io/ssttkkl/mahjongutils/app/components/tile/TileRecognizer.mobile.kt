@@ -17,7 +17,7 @@ import com.attafitamim.krop.core.crop.ImageCropper
 import io.github.vinceglb.filekit.dialogs.compose.rememberCameraPickerLauncher
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
-import io.ssttkkl.mahjongutils.app.utils.image.loadAsImage
+import io.ssttkkl.mahjongutils.app.base.utils.image.loadAsImage
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_photo_camera

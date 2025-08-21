@@ -23,9 +23,9 @@ import io.ssttkkl.mahjongutils.app.components.tile.FuroTiles
 import io.ssttkkl.mahjongutils.app.components.tile.Tiles
 import io.ssttkkl.mahjongutils.app.models.hora.HoraArgs
 import io.ssttkkl.mahjongutils.app.screens.hanhu.PointPanel
-import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
-import io.ssttkkl.mahjongutils.app.utils.TileTextSize
-import io.ssttkkl.mahjongutils.app.utils.localizedName
+import io.ssttkkl.mahjongutils.app.base.utils.LocalTileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.TileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.localizedName
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_furo
 import mahjongutils.composeapp.generated.resources.label_hand_deconstruction

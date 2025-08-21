@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.TextUnit
-import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.LocalTileTextSize
 import mahjongutils.models.Furo
 import mahjongutils.models.FuroType
 

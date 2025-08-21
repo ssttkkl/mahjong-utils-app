@@ -46,9 +46,9 @@ gradlePlugin {
             id = "mahjongutils.buildlogic.app.web"
             implementationClass = "mahjongutils.buildlogic.WebAppPlugin"
         }
-        register("lib") {
-            id = "mahjongutils.buildlogic.lib"
-            implementationClass = "mahjongutils.buildlogic.LibPlugin"
+        register("kmp-lib") {
+            id = "mahjongutils.buildlogic.kmp.lib"
+            implementationClass = "mahjongutils.buildlogic.KmpLibPlugin"
         }
         register("kmp") {
             id = "mahjongutils.buildlogic.kmp"
@@ -57,6 +57,10 @@ gradlePlugin {
         register("kmp-compose") {
             id = "mahjongutils.buildlogic.compose"
             implementationClass = "mahjongutils.buildlogic.KmpComposePlugin"
+        }
+        register("android-lib") {
+            id = "mahjongutils.buildlogic.android.lib"
+            implementationClass = "mahjongutils.buildlogic.AndroidLibPlugin"
         }
     }
 }

@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.utils.image
+package io.ssttkkl.mahjongutils.app.base.utils.image
 
 import android.graphics.BitmapFactory
 import androidx.compose.ui.graphics.ImageBitmap

@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.utils.image
+package io.ssttkkl.mahjongutils.app.base.utils.image
 
 import androidx.compose.ui.graphics.ImageBitmap
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState

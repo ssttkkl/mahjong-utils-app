@@ -4,7 +4,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Text
 import io.ssttkkl.mahjongutils.app.base.Spacing
 import io.ssttkkl.mahjongutils.app.base.components.LazyTopCardPanel
-import io.ssttkkl.mahjongutils.app.utils.shantenNumText
+import io.ssttkkl.mahjongutils.app.base.utils.shantenNumText
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_shanten_action
 import mahjongutils.composeapp.generated.resources.label_shanten_action_backwards

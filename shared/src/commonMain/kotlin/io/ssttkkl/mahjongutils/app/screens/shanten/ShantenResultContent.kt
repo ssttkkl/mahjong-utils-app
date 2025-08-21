@@ -24,7 +24,7 @@ import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
 import io.ssttkkl.mahjongutils.app.screens.common.EditablePanelState
 import io.ssttkkl.mahjongutils.app.screens.common.TilesPanelHeader
-import io.ssttkkl.mahjongutils.app.utils.TileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.TileTextSize
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_advance_tiles

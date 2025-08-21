@@ -4,7 +4,7 @@ import mahjongutils.buildlogic.utils.enableAndroid
 import mahjongutils.buildlogic.utils.enableDesktop
 
 plugins {
-    id("mahjongutils.buildlogic.lib")
+    id("mahjongutils.buildlogic.kmp.lib")
     id("mahjongutils.buildlogic.compose")
 }
 
@@ -12,6 +12,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api(project(":base-utils"))
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material3)

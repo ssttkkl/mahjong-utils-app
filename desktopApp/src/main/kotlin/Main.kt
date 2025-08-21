@@ -12,7 +12,7 @@ import io.ssttkkl.mahjongutils.app.base.utils.FileUtils
 import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalMainWindowState
 import io.ssttkkl.mahjongutils.app.getAppTypography
-import io.ssttkkl.mahjongutils.app.utils.SentryConfig
+import io.ssttkkl.mahjongutils.app.base.utils.SentryConfig
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.app_name
 import mahjongutils.composeapp.generated.resources.icon_app

@@ -25,7 +25,7 @@ import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
-import io.ssttkkl.mahjongutils.app.utils.readTiles
+import io.ssttkkl.mahjongutils.app.base.utils.readTiles
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.icon_content_copy
 import mahjongutils.composeapp.generated.resources.icon_content_paste

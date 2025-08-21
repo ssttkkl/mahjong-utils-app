@@ -22,3 +22,5 @@ captures
 
 *.jks
 env.properties
+
+.claude/

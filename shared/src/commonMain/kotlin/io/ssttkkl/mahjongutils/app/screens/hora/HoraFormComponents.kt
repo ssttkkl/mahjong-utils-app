@@ -38,9 +38,9 @@ import io.ssttkkl.mahjongutils.app.base.components.ValidationField
 import io.ssttkkl.mahjongutils.app.base.components.segmentedbutton.SegmentedButtonOption
 import io.ssttkkl.mahjongutils.app.base.components.segmentedbutton.SingleChoiceSegmentedButtonGroup
 import io.ssttkkl.mahjongutils.app.components.tile.OutlinedTileField
-import io.ssttkkl.mahjongutils.app.utils.TileTextSize
-import io.ssttkkl.mahjongutils.app.utils.localizedName
-import io.ssttkkl.mahjongutils.app.utils.withAlpha
+import io.ssttkkl.mahjongutils.app.base.utils.TileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.localizedName
+import io.ssttkkl.mahjongutils.app.base.utils.withAlpha
 import mahjongutils.composeapp.generated.resources.Res
 import mahjongutils.composeapp.generated.resources.label_agari
 import mahjongutils.composeapp.generated.resources.label_ankan

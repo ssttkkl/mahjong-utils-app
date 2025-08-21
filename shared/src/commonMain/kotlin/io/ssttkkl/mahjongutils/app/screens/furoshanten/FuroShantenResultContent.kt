@@ -23,8 +23,8 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.models.furoshanten.FuroChanceShantenArgs
 import io.ssttkkl.mahjongutils.app.screens.common.EditablePanelState
 import io.ssttkkl.mahjongutils.app.screens.common.TilesPanelHeader
-import io.ssttkkl.mahjongutils.app.utils.LocalTileTextSize
-import io.ssttkkl.mahjongutils.app.utils.TileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.LocalTileTextSize
+import io.ssttkkl.mahjongutils.app.base.utils.TileTextSize
 import kotlinx.coroutines.launch
 import mahjongutils.shanten.ShantenWithFuroChance
 

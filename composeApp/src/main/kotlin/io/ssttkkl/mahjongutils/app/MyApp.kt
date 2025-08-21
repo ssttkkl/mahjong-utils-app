@@ -6,8 +6,8 @@ import android.os.Bundle
 import io.sentry.android.core.SentryAndroid
 import io.ssttkkl.mahjongutils.app.base.utils.AppInstance
 import io.ssttkkl.mahjongutils.app.base.utils.FileUtils
-import io.ssttkkl.mahjongutils.app.utils.ActivityHelper
-import io.ssttkkl.mahjongutils.app.utils.SentryConfig
+import io.ssttkkl.mahjongutils.app.base.utils.ActivityHelper
+import io.ssttkkl.mahjongutils.app.base.utils.SentryConfig
 import okio.Path.Companion.toOkioPath
 
 class MyApp : Application() {

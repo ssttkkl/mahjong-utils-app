@@ -43,13 +43,15 @@ By default, only Android is enabled unless properties are explicitly set.
 The project follows a modular Kotlin Multiplatform structure:
 
 - `shared/` - Core application logic, UI components, and screens (KMP)
-- `base-components/` - Reusable UI components and utilities (KMP)
+- `base-components/` - Reusable UI components (KMP)
+- `base-utils/` - Base utilities and platform abstractions (KMP)
 - `mahjong-detector/` - AI-powered mahjong tile recognition (KMP)
 - `composeApp/` - Android application entry point
 - `desktopApp/` - Desktop (JVM) application entry point
 - `webApp/` - Web (WASM) application entry point
 - `iosApp/` - iOS application (Xcode project)
-- `kuikly-shared/` - Additional shared module using Kuikly framework
+- `kuikly-shared/` - Shared Kuikly framework module (KMP)
+- `kuikly-android/` - Android-specific Kuikly framework integration
 - `third-party/` - Vendored dependencies
 - `build-logic/` - Custom Gradle convention plugins
 
@@ -113,7 +115,7 @@ The project uses a sophisticated source set hierarchy:
 
 ### Dependencies
 - Core mahjong logic: `mahjong-utils` library
-- UI: Compose Multiplatform with Material 3
+- UI frameworks: Compose Multiplatform with Material 3, Kuikly UI framework
 - Navigation: Voyager
 - Serialization: Kotlinx Serialization
 - Async: Kotlinx Coroutines

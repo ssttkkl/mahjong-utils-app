@@ -34,7 +34,7 @@ import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.LocalAppState
 import io.ssttkkl.mahjongutils.app.components.tileime.TileImeHostState.ImeAction
-import io.ssttkkl.mahjongutils.app.utils.image.loadAsImage
+import io.ssttkkl.mahjongutils.app.base.utils.image.loadAsImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

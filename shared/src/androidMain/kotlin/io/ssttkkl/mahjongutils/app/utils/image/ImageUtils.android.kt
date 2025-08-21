@@ -1,4 +1,4 @@
-package io.ssttkkl.mahjongutils.app.utils.image
+package io.ssttkkl.mahjongutils.app.base.utils.image
 
 import android.content.ContentValues
 import android.content.Intent
@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState
 import io.ssttkkl.mahjongutils.app.components.appscaffold.activity
-import io.ssttkkl.mahjongutils.app.utils.ActivityHelper
+import io.ssttkkl.mahjongutils.app.base.utils.ActivityHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
