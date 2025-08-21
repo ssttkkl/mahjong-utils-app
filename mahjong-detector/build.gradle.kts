@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 
 plugins {
     id("mahjongutils.buildlogic.lib")
+    id("mahjongutils.buildlogic.compose")
 }
 
 if (enableIos) {

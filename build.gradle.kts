@@ -19,6 +19,12 @@ plugins {
     alias(libs.plugins.sentryKotlinCompilerGradle) apply false
 }
 
+buildscript {
+    dependencies {
+        classpath(libs.kuikly.compiler.plugin)
+    }
+}
+
 val envPropFile = file("env.properties")
 if (envPropFile.exists()) {
     val props = Properties().apply {

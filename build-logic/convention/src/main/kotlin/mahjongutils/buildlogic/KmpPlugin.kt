@@ -8,6 +8,7 @@ import mahjongutils.buildlogic.utils.libs
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -21,10 +22,9 @@ class KmpPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
         listOf(
             "kotlinMultiplatform",
-            "jetbrainsCompose",
-            "compose-compiler",
             "kotlinSerialization",
-            "kotlinxAtomicfu"
+            "kotlinxAtomicfu",
+            "ksp"
         ).forEach {
             pluginManager.apply(libs.findPlugin(it).get().get().pluginId)
         }
@@ -57,18 +57,17 @@ class KmpPlugin : Plugin<Project> {
             if (enableWasm) {
                 @OptIn(ExperimentalWasmDsl::class)
                 wasmJs {
-                    outputModuleName.set(project.name)
+                    moduleName = project.name
                     browser()
                 }
                 println("${project.name} target: wasmJs")
             }
 
             compilerOptions {
-                optIn.add("org.jetbrains.compose.resources.ExperimentalResourceApi")
                 freeCompilerArgs.add("-Xexpect-actual-classes")
             }
 
-            extensions.getByName<NamedDomainObjectContainer<KotlinSourceSet>>("sourceSets").apply {
+            (this as ExtensionAware).extensions.getByName<NamedDomainObjectContainer<KotlinSourceSet>>("sourceSets").apply {
                 val commonMain = getByName("commonMain")
                 val nonAndroidMain = create("nonAndroidMain") {
                     dependsOn(commonMain)

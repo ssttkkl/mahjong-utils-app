@@ -5,6 +5,7 @@ import mahjongutils.buildlogic.utils.enableDesktop
 
 plugins {
     id("mahjongutils.buildlogic.lib")
+    id("mahjongutils.buildlogic.compose")
 }
 
 kotlin {

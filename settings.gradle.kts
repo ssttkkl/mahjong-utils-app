@@ -5,6 +5,8 @@ rootProject.name = "mahjongutils"
 pluginManagement {
     includeBuild("build-logic")
     repositories {
+        maven("https://mirrors.tencent.com/nexus/repository/maven-tencent/")
+        maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
         google()
         gradlePluginPortal()
         mavenCentral()
@@ -14,6 +16,8 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
+        maven("https://mirrors.tencent.com/nexus/repository/maven-tencent/")
+        maven("https://mirrors.tencent.com/nexus/repository/maven-public/")
         google()
         mavenCentral()
         mavenLocal()
@@ -37,6 +41,7 @@ include(":third-party:feather")
 include(":base-components")
 include(":mahjong-detector")
 include(":shared")
+include(":kuikly-shared")
 
 if (props.isEmpty || props["ENABLE_ANDROID"]?.toString()?.toBoolean() != false) {
     include(":composeApp")

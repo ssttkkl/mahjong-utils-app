@@ -50,5 +50,13 @@ gradlePlugin {
             id = "mahjongutils.buildlogic.lib"
             implementationClass = "mahjongutils.buildlogic.LibPlugin"
         }
+        register("kmp") {
+            id = "mahjongutils.buildlogic.kmp"
+            implementationClass = "mahjongutils.buildlogic.KmpPlugin"
+        }
+        register("kmp-compose") {
+            id = "mahjongutils.buildlogic.compose"
+            implementationClass = "mahjongutils.buildlogic.KmpComposePlugin"
+        }
     }
 }

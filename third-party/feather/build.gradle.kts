@@ -4,6 +4,7 @@ import mahjongutils.buildlogic.utils.enableAndroid
 
 plugins {
     id("mahjongutils.buildlogic.lib")
+    id("mahjongutils.buildlogic.compose")
 }
 
 kotlin {
