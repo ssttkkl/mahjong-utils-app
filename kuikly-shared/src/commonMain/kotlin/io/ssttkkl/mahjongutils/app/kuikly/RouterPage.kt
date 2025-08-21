@@ -34,13 +34,13 @@ import com.tencent.kuikly.core.module.SharedPreferencesModule
 import com.tencent.kuikly.core.nvi.serialization.json.JSONObject
 import com.tencent.kuikly.core.pager.Pager
 import com.tencent.kuikly.core.utils.urlParams
-import io.ssttkkl.mahjongutils.app.kuikly.base.BasePager
-import io.ssttkkl.mahjongutils.app.kuikly.base.bridgeModule
-import io.ssttkkl.mahjongutils.app.kuikly.base.Utils
+import com.tencent.kuikly.compose.ComposeContainer
 import com.tencent.kuikly.compose.foundation.layout.fillMaxWidth
+import com.tencent.kuikly.compose.material3.Button
+import com.tencent.kuikly.compose.material3.TextField
 
 @Page("router", supportInLocal = true)
-internal class ComposeRoutePager : BasePager() {
+internal class ComposeRoutePager : ComposeContainer() {
 
     override fun willInit() {
         super.willInit()
@@ -98,9 +98,11 @@ internal fun ComposeRouteImpl() {
                             color = Color.Black
                         ),
                         modifier = Modifier.fillMaxWidth(),
-                        placeholder = ComposeRoutePager.PLACEHOLDER,
-                        placeholderColor = com.tencent.kuikly.core.base.Color(0xAA23D3FD)
-                            .toComposeColor(),
+                        placeholder = { Text(
+                            ComposeRoutePager.PLACEHOLDER,
+                            color = com.tencent.kuikly.core.base.Color(0xAA23D3FD)
+                                .toComposeColor()
+                        ) },
                         value = textFieldValue,
                         onValueChange = { textFieldValue = it },
                     )
@@ -114,7 +116,7 @@ internal fun ComposeRouteImpl() {
                 ).padding(12.dp),
                 onClick = {
                     if (textFieldValue.isEmpty()) {
-                        Utils.bridgeModule(localPager.pagerId).toast("请输入PageName")
+                        return@Button
                     } else {
                         localPager.acquireModule<SharedPreferencesModule>(
                             SharedPreferencesModule.MODULE_NAME
