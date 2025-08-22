@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
 import com.tencent.kuikly.core.render.android.IKuiklyRenderExport
 import com.tencent.kuikly.core.render.android.adapter.KuiklyRenderAdapterManager
 import com.tencent.kuikly.core.render.android.css.ktx.toMap
@@ -39,7 +40,7 @@ class KuiklyRenderActivity : AppCompatActivity(), KuiklyRenderViewBaseDelegatorD
             return if (pn.isNotEmpty()) {
                 return pn
             } else {
-                "router"
+                "about"
             }
         }
 

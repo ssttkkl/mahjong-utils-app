@@ -5,7 +5,7 @@ java-targetJvm = "11"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "35"
-androidx-activityCompose = "1.10.1"
+androidx-activity = "1.10.1"
 androidx-coreKtx = "1.16.0"
 appdirs = "1.4.0"
 compose = "1.8.3"
@@ -40,7 +40,8 @@ appcompat = "1.7.1"
 androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastoreCore" }
 androidx-datastore-core-okio = { module = "androidx.datastore:datastore-core-okio", version.ref = "datastoreCore" }
 appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-coreKtx" }
 commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }

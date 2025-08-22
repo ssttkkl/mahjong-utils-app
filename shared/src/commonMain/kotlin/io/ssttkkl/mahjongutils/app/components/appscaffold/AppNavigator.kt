@@ -14,7 +14,6 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import io.ssttkkl.mahjongutils.app.base.utils.LoggerFactory
-import io.ssttkkl.mahjongutils.app.components.appscaffold.AppState.Companion.logger
 
 
 @Stable
@@ -22,6 +21,10 @@ class AppNavigator(
     rootVoyager: Navigator,
     val screenRegistry: Map<String, () -> UrlNavigationScreen<*>>
 ) {
+    companion object {
+        val logger = LoggerFactory.getLogger(AppNavigator::class)
+    }
+
     var url by mutableStateOf<Url?>(null)
 
     val voyagers = mutableStateListOf<Navigator>()

@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENT.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Coding Agent like Claude Code (claude.ai/code) and Gemini CLI when working with code in this repository.
 
 ## Project Overview
 

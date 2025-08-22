@@ -8,6 +8,7 @@ import mahjongutils.buildlogic.utils.enableIos
 import mahjongutils.buildlogic.utils.readGitCommitHash
 import mahjongutils.buildlogic.utils.readVersion
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 
 plugins {
@@ -23,9 +24,9 @@ kotlin {
             dependencies {
                 api(project(":base-utils"))
 
-                implementation(libs.kuikly.core)
-                implementation(libs.kuikly.core.annotations)
-                implementation(libs.kuikly.compose)
+                api(libs.kuikly.core)
+                api(libs.kuikly.core.annotations)
+                api(libs.kuikly.compose)
             }
         }
 
