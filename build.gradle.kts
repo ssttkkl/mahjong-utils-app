@@ -22,6 +22,7 @@ plugins {
 buildscript {
     dependencies {
         classpath(libs.kuikly.compiler.plugin)
+        classpath("dev.icerock.moko:resources-generator:0.25.0")
     }
 }
 

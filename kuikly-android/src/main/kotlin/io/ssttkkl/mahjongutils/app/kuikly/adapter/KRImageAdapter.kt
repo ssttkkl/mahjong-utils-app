@@ -12,6 +12,7 @@ import android.util.Base64
 import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.request.target.CustomTarget
@@ -33,6 +34,8 @@ class KRImageAdapter(val context: Context) : IKRImageAdapter {
         } else if (imageLoadOption.isWebUrl() || imageLoadOption.isAssets() || imageLoadOption.isFile()) {
             // http/assets/file 图片使用 glide 加载
             requestImage(imageLoadOption, callback)
+        } else if(imageLoadOption.src.startsWith("drawable-res://")) {
+            loadFromDrawableResId(imageLoadOption, callback)
         }
     }
 
@@ -46,6 +49,7 @@ class KRImageAdapter(val context: Context) : IKRImageAdapter {
         } else {
             imageLoadOption.src
         }
+
         val requestBuilder = if (src.endsWith(".gif")) {
             Glide.with(AppInstance.app)
                 .asGif()
@@ -91,6 +95,39 @@ class KRImageAdapter(val context: Context) : IKRImageAdapter {
             })
     }
 
+    private fun loadFromDrawableResId(
+        imageLoadOption: HRImageLoadOption,
+        callback: (drawable: Drawable?) -> Unit,
+    ) {
+        execOnSubThread {
+            try {
+                val drawableResId = imageLoadOption.src.replace("drawable-res://", "").toInt()
+                val drawable = ContextCompat.getDrawable(context, drawableResId)
+
+                if (drawable == null) {
+                    callback.invoke(null)
+                    return@execOnSubThread
+                }
+
+                if (imageLoadOption.needResize && imageLoadOption.requestWidth > 0 && imageLoadOption.requestHeight > 0) {
+                    val width = imageLoadOption.requestWidth
+                    val height = imageLoadOption.requestHeight
+
+                    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+                    val canvas = android.graphics.Canvas(bitmap)
+                    drawable.setBounds(0, 0, canvas.width, canvas.height)
+                    drawable.draw(canvas)
+                    callback.invoke(BitmapDrawable(context.resources, bitmap))
+                } else {
+                    callback.invoke(drawable)
+                }
+            } catch (e: Exception) {
+                Log.d("KRImageAdapter", "loadFromDrawableResId failed: $e")
+                callback.invoke(null)
+            }
+        }
+    }
+
     private fun loadFromBase64(
         imageLoadOption: HRImageLoadOption,
         callback: (drawable: Drawable?) -> Unit,
@@ -119,6 +156,7 @@ class KRImageAdapter(val context: Context) : IKRImageAdapter {
             }
         }
     }
+
 
     private fun calculateInSampleSize(
         options: BitmapFactory.Options,

@@ -1,6 +1,7 @@
 import com.android.build.gradle.BaseExtension
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import com.tencent.kuikly.gradle.config.KuiklyConfig
+import dev.icerock.gradle.MRVisibility
 import mahjongutils.buildlogic.APPLICATION_ID
 import mahjongutils.buildlogic.utils.OnnxRuntimeLibraryFilter
 import mahjongutils.buildlogic.utils.enableAndroid
@@ -15,6 +16,7 @@ plugins {
     id("mahjongutils.buildlogic.kmp.lib")
     id("mahjongutils.buildlogic.compose")
     id("com.tencent.kuikly-open.kuikly")
+    id("dev.icerock.mobile.multiplatform-resources")
     alias(libs.plugins.buildkonfig)
 }
 
@@ -27,6 +29,8 @@ kotlin {
                 api(libs.kuikly.core)
                 api(libs.kuikly.core.annotations)
                 api(libs.kuikly.compose)
+
+                api("dev.icerock.moko:resources:0.25.0")
             }
         }
 
@@ -42,6 +46,14 @@ kotlin {
             }
         }
     }
+}
+
+multiplatformResources {
+    resourcesPackage.set("io.ssttkkl.mahjongutils.app.kuikly") // required
+    resourcesClassName.set("Res") // optional, default MR
+    resourcesVisibility.set(MRVisibility.Internal) // optional, default Public
+    iosBaseLocalizationRegion.set("zh") // optional, default "en"
+    iosMinimalDeploymentTarget.set("11.0") // optional, default "9.0"
 }
 
 fun getPageName(): String {

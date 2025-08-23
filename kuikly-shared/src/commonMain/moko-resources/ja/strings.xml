@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">麻雀牌理電卓</string>
+
+    <string name="title_shanten">牌理</string>
+    <string name="title_shanten_result">牌理結果</string>
+    <string name="title_furo_shanten">鳴き牌理</string>
+    <string name="title_furo_shanten_result">鳴き牌理結果</string>
+    <string name="title_hora">和了分析</string>
+    <string name="title_hora_result">和了分析結果</string>
+    <string name="title_hanhu">飜符得点計算</string>
+    <string name="title_about">アーバウ</string>
+    <string name="title_about_appversion">アプリバージョン</string>
+    <string name="title_about_opensource_repo">オープンソースレポジトリ</string>
+    <string name="title_about_opensource_licenses">オープンソースライセンス</string>
+
+    <string name="title_crop_image">画像をトリミング</string>
+
+    <string name="label_history">ヒストリ</string>
+    <string name="label_clear">クリア</string>
+    <string name="label_share">シェア</string>
+    <string name="label_view">ビュー</string>
+    <string name="label_copy">コピー</string>
+    <string name="label_paste">ペースト</string>
+    <string name="label_recognize_from_image">画像から認識</string>
+    <string name="label_recognize_from_screenshot">スクリーンショットから認識</string>
+    <string name="label_recognize_from_camera">カメラで認識</string>
+    <string name="label_recognize_from_clipboard">クリップボードから認識</string>
+    <string name="text_recognize_no_detection">牌が検出されません</string>
+    <string name="text_clipboard_no_image">クリップボードに画像がありません</string>
+
+    <string name="text_empty_history">なし</string>
+
+    <string name="label_tiles_in_hand">手牌</string>
+    <string name="label_shanten_mode">計算モード</string>
+    <string name="label_union_shanten">一般形</string>
+    <string name="text_union_shanten_desc">標準形（４面子１雀頭の形）だけではなく、七対形や国士形も含めて考えます。</string>
+    <string name="label_regular_shanten">標準形</string>
+    <string name="text_regular_shanten_desc">４面子１雀頭の形だけを考えます。</string>
+    <string name="label_calc">計算</string>
+
+    <string name="text_tiles_without_got"></string>
+    <string name="text_tiles_with_got">ツモ済み</string>
+    <string name="label_shanten_num">向聴数</string>
+    <string name="text_shanten_num">%1$d向聴</string>
+    <string name="text_tenpai">聴牌</string>
+    <string name="text_hora">和了</string>
+    <string name="label_advance_tiles">受け入れ</string>
+    <string name="label_waiting_tiles">当たり牌</string>
+    <string name="label_good_shape_advance_tiles">好形受け入れ</string>
+    <string name="label_good_shape_improvement_tiles">好形変化</string>
+    <string name="label_fillback">フィルバック</string>
+    <string name="text_tiles_num">%1$d枚</string>
+    <string name="text_tiles_num_short">%1$d枚</string>
+    <string name="text_tiles_num_and_percentile">%1$d枚（%1$s%）</string>
+    <string name="label_shanten_action">%1$sの打牌</string>
+    <string name="label_shanten_action_backwards">%1$sの打牌（向聴戻し）</string>
+    <string name="text_shanten_action_discard">%1$s切る</string>
+    <string name="text_shanten_action_ankan">暗槓%1$s</string>
+    <string name="text_shanten_action_minkan">大明槓</string>
+    <string name="text_shanten_action_pass">パス</string>
+    <string name="text_shanten_action_chi_and_discard">%1$s%2$sチー、%3$s切る</string>
+    <string name="text_shanten_action_pon_and_discard">ポン、%1$s切る</string>
+    <string name="text_improvement_desc">ツモ%1$sだら%2$s切る（%3$d枚待ちになる）</string>
+
+    <string name="label_tile_discarded_by_other">他家から出る</string>
+    <string name="label_tile_discarded_by_other_short">出る%1$s</string>
+    <string name="label_other_options">オプション</string>
+    <string name="label_allow_chi">上家から出る（チーができる）</string>
+
+    <string name="label_furo">副露</string>
+    <string name="label_mentsu">面子</string>
+    <string name="label_jyantou">雀頭</string>
+    <string name="label_ankan">暗槓</string>
+    <string name="label_minkan">大明槓</string>
+    <string name="label_agari">アガリ牌</string>
+    <string name="label_tsumo">ツモ</string>
+    <string name="label_ron">ロン</string>
+    <string name="label_other_information">他の情報</string>
+    <string name="label_dora_count">ドラの数</string>
+    <string name="label_self_wind">自風</string>
+    <string name="label_round_wind">場風</string>
+    <string name="label_extra_yaku">役</string>
+    <string name="label_extra_yaku_unspecified">なし</string>
+
+    <string name="label_hora_options">ゲームルール</string>
+    <string name="label_aotenjou">青天井</string>
+    <string name="desc_aotenjou">点数が満貫以上になっても満貫打ち切りをせず、計算式どおりに得点を算出する。</string>
+    <string name="label_hasKuitan">喰いタン</string>
+    <string name="desc_hasKuitan">断么九（タンヤオ）が喰い下がり役にする。</string>
+    <string name="label_renpuuJyantou4Hu">連風牌の雀頭が4符にする</string>
+    <string name="desc_renpuuJyantou4Hu">雀頭は連風牌の場合4符にする。(オフにすると、連風牌の雀頭が2符にする)</string>
+    <string name="label_hasKiriageMangan">切り上げ満貫</string>
+    <string name="desc_hasKiriageMangan">30符4飜・60符3飜が満貫にする。</string>
+    <string name="label_hasKazoeYakuman">数え役満</string>
+    <string name="desc_hasKazoeYakuman">役満がないばい、翻数が13翻以上であれば役満と同じ得点。</string>
+    <string name="label_hasMultipleYakuman">ダブル役満</string>
+    <string name="desc_hasMultipleYakuman">四暗刻単騎待ちや大四喜、国士無双13面待ち、九蓮宝燈9面待ちをダブル役満とする。</string>
+    <string name="label_hasComplexYakuman">役満の複合</string>
+    <string name="desc_hasComplexYakuman">役満が複数ある場合は全てカウントされ、得点が乗算されます。（オフにすると、最も高い倍数の役満のみがカウントされます）</string>
+    <string name="label_hora_options_ok">はい</string>
+    <string name="label_hora_options_restore">復元する</string>
+    <string name="text_overwrite_hora_options_hint">ゲームルールも上書きしますか?</string>
+
+    <string name="label_wind_unspecified">指定しない</string>
+    <string name="label_wind_east">東</string>
+    <string name="label_wind_south">南</string>
+    <string name="label_wind_west">西</string>
+    <string name="label_wind_north">北</string>
+
+    <string name="text_x_han_x_hu">%1$d飜%2$d符</string>
+    <string name="text_x_han_x_hu_with_tag">%1$d飜%2$d符（%3$s）</string>
+    <string name="text_x_bai_yakuman">%1$s倍役満</string>
+    <string name="text_parent_tsumo">親ツモ：%1$s ALL（共%2$s）</string>
+    <string name="text_parent_ron">親ロンす：%1$s</string>
+    <string name="text_child_tsumo">子ツモ：%1$s - %2$s（共%3$s）</string>
+    <string name="text_child_ron">子ロン：%1$s</string>
+
+    <string name="text_one">一</string>
+    <string name="text_two">二</string>
+    <string name="text_three">三</string>
+    <string name="text_four">四</string>
+    <string name="text_five">五</string>
+    <string name="text_six">六</string>
+
+    <string name="label_kiriagemangan">切り上げ満貫</string>
+    <string name="label_mangan">満貫</string>
+    <string name="label_haneman">跳満</string>
+    <string name="label_baiman">倍満</string>
+    <string name="label_sanbaiman">三倍満</string>
+    <string name="label_kazoeyakuman">数え役満</string>
+    <string name="label_yakuman">役満</string>
+    <string name="label_multiple_yakuman">%1$s倍役満</string>
+
+    <string name="label_yaku_tsumo">門前清自摸和（メンゼンツモ）</string>
+    <string name="label_yaku_pinhu">平和（ピンフ）</string>
+    <string name="label_yaku_tanyao">断么九（タンヤオ）</string>
+    <string name="label_yaku_ipe">一盃口（イーペーコー）</string>
+    <string name="label_yaku_self_wind">役牌：自風</string>
+    <string name="label_yaku_round_wind">役牌：場風</string>
+    <string name="label_yaku_haku">役牌：白</string>
+    <string name="label_yaku_hatsu">役牌：發</string>
+    <string name="label_yaku_chun">役牌：中</string>
+    <string name="label_yaku_sanshoku">三色同順（サンショクドウジュン）</string>
+    <string name="label_yaku_ittsu">一気通貫（イッキツウカン）</string>
+    <string name="label_yaku_chanta">混全帯么九（ホンチャンタイヤオチュー）</string>
+    <string name="label_yaku_chitoi">七対子（チートイツ）</string>
+    <string name="label_yaku_toitoi">対々和（トイトイホー）</string>
+    <string name="label_yaku_sananko">三暗刻（サンアンコウ）</string>
+    <string name="label_yaku_honroto">混老頭（ホンロウトウ）</string>
+    <string name="label_yaku_sandoko">三色同刻（サンショクドウコウ）</string>
+    <string name="label_yaku_sankantsu">三槓子（サンカンツ）</string>
+    <string name="label_yaku_shosangen">小三元（ショウサンゲン）</string>
+    <string name="label_yaku_honitsu">混一色（ホンイーソー）</string>
+    <string name="label_yaku_junchan">純全帯么九（ジュンチャンタイヤオチュー）</string>
+    <string name="label_yaku_ryanpe">二盃口（リャンペーコー）</string>
+    <string name="label_yaku_chinitsu">清一色（チンイーソー）</string>
+
+    <string name="label_yaku_kokushi">国士無双（コクシムソウ）</string>
+    <string name="label_yaku_suanko">四暗刻（スーアンコウ）</string>
+    <string name="label_yaku_daisangen">大三元（ダイサンゲン）</string>
+    <string name="label_yaku_tsuiso">字一色（ツーイーソー）</string>
+    <string name="label_yaku_shousushi">小四喜（ショウスーシー）</string>
+    <string name="label_yaku_lyuiso">緑一色（リュウイーソー）</string>
+    <string name="label_yaku_chinroto">清老頭（チンロウトウ）</string>
+    <string name="label_yaku_sukantsu">四槓子（スーカンツ）</string>
+    <string name="label_yaku_churen">九蓮宝燈（チュウレンポウトウ）</string>
+    <string name="label_yaku_daisushi">大四喜（ダイスーシー）</string>
+    <string name="label_yaku_churenNineWaiting">純正九蓮宝燈（純正チュウレンポウトウ）</string>
+    <string name="label_yaku_suankoTanki">四暗刻単騎（スーアンコウ単騎）</string>
+    <string name="label_yaku_kokushiThirteenWaiting">国士無双十三面待ち（コクシムソウ十三面待ち）</string>
+
+    <string name="label_yaku_tenhou">天和（テンホー）</string>
+    <string name="label_yaku_chihou">地和（チーホー）</string>
+    <string name="label_yaku_wrichi">ダブル立直（ダブルリーチ）</string>
+    <string name="label_yaku_richi">立直（リーチ）</string>
+    <string name="label_yaku_ippatsu">一発（イッパツ）</string>
+    <string name="label_yaku_rinshan">嶺上開花（リンシャンカイホウ）</string>
+    <string name="label_yaku_chankan">槍槓（チャンカン）</string>
+    <string name="label_yaku_haitei">海底摸月（ハイテイモーユエ）</string>
+    <string name="label_yaku_houtei">河底撈魚（ホウテイラオユイ）</string>
+
+    <string name="label_yaku_dora">ドラ%1$d</string>
+
+    <string name="label_yaku">役</string>
+    <string name="label_hora_point">飜符得点</string>
+    <string name="label_hand_deconstruction">手牌解析</string>
+
+    <string name="label_han">飜</string>
+    <string name="label_hu">符</string>
+
+    <string name="label_yes">はい</string>
+    <string name="label_no">いいえ</string>
+    <string name="text_true_symbol">○</string>
+    <string name="text_false_symbol">×</string>
+    <string name="text_comma">・</string>
+
+    <string name="text_unknown_error">未知のエラー</string>
+    <string name="text_must_enter_tiles">手牌を入力してください。</string>
+    <string name="text_must_enter_chance_tile">出る牌を入力してください。</string>
+    <string name="text_cannot_have_more_than_14_tiles">手牌の数は多いすぎます。</string>
+    <string name="text_tiles_must_not_be_divided_into_3">手牌の数は３n＋１または３n＋２を満足するべきです。</string>
+    <string name="text_any_tile_must_not_be_more_than_4">同じ牌は４枚以下（４枚含む）にするべきです。</string>
+    <string name="text_tiles_are_not_without_got">手牌の数は４、７、１０、１３枚にしてください。</string>
+    <string name="text_hora_hand_tiles_not_enough">牌の数は和了ができません。</string>
+    <string name="text_invalid_dora_count">有効な数ではありません。</string>
+    <string name="text_invalid_furo">有効な副露ではありません。</string>
+    <string name="text_too_many_furo">副露の数が多い過ぎます。</string>
+    <string name="text_must_enter_agari">アガリ牌を入力してください。</string>
+    <string name="text_agari_not_in_hand">手牌の中にはアガリ牌が見つかりません。</string>
+    <string name="text_must_enter_han">飜数を入力してください。</string>
+    <string name="text_invalid_han_number">有効な飜数ではありません。</string>
+    <string name="text_must_enter_hu">符数を入力してください。</string>
+    <string name="text_invalid_hu_number">有効な符数ではありません。</string>
+    <string name="text_hu_exceeded_maximum">符数は140以下（140枚含む）にするべきです。</string>
+
+    <string name="text_save_result_success">結果は画像にセーフしました。</string>
+</resources>
