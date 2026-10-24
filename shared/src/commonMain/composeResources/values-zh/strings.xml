@@ -215,4 +215,5 @@
     <string name="text_hu_exceeded_maximum">输入的符数超过最大值140。</string>
 
     <string name="text_save_result_success">成功保存结果图片到本地。</string>
+    <string name="text_chankan_tile_in_hand">持有其他与和牌张相同的牌时不能抢杠。</string>
 </resources>
