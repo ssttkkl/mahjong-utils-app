@@ -10,7 +10,7 @@ string|desc_renpuuJyantou4Hu|V2hlbiB0aGUgcGFpciAoSnlhbnRvdSkgaXMgYm90aCB0aGUgc2V
 string|label_advance_tiles|QWR2YW5jaW5nIFRpbGVz
 string|label_agari|V2lubmluZyBUaWxl
 string|label_allow_chi|RnJvbSBwcmV2aW91cyBwbGF5ZXIgKGNhbiBjaG93KQ==
-string|label_ankan|TWVsZGVkLWtvbmc=
+string|label_ankan|Q29uY2VhbGVkLWtvbmc=
 string|label_aotenjou|QW90ZW5qb3U=
 string|label_baiman|QmFpbWFu
 string|label_calc|Q2FsYw==
@@ -42,7 +42,7 @@ string|label_kazoeyakuman|S2F6b2UgWWFrdW1hbg==
 string|label_kiriagemangan|S2lyaWFnZSBNYW5nYW4=
 string|label_mangan|TWFuZ2Fu
 string|label_mentsu|U2V0cw==
-string|label_minkan|Q29uY2VhbGVkLWtvbmc=
+string|label_minkan|TWVsZGVkLWtvbmc=
 string|label_multiple_yakuman|JTEkcy10aW1lcyBZYWt1bWFu
 string|label_no|Tm8=
 string|label_other_information|T3RoZXIgSW5mb3JtYXRpb24=
@@ -127,6 +127,7 @@ string|label_yes|WWVz
 string|text_agari_not_in_hand|VGhlIHdpbm5pbmcgdGlsZSBpcyBub3QgaW4geW91ciBoYW5kLg==
 string|text_any_tile_must_not_be_more_than_4|WW91IGNhbm5vdCBoYXZlIGFueSB0aWxlIG1vcmUgdGhhbiA0Lg==
 string|text_cannot_have_more_than_14_tiles|WW91IGNhbm5vdCBoYXZlIG1vcmUgdGhhbiAxNCB0aWxlcy4=
+string|text_chankan_tile_in_hand|WW91IGNhbm5vdCByb2IgYSBrb25nIHdoaWxlIGhvbGRpbmcgYW5vdGhlciBjb3B5IG9mIHRoZSB3aW5uaW5nIHRpbGUu
 string|text_child_ron|T3RoZXIgUm9uOiAlMSRz
 string|text_child_tsumo|T3RoZXIgVHN1bW86ICUxJHMgLSAlMiRzICglMyRzIHRvdGFsKQ==
 string|text_clipboard_no_image|Tm8gaW1hZ2UgaW4gY2xpcGJvYXJk
