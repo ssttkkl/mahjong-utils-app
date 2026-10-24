@@ -140,7 +140,7 @@ jobs:
 
 
   build-on-macos-x64:
-    runs-on: macos-13
+    runs-on: macos-15-intel
 
     steps:
       - name: Checkout my repository

@@ -215,4 +215,5 @@
     <string name="text_hu_exceeded_maximum">符数は140以下（140枚含む）にするべきです。</string>
 
     <string name="text_save_result_success">結果は画像にセーフしました。</string>
+    <string name="text_chankan_tile_in_hand">和了牌と同じ牌を他に持っている場合、槍槓できません。</string>
 </resources>

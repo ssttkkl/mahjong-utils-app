@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mahjongutils.composeapp.generated.resources.Res
+import mahjongutils.composeapp.generated.resources.text_chankan_tile_in_hand
 import mahjongutils.composeapp.generated.resources.text_agari_not_in_hand
 import mahjongutils.composeapp.generated.resources.text_any_tile_must_not_be_more_than_4
 import mahjongutils.composeapp.generated.resources.text_hora_hand_tiles_not_enough
@@ -103,8 +104,7 @@ class HoraFormState(
             Yakus.Ippatsu to setOf(
                 Yakus.Tenhou,
                 Yakus.Chihou,
-                Yakus.Rinshan,
-                Yakus.Chankan
+                Yakus.Rinshan
             ),
             Yakus.Rinshan to setOf(
                 Yakus.Tenhou,
@@ -116,7 +116,6 @@ class HoraFormState(
             Yakus.Chankan to setOf(
                 Yakus.Tenhou,
                 Yakus.Chihou,
-                Yakus.Ippatsu,
                 Yakus.Rinshan,
                 Yakus.Haitei
             ),
@@ -309,7 +308,7 @@ class HoraFormState(
             }
 
             Yakus.Chankan -> {
-                disabled = disabled || tsumo
+                disabled = disabled || tsumo || chankanTileInHand
             }
 
             Yakus.Haitei -> {
@@ -323,6 +322,18 @@ class HoraFormState(
 
         return !disabled
     }
+
+    // The opponent holds all four copies when declaring the kan. The winning
+    // tile is already included in a 3k+2 input; do not mistake it for another copy.
+    private val chankanTileInHand: Boolean
+        get() {
+            val winningTile = agari ?: autoDetectedAgari ?: return false
+            val includedWinningTile = if (tiles.size % 3 == 2) 1 else 0
+            fun isWinningTile(tile: Tile) =
+                tile.type == winningTile.type && tile.realNum == winningTile.realNum
+            return tiles.count(::isWinningTile) +
+                furo.sumOf { meld -> meld.tiles.count(::isWinningTile) } > includedWinningTile
+        }
 
     // yaku to enabled
     val allExtraYaku by derivedStateOf {
@@ -363,6 +374,11 @@ class HoraFormState(
         val agari = agari ?: autoDetectedAgari
         if (agari == null) {
             agariErrMsg.add(Res.string.text_must_enter_agari)
+        }
+
+        // Also validate restored/directly assigned values, not only checkbox state.
+        if (Yakus.Chankan in extraYaku && chankanTileInHand) {
+            agariErrMsg.add(Res.string.text_chankan_tile_in_hand)
         }
 
         val dora = if (dora.isEmpty()) 0 else dora.toIntOrNull()

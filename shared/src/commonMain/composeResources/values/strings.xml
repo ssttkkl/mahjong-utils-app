@@ -71,8 +71,8 @@
     <string name="label_furo">Melded Chow</string>
     <string name="label_mentsu">Sets</string>
     <string name="label_jyantou">Pair (Jyantou)</string>
-    <string name="label_ankan">Melded-kong</string>
-    <string name="label_minkan">Concealed-kong</string>
+    <string name="label_ankan">Concealed-kong</string>
+    <string name="label_minkan">Melded-kong</string>
     <string name="label_agari">Winning Tile</string>
     <string name="label_tsumo">Tsumo</string>
     <string name="label_ron">Ron</string>
@@ -215,4 +215,5 @@
     <string name="text_hu_exceeded_maximum">The minipoints exceeds the maximum value of 140.</string>
 
     <string name="text_save_result_success">Result saved as image.</string>
+    <string name="text_chankan_tile_in_hand">You cannot rob a kong while holding another copy of the winning tile.</string>
 </resources>
