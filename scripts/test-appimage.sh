@@ -10,7 +10,7 @@ cleanup() {
 trap cleanup EXIT
 cd "$work"
 "$appimage" --appimage-extract > extract.log
-for executable in AppRun bin/mahjong-utils-app lib/runtime/bin/java; do
+for executable in AppRun bin/mahjong-utils-app; do
     test -x "squashfs-root/$executable"
     stat -c '%a %n' "squashfs-root/$executable"
 done

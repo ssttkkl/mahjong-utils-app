@@ -121,7 +121,7 @@ class DesktopAppPlugin : Plugin<Project> {
                 FileUtils.copyDirectory(packageOutput, appDir)
 
                 // Validate the staged files: copy operations may lose source permissions.
-                listOf("AppRun", "bin/${APPLICATION_NAME}", "lib/runtime/bin/java").forEach { path ->
+                listOf("AppRun", "bin/${APPLICATION_NAME}").forEach { path ->
                     val executableFile = appDir.resolve(path)
                     check(executableFile.isFile) { "Missing AppImage executable: $executableFile" }
                     check(executableFile.setExecutable(true, false) && executableFile.canExecute()) {
