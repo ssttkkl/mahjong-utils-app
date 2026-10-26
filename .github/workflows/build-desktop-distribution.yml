@@ -208,13 +208,21 @@ jobs:
       - name: Install FUSE (linux)
         uses: ConorMacBride/install-package@v1.1.0
         with:
-          apt: libfuse2
+          apt: libfuse2 xvfb x11-utils
 
       - name: Package Distribution
         env:
           IO_SENTRY_AUTH_TOKEN: ${{ secrets.IO_SENTRY_AUTH_TOKEN }}
         run: |
           ./gradlew desktopApp:packageReleaseDistributionForCurrentOS desktopApp:packageReleaseUberJarForCurrentOS
+
+      - name: Test core integration
+        run: |
+          ./gradlew :shared:desktopTest -I scripts/test-home.gradle
+
+      - name: Verify packaged AppImage offline
+        run: |
+          sudo unshare --net -- runuser -u "$(id -un)" -- xvfb-run -a bash scripts/test-appimage.sh desktopApp/build/appimage/main-release/*.AppImage
 
       - name: Upload the Build Artifact
         uses: actions/upload-artifact@v4.6.1

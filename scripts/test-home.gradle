@@ -1,0 +1,6 @@
+// Keep regression tests isolated from a developer's application data.
+gradle.allprojects {
+    tasks.withType(Test).configureEach {
+        systemProperty 'user.home', new File(temporaryDir, 'home').absolutePath
+    }
+}
