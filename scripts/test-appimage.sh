@@ -26,13 +26,16 @@ for attempt in $(seq 1 60); do
         echo 'AppImage exited before showing a window' >&2
         exit 1
     fi
-    if xwininfo -root -tree | grep -q 'Riichi Mahjong Calculator'; then
-        sleep 5
-        kill -0 "$app_pid"
-        cat launch.log
-        echo 'AppImage displayed a window and stayed alive without network access'
-        exit 0
-    fi
+    window_ids=$(xwininfo -root -tree | awk '/"Riichi Mahjong Calculator"/ {print $1}')
+    for window_id in $window_ids; do
+        if xwininfo -id "$window_id" | grep -q 'Map State: IsViewable'; then
+            sleep 5
+            kill -0 "$app_pid"
+            cat launch.log
+            echo 'AppImage displayed a visible window and stayed alive without network access'
+            exit 0
+        fi
+    done
     sleep 1
 done
 cat launch.log
