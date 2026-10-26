@@ -218,7 +218,7 @@ jobs:
 
       - name: Test core integration
         run: |
-          ./gradlew :shared:desktopTest -I scripts/test-home.gradle
+          xvfb-run -a ./gradlew :shared:desktopTest -I scripts/test-home.gradle
 
       - name: Verify packaged AppImage offline
         run: |

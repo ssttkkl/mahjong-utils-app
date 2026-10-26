@@ -1,0 +1,3 @@
+Upgrade mahjong-utils to 0.8.0 and correct exhausted-tile shanten results.
+Fix Linux AppImage startup permissions.
+Fix winning-hand input validation and English kan labels.
