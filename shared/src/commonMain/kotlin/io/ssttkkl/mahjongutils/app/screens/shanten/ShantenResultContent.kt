@@ -19,6 +19,7 @@ import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenAction
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenActionGroupsContent
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.ShantenNumCardPanel
 import io.ssttkkl.mahjongutils.app.components.resultdisplay.TilesWithNumTopCardPanel
+import io.ssttkkl.mahjongutils.app.components.resultdisplay.goodShapeAdvanceRatio
 import io.ssttkkl.mahjongutils.app.components.tile.AutoSingleLineTiles
 import io.ssttkkl.mahjongutils.app.components.tile.TileImage
 import io.ssttkkl.mahjongutils.app.models.shanten.ShantenArgs
@@ -118,7 +119,7 @@ private fun ShantenWithoutGotResultContent(
                                 stringResource(Res.string.label_good_shape_advance_tiles),
                                 goodShapeAdvance,
                                 goodShapeAdvanceNum,
-                                1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum,
+                                shanten.goodShapeAdvanceRatio(),
                                 tileImage = {
                                     TileImage(it, Modifier.clickable {
                                         fillbackHandler.fillbackDraw(it)

@@ -140,7 +140,7 @@ fun ShantenActionCardContent(
                         stringResource(Res.string.label_good_shape_advance_tiles),
                         goodShapeAdvance.sorted(),
                         shanten.goodShapeAdvanceNum ?: 0,
-                        1.0 * (shanten.goodShapeAdvanceNum ?: 0) / shanten.advanceNum
+                        shanten.goodShapeAdvanceRatio()
                     ) {
                         TileImage(it, Modifier.clickable {
                             fillbackHandler.fillbackActionAndDraw(action, it)
